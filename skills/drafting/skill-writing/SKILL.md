@@ -1,5 +1,5 @@
 ---
-name: skill-creator
+name: skill-writing
 description: Creates a new agent skill following the Agent Skills open standard (agentskills.io). Use when building a new skill, scaffolding a SKILL.md, packaging a workflow into a portable skill, or when the user says "create a skill", "make a skill", "new skill", or "scaffold a skill".
 compatibility: Designed for Claude Code (or similar products with Agent Skills support)
 ---
