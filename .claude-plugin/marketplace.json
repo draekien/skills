@@ -16,6 +16,14 @@
       "strict": false,
       "skills": ["./skills/drafting/skill-writing"],
       "version": "0.1.0"
+    },
+    {
+      "name": "productivity-skills",
+      "description": "Skills for general workplace productivity: summarisation, research, meeting prep, and task management.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/productivity/get-aligned"],
+      "version": "0.1.0"
     }
   ]
 }
