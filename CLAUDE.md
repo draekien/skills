@@ -23,9 +23,22 @@ skills/
       assets/           ← optional: templates, icons, other output files
 ```
 
-- Every skill in `drafting/`, `engineering/`, or `productivity/` must have a reference in the top-level `README.md` and an entry in `.claude-plugin/plugin.json`. Skills in `personal/` must not appear in either.
+- Every skill in `drafting/`, `engineering/`, or `productivity/` must have a reference in the top-level `README.md`. Skills in `personal/` must not appear in either.
 - Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
 - Each bucket folder has a `README.md` that lists every skill in the bucket with a one-line description, with the skill name linked to its `SKILL.md`.
+
+## Plugin manifest
+
+The `.claude-plugin/` directory contains two files:
+
+- `marketplace.json` — lists one plugin entry per bucket that has at least one skill; empty buckets are omitted
+- update the version of the plugin entry when skills are changed in that bucket, at most once per feature branch.
+
+When adding a new skill, update `marketplace.json` as follows:
+
+- If the bucket already has a plugin entry, add the new skill path to its `skills` array
+- If the bucket has no entry yet, add a new plugin entry with `name: "<bucket>-skills"`, `source: "./"`, `strict: false`, `version: "0.1.0"`, and a `skills` array listing the skill path
+- List individual skill paths (e.g. `"./skills/drafting/skill-writing"`), not whole bucket directories
 
 ## Workflow
 

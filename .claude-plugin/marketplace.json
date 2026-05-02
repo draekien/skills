@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "draekien-skills",
+  "owner": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "metadata": {
+    "description": "Agent skills organised into buckets by domain."
+  },
+  "plugins": [
+    {
+      "name": "drafting-skills",
+      "description": "Skills for writing and editing content: emails, documents, reports, and other written output.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/drafting/skill-writing"],
+      "version": "0.1.0"
+    }
+  ]
+}
