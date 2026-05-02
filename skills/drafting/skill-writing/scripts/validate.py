@@ -26,6 +26,8 @@ except ImportError:
     print("pyyaml not available — run with: uv run validate.py", file=sys.stderr)
     sys.exit(2)
 
+_KNOWN_FIELDS = {"name", "description", "compatibility", "metadata", "allowed-tools"}
+
 # Model-specific terms that indicate non-portable instructions
 _MODEL_TERMS = [
     "claude",
@@ -49,16 +51,17 @@ _PY_NETWORK_IMPORT_RE = re.compile(
 
 
 def _parse_skill_md(skill_md: Path):
-    """Return (frontmatter_dict, body_str) or raise ValueError."""
+    """Return (frontmatter_dict, body_str, raw_fm_str) or raise ValueError."""
     text = skill_md.read_text(encoding="utf-8")
     if not text.startswith("---"):
         raise ValueError("SKILL.md does not begin with YAML frontmatter (---).")
     close = text.find("\n---", 3)
     if close == -1:
         raise ValueError("SKILL.md frontmatter is never closed by a second --- line.")
-    fm = yaml.safe_load(text[3:close].strip()) or {}
+    raw_fm = text[3:close]
+    fm = yaml.safe_load(raw_fm.strip()) or {}
     body = text[close + 4 :].strip()
-    return fm, body
+    return fm, body, raw_fm
 
 
 def _strip_code(text: str) -> str:
@@ -110,6 +113,39 @@ class Results:
 # ---------------------------------------------------------------------------
 # Validators
 # ---------------------------------------------------------------------------
+
+
+def check_frontmatter_formatting(raw_fm: str, fm: dict, r: Results):
+    unknown = [k for k in fm if k not in _KNOWN_FIELDS]
+    r.check(
+        not unknown,
+        "frontmatter: no unknown fields",
+        f"Unknown fields: {unknown} — check for typos",
+    )
+
+    for field in ("name", "description"):
+        val = fm.get(field)
+        if val is not None:
+            r.check(
+                isinstance(val, str),
+                f"frontmatter: {field} is a plain string",
+                f"{field} parsed as {type(val).__name__} — wrap value in quotes",
+            )
+
+    lines = raw_fm.splitlines()
+    trailing = [i + 1 for i, line in enumerate(lines) if line != line.rstrip()]
+    r.check(
+        not trailing,
+        "frontmatter: no trailing whitespace",
+        f"Lines with trailing whitespace: {trailing}",
+    )
+
+    has_block_scalar = bool(re.search(r":\s*[|>]", raw_fm))
+    r.check(
+        not has_block_scalar,
+        "frontmatter: no block scalar notation",
+        "Block scalars (| or >) found — use inline strings for frontmatter values",
+    )
 
 
 def check_name(fm: dict, skill_dir: Path, r: Results):
@@ -337,11 +373,12 @@ def validate(skill_path: Path) -> Results:
         return r
 
     try:
-        fm, body = _parse_skill_md(skill_md)
+        fm, body, raw_fm = _parse_skill_md(skill_md)
     except (ValueError, yaml.YAMLError) as e:
         r.fail("SKILL.md frontmatter is valid YAML", str(e))
         return r
 
+    check_frontmatter_formatting(raw_fm, fm, r)
     check_name(fm, skill_dir, r)
     check_description(fm, r)
     check_optional_fields(fm, r)

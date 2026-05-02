@@ -44,6 +44,12 @@ Then work through the `[LLM]` rules below.
 - `[AUTO]` Is a space-separated string (not a YAML list)
 - `[LLM]` Tools listed are valid and no broader than the skill's stated purpose
 
+### Frontmatter formatting
+- `[AUTO]` No unknown or misspelled field names
+- `[AUTO]` `name` and `description` values are plain strings (not YAML integers or booleans)
+- `[AUTO]` No trailing whitespace on any frontmatter line
+- `[AUTO]` No block scalar notation (`|` or `>`) in frontmatter values
+
 ## Directory structure
 
 - `[AUTO]` `SKILL.md` is present at the skill root
