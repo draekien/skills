@@ -49,4 +49,5 @@ Adding new skill, update `marketplace.json`:
 
 ## Workflow
 
-- New skill in this repo: use `skill-creator` skill from this repo.
+- New skill in this repo: use `skill-creator` skill
+- After writing skill: use `compact` caveman skill on yaml `description` and skill contents.
