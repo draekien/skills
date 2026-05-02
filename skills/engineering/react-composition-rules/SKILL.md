@@ -24,32 +24,34 @@ If the mode is genuinely ambiguous, ask one question. Otherwise proceed to the m
 ### Step C1 — Understand the request
 
 Infer from context:
+
 - Component name (PascalCase)
 - Output file path (follow existing project conventions; default to `src/components/<ComponentName>.tsx`)
 - Purpose: what does this component render or orchestrate?
 - Whether it wraps a native element, groups related sub-components, or encapsulates behaviour
 
-If any of these is genuinely ambiguous, ask one question. Otherwise proceed.
+If any of these is genuinely ambiguous, ask the user one question at a time until the request is clear. Otherwise proceed.
 
 ### Step C2 — Select applicable patterns and plan
 
 Review the 11 patterns below. Mark each as **applies** or **skip** based on the component's purpose. A simple display component may only use 2–3; a library primitive may use most.
 
-| # | Pattern | Apply when |
-|---|---|---|
-| 1 | Stable component identity | Always |
-| 2 | Single responsibility | Always |
-| 3 | Custom hooks | Component has stateful logic |
-| 4 | Avoid prop drilling | Data passes through components that don't use it |
-| 5 | Compound components | Multiple related sub-components share state |
-| 6 | forwardRef | Wraps a native element or needs imperative handle |
-| 7 | Controlled vs uncontrolled | Component has internal state |
-| 8 | Inversion of control | Complex state transitions; consumers need to customise behaviour |
-| 9 | Headless components | Behaviour must work with any UI / design system |
-| 10 | Render props | Flexible rendering across different UI shapes |
-| 11 | Avoid HOCs | Cross-cutting logic that would otherwise be a HOC |
+| #   | Pattern                    | Apply when                                                       |
+| --- | -------------------------- | ---------------------------------------------------------------- |
+| 1   | Stable component identity  | Always                                                           |
+| 2   | Single responsibility      | Always                                                           |
+| 3   | Custom hooks               | Component has stateful logic                                     |
+| 4   | Avoid prop drilling        | Data passes through components that don't use it                 |
+| 5   | Compound components        | Multiple related sub-components share state                      |
+| 6   | forwardRef                 | Wraps a native element or needs imperative handle                |
+| 7   | Controlled vs uncontrolled | Component has internal state                                     |
+| 8   | Inversion of control       | Complex state transitions; consumers need to customise behaviour |
+| 9   | Headless components        | Behaviour must work with any UI / design system                  |
+| 10  | Render props               | Flexible rendering across different UI shapes                    |
+| 11  | Avoid HOCs                 | Cross-cutting logic that would otherwise be a HOC                |
 
 Present the plan:
+
 - Component name and output path
 - Applicable patterns (numbered list)
 - Sub-components needed, if any
@@ -61,6 +63,7 @@ Proceed immediately without waiting unless the component scope is ambiguous.
 Before writing code, read each rule file for the patterns marked **applies**. Rule files are in `references/` relative to this skill.
 
 File names map directly to pattern names:
+
 - [references/single-responsibility.md](references/single-responsibility.md)
 - [references/compound-components.md](references/compound-components.md)
 - [references/custom-hooks.md](references/custom-hooks.md)
@@ -95,10 +98,12 @@ Write the complete component file.
 ### Step C5 — Verify
 
 For each pattern applied in Step C4, re-read its rule file and confirm:
+
 - The Do items are satisfied
 - The Don't items are avoided
 
 Report the result as a checklist:
+
 ```
 ✓ Stable component identity — all components defined at module scope
 ✓ Custom hooks — logic extracted into useXxx hook
@@ -135,6 +140,7 @@ Read every reference file before scanning. This establishes the full set of rule
 ### Step A3 — Scan each file
 
 For each component file in scope:
+
 1. Read the file
 2. Check it against all 11 rules
 3. Record each violation: rule name + one-line explanation of what the code does wrong
@@ -176,14 +182,14 @@ Check the component against all 11 rules (read the relevant reference files). Li
 
 For each violation, determine the minimal extraction needed:
 
-| Violation | Extraction |
-|---|---|
-| Stateful logic in component body | Extract into a `useXxx` hook |
-| Multiple unrelated responsibilities | Split into separate components |
-| Nested component definitions | Move to module scope |
-| Prop drilling through intermediaries | Introduce `children` composition or a scoped Context |
-| HOC wrapper | Convert to a hook consumed directly |
-| Multiple sub-components sharing state | Refactor to compound component with Context |
+| Violation                             | Extraction                                           |
+| ------------------------------------- | ---------------------------------------------------- |
+| Stateful logic in component body      | Extract into a `useXxx` hook                         |
+| Multiple unrelated responsibilities   | Split into separate components                       |
+| Nested component definitions          | Move to module scope                                 |
+| Prop drilling through intermediaries  | Introduce `children` composition or a scoped Context |
+| HOC wrapper                           | Convert to a hook consumed directly                  |
+| Multiple sub-components sharing state | Refactor to compound component with Context          |
 
 Present the plan as a numbered list of steps (what to extract, where it goes, what it will be named). Wait for confirmation before making changes.
 
