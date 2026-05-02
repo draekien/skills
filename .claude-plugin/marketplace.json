@@ -17,9 +17,10 @@
       "skills": [
         "./skills/drafting/skill-writing",
         "./skills/productivity/get-aligned",
+        "./skills/productivity/get-specific",
         "./skills/engineering/react-composition-rules"
       ],
-      "version": "0.2.1"
+      "version": "0.2.2"
     },
     {
       "name": "drafting-skills",
@@ -42,8 +43,8 @@
       "description": "Skills for general workplace productivity: summarisation, research, meeting prep, and task management.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/productivity/get-aligned"],
-      "version": "0.1.1"
+      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/get-specific"],
+      "version": "0.1.2"
     }
   ]
 }
