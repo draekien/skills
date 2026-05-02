@@ -23,8 +23,10 @@ skills/
       assets/           ← optional: templates, icons, other output files
 ```
 
-## Conventions
+- Every skill in `drafting/`, `engineering/`, or `productivity/` must have a reference in the top-level `README.md` and an entry in `.claude-plugin/plugin.json`. Skills in `personal/` must not appear in either.
+- Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
+- Each bucket folder has a `README.md` that lists every skill in the bucket with a one-line description, with the skill name linked to its `SKILL.md`.
 
-- `SKILL.md` frontmatter must include `name` and `description` fields
-- `description` controls when the skill triggers — write it to be specific and slightly "pushy" so Claude uses the skill when it should
-- Keep `SKILL.md` under 500 lines; use `references/` for overflow content
+## Workflow
+
+- When a user wants to create a new skill in this repository, use the `skill-creator` skill from this repository.
