@@ -1,6 +1,6 @@
 {
   "name": "draekien-skills",
   "skills": [
-    "./skills/drafting/skill-creator"
+    "./skills/drafting/skill-dev"
   ]
 }
