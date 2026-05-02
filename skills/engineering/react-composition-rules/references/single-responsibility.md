@@ -1,30 +1,37 @@
 ## Rule: Single Responsibility
 
-Each React component must do exactly one thing. A component either renders UI, manages state, or coordinates interactions — not combinations of these.
+Each React component does one thing. Renders UI, manages state, or coordinates — not combinations.
 
 **Do:**
-- Split a component when you need "and" to describe it
-- Extract data fetching, formatting, and event handling into separate hooks or components
-- Keep component files under ~150 lines as a rough heuristic
+
+- Split when you need "and" to describe it
+- Extract fetching, formatting, event handling into separate hooks or components
+- Keep files under ~150 lines
 
 **Don't:**
-- Mix `fetch`/`useEffect` data loading with render logic in the same component
-- Put unrelated `useEffect` calls in the same component
-- Add conditional rendering branches that require completely different prop shapes
+
+- Mix `fetch`/`useEffect` data loading with render logic
+- Put unrelated `useEffect` calls in same component
+- Add conditional branches requiring different prop shapes
 
 **Example:**
+
 ```tsx
 // bad
 function UserCard({ userId }) {
-  const [user, setUser] = useState(null)
-  useEffect(() => { fetchUser(userId).then(setUser) }, [userId])
-  return <div>{user?.name}</div>
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetchUser(userId).then(setUser);
+  }, [userId]);
+  return <div>{user?.name}</div>;
 }
 
 // good
-function useUser(userId) { /* fetch logic */ }
+function useUser(userId) {
+  /* fetch logic */
+}
 function UserCard({ userId }) {
-  const user = useUser(userId)
-  return <div>{user?.name}</div>
+  const user = useUser(userId);
+  return <div>{user?.name}</div>;
 }
 ```

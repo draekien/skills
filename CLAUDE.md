@@ -1,52 +1,52 @@
 # Skills Repository
 
-This repository stores agent skills organised into buckets under `skills/`. Each bucket groups related skills by domain.
+Repo stores agent skills in buckets under `skills/`. Each bucket groups skills by domain.
 
 ## Buckets
 
-- **drafting** — Skills for writing and editing content: emails, documents, reports, and other written output.
-- **engineering** — Skills for software development tasks: code review, debugging, architecture, and technical workflows.
-- **personal** — Skills for personal productivity and life admin: scheduling, decision-making, and personal organisation.
-- **productivity** — Skills for general workplace productivity: summarisation, research, meeting prep, and task management.
+- **drafting** — Writing/editing: emails, docs, reports.
+- **engineering** — Dev tasks: code review, debugging, architecture, workflows.
+- **personal** — Personal productivity: scheduling, decisions, organisation.
+- **productivity** — Workplace productivity: summarisation, research, meeting prep, task management.
 
 ## Structure
 
-Each skill is a directory containing a `SKILL.md` and optional bundled resources:
+Each skill = directory with `SKILL.md` + optional bundled resources:
 
 ```
 skills/
   <bucket>/
     <skill-name>/
-      SKILL.md          ← required: YAML frontmatter + instructions
-      scripts/          ← optional: executable scripts
-      references/       ← optional: docs loaded into context as needed
-      assets/           ← optional: templates, icons, other output files
+      SKILL.md           required: YAML frontmatter + instructions
+      scripts/           optional: executable scripts
+      references/        optional: docs loaded into context as needed
+      assets/            optional: templates, icons, other output files
 ```
 
-- Every skill in `drafting/`, `engineering/`, or `productivity/` must have a reference in the top-level `README.md`. Skills in `personal/` must not appear in either.
-- Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
-- Each bucket folder has a `README.md` that lists every skill in the bucket with a one-line description, with the skill name linked to its `SKILL.md`.
+- Every skill in `drafting/`, `engineering/`, `productivity/` needs entry in top-level `README.md`. Skills in `personal/` must not appear.
+- Each top-level `README.md` entry links skill name to its `SKILL.md`.
+- Each bucket has `README.md` listing all skills with one-line descriptions, names linked to `SKILL.md`.
 
 ## Plugin manifest
 
-The `.claude-plugin/` directory contains two files:
+`.claude-plugin/` has two files:
 
-- `marketplace.json` — lists plugin entries for each bucket and an `everything` meta-plugin
-- update the version of any affected plugin entry when skills are changed in that bucket, at most once per feature branch.
+- `marketplace.json` — plugin entries per bucket + `everything` meta-plugin
+- Bump version of affected plugin entry when skills change in that bucket. Once per feature branch max.
 
 `marketplace.json` contains:
 
-- One `everything` plugin entry that lists every public-facing skill path across all buckets. Always keep this in sync when adding or removing skills.
-- One bucket plugin entry per bucket that has at least one skill; empty buckets are omitted.
+- One `everything` entry listing every public-facing skill path across all buckets. Keep in sync when adding/removing skills.
+- One bucket entry per bucket with at least one skill; empty buckets omitted.
 
-When adding a new skill, update `marketplace.json` as follows:
+Adding new skill, update `marketplace.json`:
 
-- Add the new skill path to the `everything` plugin's `skills` array
-- If the bucket already has a plugin entry, add the new skill path to its `skills` array
-- If the bucket has no entry yet, add a new plugin entry with `name: "<bucket>-skills"`, `source: "./"`, `strict: false`, `version: "0.1.0"`, and a `skills` array listing the skill path
-- List individual skill paths (e.g. `"./skills/drafting/skill-writing"`), not whole bucket directories
-- Skills in `personal/` are not public-facing and must not appear in any plugin entry
+- Add skill path to `everything` plugin's `skills` array
+- If bucket has entry, add path to its `skills` array
+- If bucket has no entry, add new plugin entry: `name: "<bucket>-skills"`, `source: "./"`, `strict: false`, `version: "0.1.0"`, `skills` array with skill path
+- List individual skill paths (e.g. `"./skills/drafting/skill-writing"`), not whole bucket dirs
+- `personal/` skills not public-facing — must not appear in any plugin entry
 
 ## Workflow
 
-- When a user wants to create a new skill in this repository, use the `skill-creator` skill from this repository.
+- New skill in this repo: use `skill-creator` skill from this repo.

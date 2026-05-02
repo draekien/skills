@@ -1,21 +1,21 @@
 ---
 name: react-composition-rules
-description: "Applies React composition rules across three modes: (1) CREATE — creates a new React component following 11 composition patterns (single responsibility, compound components, custom hooks, headless patterns, inversion of control, forwardRef, render props, stable component identity, controlled/uncontrolled awareness, and more); (2) ANALYSE — scans a codebase or directory for components that violate composition rules and reports violations per file; (3) DECOMPOSE — breaks apart an existing monolithic component into smaller, composable pieces. Use when the user says 'create a component', 'build a React component', 'make a [name] component', 'write a [name] hook', 'analyse my components', 'audit my React components', 'find components that violate', 'check for composition rule violations', 'scan for bad components', 'decompose this component', 'break this component apart', 'split this component', or 'refactor into composable pieces'."
+description: "Applies 11 React composition rules in 3 modes: CREATE (new component from scratch), ANALYSE (scan codebase for violations), DECOMPOSE (break monolithic component into composable pieces). Trigger: 'create a component', 'build a React component', 'make a [name] component', 'write a [name] hook', 'analyse my components', 'audit my React components', 'find components that violate', 'check for composition rule violations', 'scan for bad components', 'decompose this component', 'break this component apart', 'split this component', 'refactor into composable pieces'."
 ---
 
 # React Composition Rules
 
-Applies 11 React composition rules in three modes: creating new components, analysing existing ones for violations, or decomposing monolithic components into composable pieces.
+11 React composition rules, three modes: create new components, analyse existing for violations, decompose monoliths into composable pieces.
 
 ## Step 1 — Determine mode
 
-Infer the mode from the user's request:
+Infer mode from request:
 
-- **CREATE** — user wants a new component written from scratch
-- **ANALYSE** — user wants to scan files for composition rule violations
-- **DECOMPOSE** — user wants an existing component broken into smaller, composable pieces
+- **CREATE** — user wants new component from scratch
+- **ANALYSE** — user wants scan for composition violations
+- **DECOMPOSE** — user wants existing component broken into smaller pieces
 
-If the mode is genuinely ambiguous, ask one question. Otherwise proceed to the matching section.
+Ambiguous? Ask one question. Else proceed.
 
 ---
 
@@ -26,15 +26,15 @@ If the mode is genuinely ambiguous, ask one question. Otherwise proceed to the m
 Infer from context:
 
 - Component name (PascalCase)
-- Output file path (follow existing project conventions; default to `src/components/<ComponentName>.tsx`)
-- Purpose: what does this component render or orchestrate?
-- Whether it wraps a native element, groups related sub-components, or encapsulates behaviour
+- Output file path (follow project conventions; default `src/components/<ComponentName>.tsx`)
+- Purpose: what does it render or orchestrate?
+- Whether it wraps native element, groups sub-components, or encapsulates behaviour
 
-If any of these is genuinely ambiguous, ask the user one question at a time until the request is clear. Otherwise proceed.
+Genuinely ambiguous? Ask one question at a time. Else proceed.
 
 ### Step C2 — Select applicable patterns and plan
 
-Review the 11 patterns below. Mark each as **applies** or **skip** based on the component's purpose. A simple display component may only use 2–3; a library primitive may use most.
+Review 11 patterns. Mark each **applies** or **skip** based on purpose. Simple display component may use 2–3; library primitive may use most.
 
 | #   | Pattern                    | Apply when                                                       |
 | --- | -------------------------- | ---------------------------------------------------------------- |
@@ -43,26 +43,24 @@ Review the 11 patterns below. Mark each as **applies** or **skip** based on the 
 | 3   | Custom hooks               | Component has stateful logic                                     |
 | 4   | Avoid prop drilling        | Data passes through components that don't use it                 |
 | 5   | Compound components        | Multiple related sub-components share state                      |
-| 6   | forwardRef                 | Wraps a native element or needs imperative handle                |
+| 6   | forwardRef                 | Wraps native element or needs imperative handle                  |
 | 7   | Controlled vs uncontrolled | Component has internal state                                     |
 | 8   | Inversion of control       | Complex state transitions; consumers need to customise behaviour |
 | 9   | Headless components        | Behaviour must work with any UI / design system                  |
 | 10  | Render props               | Flexible rendering across different UI shapes                    |
 | 11  | Avoid HOCs                 | Cross-cutting logic that would otherwise be a HOC                |
 
-Present the plan:
+Present plan:
 
 - Component name and output path
 - Applicable patterns (numbered list)
 - Sub-components needed, if any
 
-Proceed immediately without waiting unless the component scope is ambiguous.
+Proceed immediately unless scope ambiguous.
 
 ### Step C3 — Read the rule files for applicable patterns
 
-Before writing code, read each rule file for the patterns marked **applies**. Rule files are in `references/` relative to this skill.
-
-File names map directly to pattern names:
+Read each rule file for patterns marked **applies** before writing code. Rule files in `references/` relative to this skill.
 
 - [references/single-responsibility.md](references/single-responsibility.md)
 - [references/compound-components.md](references/compound-components.md)
@@ -76,33 +74,33 @@ File names map directly to pattern names:
 - [references/inversion-of-control.md](references/inversion-of-control.md)
 - [references/stable-component-identity.md](references/stable-component-identity.md)
 
-Read all applicable rule files before writing any code. Do not rely on memory — the rule files contain the authoritative Do/Don't/Example content.
+Read all applicable rule files before writing any code. Don't rely on memory — rule files have authoritative Do/Don't/Example content.
 
 ### Step C4 — Create the component
 
-Apply patterns in this fixed order (skip non-applicable ones):
+Apply patterns in fixed order (skip non-applicable):
 
-1. **Stable identity** — define all components at module scope, never inside another component's render function or inside hooks
-2. **Single responsibility** — each component does one thing; extract data-fetching, formatting, and event logic into separate hooks or components
-3. **Custom hooks** — extract all `useState`, `useEffect`, `useReducer`, and derived state into a `use`-prefixed hook; the component body renders only
-4. **Compound components** — if multiple sub-components share state, create a Context, add a provider to the parent, and expose sub-components as named properties on the parent (`Parent.Child`)
-5. **forwardRef** — wrap any component that renders a single native element in `forwardRef`; add `useImperativeHandle` if the component exposes a non-trivial imperative API
-6. **Controlled vs uncontrolled** — explicitly decide which mode the component supports; never conflate both without a `useControllableState` pattern
-7. **State reducer** — if complex state transitions need consumer customisation, expose a `reducer` prop that defaults to the built-in reducer
-8. **Headless / render props** — if the component's behaviour must work with arbitrary markup, return prop-getters from the hook and let the consumer own all rendering
-9. **Avoid HOCs** — implement any cross-cutting concerns (auth, permissions, theming) as hooks consumed directly by the component, not as HOC wrappers
-10. **Avoid prop drilling** — restructure with `children` composition or a scoped Context if props pass through uninvolved intermediaries
+1. **Stable identity** — define all components at module scope, never inside render or hooks
+2. **Single responsibility** — each component does one thing; extract data-fetching, formatting, event logic into separate hooks or components
+3. **Custom hooks** — extract all `useState`, `useEffect`, `useReducer`, derived state into `use`-prefixed hook; component body renders only
+4. **Compound components** — if sub-components share state, create Context, add provider to parent, expose sub-components as `Parent.Child`
+5. **forwardRef** — wrap any component rendering single native element in `forwardRef`; add `useImperativeHandle` for non-trivial imperative API
+6. **Controlled vs uncontrolled** — explicitly decide which mode; never conflate both without `useControllableState` pattern
+7. **State reducer** — if complex state transitions need consumer customisation, expose `reducer` prop defaulting to built-in reducer
+8. **Headless / render props** — if behaviour must work with arbitrary markup, return prop-getters from hook, let consumer own all rendering
+9. **Avoid HOCs** — cross-cutting concerns (auth, permissions, theming) as hooks consumed directly, not HOC wrappers
+10. **Avoid prop drilling** — restructure with `children` composition or scoped Context if props pass through uninvolved intermediaries
 
-Write the complete component file.
+Write complete component file.
 
 ### Step C5 — Verify
 
 For each pattern applied in Step C4, re-read its rule file and confirm:
 
-- The Do items are satisfied
-- The Don't items are avoided
+- Do items satisfied
+- Don't items avoided
 
-Report the result as a checklist:
+Report as checklist:
 
 ```
 ✓ Stable component identity — all components defined at module scope
@@ -111,7 +109,7 @@ Report the result as a checklist:
 ...
 ```
 
-Flag any rule that was relevant but could not be fully satisfied, with a brief explanation.
+Flag any rule relevant but not fully satisfied, with brief explanation.
 
 ---
 
@@ -119,11 +117,11 @@ Flag any rule that was relevant but could not be fully satisfied, with a brief e
 
 ### Step A1 — Identify scope
 
-Determine which files to scan from the request. If the user named a directory or pattern, use it. If the scope is ambiguous, ask one question. Default to `src/components/**/*.{tsx,jsx}` if no scope is given and the project structure suggests it.
+Determine files to scan from request. Named directory or pattern — use it. Scope ambiguous — ask one question. Default `src/components/**/*.{tsx,jsx}` if no scope given and project structure suggests it.
 
 ### Step A2 — Read all 11 rule files
 
-Read every reference file before scanning. This establishes the full set of rules to check against.
+Read every reference file before scanning. Establishes full rule set.
 
 - [references/single-responsibility.md](references/single-responsibility.md)
 - [references/compound-components.md](references/compound-components.md)
@@ -141,15 +139,15 @@ Read every reference file before scanning. This establishes the full set of rule
 
 For each component file in scope:
 
-1. Read the file
-2. Check it against all 11 rules
-3. Record each violation: rule name + one-line explanation of what the code does wrong
+1. Read file
+2. Check against all 11 rules
+3. Record each violation: rule name + one-line explanation of what code does wrong
 
-Skip rule checks that are not applicable to the file (e.g. skip forwardRef for a component that renders no native element).
+Skip inapplicable rules (e.g. skip forwardRef for component rendering no native element).
 
 ### Step A4 — Report violations
 
-Group results by file. For clean files, show a single ✓. For files with violations, list each as ✗:
+Group by file. Clean files: single ✓. Files with violations, list each as ✗:
 
 ```
 src/components/UserCard.tsx
@@ -160,11 +158,11 @@ src/components/Button.tsx
   ✓ No violations
 ```
 
-Summarise at the end: total files scanned, total violations found.
+Summarise: total files scanned, total violations found.
 
 ### Step A5 — Offer next steps
 
-After the report, ask whether the user wants to decompose any of the flagged components. If yes, transition to Decompose mode for each selected file.
+After report, ask if user wants to decompose flagged components. If yes, transition to Decompose mode for each selected file.
 
 ---
 
@@ -172,41 +170,41 @@ After the report, ask whether the user wants to decompose any of the flagged com
 
 ### Step D1 — Identify the component
 
-Identify the file to refactor from the request or from a prior Analyse run. Read the file.
+Identify file from request or prior Analyse run. Read file.
 
 ### Step D2 — Identify violated rules
 
-Check the component against all 11 rules (read the relevant reference files). List each violation with a brief explanation.
+Check component against all 11 rules (read relevant reference files). List each violation with brief explanation.
 
 ### Step D3 — Plan the decomposition
 
-For each violation, determine the minimal extraction needed:
+For each violation, determine minimal extraction needed:
 
-| Violation                             | Extraction                                           |
-| ------------------------------------- | ---------------------------------------------------- |
-| Stateful logic in component body      | Extract into a `useXxx` hook                         |
-| Multiple unrelated responsibilities   | Split into separate components                       |
-| Nested component definitions          | Move to module scope                                 |
-| Prop drilling through intermediaries  | Introduce `children` composition or a scoped Context |
-| HOC wrapper                           | Convert to a hook consumed directly                  |
-| Multiple sub-components sharing state | Refactor to compound component with Context          |
+| Violation                             | Extraction                                         |
+| ------------------------------------- | -------------------------------------------------- |
+| Stateful logic in component body      | Extract into `useXxx` hook                         |
+| Multiple unrelated responsibilities   | Split into separate components                     |
+| Nested component definitions          | Move to module scope                               |
+| Prop drilling through intermediaries  | Introduce `children` composition or scoped Context |
+| HOC wrapper                           | Convert to hook consumed directly                  |
+| Multiple sub-components sharing state | Refactor to compound component with Context        |
 
-Present the plan as a numbered list of steps (what to extract, where it goes, what it will be named). Wait for confirmation before making changes.
+Present plan as numbered list (what to extract, where it goes, name). Wait for confirmation before changes.
 
 ### Step D4 — Execute the refactor
 
-Apply the plan. Write or edit all affected files. Follow the same ordering as Step C4 (stable identity first, then single responsibility, etc.).
+Apply plan. Write or edit all affected files. Follow same ordering as Step C4.
 
 ### Step D5 — Verify
 
-Run the same checklist check as Step C5 across all modified files. Report the result. Flag any rule that could not be fully satisfied.
+Same checklist check as Step C5 across all modified files. Report result. Flag any rule not fully satisfied.
 
 ---
 
 ## Gotchas
 
-- A function that returns JSX is a **component**, not a hook — name it in PascalCase and use it as JSX, even if it feels small
-- Compound component sub-components must throw a clear error when used outside their parent context — always add the guard
-- `useImperativeHandle` without `forwardRef` is a no-op — always pair them
-- Controlled and uncontrolled modes must never be switched after mount — detect which mode is in use on the first render and stay in it
-- State reducer defaults must be exported alongside the hook so consumers can call them as fallbacks
+- Function returning JSX = **component**, not hook — PascalCase, use as JSX, even if small
+- Compound component sub-components must throw clear error outside parent context — always add guard
+- `useImperativeHandle` without `forwardRef` = no-op — always pair them
+- Controlled/uncontrolled modes must never switch after mount — detect mode on first render, stay in it
+- State reducer defaults must be exported alongside hook so consumers can call them as fallbacks

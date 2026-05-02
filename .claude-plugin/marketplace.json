@@ -19,7 +19,7 @@
         "./skills/productivity/get-aligned",
         "./skills/engineering/react-composition-rules"
       ],
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "name": "drafting-skills",
@@ -27,7 +27,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/drafting/skill-writing"],
-      "version": "0.1.1"
+      "version": "0.1.2"
     },
     {
       "name": "engineering-skills",
@@ -35,7 +35,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/engineering/react-composition-rules"],
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "name": "productivity-skills",

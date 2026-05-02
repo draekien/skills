@@ -1,42 +1,49 @@
 ## Rule: Extract Logic into Custom Hooks
 
-All stateful logic — `useState`, `useEffect`, `useRef`, `useReducer`, derived state, event handlers — must be extracted into a custom hook when it would otherwise make a component hard to read or test, or when the logic is reusable.
+Stateful logic — `useState`, `useEffect`, `useRef`, `useReducer`, derived state, event handlers — extract into custom hook when component gets hard to read/test, or logic reusable.
 
 **Do:**
-- Name hooks with the `use` prefix
-- Keep hooks focused on a single concern; compose multiple hooks in a component
-- Return only what the component needs — don't leak internal implementation details
+
+- Name hooks with `use` prefix
+- One concern per hook; compose in component
+- Return only what component needs — don't leak internals
 
 **Don't:**
-- Return JSX from a hook (that's a component — name and use it as one)
-- Put business logic directly in component bodies when it can be extracted
-- Duplicate stateful logic across multiple components instead of sharing a hook
+
+- Return JSX from hook (that's component — treat as one)
+- Put business logic in component body when extractable
+- Duplicate stateful logic across components instead of sharing hook
 
 **Example:**
+
 ```tsx
 // bad
 function SearchBox({ query }) {
-  const [results, setResults] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    setLoading(true)
-    search(query).then(setResults).finally(() => setLoading(false))
-  }, [query])
-  return loading ? <Spinner /> : <ResultList results={results} />
+    setLoading(true);
+    search(query)
+      .then(setResults)
+      .finally(() => setLoading(false));
+  }, [query]);
+  return loading ? <Spinner /> : <ResultList results={results} />;
 }
 
 // good
 function useSearch(query) {
-  const [results, setResults] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    setLoading(true)
-    search(query).then(setResults).finally(() => setLoading(false))
-  }, [query])
-  return { results, loading }
+    setLoading(true);
+    search(query)
+      .then(setResults)
+      .finally(() => setLoading(false));
+  }, [query]);
+  return { results, loading };
 }
 function SearchBox({ query }) {
-  const { results, loading } = useSearch(query)
-  return loading ? <Spinner /> : <ResultList results={results} />
+  const { results, loading } = useSearch(query);
+  return loading ? <Spinner /> : <ResultList results={results} />;
 }
 ```
