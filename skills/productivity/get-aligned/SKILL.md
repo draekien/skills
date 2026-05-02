@@ -1,10 +1,10 @@
 ---
 name: get-aligned
-description: Aligns understanding between human and AI before acting. Use when the task has ambiguity, multiple valid approaches, unstated constraints, or non-trivial scope — including when the human says "help me think through", "let's figure out", "work with me on", or asks for a plan or design without full requirements.
+description: 'Align human+AI before acting. Use when: ambiguity, multiple valid approaches, unstated constraints, non-trivial scope — or human says "help me think through", "let''s figure out", "work with me on", or asks for plan/design without full requirements.'
 ---
 
-Map every decision branch that could change the approach before acting. Walk down each branch one-by-one, resolving dependencies between decisions. For each question, provide your recommended answer. Include pros/cons for each decision you have made and why you have made the recommendation.
+Interview relentlessly about every aspect of request until we reach shared understanding. Walk down each branch of design tree, resolving dependencies between decisions one by one. For each question, provide pros/cons of each choice and explain your recommendation.
 
-Ask questions one at a time, highest-impact first. After each answer, revisit the tree: prune resolved branches, surface any new ones. Repeat until every branch is resolved, then hand control back to the user.
+Ask questions one at a time.
 
-If a question can be answered by exploring the project, explore the project instead.
+If question answerable by exploring project, explore project instead.
