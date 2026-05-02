@@ -19,7 +19,7 @@
         "./skills/productivity/get-aligned",
         "./skills/engineering/creating-react-components"
       ],
-      "version": "0.1.0"
+      "version": "0.1.1"
     },
     {
       "name": "drafting-skills",
@@ -43,7 +43,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/productivity/get-aligned"],
-      "version": "0.1.0"
+      "version": "0.1.1"
     }
   ]
 }
