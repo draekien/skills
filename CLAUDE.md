@@ -31,14 +31,21 @@ skills/
 
 The `.claude-plugin/` directory contains two files:
 
-- `marketplace.json` — lists one plugin entry per bucket that has at least one skill; empty buckets are omitted
-- update the version of the plugin entry when skills are changed in that bucket, at most once per feature branch.
+- `marketplace.json` — lists plugin entries for each bucket and an `everything` meta-plugin
+- update the version of any affected plugin entry when skills are changed in that bucket, at most once per feature branch.
+
+`marketplace.json` contains:
+
+- One `everything` plugin entry that lists every public-facing skill path across all buckets. Always keep this in sync when adding or removing skills.
+- One bucket plugin entry per bucket that has at least one skill; empty buckets are omitted.
 
 When adding a new skill, update `marketplace.json` as follows:
 
+- Add the new skill path to the `everything` plugin's `skills` array
 - If the bucket already has a plugin entry, add the new skill path to its `skills` array
 - If the bucket has no entry yet, add a new plugin entry with `name: "<bucket>-skills"`, `source: "./"`, `strict: false`, `version: "0.1.0"`, and a `skills` array listing the skill path
 - List individual skill paths (e.g. `"./skills/drafting/skill-writing"`), not whole bucket directories
+- Skills in `personal/` are not public-facing and must not appear in any plugin entry
 
 ## Workflow
 

@@ -10,6 +10,17 @@
   },
   "plugins": [
     {
+      "name": "everything",
+      "description": "All public-facing skills in this repository across every domain bucket.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/drafting/skill-writing",
+        "./skills/productivity/get-aligned"
+      ],
+      "version": "0.1.0"
+    },
+    {
       "name": "drafting-skills",
       "description": "Skills for writing and editing content: emails, documents, reports, and other written output.",
       "source": "./",
