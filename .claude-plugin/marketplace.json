@@ -17,9 +17,9 @@
       "skills": [
         "./skills/drafting/skill-writing",
         "./skills/productivity/get-aligned",
-        "./skills/engineering/creating-react-components"
+        "./skills/engineering/react-composition-rules"
       ],
-      "version": "0.1.1"
+      "version": "0.1.2"
     },
     {
       "name": "drafting-skills",
@@ -34,8 +34,8 @@
       "description": "Skills for software development tasks: code review, debugging, architecture, and technical workflows.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/engineering/creating-react-components"],
-      "version": "0.1.0"
+      "skills": ["./skills/engineering/react-composition-rules"],
+      "version": "0.1.1"
     },
     {
       "name": "productivity-skills",

@@ -47,7 +47,7 @@ Skills for writing and editing content: emails, documents, reports, and other wr
 
 Skills for software development tasks: code review, debugging, architecture, and technical workflows.
 
-- [creating-react-components](skills/engineering/creating-react-components/SKILL.md) — Creates React components following composition best practices: single responsibility, compound components, custom hooks, headless patterns, and more.
+- [react-composition-rules](skills/engineering/react-composition-rules/SKILL.md) — Applies React composition rules to create new components, analyse a codebase for violations, or decompose monolithic components into composable pieces.
 
 ## Productivity
 
