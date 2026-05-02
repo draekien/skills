@@ -47,4 +47,4 @@ _No skills yet._
 
 Skills for general workplace productivity: summarisation, research, meeting prep, and task management.
 
-- [get-aligned](skills/productivity/get-aligned/SKILL.md) — Socratic alignment dialogue that surfaces gaps between human intent and AI interpretation before a task begins.
+- [get-aligned](skills/productivity/get-aligned/SKILL.md) — Maps every decision branch before acting, resolving unknowns through exploration and targeted questions.
