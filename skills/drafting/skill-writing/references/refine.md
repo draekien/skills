@@ -1,11 +1,6 @@
----
-name: skill-refining
-description: Audits and rewrites an existing SKILL.md for health and token efficiency. Reads the target skill, diagnoses structural problems and token waste, aligns with the user on decisions, then rewrites. Use when a skill feels too verbose, has structural problems, or when the user says "refine this skill", "this skill is too thick", "compress this skill", "skill is too verbose", "audit this skill", "clean up this skill", or "optimize this skill".
----
+# Refine Mode
 
-# Skill Refining
-
-Read an existing SKILL.md, diagnose problems across four categories, align with the user on decisions, then rewrite.
+Audit an existing SKILL.md for health and token efficiency. Diagnose problems, align with user, then rewrite.
 
 ## Step 1 — Read
 
@@ -32,6 +27,7 @@ Identify problems across four categories:
 - Format specs, schemas, lookup tables, or relationship taxonomies in the body that belong in `references/`.
 - Output templates described in prose that belong in `assets/`.
 - Body over 80 lines when reference files could absorb the excess.
+- See [structure.md](structure.md) for the full placement rules.
 
 **Outdated content**
 - Migration steps for already-completed migrations.
@@ -54,22 +50,18 @@ Proceed with unambiguous fixes (e.g. removing duplicate rule explanations) witho
 
 ## Step 5 — Rewrite
 
-Apply all confirmed decisions. Rewrite the `SKILL.md` in place. Do not touch `references/` files unless content is being moved into or out of them.
-
-Instruction style rules:
-- Third-person imperative: "Search the codebase..." not "I will search..."
-- One term per concept — never vary
-- No comments explaining what was removed or changed
+Apply all confirmed decisions. Rewrite the `SKILL.md` in place. Apply writing standards from [SKILL.md](../SKILL.md). Do not touch `references/` files unless content is being moved into or out of them.
 
 ## Step 6 — Verify
 
-After rewriting:
+Before running the shared validator:
+
 1. Confirm line count is lower than original.
 2. Confirm no verbatim `> "..."` quote blocks remain.
 3. Confirm all relative file links in the body still resolve.
 4. Confirm all original process logic is preserved — nothing dropped without user confirmation.
 
-Report line count before and after.
+Report line count before and after, then run post-write validation per [SKILL.md](../SKILL.md).
 
 ## Gotchas
 
