@@ -7,6 +7,22 @@ description: Builds and enforces a DDD ubiquitous language for a project. Discov
 
 Establish + enforce DDD ubiquitous language scoped to bounded contexts. Discover contexts by exploring project, interview user, detect domain terms, validate against codebase, write definitions to scoped `UBIQUITOUS_LANGUAGE.md` files.
 
+## Step 0 — Preflight Migration
+
+Before any other step, scan for legacy `ALIGNMENT.md` files (root and all subdirs).
+
+If any found:
+
+> "I found legacy `ALIGNMENT.md` files from a previous version of this skill:
+> - `<path>/ALIGNMENT.md`
+> - ...
+>
+> These need to be migrated to `UBIQUITOUS_LANGUAGE.md` before we continue. Migrate now?"
+
+If user confirms, follow [references/migration.md](references/migration.md). Complete all migrations before proceeding to Step 1.
+
+If user declines, proceed — treat legacy files as absent for this session.
+
 ## Step 1 — Session Initialization
 
 On first invocation each session:
