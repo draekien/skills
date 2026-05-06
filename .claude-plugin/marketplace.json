@@ -16,19 +16,20 @@
       "strict": false,
       "skills": [
         "./skills/drafting/skill-writing",
+        "./skills/drafting/skill-refining",
         "./skills/productivity/get-aligned",
         "./skills/engineering/get-specific",
         "./skills/engineering/react-composition-rules"
       ],
-      "version": "0.2.3"
+      "version": "0.2.4"
     },
     {
       "name": "drafting-skills",
       "description": "Skills for writing and editing content: emails, documents, reports, and other written output.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/drafting/skill-writing"],
-      "version": "0.1.2"
+      "skills": ["./skills/drafting/skill-writing", "./skills/drafting/skill-refining"],
+      "version": "0.1.3"
     },
     {
       "name": "engineering-skills",
