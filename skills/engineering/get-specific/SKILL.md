@@ -5,128 +5,52 @@ description: Builds and enforces a DDD ubiquitous language for a project. Discov
 
 # Get Specific
 
-Establish + enforce DDD ubiquitous language scoped to bounded contexts. Discover contexts by exploring project, interview user, detect domain terms, validate against codebase, write definitions to scoped `UBIQUITOUS_LANGUAGE.md` files.
+Establish DDD ubiquitous language scoped to bounded contexts. Interview user, capture confirmed terms in scoped `UBIQUITOUS_LANGUAGE.md` files, detect conflicts throughout the session.
 
-## Step 0 — Preflight Migration
+## Session Start
 
-Before any other step, scan for legacy `ALIGNMENT.md` files (root and all subdirs).
+Runs once on first invocation.
 
-If any found:
+1. Scan for legacy `ALIGNMENT.md` files (root + all subdirs). If found, offer migration before continuing. Follow [references/migration.md](references/migration.md) if user confirms; otherwise treat as absent.
+2. Scan project structure. Infer a bounded context name for each candidate dir (PascalCase, domain-meaningful — exclude `utils`, `shared`, `common`). Merge with any existing root `UBIQUITOUS_LANGUAGE.md` index. Confirm full mapping with user; apply corrections.
+3. Write confirmed map to root `UBIQUITOUS_LANGUAGE.md` (create if absent). Index only — no term definitions.
+4. Load all scoped `UBIQUITOUS_LANGUAGE.md` files into conflict detection context.
 
-> "I found legacy `ALIGNMENT.md` files from a previous version of this skill:
-> - `<path>/ALIGNMENT.md`
-> - ...
->
-> These need to be migrated to `UBIQUITOUS_LANGUAGE.md` before we continue. Migrate now?"
+## Active Behaviors
 
-If user confirms, follow [references/migration.md](references/migration.md). Complete all migrations before proceeding to Step 1.
+Run every response after session start, concurrently.
 
-If user declines, proceed — treat legacy files as absent for this session.
+### Interview
 
-## Step 1 — Session Initialization
+Ask one DDD-framed question at a time — domain events ("what triggers X?"), aggregates ("what owns the lifecycle of X?"), bounded context membership ("does this mean the same thing in both contexts?"). If answerable by exploring project, explore instead. Continue until shared understanding reached.
 
-On first invocation each session:
+### Term Capture
 
-1. Scan project structure. Find candidate bounded context dirs (e.g. `src/`, `apps/`, `packages/`, `features/`, named subdirs with domain meaning). Infer a bounded context name for each (PascalCase, domain-meaningful — not technical names like `utils`, `shared`, `common`).
-2. Read root `UBIQUITOUS_LANGUAGE.md` if exists. Extract known bounded context map + file index. Load all scoped `UBIQUITOUS_LANGUAGE.md` files into conflict detection context.
-3. Merge scan with existing map. Present full inferred mapping to user for one-shot confirmation:
+When a noun is judged domain-specific and not yet defined in any loaded file:
 
-   > "I've mapped these bounded contexts:
-   > - `src/orders/` → **Orders**
-   > - `src/billing/` → **Billing**
-   > - `src/inventory/` → **Inventory**
-   >
-   > Correct? Any to rename, merge, or add?"
+1. Propose a definition to the user. Wait for confirmation.
+2. Search codebase for the term. Read surrounding context.
+3. If semantic contradiction found: hard interrupt, surface the conflict, wait for resolution. Update definition if needed; repeat from 2.
+4. No contradiction: determine bounded context from root index. If ambiguous, ask.
+5. Before first write to any context file, confirm the target path. Re-confirm if target context changes mid-session.
+6. Write immediately — no batching.
+7. Update root `UBIQUITOUS_LANGUAGE.md` if new scoped file created.
 
-   Wait for user confirmation or corrections before continuing.
+See [references/ubiquitous-language-format.md](references/ubiquitous-language-format.md) for file structure and rules.
 
-4. Write confirmed map to root `UBIQUITOUS_LANGUAGE.md` (create if absent). Authoritative bounded context map for session.
+### Conflict Detection
 
-## Step 2 — Interview Phase
+Check every response against all loaded definitions.
 
-Interview relentlessly on every domain aspect until shared understanding reached. Walk each design branch, resolve dependencies one by one. Per question: pros/cons + recommendation.
-
-One question at a time. If answerable by exploring project, explore instead.
-
-Frame questions in DDD terms naturally — ask about domain events ("what triggers X?"), aggregates ("what owns the lifecycle of X?"), and bounded context membership ("does this concept mean the same thing in Billing as it does in Orders?").
-
-Continue until domain sufficiently mapped.
-
-## Step 3 — Term Detection
-
-During + after interview, monitor for candidate terms.
-
-Noun = **candidate term** if both hold:
-
-- Appears 2+ times in session without prior definition in any loaded `UBIQUITOUS_LANGUAGE.md`
-- Domain-specific — not generic like "user", "request", "file"
-
-On candidate detected, propose definition:
-
-> "I'm hearing you use `<Term>` repeatedly. Does this definition capture it?
-> **`<Term>`**: `<proposed definition based on conversation context>`"
-
-Wait for user confirmation before Step 4.
-
-## Step 4 — Code Validation
-
-Before writing confirmed definition:
-
-1. Search codebase for term.
-2. If found, read surrounding context. Check for semantic contradictions.
-3. If contradiction exists, hard interrupt:
-
-   > "Your code does `<A → B → C>`, but you said `<D>` — which is it?"
-
-   Wait for resolution. Update proposed definition if needed, repeat from step 2.
-
-4. If term absent, proceed — may be new concept.
-
-## Step 5 — Writing Definitions
-
-On user confirmation after code validation:
-
-1. Determine which bounded context the term belongs to using confirmed map from root `UBIQUITOUS_LANGUAGE.md`.
-2. Best-effort guess for most relevant bounded context. If ambiguous, ask:
-
-   > "Does `<Term>` belong to **Orders** or **Billing**?"
-
-3. Before first write to any bounded context file, confirm:
-
-   > "Writing to `<path>/UBIQUITOUS_LANGUAGE.md` (**Orders** context) — correct?"
-
-4. Re-confirm if target context changes mid-session.
-5. Write term immediately. No batching.
-6. Update root `UBIQUITOUS_LANGUAGE.md` to include new scoped file if not already listed.
-
-See [references/ubiquitous-language-format.md](references/ubiquitous-language-format.md) for full file structure and rules.
-
-## Step 6 — Conflict Detection
-
-Every response: check user language against all terms in all loaded `UBIQUITOUS_LANGUAGE.md` files.
-
-**Definition conflict** — user uses defined term contradicting stored meaning. Hard interrupt:
-
-> "Previous definition of '`<Term>`' is `<X>`, but you seem to mean `<Y>` — which is it?"
-
-Stop. Wait for resolution. If definition changes, update `UBIQUITOUS_LANGUAGE.md` immediately.
-
-**Cross-context collision** — same term defined differently across two bounded contexts. Surface explicitly:
-
-> "`<Term>` means `<X>` in **Orders** but `<Y>` in **Billing** — is this intentional? If so, both definitions stand. If not, which is canonical?"
-
-**Vague language** — user uses word matching 2+ defined terms. Hard interrupt:
-
-> "You said '`<vague word>`' — did you mean `<Term A>` (`<definition summary A>`) or `<Term B>` (`<definition summary B>`)?"
-
-Stop. Wait for clarification before continuing.
+- **Definition conflict** — user uses defined term contradicting stored meaning: hard interrupt, surface both meanings, ask which is canonical. Update file immediately on resolution.
+- **Cross-context collision** — same term defined differently in two contexts: surface explicitly, ask if intentional. Both definitions stand if deliberate.
+- **Vague language** — user word matches 2+ defined terms: hard interrupt, list matching terms with definition summaries, wait for disambiguation.
 
 ## Gotchas
 
-- `UBIQUITOUS_LANGUAGE.md` must never contain implementation detail: no file paths, function names, method signatures, variable names, data structures.
-- Never write term not explicitly confirmed by user.
-- No deferred writes — update `UBIQUITOUS_LANGUAGE.md` moment term resolved.
-- Root `UBIQUITOUS_LANGUAGE.md` = index only. No term definitions there.
+- No impl detail in definitions — no file paths, function names, method signatures, data structures.
+- Never write a term not confirmed by user.
+- Root `UBIQUITOUS_LANGUAGE.md` = index only. No term definitions.
 - Term absent from codebase = neutral, not contradiction.
-- Cross-context collision ≠ error by default — same word can mean different things in different bounded contexts (DDD intentional ambiguity). Surface it; don't force resolution.
-- Bounded context map in root = cache — always re-scan + rewrite at session start to catch structural changes.
+- Cross-context collision ≠ error — DDD allows intentional ambiguity across contexts. Surface it; don't force resolution.
+- Bounded context map in root = cache — always re-scan + rewrite at session start.
