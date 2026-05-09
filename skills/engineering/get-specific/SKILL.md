@@ -11,10 +11,9 @@ Establish DDD ubiquitous language scoped to bounded contexts. Interview user, ca
 
 Runs once on first invocation.
 
-1. Scan for legacy `ALIGNMENT.md` files (root + all subdirs). If found, offer migration before continuing. Follow [references/migration.md](references/migration.md) if user confirms; otherwise treat as absent.
-2. Scan project structure. Infer a bounded context name for each candidate dir (PascalCase, domain-meaningful — exclude `utils`, `shared`, `common`). Merge with any existing root `UBIQUITOUS_LANGUAGE.md` index. Confirm full mapping with user; apply corrections.
-3. Write confirmed map to root `UBIQUITOUS_LANGUAGE.md` (create if absent). Index only — no term definitions.
-4. Load all scoped `UBIQUITOUS_LANGUAGE.md` files into conflict detection context.
+1. Scan project structure. Infer a bounded context name for each candidate dir (PascalCase, domain-meaningful — exclude `utils`, `shared`, `common`). Merge with any existing root `UBIQUITOUS_LANGUAGE.md` index. Confirm full mapping with user; apply corrections.
+2. Write confirmed map to root `UBIQUITOUS_LANGUAGE.md` (create if absent). Index only — no term definitions.
+3. Load all scoped `UBIQUITOUS_LANGUAGE.md` files into conflict detection context.
 
 ## Active Behaviors
 
@@ -22,7 +21,7 @@ Run every response after session start, concurrently.
 
 ### Interview
 
-Ask one DDD-framed question at a time — domain events ("what triggers X?"), aggregates ("what owns the lifecycle of X?"), bounded context membership ("does this mean the same thing in both contexts?"). If answerable by exploring project, explore instead. Continue until shared understanding reached.
+Ask one DDD-framed question at a time — domain events, aggregates, bounded context membership. If answerable by exploring project, explore instead. Continue until shared understanding reached.
 
 ### Term Capture
 
@@ -40,17 +39,8 @@ See [references/ubiquitous-language-format.md](references/ubiquitous-language-fo
 
 ### Conflict Detection
 
-Check every response against all loaded definitions.
+Check every response against all loaded definitions. A term absent from the codebase is neutral — not a contradiction.
 
 - **Definition conflict** — user uses defined term contradicting stored meaning: hard interrupt, surface both meanings, ask which is canonical. Update file immediately on resolution.
-- **Cross-context collision** — same term defined differently in two contexts: surface explicitly, ask if intentional. Both definitions stand if deliberate.
+- **Cross-context collision** — same term defined differently in two contexts: surface explicitly, ask if intentional. Both definitions stand if deliberate (DDD allows intentional ambiguity across contexts).
 - **Vague language** — user word matches 2+ defined terms: hard interrupt, list matching terms with definition summaries, wait for disambiguation.
-
-## Gotchas
-
-- No impl detail in definitions — no file paths, function names, method signatures, data structures.
-- Never write a term not confirmed by user.
-- Root `UBIQUITOUS_LANGUAGE.md` = index only. No term definitions.
-- Term absent from codebase = neutral, not contradiction.
-- Cross-context collision ≠ error — DDD allows intentional ambiguity across contexts. Surface it; don't force resolution.
-- Bounded context map in root = cache — always re-scan + rewrite at session start.
