@@ -7,6 +7,22 @@ description: "Applies 11 React composition rules in 3 modes: CREATE (new compone
 
 11 React composition rules, three modes: create new components, analyse existing for violations, decompose monoliths into composable pieces.
 
+## Rule files
+
+Authoritative Do/Don't/Example content for each pattern. Read the relevant ones before writing or judging code — never rely on memory.
+
+- [references/stable-component-identity.md](references/stable-component-identity.md)
+- [references/single-responsibility.md](references/single-responsibility.md)
+- [references/custom-hooks.md](references/custom-hooks.md)
+- [references/avoid-prop-drilling.md](references/avoid-prop-drilling.md)
+- [references/compound-components.md](references/compound-components.md)
+- [references/forward-ref.md](references/forward-ref.md)
+- [references/controlled-vs-uncontrolled.md](references/controlled-vs-uncontrolled.md)
+- [references/inversion-of-control.md](references/inversion-of-control.md)
+- [references/headless-components.md](references/headless-components.md)
+- [references/render-props.md](references/render-props.md)
+- [references/avoid-hocs.md](references/avoid-hocs.md)
+
 ## Step 1 — Determine mode
 
 Infer mode from request:
@@ -32,9 +48,9 @@ Infer from context:
 
 Genuinely ambiguous? Ask one question at a time. Else proceed.
 
-### Step C2 — Select applicable patterns and plan
+### Step C2 — Select applicable patterns
 
-Review 11 patterns. Mark each **applies** or **skip** based on purpose. Simple display component may use 2–3; library primitive may use most.
+Mark each pattern **applies** or **skip** based on purpose. Simple display component may use 2–3; library primitive may use most.
 
 | #   | Pattern                    | Apply when                                                       |
 | --- | -------------------------- | ---------------------------------------------------------------- |
@@ -50,66 +66,40 @@ Review 11 patterns. Mark each **applies** or **skip** based on purpose. Simple d
 | 10  | Render props               | Flexible rendering across different UI shapes                    |
 | 11  | Avoid HOCs                 | Cross-cutting logic that would otherwise be a HOC                |
 
-Present plan:
+Present plan: component name, output path, applicable patterns (numbered), sub-components needed. Proceed immediately unless scope ambiguous.
 
-- Component name and output path
-- Applicable patterns (numbered list)
-- Sub-components needed, if any
+### Step C3 — Read applicable rule files
 
-Proceed immediately unless scope ambiguous.
-
-### Step C3 — Read the rule files for applicable patterns
-
-Read each rule file for patterns marked **applies** before writing code. Rule files in `references/` relative to this skill.
-
-- [references/single-responsibility.md](references/single-responsibility.md)
-- [references/compound-components.md](references/compound-components.md)
-- [references/custom-hooks.md](references/custom-hooks.md)
-- [references/avoid-prop-drilling.md](references/avoid-prop-drilling.md)
-- [references/controlled-vs-uncontrolled.md](references/controlled-vs-uncontrolled.md)
-- [references/avoid-hocs.md](references/avoid-hocs.md)
-- [references/render-props.md](references/render-props.md)
-- [references/forward-ref.md](references/forward-ref.md)
-- [references/headless-components.md](references/headless-components.md)
-- [references/inversion-of-control.md](references/inversion-of-control.md)
-- [references/stable-component-identity.md](references/stable-component-identity.md)
-
-Read all applicable rule files before writing any code. Don't rely on memory — rule files have authoritative Do/Don't/Example content.
+Read the rule file for each pattern marked **applies** (see top of skill). Don't write code yet.
 
 ### Step C4 — Create the component
 
-Apply patterns in fixed order (skip non-applicable):
+Apply the patterns marked **applies** in this order (skip non-applicable):
 
-1. **Stable identity** — define all components at module scope, never inside render or hooks
-2. **Single responsibility** — each component does one thing; extract data-fetching, formatting, event logic into separate hooks or components
-3. **Custom hooks** — extract all `useState`, `useEffect`, `useReducer`, derived state into `use`-prefixed hook; component body renders only
-4. **Compound components** — if sub-components share state, create Context, add provider to parent, expose sub-components as `Parent.Child`
-5. **forwardRef** — wrap any component rendering single native element in `forwardRef`; add `useImperativeHandle` for non-trivial imperative API
-6. **Controlled vs uncontrolled** — explicitly decide which mode; never conflate both without `useControllableState` pattern
-7. **State reducer** — if complex state transitions need consumer customisation, expose `reducer` prop defaulting to built-in reducer
-8. **Headless / render props** — if behaviour must work with arbitrary markup, return prop-getters from hook, let consumer own all rendering
-9. **Avoid HOCs** — cross-cutting concerns (auth, permissions, theming) as hooks consumed directly, not HOC wrappers
-10. **Avoid prop drilling** — restructure with `children` composition or scoped Context if props pass through uninvolved intermediaries
+1. Stable identity
+2. Single responsibility
+3. Custom hooks
+4. Compound components
+5. forwardRef
+6. Controlled vs uncontrolled
+7. Inversion of control (state reducer)
+8. Headless / render props
+9. Avoid HOCs
+10. Avoid prop drilling
 
-Write complete component file.
+The rule files specify *how* to apply each pattern. Write the complete component file.
 
 ### Step C5 — Verify
 
-For each pattern applied in Step C4, re-read its rule file and confirm:
-
-- Do items satisfied
-- Don't items avoided
-
-Report as checklist:
+For each pattern applied, confirm Do items satisfied and Don't items avoided. Report as checklist:
 
 ```
 ✓ Stable component identity — all components defined at module scope
 ✓ Custom hooks — logic extracted into useXxx hook
 ✗ forwardRef — not applied (no native element wrapper)
-...
 ```
 
-Flag any rule relevant but not fully satisfied, with brief explanation.
+Flag any rule relevant but not fully satisfied with brief explanation.
 
 ---
 
@@ -121,19 +111,7 @@ Determine files to scan from request. Named directory or pattern — use it. Sco
 
 ### Step A2 — Read all 11 rule files
 
-Read every reference file before scanning. Establishes full rule set.
-
-- [references/single-responsibility.md](references/single-responsibility.md)
-- [references/compound-components.md](references/compound-components.md)
-- [references/custom-hooks.md](references/custom-hooks.md)
-- [references/avoid-prop-drilling.md](references/avoid-prop-drilling.md)
-- [references/controlled-vs-uncontrolled.md](references/controlled-vs-uncontrolled.md)
-- [references/avoid-hocs.md](references/avoid-hocs.md)
-- [references/render-props.md](references/render-props.md)
-- [references/forward-ref.md](references/forward-ref.md)
-- [references/headless-components.md](references/headless-components.md)
-- [references/inversion-of-control.md](references/inversion-of-control.md)
-- [references/stable-component-identity.md](references/stable-component-identity.md)
+See list at top of skill. Read every one before scanning.
 
 ### Step A3 — Scan each file
 
@@ -203,7 +181,6 @@ Same checklist check as Step C5 across all modified files. Report result. Flag a
 
 ## Gotchas
 
-- Function returning JSX = **component**, not hook — PascalCase, use as JSX, even if small
 - Compound component sub-components must throw clear error outside parent context — always add guard
 - `useImperativeHandle` without `forwardRef` = no-op — always pair them
 - Controlled/uncontrolled modes must never switch after mount — detect mode on first render, stay in it
