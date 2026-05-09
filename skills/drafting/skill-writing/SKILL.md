@@ -26,16 +26,21 @@ Once mode is determined, read the corresponding reference file and follow it:
 - **Update:** [references/update.md](references/update.md)
 - **Refine:** [references/refine.md](references/refine.md)
 
+Always read [references/principles.md](references/principles.md) and [references/structure.md](references/structure.md) alongside the mode file — every mode applies them.
+
 ## Writing Standards
 
-Apply these rules whenever writing or rewriting any `SKILL.md` content:
+Apply these whenever writing or rewriting any `SKILL.md` content:
 
 - Third-person imperative: "Extract the text..." not "I will..." or "You should..."
 - One term per concept — never vary
 - No comments explaining what was removed or changed
-- Omit what the agent already knows (common tool usage, language syntax)
+- **Match freedom to task fragility** — see [references/principles.md](references/principles.md) for the high/medium/low rubric
+- **Trust the agent's intelligence** — omit context it already has; challenge each paragraph against "would the agent already know this?"
+- **No narrative or session-dated examples** — abstract rules only; sessions/incidents go in PR descriptions, not skills
+- **Activation lives in the description** — never write a "When to use this skill" section in the body
 
-See [references/structure.md](references/structure.md) for progressive disclosure rules (what belongs in body vs `references/` vs `assets/`) and supporting file design rules.
+See [references/structure.md](references/structure.md) for content placement rules (body vs `references/` vs `assets/`).
 
 ## Post-Write Validation
 
@@ -45,6 +50,4 @@ Run after completing any create, update, or refine workflow:
 uv run scripts/validate.py <skill-dir>
 ```
 
-Fix failures before confirming to user. Script checks all `[AUTO]` rules in [references/spec-rules.md](references/spec-rules.md) — frontmatter structure, file references, body length, script safety, model-specific term heuristics.
-
-Then manually review `[LLM]` rules in [references/spec-rules.md](references/spec-rules.md): description quality, instruction style, content placement, script robustness, security.
+Fix failures before confirming to user. Script checks all `[AUTO]` rules in [references/spec-rules.md](references/spec-rules.md). Then manually review `[LLM]` rules there.

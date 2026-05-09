@@ -1,37 +1,24 @@
 # Update Mode
 
-Revise an existing skill for new or changed requirements. Functional changes — not structural/efficiency cleanup (that's refine mode).
+Revise an existing skill for new or changed requirements. For structural or efficiency cleanup, use refine mode instead.
 
-## Step 1 — Read existing skill
+## Phase 1 — Read
 
-Read the target `SKILL.md` and all files in its `references/` directory (if any).
+Read the target `SKILL.md` and every file under its `references/`. Ask which skill to update if no path was given.
 
-If no target path provided, ask the user which skill to update before continuing.
+## Phase 2 — Identify changes
 
-## Step 2 — Gather what's changing
+Establish what's changing and what's staying — new behaviours, removed steps, updated trigger phrases, renamed concepts, supporting-file edits. Ask only when context doesn't answer it.
 
-Ask the user (one at a time, skip if already clear from context):
+## Phase 3 — Apply
 
-**Question 1 — Changes**
+Apply the writing principles and content placement rules.
 
-> "What needs to change? New behaviors, removed steps, updated trigger phrases, or renamed concepts?"
+- Never drop existing process logic without explicit user confirmation.
+- If a change touches description trigger keywords, verify the description still reads as an API contract, not a summary.
+- Update `references/` files only when content moves into or out of them, or when a reference's content itself is being changed.
+- If body grows past 500 lines, propose moving content to `references/`.
 
-**Question 2 — Supporting files**
+## Phase 4 — Confirm
 
-> "Do any supporting files need updating — scripts, reference docs, templates? Or is it SKILL.md only?"
-
-## Step 3 — Apply changes
-
-Apply writing standards from [SKILL.md](../SKILL.md). Follow progressive disclosure rules from [structure.md](structure.md) — keep heavy content in `references/`, not body.
-
-Update `references/` files only if content is being moved into or out of them, or if existing reference content needs updating.
-
-## Step 4 — Confirm
-
-Report changes to user: what was added, removed, or modified. List line count before and after if the body changed significantly.
-
-## Gotchas
-
-- Never drop existing process logic without explicit user confirmation — even if it looks redundant.
-- If a change touches trigger keywords in the description, verify the description still reads as an API contract, not a summary.
-- If line count grows past 500, propose moving content to `references/`.
+Report what was added, removed, or modified. Include line-count delta if the body changed significantly. Run `scripts/validate.py` per main `SKILL.md`.

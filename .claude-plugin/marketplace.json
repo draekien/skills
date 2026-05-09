@@ -20,7 +20,7 @@
         "./skills/engineering/get-specific",
         "./skills/engineering/react-composition-rules"
       ],
-      "version": "0.2.5"
+      "version": "0.2.6"
     },
     {
       "name": "drafting-skills",
@@ -28,7 +28,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/drafting/skill-writing"],
-      "version": "0.1.4"
+      "version": "0.1.5"
     },
     {
       "name": "engineering-skills",

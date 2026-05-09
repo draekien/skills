@@ -1,71 +1,72 @@
 # Refine Mode
 
-Audit an existing SKILL.md for health and token efficiency. Diagnose problems, align with user, then rewrite.
+Audit an existing skill for health and token efficiency. Diagnose, align with the user, then rewrite.
 
-## Step 1 — Read
+## Phase 1 — Read
 
-Read the target `SKILL.md` and all files in its `references/` directory (if any).
+Read the target `SKILL.md` and every file under its `references/`. Ask which skill to refine if no path was given.
 
-If no target path provided, ask the user which skill to refine before continuing.
+## Phase 2 — Diagnose
 
-## Step 2 — Diagnose
-
-Identify problems across four categories:
+Identify problems across these categories. The writing principles define many of these — apply them as audit criteria.
 
 **Token waste**
-- Verbatim LLM response templates — `> "..."` blocks specifying exact phrasing. Rule: describe behavior, not words.
-- Prose describing what the LLM will say rather than rules the LLM must follow.
-- Repeated explanations of the same rule across multiple steps.
+- Verbatim LLM response templates (`> "..."` blocks dictating exact phrasing). Describe behaviour, not words.
+- Prose describing what the agent will say rather than rules it must follow.
+- Repeated explanations of the same rule across multiple sections.
 - Examples in the body that belong in `references/` or `assets/`.
 
+**Mis-calibrated freedom**
+- Low-freedom step-by-step instructions where the task is variable and heuristic-driven.
+- High-freedom heuristics where the task is fragile or sequence-critical.
+
+**Trust violations**
+- Content the agent already knows from training (language syntax, common tool usage).
+- Paragraphs that don't justify their token cost.
+
+**Body bloat**
+- "When to use this skill" sections (activation belongs in the description, not the body).
+- Narrative or session-dated examples ("In session 2025-10-03 we found...") that aren't reusable.
+
 **Structural mismatch**
-- Sequential numbered steps for behaviors that are concurrent or trigger-based (e.g. ongoing monitors, event-driven sub-flows).
-- One-time setup actions mixed with recurring behaviors — these need separate sections.
-- Steps that are sub-flows of other steps presented as peers.
+- Sequential numbered steps for behaviours that are concurrent or trigger-based.
+- One-time setup mixed with recurring behaviours.
+- Sub-flows presented as peers of their parent steps.
 
 **Content placement**
-- Format specs, schemas, lookup tables, or relationship taxonomies in the body that belong in `references/`.
+- Format specs, schemas, lookup tables in the body that belong in `references/`.
 - Output templates described in prose that belong in `assets/`.
-- Body over 80 lines when reference files could absorb the excess.
-- See [structure.md](structure.md) for the full placement rules.
+- Body over 80 lines when references could absorb the excess.
 
 **Outdated content**
 - Migration steps for already-completed migrations.
-- References to deprecated file names or patterns.
-- Steps that duplicate behavior the LLM already knows from training (e.g. "use the Read tool to read a file").
+- References to deprecated names or patterns.
 
-## Step 3 — Present Diagnostic Report
+## Phase 3 — Present
 
-List every found problem: category, description, and recommended fix. Present as a flat list — one problem per line. Do not rewrite anything yet.
+List every problem as a flat list — category, description, recommended fix. One per line. Don't rewrite yet.
 
-## Step 4 — Align
+## Phase 4 — Align
 
-For each fix with meaningful tradeoffs, ask the user one question at a time before touching anything. Examples of decisions requiring alignment:
+For each fix with meaningful tradeoffs, ask one question at a time before touching anything. Examples: drop verbatim templates entirely vs. move to `references/`; restructure sequential steps vs. keep numbered with annotations; move body content to `references/` (extra read per run) vs. keep inline (always loaded). Proceed with unambiguous fixes (duplicate rule explanations, etc.) without asking.
 
-- Drop verbatim templates entirely vs. move to `references/` for occasional lookup
-- Restructure sequential steps into Session Start + Active Behaviors vs. keep numbered with inline annotations
-- Move content to `references/` (requires reading a new file on activation) vs. keep in body (always loaded)
+## Phase 5 — Rewrite
 
-Proceed with unambiguous fixes (e.g. removing duplicate rule explanations) without asking.
+Apply confirmed decisions in place. Apply writing standards from main `SKILL.md`. Don't touch `references/` files unless content is moving into or out of them.
 
-## Step 5 — Rewrite
+## Phase 6 — Verify
 
-Apply all confirmed decisions. Rewrite the `SKILL.md` in place. Apply writing standards from [SKILL.md](../SKILL.md). Do not touch `references/` files unless content is being moved into or out of them.
+Before running the validator, confirm:
 
-## Step 6 — Verify
+1. Line count is lower than original.
+2. No verbatim `> "..."` quote blocks remain.
+3. Every relative file link still resolves.
+4. No process logic was dropped without user confirmation.
 
-Before running the shared validator:
-
-1. Confirm line count is lower than original.
-2. Confirm no verbatim `> "..."` quote blocks remain.
-3. Confirm all relative file links in the body still resolve.
-4. Confirm all original process logic is preserved — nothing dropped without user confirmation.
-
-Report line count before and after, then run post-write validation per [SKILL.md](../SKILL.md).
+Report line count before and after, then run `scripts/validate.py` per main `SKILL.md`.
 
 ## Gotchas
 
-- Never drop process logic without explicit user confirmation — even if it looks redundant.
-- "Outdated" is a judgment call — surface it, don't silently delete it.
-- Moving content to `references/` trades token weight at activation for an extra file read per run. Surface this tradeoff before moving.
-- Structural mismatch problems often require more user alignment than token waste problems — the user knows the intended execution model.
+- Never drop process logic without explicit confirmation, even when redundant.
+- "Outdated" is a judgement call — surface it, don't silently delete.
+- Moving content to `references/` trades token weight for an extra read per run. Surface the tradeoff before moving.
