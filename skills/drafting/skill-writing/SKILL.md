@@ -35,6 +35,7 @@ Apply these whenever writing or rewriting any `SKILL.md` content:
 - Third-person imperative: "Extract the text..." not "I will..." or "You should..."
 - One term per concept — never vary
 - No comments explaining what was removed or changed
+- **No tool names** — never reference specific agent tools (e.g. WebSearch, Grep, SendMessage) or MCP tool names; describe capabilities instead ("search the web", "read local files", "send a direct message") so the skill works across agents with different toolsets
 - **Match freedom to task fragility** — see [references/principles.md](references/principles.md) for the high/medium/low rubric
 - **Trust the agent's intelligence** — omit context it already has; challenge each paragraph against "would the agent already know this?"
 - **No narrative or session-dated examples** — abstract rules only; sessions/incidents go in PR descriptions, not skills

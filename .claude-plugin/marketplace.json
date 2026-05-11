@@ -18,10 +18,11 @@
         "./skills/drafting/skill-writing",
         "./skills/productivity/get-aligned",
         "./skills/productivity/round-table",
+        "./skills/productivity/deep-research",
         "./skills/engineering/get-specific",
         "./skills/engineering/react-composition-rules"
       ],
-      "version": "0.2.9"
+      "version": "0.3.0"
     },
     {
       "name": "drafting-skills",
@@ -29,7 +30,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/drafting/skill-writing"],
-      "version": "0.1.5"
+      "version": "0.1.6"
     },
     {
       "name": "engineering-skills",
@@ -44,8 +45,8 @@
       "description": "Skills for general workplace productivity: summarisation, research, meeting prep, and task management.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table"],
-      "version": "0.1.4"
+      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research"],
+      "version": "0.2.0"
     }
   ]
 }
