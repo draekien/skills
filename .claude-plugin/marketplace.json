@@ -19,7 +19,7 @@
         "./skills/productivity/get-aligned",
         "./skills/productivity/round-table",
         "./skills/productivity/deep-research",
-        "./skills/productivity/video-transcribe",
+        "./skills/productivity/transcribe-video",
         "./skills/engineering/get-specific",
         "./skills/engineering/react-composition-rules"
       ],
@@ -46,7 +46,7 @@
       "description": "Skills for general workplace productivity: summarisation, research, meeting prep, and task management.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/video-transcribe"],
+      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video"],
       "version": "0.3.0"
     }
   ]

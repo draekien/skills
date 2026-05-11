@@ -19,7 +19,7 @@ Spec rules:
 - 1–64 characters, `[a-z0-9-]` only.
 - No leading, trailing, or consecutive hyphens.
 - Matches parent directory name exactly.
-- Verb-noun form preferred (`pdf-extraction`, `code-review`).
+- Verb-noun form preferred when name contains a verb (`transcribe-video`, `review-code`).
 
 Propose, confirm, then proceed.
 

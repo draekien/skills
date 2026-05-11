@@ -1,5 +1,5 @@
 ---
-name: video-transcribe
+name: transcribe-video
 description: Transcribes video or audio to plain text using Whisper. Use when the user wants to extract dialogue or speech from a local file or a URL (YouTube, Vimeo, or any yt-dlp-supported site), or says "transcribe this video", "transcribe this URL", "get the transcript", "extract the dialogue".
 compatibility: Requires openai-whisper Python package, ffmpeg, and yt-dlp (for URL sources).
 ---
