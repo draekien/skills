@@ -6,14 +6,9 @@
 - macOS: `brew install ffmpeg`
 - Linux: `sudo apt install ffmpeg`
 
-## Whisper
+## uv
 
-```bash
-pip install openai-whisper
-```
+- Windows: `winget install astral-sh.uv`
+- macOS/Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
-## yt-dlp (URL sources only)
-
-```bash
-pip install yt-dlp
-```
+`openai-whisper` and `yt-dlp` are installed into the isolated venv during environment setup — no manual install needed.

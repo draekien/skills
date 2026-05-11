@@ -23,7 +23,7 @@
         "./skills/engineering/get-specific",
         "./skills/engineering/react-composition-rules"
       ],
-      "version": "0.3.0"
+      "version": "0.3.1"
     },
     {
       "name": "drafting-skills",
@@ -47,7 +47,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video"],
-      "version": "0.3.0"
+      "version": "0.3.1"
     }
   ]
 }
