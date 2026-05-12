@@ -15,6 +15,7 @@
       "source": "./",
       "strict": false,
       "skills": [
+        "./skills/drafting/draft-a-prd",
         "./skills/drafting/skill-writing",
         "./skills/productivity/get-aligned",
         "./skills/productivity/round-table",
@@ -30,8 +31,8 @@
       "description": "Skills for writing and editing content: emails, documents, reports, and other written output.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/drafting/skill-writing"],
-      "version": "0.1.6"
+      "skills": ["./skills/drafting/draft-a-prd", "./skills/drafting/skill-writing"],
+      "version": "0.1.7"
     },
     {
       "name": "engineering-skills",
