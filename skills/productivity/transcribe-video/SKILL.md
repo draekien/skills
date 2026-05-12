@@ -19,25 +19,39 @@ If any dependency is missing, list all missing ones and ask the user to confirm 
 
 ## 2. Environment setup
 
-Install Python 3.12 if not already available, then create an isolated venv and install dependencies:
+Check whether the environment is already set up:
+
+```bash
+uv pip show --python whisper-env openai-whisper yt-dlp
+```
+
+If both packages are found (exit 0), skip to the **CUDA check** below.
+
+Otherwise, install Python 3.12 and create the venv:
 
 ```bash
 uv python install 3.12
 uv venv whisper-env --python 3.12
-uv pip install --python whisper-env openai-whisper yt-dlp
 ```
 
-### CUDA detection
+Run `nvidia-smi` to detect an NVIDIA GPU.
 
-Run `nvidia-smi` to check for an NVIDIA GPU. If no GPU is found, skip the rest of this section.
-
-If an NVIDIA GPU is detected, install the PyTorch CUDA wheel:
+**NVIDIA GPU detected** — install PyTorch from the CUDA wheel index first, then install the remaining dependencies. Installing torch before openai-whisper ensures its torch dependency resolves to the CUDA build rather than the CPU build from PyPI:
 
 ```bash
 uv pip install --python whisper-env torch --index-url https://download.pytorch.org/whl/cu124
+uv pip install --python whisper-env openai-whisper yt-dlp
 ```
 
-Verify GPU is available:
+**No GPU found** — install dependencies directly (openai-whisper will pull in the CPU torch build):
+
+```bash
+uv pip install --python whisper-env openai-whisper yt-dlp
+```
+
+### CUDA check
+
+Run on every invocation to verify whether the installed torch supports GPU acceleration:
 
 - Windows: `whisper-env\Scripts\python -c "import torch; print(torch.cuda.is_available())"`
 - Unix: `whisper-env/bin/python -c "import torch; print(torch.cuda.is_available())"`
