@@ -22,9 +22,10 @@
         "./skills/productivity/deep-research",
         "./skills/productivity/transcribe-video",
         "./skills/engineering/get-specific",
-        "./skills/engineering/react-composition-rules"
+        "./skills/engineering/react-composition-rules",
+        "./skills/engineering/configure-rules"
       ],
-      "version": "0.3.1"
+      "version": "0.3.2"
     },
     {
       "name": "drafting-skills",
@@ -39,8 +40,8 @@
       "description": "Skills for software development tasks: code review, debugging, architecture, and technical workflows.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific"],
-      "version": "0.2.4"
+      "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-rules"],
+      "version": "0.2.5"
     },
     {
       "name": "productivity-skills",
