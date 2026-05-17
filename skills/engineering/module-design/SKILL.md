@@ -12,7 +12,7 @@ Guide the user through designing a new piece of code. Interview one question at 
 Run once on first invocation in this order:
 
 1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the configured spec output directory. If `.draekien/.skillsrc` is absent the script prints the default `docs/designs`.
-2. **DDD mode** — check for `UBIQUITOUS_LANGUAGE.md` at the project root. If found, load it and activate DDD mode (bounded context mapping, term capture, conflict detection — see [references/ddd-mode.md](references/ddd-mode.md)). If absent, skip DDD mode entirely.
+2. **DDD mode** — check for `.draekien/ubiquitous-language.yaml` at the project root. If found, activate DDD mode: run `uv run scripts/query.py --dict .draekien/ubiquitous-language.yaml list-contexts`, then for each context run `uv run scripts/query.py --dict .draekien/ubiquitous-language.yaml list <Context>` to load all terms into conflict-detection context. See [references/ddd-mode.md](references/ddd-mode.md). If the dictionary is absent but a `UBIQUITOUS_LANGUAGE.md` exists at the project root, inform the user that migration is needed and recommend running the `get-specific` skill first. If neither exists, skip DDD mode entirely.
 3. **Open question** — ask "What are you designing?" Wait for the answer before proceeding.
 
 ## Interview

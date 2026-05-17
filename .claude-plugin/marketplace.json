@@ -26,7 +26,7 @@
         "./skills/engineering/configure-claude-rules",
         "./skills/engineering/module-design"
       ],
-      "version": "0.11.0"
+      "version": "0.12.0"
     },
     {
       "name": "drafting-skills",
@@ -42,7 +42,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-claude-rules", "./skills/engineering/module-design"],
-      "version": "0.11.0"
+      "version": "0.12.0"
     },
     {
       "name": "productivity-skills",
