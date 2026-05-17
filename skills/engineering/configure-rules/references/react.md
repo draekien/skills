@@ -14,7 +14,7 @@ A repo may use more than one (e.g., OxLint for speed + ESLint for rules OxLint d
 
 ## Recommended
 
-Hooks rules and key validation.
+Hooks rules, key validation, and component purity.
 
 ### ESLint
 
@@ -24,7 +24,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import react from 'eslint-plugin-react';
 
 export default [
-  reactHooks.configs.flat.recommended, // enables rules-of-hooks: error
+  reactHooks.configs.flat['recommended-latest'], // rules-of-hooks + purity
   {
     plugins: { react },
     rules: {
@@ -34,6 +34,8 @@ export default [
   },
 ];
 ```
+
+`recommended-latest` enables `rules-of-hooks` and `purity` (catches `Math.random()`, `Date.now()`, and other non-deterministic calls during render). Use `recommended` instead if React Compiler diagnostics are unwanted.
 
 Requires: `eslint-plugin-react-hooks`, `eslint-plugin-react`.
 
@@ -66,7 +68,7 @@ Requires: `eslint-plugin-react-hooks`, `eslint-plugin-react`.
 
 ## Strict
 
-All recommended rules, plus exhaustive dependency checking.
+All recommended rules, plus exhaustive dependency checking and setState-in-effect detection.
 
 ### ESLint
 
@@ -76,9 +78,12 @@ Add to recommended config:
 {
   rules: {
     'react-hooks/exhaustive-deps': 'error',
+    'react-hooks/set-state-in-effect': 'error', // catches useEffect(() => { setState(...) })
   }
 }
 ```
+
+`set-state-in-effect` is only available via `recommended-latest` (enabled in the recommended section above). No equivalent in Biome or OxLint.
 
 ### Biome
 
@@ -107,6 +112,38 @@ Add to recommended config:
   }
 }
 ```
+
+## Optional rules
+
+For the `no-default-props` optional rule.
+
+### ESLint
+
+```js
+{
+  rules: {
+    'react/no-default-props': 'error',
+  }
+}
+```
+
+### Biome
+
+```json
+{
+  "linter": {
+    "rules": {
+      "suspicious": {
+        "noDefaultProps": "error"
+      }
+    }
+  }
+}
+```
+
+### OxLint
+
+No native equivalent. Can be enforced via the `eslint-plugin-react` JS plugin if needed.
 
 ## Checking config files
 
