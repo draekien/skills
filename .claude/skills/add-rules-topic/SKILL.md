@@ -1,9 +1,9 @@
 ---
 name: add-rules-topic
-description: Adds a new topic's rule set to the configure-rules skill at skills/engineering/configure-rules. Researches best practices via web search, proposes rules across three tiers, writes asset files, and updates SKILL.md and references. Use when adding new language or framework rules, or when the user says "add [topic] rules", "add react rules", "add python rules", "extend configure-rules with [topic]".
+description: Adds a new topic's rule set to the configure-claude-rules skill at skills/engineering/configure-claude-rules. Researches best practices via web search, proposes rules across three tiers, writes asset files, and updates SKILL.md and references. Use when adding new language or framework rules, or when the user says "add [topic] rules", "add react rules", "add python rules", "extend configure-claude-rules with [topic]".
 ---
 
-Operates on `skills/engineering/configure-rules/`. New topics follow this layout:
+Operates on `skills/engineering/configure-claude-rules/`. New topics follow this layout:
 
 ```
 assets/<topic>/
@@ -70,15 +70,15 @@ Match the conciseness of existing rules in `assets/typescript/` and `assets/csha
 
 ### 4. Write `references/<topic>.md`
 
-Maps preset levels to expected tooling config (linter rules, compiler flags, project settings). Used by configure-rules' tooling alignment check.
+Maps preset levels to expected tooling config (linter rules, compiler flags, project settings). Used by configure-claude-rules' tooling alignment check.
 
-Keep this file **config-only**: the "for each rule absent, report and ask" procedure lives in `configure-rules/SKILL.md` — do not duplicate it.
+Keep this file **config-only**: the "for each rule absent, report and ask" procedure lives in `configure-claude-rules/SKILL.md` — do not duplicate it.
 
 Sections: `## Recommended`, `## Strict`, and any topic-specific notes (language version requirements, extends-chain semantics, linter alternatives). Follow `references/typescript.md` and `references/react.md` for shape.
 
 Omit this file entirely if the topic has no associated tooling config.
 
-### 5. Update `configure-rules/SKILL.md`
+### 5. Update `configure-claude-rules/SKILL.md`
 
 Two table edits, no new prose sections:
 
@@ -90,7 +90,7 @@ If the topic has mutually-exclusive optional rules, also add a bullet under work
 ### 6. Validate
 
 ```
-uv run skills/drafting/skill-writing/scripts/validate.py skills/engineering/configure-rules
+uv run skills/drafting/skill-writing/scripts/validate.py skills/engineering/configure-claude-rules
 ```
 
 Fix any failures before confirming.

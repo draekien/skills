@@ -1,5 +1,5 @@
 ---
-name: configure-rules
+name: configure-claude-rules
 description: Writes AI behaviour rules into a repository's `.claude/rules/` directory from a curated, topic-organised rule library. Detects the repo's technology stack and recommends rule sets, or accepts explicit topic and preset selection. Use when setting up AI coding rules for a repository, enforcing coding standards, or when the user says "configure rules", "set up claude rules", "add typescript rules", "set up AI rules", "add coding rules".
 ---
 
