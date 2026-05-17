@@ -25,7 +25,7 @@
         "./skills/engineering/react-composition-rules",
         "./skills/engineering/configure-rules"
       ],
-      "version": "0.5.0"
+      "version": "0.6.0"
     },
     {
       "name": "drafting-skills",
@@ -41,7 +41,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-rules"],
-      "version": "0.5.0"
+      "version": "0.6.0"
     },
     {
       "name": "productivity-skills",
