@@ -1,6 +1,6 @@
 ---
 paths:
-  - "**/*.{ts,tsx}"
+  - "**/*.gen.ts"
 ---
 
 # No Modify Generated Files
