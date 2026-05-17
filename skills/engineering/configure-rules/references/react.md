@@ -103,13 +103,7 @@ For the `no-default-props` optional rule.
 
 ### Biome
 
-```json
-{
-  "linter": {
-    "rules": { "suspicious": { "noDefaultProps": "error" } }
-  }
-}
-```
+No native equivalent — `noDefaultProps` does not exist in Biome 2.x. Use ESLint if enforcement is needed.
 
 ### OxLint
 
