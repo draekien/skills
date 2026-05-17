@@ -20,6 +20,7 @@ Writes `.claude/rules/` files from bundled rule assets. Available topics are dis
    - `tsconfig.json` or `.ts`/`.tsx` files → `typescript`
    - `.csproj`, `.sln`, `global.json`, or `.cs` files → `csharp`
    - `react` in `package.json` `dependencies` or `devDependencies` → `react`
+   - `@tanstack/react-query` or `@tanstack/query-core` in `package.json` `dependencies` or `devDependencies` → `tanstack-query`
    - Add mappings here as new topics land in `assets/`
 
 2. For each detected topic, present available presets (`recommended` | `strict`) and ask the user to select one.
@@ -83,6 +84,15 @@ Read `references/react.md` for expected linter settings per preset. Detect which
 - Ask whether to update the config file, leave it as-is, or note it for later.
 
 If no linter config is found, skip this check.
+
+### @tanstack/eslint-plugin-query alignment
+
+Read `references/tanstack-query.md` for the expected plugin configuration per preset. Check whether `@tanstack/eslint-plugin-query` is installed by reading `package.json`. Then read the repo's ESLint config (`eslint.config.js`, `.eslintrc.*`) and check whether `flat/recommended` (or equivalent individual rules) is enabled. For each expected rule absent or set to a weaker severity:
+
+- Report the rule name, expected severity, and actual value (or "not configured").
+- Ask whether to update the config file, leave it as-is, or note it for later.
+
+If `@tanstack/react-query` / `@tanstack/query-core` is not in `package.json`, skip this check.
 
 ---
 
