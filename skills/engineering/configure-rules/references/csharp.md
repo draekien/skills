@@ -1,6 +1,6 @@
 # C# Project Alignment
 
-Expected `.csproj`, `Directory.Build.props`, and `.editorconfig` settings per preset. Use this during discrepancy detection to compare the target repo's configuration against the chosen preset.
+Expected `.csproj` and `Directory.Build.props` settings per preset.
 
 ## Recommended
 
@@ -10,7 +10,7 @@ Expected `.csproj`, `Directory.Build.props`, and `.editorconfig` settings per pr
 </PropertyGroup>
 ```
 
-`<Nullable>enable</Nullable>` enables nullable reference type annotations and warnings project-wide. Check for this in `.csproj` **or** in `Directory.Build.props` (which applies to all projects in its directory tree).
+Check `.csproj` or any `Directory.Build.props` in the directory chain.
 
 ## Strict
 
@@ -18,22 +18,19 @@ All recommended settings, plus:
 
 ```xml
 <PropertyGroup>
-  <Nullable>enable</Nullable>
   <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   <AnalysisLevel>latest-recommended</AnalysisLevel>
 </PropertyGroup>
 ```
 
-| Flag | What it does |
-|------|-------------|
-| `TreatWarningsAsErrors` | Turns all compiler warnings into errors — forces nullable and style issues to be resolved |
-| `EnforceCodeStyleInBuild` | Applies `.editorconfig` style rules during `dotnet build`, not just in the IDE |
-| `AnalysisLevel` | Enables the latest set of Roslyn code-quality analysers; `latest-recommended` is a safe default |
+- `TreatWarningsAsErrors` — promotes nullable and style warnings to errors.
+- `EnforceCodeStyleInBuild` — applies `.editorconfig` rules during `dotnet build`, not just in IDE.
+- `AnalysisLevel` — enables latest Roslyn analysers; `latest-recommended` is a safe default.
 
-## .editorconfig patterns for style rules
+## .editorconfig patterns
 
-Rules that correspond to `.editorconfig` settings for reference:
+For rules with `.editorconfig` equivalents:
 
 ```ini
 [*.cs]
@@ -52,15 +49,10 @@ dotnet_diagnostic.CS8603.severity = warning
 dotnet_diagnostic.IDE0036.severity = suggestion
 ```
 
-## Checking a `Directory.Build.props` chain
-
-If `.csproj` does not set `<Nullable>`, check for `Directory.Build.props` in the project directory and each parent directory up to the repo root. A flag set in any ancestor counts as set. Report which file sets each flag when surfacing discrepancies.
-
 ## Language version
 
-Strict rules depend on C# language features:
-- `required` keyword → C# 11 (`<LangVersion>11</LangVersion>` or higher, or `latest`)
+Some strict rules depend on a minimum C# language version. Check `<LangVersion>` before recommending:
+
+- `required` keyword → C# 11
 - File-scoped namespaces → C# 10
 - `init` properties → C# 9
-
-Check `<LangVersion>` in `.csproj` when recommending strict rules that require a minimum language version.

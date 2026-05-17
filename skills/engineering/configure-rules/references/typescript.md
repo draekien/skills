@@ -1,6 +1,6 @@
 # TypeScript tsconfig Alignment
 
-Expected `tsconfig.json` compiler flags per preset. Use this during discrepancy detection to compare the target repo's configuration against the chosen preset.
+Expected `tsconfig.json` compiler flags per preset.
 
 ## Recommended
 
@@ -12,9 +12,7 @@ Expected `tsconfig.json` compiler flags per preset. Use this during discrepancy 
 }
 ```
 
-`strict: true` is a shorthand that enables: `strictNullChecks`, `strictFunctionTypes`, `strictBindCallApply`, `strictPropertyInitialization`, `noImplicitAny`, `noImplicitThis`, `useUnknownInCatchVariables`, `alwaysStrict`.
-
-Check for `strict: true` **or** all of the above flags set individually. Either form satisfies the recommended preset.
+`strict: true` enables `strictNullChecks`, `strictFunctionTypes`, `strictBindCallApply`, `strictPropertyInitialization`, `noImplicitAny`, `noImplicitThis`, `useUnknownInCatchVariables`, `alwaysStrict`. Either `strict: true` or all flags set individually satisfies this preset.
 
 ## Strict
 
@@ -23,7 +21,6 @@ All recommended flags, plus:
 ```json
 {
   "compilerOptions": {
-    "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
@@ -35,6 +32,6 @@ All recommended flags, plus:
 }
 ```
 
-## Checking an `extends` chain
+## Notes
 
-If `tsconfig.json` uses `extends`, resolve the chain and check the merged result. A flag set in a base config counts as set. Report which file in the chain sets each flag when surfacing discrepancies.
+A flag set in a base config (via `extends`) counts as set. When reporting discrepancies, name which file in the chain sets each flag.

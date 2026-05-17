@@ -1,16 +1,6 @@
 # React Linter Alignment
 
-Expected linter configuration per preset for React-specific rules. Use this during discrepancy detection to compare the target repo's linter config against the chosen preset.
-
-## Detecting the linter
-
-Look for these config files to identify which linter(s) the repo uses:
-
-- `biome.json` or `biome.toml` → Biome
-- `.oxlintrc.json`, `oxlint.config.json`, or `"oxlint"` in `package.json` scripts → OxLint
-- `eslint.config.js`, `.eslintrc.js`, `.eslintrc.cjs`, `.eslintrc.json`, `.eslintrc.yml` → ESLint
-
-A repo may use more than one (e.g., OxLint for speed + ESLint for rules OxLint does not yet cover natively).
+Expected linter configuration per preset. A repo may use more than one linter (e.g. OxLint for speed plus ESLint for coverage).
 
 ## Recommended
 
@@ -24,18 +14,16 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import react from 'eslint-plugin-react';
 
 export default [
-  reactHooks.configs.flat['recommended-latest'], // rules-of-hooks + purity
+  reactHooks.configs.flat['recommended-latest'],
   {
     plugins: { react },
-    rules: {
-      'react/jsx-key': 'error',
-    },
+    rules: { 'react/jsx-key': 'error' },
     settings: { react: { version: 'detect' } },
   },
 ];
 ```
 
-`recommended-latest` enables `rules-of-hooks` and `purity` (catches `Math.random()`, `Date.now()`, and other non-deterministic calls during render). Use `recommended` instead if React Compiler diagnostics are unwanted.
+`recommended-latest` enables `rules-of-hooks` and `purity` (catches `Math.random()`, `Date.now()`, and other non-deterministic calls during render). Substitute `recommended` if React Compiler diagnostics are unwanted.
 
 Requires: `eslint-plugin-react-hooks`, `eslint-plugin-react`.
 
@@ -68,34 +56,28 @@ Requires: `eslint-plugin-react-hooks`, `eslint-plugin-react`.
 
 ## Strict
 
-All recommended rules, plus exhaustive dependency checking and setState-in-effect detection.
+Adds exhaustive dependencies and setState-in-effect detection.
 
 ### ESLint
-
-Add to recommended config:
 
 ```js
 {
   rules: {
     'react-hooks/exhaustive-deps': 'error',
-    'react-hooks/set-state-in-effect': 'error', // catches useEffect(() => { setState(...) })
+    'react-hooks/set-state-in-effect': 'error',
   }
 }
 ```
 
-`set-state-in-effect` is only available via `recommended-latest` (enabled in the recommended section above). No equivalent in Biome or OxLint.
+`set-state-in-effect` requires `recommended-latest` (set above). No equivalent in Biome or OxLint.
 
 ### Biome
-
-Add to recommended config:
 
 ```json
 {
   "linter": {
     "rules": {
-      "correctness": {
-        "useExhaustiveDependencies": "error"
-      }
+      "correctness": { "useExhaustiveDependencies": "error" }
     }
   }
 }
@@ -103,13 +85,9 @@ Add to recommended config:
 
 ### OxLint
 
-Add to recommended config:
-
 ```json
 {
-  "rules": {
-    "react/exhaustive-deps": "error"
-  }
+  "rules": { "react/exhaustive-deps": "error" }
 }
 ```
 
@@ -120,11 +98,7 @@ For the `no-default-props` optional rule.
 ### ESLint
 
 ```js
-{
-  rules: {
-    'react/no-default-props': 'error',
-  }
-}
+{ rules: { 'react/no-default-props': 'error' } }
 ```
 
 ### Biome
@@ -132,24 +106,11 @@ For the `no-default-props` optional rule.
 ```json
 {
   "linter": {
-    "rules": {
-      "suspicious": {
-        "noDefaultProps": "error"
-      }
-    }
+    "rules": { "suspicious": { "noDefaultProps": "error" } }
   }
 }
 ```
 
 ### OxLint
 
-No native equivalent. Can be enforced via the `eslint-plugin-react` JS plugin if needed.
-
-## Checking config files
-
-For each expected rule that is absent or set to `"warn"` when `"error"` is expected:
-
-- Report the rule name, expected severity, and actual value (or "not configured").
-- Ask whether to update the config file, leave it as-is, or note it for later.
-
-If no linter config is found, skip this check.
+No native equivalent — use `eslint-plugin-react` if needed.

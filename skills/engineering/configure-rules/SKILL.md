@@ -3,129 +3,47 @@ name: configure-rules
 description: Writes AI behaviour rules into a repository's `.claude/rules/` directory from a curated, topic-organised rule library. Detects the repo's technology stack and recommends rule sets, or accepts explicit topic and preset selection. Use when setting up AI coding rules for a repository, enforcing coding standards, or when the user says "configure rules", "set up claude rules", "add typescript rules", "set up AI rules", "add coding rules".
 ---
 
-Writes `.claude/rules/` files from bundled rule assets. Available topics are discovered by listing subdirectories under `assets/` within this skill directory. See [references/writing-rules.md](references/writing-rules.md) for the official guidance on rule file format, path scoping, and writing effective rules.
+Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [references/writing-rules.md](references/writing-rules.md) for rule file format and path scoping.
 
-## Mode Detection
+## Modes
 
-| Signal | Mode |
-|--------|------|
-| No arguments, or user says "explore" / "detect" | **Explore** |
-| User names a topic and/or preset explicitly | **Preset** |
+- **Explore** — no arguments, or user says "explore" / "detect". Scan the repo for signals and recommend topics.
+- **Preset** — user names a topic and/or preset. Confirm any missing piece, then proceed.
 
----
+## Topics
 
-## Explore Mode
+| Topic | Detection signals | Reference |
+|-------|-------------------|-----------|
+| `typescript` | `tsconfig.json` or `.ts` / `.tsx` files | [references/typescript.md](references/typescript.md) |
+| `csharp` | `.csproj`, `.sln`, `global.json`, or `.cs` files | [references/csharp.md](references/csharp.md) |
+| `react` | `react` in `package.json` dependencies | [references/react.md](references/react.md) |
+| `tanstack-query` | `@tanstack/react-query` or `@tanstack/query-core` in `package.json` dependencies | [references/tanstack-query.md](references/tanstack-query.md) |
 
-1. Scan the target repository for technology signals:
-   - `tsconfig.json` or `.ts`/`.tsx` files → `typescript`
-   - `.csproj`, `.sln`, `global.json`, or `.cs` files → `csharp`
-   - `react` in `package.json` `dependencies` or `devDependencies` → `react`
-   - `@tanstack/react-query` or `@tanstack/query-core` in `package.json` `dependencies` or `devDependencies` → `tanstack-query`
-   - Add mappings here as new topics land in `assets/`
+## Workflow
 
-2. For each detected topic, present available presets (`recommended` | `strict`) and ask the user to select one.
+1. **Pick topics and presets.** In Explore mode, scan signals; in Preset mode, take user input. For each topic, ask the user to choose `recommended` or `strict`.
 
-3. Present optional standalone rules for the topic (any `.md` files directly under `assets/<topic>/`, not inside a subdirectory). Ask the user to select at most one per mutually-exclusive group.
+2. **Offer optional rules.** List `.md` files directly under `assets/<topic>/` (not in a subdirectory) with a one-line description each. Allow at most one selection per mutually-exclusive group:
+   - `typescript`: `prefer-interfaces` ⨯ `prefer-types`
 
-   **Mutually exclusive groups:**
-   - `prefer-interfaces` and `prefer-types` — pick one or neither
+3. **Check existing rules.** Read all files in the target repo's `.claude/rules/`. For each file that would be overwritten with different content, ask: overwrite, keep, or skip. Skip the check if the directory doesn't exist.
 
-4. Run discrepancy checks (see **Discrepancy Detection** below).
+4. **Check tooling alignment.** For each selected topic, read its reference file for the expected config per preset, then read the corresponding config in the target repo (resolving any inheritance chain). For each expected setting that is absent or weaker, report it and ask whether to update the config, leave it, or note it for later. Skip the check if no config file exists.
 
-5. Write rules (see **Writing Rules** below).
+   | Topic | Target config files |
+   |-------|---------------------|
+   | `typescript` | `tsconfig.json` (resolve `extends` chain) |
+   | `csharp` | `.csproj`, `Directory.Build.props` (chain up to repo root) |
+   | `react` | `eslint.config.*`, `.eslintrc.*`, `biome.json`, `.oxlintrc.json` |
+   | `tanstack-query` | ESLint config; also confirm `@tanstack/eslint-plugin-query` is installed |
 
----
+5. **Offer latest-practices search.** Ask whether to web-search `"<topic> best practices <current year>"` for rules not yet bundled. If yes, present candidates as a numbered list; each approved candidate becomes a new file under `.claude/rules/`.
 
-## Preset Mode
+6. **Write rules.** For each topic:
+   - `recommended` writes every file in `assets/<topic>/recommended/`.
+   - `strict` writes everything in `recommended/` plus `strict/`.
+   - Selected optional rules write the corresponding standalone files.
 
-1. Confirm the topic and preset with the user if not fully specified.
-2. Present optional standalone rules for the topic (same as Explore step 3).
-3. Run discrepancy checks.
-4. Write rules.
+   Target path is `.claude/rules/<filename>` — flat, no per-topic subdirectory. If an identical file already exists at the target, skip and report "already up to date". Create `.claude/rules/` if missing.
 
----
-
-## Discrepancy Detection
-
-Run before writing any files. Two checks:
-
-### Existing rules conflict
-
-Read all files currently in the target repo's `.claude/rules/`. For each file that would be overwritten with different content:
-
-- Show the rule name, a one-line summary of what exists vs what would be written.
-- Ask the user: **overwrite**, **keep existing**, or **skip**.
-
-If no `.claude/rules/` directory exists, skip this check.
-
-### tsconfig alignment
-
-Read `references/typescript.md` for the expected compiler flags per preset. Read the target repo's `tsconfig.json` (including any `extends` chain). For each expected flag that is absent or set to a conflicting value:
-
-- Report the flag, expected value, and actual value (or "not set").
-- Ask whether to update `tsconfig.json`, leave it as-is, or note it for later.
-
-If no `tsconfig.json` exists, skip this check.
-
-### .csproj / Directory.Build.props alignment
-
-Read `references/csharp.md` for the expected project settings per preset. Read the target repo's `.csproj` and any `Directory.Build.props` in the directory chain. For each expected setting that is absent or set to a conflicting value:
-
-- Report the setting, expected value, and actual value (or "not set"), including which file in the chain sets it.
-- Ask whether to update the file, leave it as-is, or note it for later.
-
-If no `.csproj` exists, skip this check.
-
-### Linter config alignment (React)
-
-Read `references/react.md` for expected linter settings per preset. Detect which linter the repo uses (look for `biome.json`, `.oxlintrc.json`, or `eslint.config.js`/`.eslintrc.*`), then read its config. For each expected rule absent or set to a weaker severity:
-
-- Report the rule name, expected severity, and actual value (or "not configured").
-- Ask whether to update the config file, leave it as-is, or note it for later.
-
-If no linter config is found, skip this check.
-
-### @tanstack/eslint-plugin-query alignment
-
-Read `references/tanstack-query.md` for the expected plugin configuration per preset. Check whether `@tanstack/eslint-plugin-query` is installed by reading `package.json`. Then read the repo's ESLint config (`eslint.config.js`, `.eslintrc.*`) and check whether `flat/recommended` (or equivalent individual rules) is enabled. For each expected rule absent or set to a weaker severity:
-
-- Report the rule name, expected severity, and actual value (or "not configured").
-- Ask whether to update the config file, leave it as-is, or note it for later.
-
-If `@tanstack/react-query` / `@tanstack/query-core` is not in `package.json`, skip this check.
-
----
-
-## Latest Practices Search
-
-Before writing rules, ask the user:
-
-> "Would you like me to search the web for the latest `<topic>` best practices? This may surface rules not yet in the bundled library."
-
-**If yes:**
-
-1. Search for `"<topic> best practices <current year>"` and any closely related queries (e.g. `"<topic> code quality <current year>"`).
-2. Compare findings against the bundled rules for the selected preset and optional rules.
-3. Identify practices from the search that are not already covered by the bundled assets.
-4. Present the additional candidates as a numbered list with a one-line description each. Ask the user which to include.
-5. For each approved candidate, write a new `.md` file to `.claude/rules/<rule-name>.md` alongside the preset rules (same idempotency check applies).
-
-**If no:** proceed directly to Writing Rules.
-
----
-
-## Writing Rules
-
-For a given topic and preset:
-
-- **`recommended`**: write all files from `assets/<topic>/recommended/`
-- **`strict`**: write all files from `assets/<topic>/recommended/` **and** `assets/<topic>/strict/`
-- **Optional rules**: write selected standalone `.md` files from `assets/<topic>/`
-
-Target path: `.claude/rules/<filename>` (flat — no subdirectory per topic).
-
-**Idempotency:** Before writing each file, check whether an identical file already exists at the target path. If content matches exactly, skip it and report it as "already up to date". Only write files whose content differs or that don't yet exist.
-
-Create `.claude/rules/` if it does not exist.
-
-After writing, report a summary: files written, files skipped (already up to date), files kept (user chose to keep existing).
+7. **Report.** Summarise files written, skipped (already up to date), and kept (user chose to keep existing).
