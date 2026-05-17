@@ -18,6 +18,7 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
 | `csharp` | `.csproj`, `.sln`, `global.json`, or `.cs` files | [references/csharp.md](references/csharp.md) |
 | `react` | `react` in `package.json` dependencies | [references/react.md](references/react.md) |
 | `tanstack-query` | `@tanstack/react-query` or `@tanstack/query-core` in `package.json` dependencies | [references/tanstack-query.md](references/tanstack-query.md) |
+| `tanstack-router` | `@tanstack/react-router` or `@tanstack/router` in `package.json` dependencies | [references/tanstack-router.md](references/tanstack-router.md) |
 
 ## Workflow
 
@@ -36,6 +37,7 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
    | `csharp` | `.csproj`, `Directory.Build.props` (chain up to repo root) |
    | `react` | `eslint.config.*`, `.eslintrc.*`, `biome.json`, `.oxlintrc.json` |
    | `tanstack-query` | ESLint config; also confirm `@tanstack/eslint-plugin-query` is installed |
+   | `tanstack-router` | ESLint config; also confirm `@tanstack/eslint-plugin-router` is installed and `routeTree.gen.ts` is in ignore files |
 
 5. **Offer latest-practices search.** Ask whether to web-search `"<topic> best practices <current year>"` for rules not yet bundled. If yes, present candidates as a numbered list; each approved candidate becomes a new file under `.claude/rules/`.
 

@@ -41,7 +41,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-rules"],
-      "version": "0.2.5"
+      "version": "0.3.0"
     },
     {
       "name": "productivity-skills",
