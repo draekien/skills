@@ -19,5 +19,3 @@ Use inline `import type { Foo }` within a regular import when only some of a mod
 ```typescript
 import { createUser, type User } from './user';
 ```
-
-Enforce consistently with `@typescript-eslint/consistent-type-imports` if the project uses ESLint.

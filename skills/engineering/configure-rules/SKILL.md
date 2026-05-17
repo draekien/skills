@@ -19,6 +19,7 @@ Writes `.claude/rules/` files from bundled rule assets. Available topics are dis
 1. Scan the target repository for technology signals:
    - `tsconfig.json` or `.ts`/`.tsx` files → `typescript`
    - `.csproj`, `.sln`, `global.json`, or `.cs` files → `csharp`
+   - `react` in `package.json` `dependencies` or `devDependencies` → `react`
    - Add mappings here as new topics land in `assets/`
 
 2. For each detected topic, present available presets (`recommended` | `strict`) and ask the user to select one.
@@ -73,6 +74,15 @@ Read `references/csharp.md` for the expected project settings per preset. Read t
 - Ask whether to update the file, leave it as-is, or note it for later.
 
 If no `.csproj` exists, skip this check.
+
+### Linter config alignment (React)
+
+Read `references/react.md` for expected linter settings per preset. Detect which linter the repo uses (look for `biome.json`, `.oxlintrc.json`, or `eslint.config.js`/`.eslintrc.*`), then read its config. For each expected rule absent or set to a weaker severity:
+
+- Report the rule name, expected severity, and actual value (or "not configured").
+- Ask whether to update the config file, leave it as-is, or note it for later.
+
+If no linter config is found, skip this check.
 
 ---
 
