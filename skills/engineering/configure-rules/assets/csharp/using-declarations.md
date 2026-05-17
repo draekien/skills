@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Using Declarations
 
 Prefer `using var` declarations (C# 8+) over `using (...) { }` statements for `IDisposable` resources. The declaration form disposes at the end of the enclosing scope, eliminating the extra nesting level.

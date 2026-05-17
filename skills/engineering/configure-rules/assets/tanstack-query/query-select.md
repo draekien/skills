@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Query Select
 
 Use the `select` option to transform or derive data inside the query rather than in the component. The selector runs only when the raw data changes, and TanStack Query memoises the result — preventing unnecessary re-renders when unrelated cache updates occur.

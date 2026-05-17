@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Prefer Type Aliases for Object Shapes
 
 Use `type` consistently for all type definitions including object shapes, unions, intersections, and aliases. Avoid `interface` except where declaration merging is explicitly required (e.g. extending third-party library types).

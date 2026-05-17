@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Discriminated Unions
 
 Model result and state types as discriminated unions rather than using optional fields or throwing for control flow. A shared literal discriminant field lets TypeScript narrow exhaustively.

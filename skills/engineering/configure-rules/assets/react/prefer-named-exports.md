@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # Prefer Named Exports
 
 Export components as named exports. Avoid default exports for components.

@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Init-Only Properties
 
 Prefer `init` over `set` for properties on types that should not change after construction. This enforces immutability at compile time without requiring a custom constructor for each combination of fields.

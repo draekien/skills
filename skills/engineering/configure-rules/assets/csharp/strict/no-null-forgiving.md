@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # No Null-Forgiving Operator
 
 Never use the null-forgiving operator `!` to suppress nullable warnings. If it is needed, the design has a nullability problem — fix the root cause.

@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # No defaultProps
 
 Don't use `defaultProps` on function components. Use TypeScript default parameter values in the function signature instead. `defaultProps` on function components is deprecated in React 19 and removed in future versions.

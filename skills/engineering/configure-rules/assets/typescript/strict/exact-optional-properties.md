@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Exact Optional Properties
 
 Never explicitly assign `undefined` to an optional property. Omit the property instead. Assigning `undefined` is semantically different from absence and breaks code that uses `'key' in obj` checks or JSON serialisation.

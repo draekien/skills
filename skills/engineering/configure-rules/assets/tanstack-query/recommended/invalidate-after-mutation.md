@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Invalidate After Mutation
 
 Call `queryClient.invalidateQueries` after a successful mutation instead of calling `refetch` directly. Invalidation is lazy — it marks cached queries as stale and only refetches those that are currently mounted. Direct `refetch` is eager and refetches regardless of whether any component is observing the query.

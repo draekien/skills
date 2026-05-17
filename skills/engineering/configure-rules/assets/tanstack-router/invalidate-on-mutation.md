@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Invalidate on Mutation
 
 Call `router.invalidate()` after mutations to re-run the current route's loaders and keep router-loaded data in sync with the server. This is simpler than manually calling `queryClient.invalidateQueries` for every query a loader touches.

@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Prefer File-Based Routing
 
 Define routes as files under the configured `routesDirectory` rather than constructing the route tree in code. The file structure directly mirrors the URL hierarchy, making routes easy to locate and co-locate with their components.

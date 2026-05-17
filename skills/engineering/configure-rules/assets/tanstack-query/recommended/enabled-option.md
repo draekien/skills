@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Enabled Option for Dependent Queries
 
 Gate any query that depends on a runtime value with `enabled: !!value`. Without it the query fires immediately with `undefined`, producing 404s or malformed requests before the dependency is available.

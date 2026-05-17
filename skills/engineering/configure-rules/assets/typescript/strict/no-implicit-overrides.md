@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # No Implicit Overrides
 
 Always use the `override` keyword when overriding a method or property from a base class. This makes intent explicit and causes a compile error if the base class method is renamed or removed.

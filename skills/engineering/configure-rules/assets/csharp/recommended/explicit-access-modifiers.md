@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Explicit Access Modifiers
 
 Always write access modifiers explicitly. Never rely on implicit defaults (`internal` for top-level types, `private` for members).

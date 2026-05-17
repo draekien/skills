@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Use useMutation for Write Operations
 
 Wrap create, update, and delete operations in `useMutation` rather than calling `fetch` directly in event handlers. `useMutation` tracks pending and error state, exposes lifecycle callbacks for cache updates, and prevents double-submissions.

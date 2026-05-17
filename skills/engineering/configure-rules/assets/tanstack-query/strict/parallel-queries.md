@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Parallel Queries
 
 Fetch independent data with co-located `useQuery` calls or `useQueries` — never chain them sequentially. Sequential fetching creates artificial waterfalls where the total load time is the sum of all request durations instead of the maximum.

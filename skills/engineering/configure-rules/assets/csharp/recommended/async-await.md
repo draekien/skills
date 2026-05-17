@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Async/Await
 
 Use `async`/`await` for all I/O-bound operations. Never block asynchronous code with `.Result`, `.Wait()`, or `.GetAwaiter().GetResult()` — these cause deadlocks in contexts that have a synchronisation context (ASP.NET, WPF, WinForms).

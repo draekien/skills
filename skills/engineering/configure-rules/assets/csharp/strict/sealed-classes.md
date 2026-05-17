@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Sealed Classes
 
 Mark classes `sealed` by default. Only remove `sealed` when the type is explicitly designed for inheritance — not just because inheritance is theoretically possible.

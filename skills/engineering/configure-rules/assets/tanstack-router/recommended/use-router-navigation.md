@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Use Router Navigation
 
 Navigate with `<Link>` and `useNavigate()` from TanStack Router rather than `<a href>` or `window.location`. Router-aware navigation preserves compile-time path checking, history state, and scroll restoration.

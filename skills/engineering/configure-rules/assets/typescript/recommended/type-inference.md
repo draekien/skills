@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Type Inference
 
 Let TypeScript infer types where the inference is unambiguous. Annotate explicitly at module boundaries, public APIs, and whenever inference would produce `any`, a wider type than intended, or a type that is non-obvious to a reader.

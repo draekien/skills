@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Prefer Interfaces for Object Shapes
 
 Use `interface` to define object shapes. Reserve `type` for unions, intersections, mapped types, conditional types, and aliases for primitives or tuples.

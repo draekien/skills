@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # Component Purity
 
 Components must return the same JSX for the same props and state. `Math.random()`, `Date.now()`, DOM reads/writes, network requests, and subscriptions must not happen during render — put them in effects or event handlers.

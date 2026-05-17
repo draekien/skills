@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Lazy Route Components
 
 Use `lazy()` to code-split non-critical route components into separate JS chunks, reducing the initial bundle size.

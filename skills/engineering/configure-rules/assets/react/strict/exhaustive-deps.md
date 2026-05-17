@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # Exhaustive Hook Dependencies
 
 List every value referenced inside a `useEffect`, `useMemo`, or `useCallback` in its dependency array. Never suppress the exhaustive-deps lint rule with a disable comment — fix the root cause instead.

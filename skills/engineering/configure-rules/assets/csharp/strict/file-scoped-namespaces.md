@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # File-Scoped Namespaces
 
 Use file-scoped namespace declarations (C# 10+). Place the namespace at the top of the file followed by a semicolon, with no enclosing braces. One type per file.

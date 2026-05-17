@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # No Barrel Exports
 
 Avoid `index.ts` barrel files that re-export from multiple modules. Import directly from the source file instead.

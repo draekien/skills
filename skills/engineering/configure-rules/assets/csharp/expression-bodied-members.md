@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Expression-Bodied Members
 
 Use expression bodies (`=>`) for simple single-expression members: read-only properties, simple methods, and constructors that only assign. Keep expression bodies to one line. Use block bodies for anything that requires multiple statements or branching.

@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Exception Handling
 
 Catch specific exception types. Never use a bare `catch {}` or catch `Exception` without a filter — these swallow unexpected failures and hide bugs.

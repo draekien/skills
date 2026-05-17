@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # Event Handler Naming
 
 Name prop callbacks `on<Event>` (e.g., `onSubmit`, `onChange`). Name the local handler functions that implement them `handle<Action>` (e.g., `handleSubmit`, `handleChange`).

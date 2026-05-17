@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Parallel Loader Fetches
 
 When a route loader needs multiple queries, fire them with `Promise.allSettled` rather than awaiting them sequentially. Sequential awaits create a waterfall where each fetch blocks the next.

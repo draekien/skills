@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Pattern Matching
 
 Use `is` type patterns and `switch` expressions instead of `as` casts, `typeof` checks, or explicit casts. Prefer exhaustive switch expressions over chains of `if`/`else if`.

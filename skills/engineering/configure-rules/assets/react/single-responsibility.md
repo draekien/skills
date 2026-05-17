@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # Single Responsibility
 
 Each component does one thing. Extract complex stateful or async logic into a custom `use*` hook. Extract repeated or independently-testable UI sections into sub-components.

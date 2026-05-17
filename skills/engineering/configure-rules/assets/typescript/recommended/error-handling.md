@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Error Handling
 
 Type `catch` clause bindings as `unknown`. Narrow with `instanceof` or a type guard before accessing properties.

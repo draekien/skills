@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Generic Constraints
 
 All generic type parameters must have explicit constraints when the function or type depends on any property or behaviour of that parameter. Unconstrained `T` is only acceptable when the function is genuinely type-transparent (e.g. identity, wrapper, container).

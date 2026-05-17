@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # No State Mutation
 
 Never mutate state or props directly. Use setter functions and always return new object and array references.

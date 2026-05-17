@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Import Type
 
 Use `import type` for imports that are used only as types. This makes intent explicit, allows bundlers and transpilers to elide the import entirely, and prevents accidental circular dependencies caused by importing a module solely for its types.

@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Explicit Return Types
 
 Annotate return types on exported functions, public class methods, and functions that form part of a module's public API. Let TypeScript infer return types for local/private functions where the return type is obvious from context.

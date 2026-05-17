@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Nullable Reference Types
 
 Enable and enforce nullable reference types. All reference types are non-nullable by default. Use `?` to annotate types that can be null, and use `??`, null-conditional (`?.`), or explicit null-checks to handle nullable values safely. Never use the null-forgiving operator `!` without a comment explaining why it is safe.

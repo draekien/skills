@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # No Type Assertions
 
 Avoid `as` casts. They bypass type checking and can hide unsound assumptions. Prefer narrowing, type guards, or generics instead.

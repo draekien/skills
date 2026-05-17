@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Use TanStack Query for Data Fetching
 
 Fetch server data with `useQuery` rather than `fetch` inside `useEffect`. Manual fetching requires boilerplate loading/error state, is prone to race conditions when dependencies change quickly, and provides no caching or background refresh.

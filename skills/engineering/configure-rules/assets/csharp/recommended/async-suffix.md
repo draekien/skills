@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Async Suffix
 
 All methods and properties that return `Task`, `Task<T>`, `ValueTask`, or `ValueTask<T>` must have an `Async` suffix. Synchronous methods must never have an `Async` suffix.

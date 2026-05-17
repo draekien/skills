@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Stale Time Defaults
 
 Set a meaningful global `staleTime` on `QueryClient`. The built-in default of `0` marks every query stale immediately, causing a background refetch on every component mount.

@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Prefer Records for Data Types
 
 Use `record` (C# 9+) for immutable data types — DTOs, request/response objects, value objects, and domain events. Use `class` for stateful, mutable services.

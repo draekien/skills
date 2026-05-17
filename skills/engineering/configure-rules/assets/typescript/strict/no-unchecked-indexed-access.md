@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # No Unchecked Indexed Access
 
 Treat array and object index access as potentially `undefined`. Never assume an index exists without checking.

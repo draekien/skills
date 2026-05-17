@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Query Client in Router Context
 
 Pass `QueryClient` through TanStack Router's context rather than importing a module-level singleton in loaders. Context-provided clients are required for SSR dehydration/hydration and make loaders testable without module mocking.

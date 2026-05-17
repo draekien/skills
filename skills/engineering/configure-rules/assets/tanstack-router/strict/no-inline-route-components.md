@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # No Inline Route Components
 
 Define route components as named functions outside the `createFileRoute()` call, not as inline arrow functions inside it. Inline definitions create a new component reference on every module evaluation, which can cause React to unmount and remount the tree.

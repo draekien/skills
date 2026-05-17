@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # Error Boundaries
 
 Wrap independently-failing subtrees in an error boundary. Use `react-error-boundary` rather than writing a class component manually. Never use try/catch to catch render-phase errors — React propagates render errors up to the nearest boundary, not to surrounding try/catch blocks.

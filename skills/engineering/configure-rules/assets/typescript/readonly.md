@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Readonly Properties
 
 Mark class properties and function parameters `readonly` when they are not intended to be reassigned after construction. Use `Readonly<T>` and `ReadonlyArray<T>` (or `readonly T[]`) for data that should not be mutated.

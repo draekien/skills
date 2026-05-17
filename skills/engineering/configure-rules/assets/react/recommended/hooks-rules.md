@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # Rules of Hooks
 
 Only call hooks at the top level of a function component or custom hook. Never call hooks inside loops, conditions, nested functions, or after early returns. Never call component functions directly as regular functions — always render them in JSX.

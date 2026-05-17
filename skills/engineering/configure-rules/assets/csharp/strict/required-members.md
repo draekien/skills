@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Required Members
 
 Use the `required` modifier (C# 11+) on properties that must be set at object initialisation. This makes the compiler enforce that no caller can create a partially-initialised object.

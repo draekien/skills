@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Typed Search Params
 
 Define a `validateSearch` schema on every route that reads search params. Without validation, search params are typed as `unknown` and silently accept malformed URLs.

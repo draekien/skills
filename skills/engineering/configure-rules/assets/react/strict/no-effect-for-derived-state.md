@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # No useEffect for Derived State
 
 Never use `useEffect` + `setState` to synchronise state derived from other state or props. Compute the derived value during render with `useMemo` or a plain expression.

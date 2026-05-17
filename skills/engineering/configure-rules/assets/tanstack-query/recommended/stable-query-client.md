@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Stable Query Client
 
 Create `QueryClient` outside component render — or inside `useState` / `useRef` — so the instance is stable across renders. Creating it inline discards the entire cache on every re-render.

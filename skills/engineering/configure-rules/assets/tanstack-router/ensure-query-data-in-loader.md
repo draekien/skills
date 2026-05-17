@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Ensure Query Data in Loader
 
 Call `queryClient.ensureQueryData(queryOptions)` in the route loader to warm the TanStack Query cache before render, then read with `useSuspenseQuery` in the component. This separates cache warming from rendering and enables SSR streaming.

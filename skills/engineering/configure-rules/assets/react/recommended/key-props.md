@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # Key Props
 
 Provide a stable, unique key from your data on every direct child in a rendered list. Never use array index as a key unless the list is static, never reordered, and never filtered.

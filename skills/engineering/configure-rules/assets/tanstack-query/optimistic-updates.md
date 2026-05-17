@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Optimistic Updates
 
 Apply the expected mutation result to the cache immediately, then roll back if the server rejects it. This makes write operations feel instant without waiting for the network round-trip.

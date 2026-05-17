@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # No Modify Generated Files
 
 Never manually edit `routeTree.gen.ts` or any other file with a `.gen.ts` suffix produced by the TanStack Router CLI or Vite plugin. These files are fully regenerated on every dev start and build, overwriting any manual changes.

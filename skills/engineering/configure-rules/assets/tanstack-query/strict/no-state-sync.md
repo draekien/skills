@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # No State Sync
 
 Never copy query data into `useState`. Doing so creates a second source of truth that diverges from the cache on background refetches, leaving stale data on screen.

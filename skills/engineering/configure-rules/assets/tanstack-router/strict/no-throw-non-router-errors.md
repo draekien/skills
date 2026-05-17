@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # No Throw Non-Router Errors
 
 In route loaders and actions, only throw `redirect()` or `notFound()` from TanStack Router. All other exceptional conditions must throw `Error` instances. Throwing plain objects or strings conflicts with `@typescript-eslint/only-throw-error` and produces untyped error boundaries.

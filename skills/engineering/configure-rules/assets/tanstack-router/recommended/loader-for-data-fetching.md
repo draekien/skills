@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Loader for Data Fetching
 
 Fetch async data in the route's `loader` function, not inside component `useEffect` hooks. The loader runs before the component renders, enabling Suspense boundaries and error boundaries to handle loading and error states without component-level boilerplate.

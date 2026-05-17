@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Explicit Tuple Names
 
 Always name tuple elements. Never return or accept positional tuples without names — callers cannot tell what `.Item1` and `.Item2` mean.

@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Prefer `const`
 
 Use `const` by default. Only use `let` when the variable must be reassigned after declaration. Never use `var`.

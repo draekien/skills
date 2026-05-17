@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # No `any` Type
 
 Never use `any`. When the type is genuinely unknown, use `unknown` and narrow it explicitly before use.

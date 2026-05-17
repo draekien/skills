@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Null Safety
 
 Handle `null` and `undefined` explicitly. Never use the non-null assertion operator (`!`) without an inline comment explaining the invariant that makes it safe.

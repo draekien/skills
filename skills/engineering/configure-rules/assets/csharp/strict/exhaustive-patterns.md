@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.cs"
+---
+
 # Exhaustive Pattern Matching
 
 Switch expressions over discriminated types (unions, enums, sealed hierarchies) must handle all known cases explicitly. Include a `_ => throw new UnreachableException(...)` fallback so that any future variant addition causes a runtime failure at the unhandled branch rather than silently returning a default.

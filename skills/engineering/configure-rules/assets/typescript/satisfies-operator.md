@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Satisfies Operator
 
 Prefer `satisfies` over `as` when the goal is to validate that an expression matches a type without widening its inferred type. `satisfies` checks the type at the point of declaration and preserves the literal type for downstream use.

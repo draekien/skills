@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Exhaustive Switches
 
 When switching or branching over a union type, include a `never` branch to catch unhandled cases at compile time. This ensures that adding a new union member forces a build error at every exhaustion point.

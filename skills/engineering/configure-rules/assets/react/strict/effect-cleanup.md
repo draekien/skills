@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,jsx}"
+---
+
 # Effect Cleanup
 
 Return a cleanup function from any effect that sets up a subscription, timer, event listener, or an async operation that can be cancelled.

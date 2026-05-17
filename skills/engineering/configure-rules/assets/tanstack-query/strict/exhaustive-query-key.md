@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Exhaustive Query Key
 
 Every variable read inside `queryFn` must appear in `queryKey`. Variables absent from the key are invisible to the cache — the query returns stale data when those variables change.

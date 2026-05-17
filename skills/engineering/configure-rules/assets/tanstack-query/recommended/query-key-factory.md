@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # Query Key Factory
 
 Centralise all query keys in a factory object so every call site references the same key shape, enabling reliable cache invalidation and eliminating typos.

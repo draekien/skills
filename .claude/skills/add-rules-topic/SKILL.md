@@ -35,9 +35,14 @@ For each approved rule, create the file at the matching path:
 - `assets/<topic>/strict/<rule-name>.md`
 - `assets/<topic>/<rule-name>.md` (optional)
 
-Rule file canonical layout — plain markdown, no frontmatter:
+Rule file canonical layout — include `paths` frontmatter to scope the rule to the relevant file types:
 
 ```markdown
+---
+paths:
+  - "<glob matching files where this rule applies>"
+---
+
 # Rule Title
 
 One-sentence purpose and the invariant it enforces. Optionally one more sentence on reasoning.
@@ -52,6 +57,14 @@ One-sentence purpose and the invariant it enforces. Optionally one more sentence
 
 Optional: one closing sentence on edge cases or when the rule does not apply.
 ```
+
+Common `paths` mappings by topic:
+- TypeScript/TSX → `**/*.{ts,tsx}`
+- React (JSX/components) → `**/*.{tsx,jsx}`
+- C# → `**/*.cs`
+- Python → `**/*.py`
+- CSS/Tailwind → `**/*.{css,scss}`
+- Config-only topic (no language match) → omit `paths` (loads unconditionally)
 
 Match the conciseness of existing rules in `assets/typescript/` and `assets/csharp/`. Keep files under ~50 lines.
 

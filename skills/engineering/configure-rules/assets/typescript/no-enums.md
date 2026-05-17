@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{ts,tsx}"
+---
+
 # No Enums
 
 Avoid TypeScript enums. Use `as const` objects with a derived union type instead.
