@@ -29,6 +29,7 @@ Once created in a session, treat it as present for the remainder — do not re-c
 | File | Purpose | Spec |
 |------|---------|------|
 | `.skillsrc` | Per-skill configuration keyed by skill name | [specs/skillsrc.md](skillsrc.md) |
+| `ubiquitous-language.yaml` | DDD ubiquitous language dictionary (bounded contexts + terms) | managed by `get-specific` skill |
 
 Future files added by new skills must be documented here and in their own spec.
 

@@ -1,58 +1,88 @@
-# UBIQUITOUS_LANGUAGE.md Format Reference
+# Ubiquitous Language Format Reference
 
-## Scoped File
+## Dictionary File
 
-Saved at `<bounded-context-dir>/UBIQUITOUS_LANGUAGE.md`. Term defs for that bounded context only.
+Stored at the path specified by `dictionaryPath` in `.draekien/.skillsrc` (default: `.draekien/ubiquitous-language.yaml`).
 
-```markdown
-# Ubiquitous Language — <Bounded Context Name>
+Single file for the whole project. Bounded contexts are top-level keys under `contexts`.
 
-## Terms
-
-### TermName
-aliases: Alias1, Alias2
-Definition in 50 words max. What it IS, not what it does. No impl detail.
-usage: One sentence showing the term used naturally in a domain conversation.
-related:
-  - OtherTerm (relationship label)
-  - AnotherTerm (relationship label)
-
-### AnotherTerm
-Definition.
-usage: Usage note.
+```yaml
+contexts:
+  Orders:
+    terms:
+      Order:
+        aliases:
+          - PurchaseOrder
+        definition: "Intent from a customer to acquire one or more products. Exists before payment is confirmed. Mutable until submitted."
+        usage: "When a customer adds items to their cart and clicks 'Buy', that creates an Order."
+        related:
+          - term: OrderLine
+            relationship: contains
+          - term: Invoice
+            relationship: precedes
+          - term: Customer
+            relationship: owned by
+    ambiguities:
+      LineItem:
+        note: "Used to mean both OrderLine and Invoice line — resolution pending."
 ```
 
-## Root File
+## Schema
 
-Saved at project root `UBIQUITOUS_LANGUAGE.md`. Index + bounded context map only — no term defs.
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `contexts` | map | yes | Top-level key. Each entry is a bounded context. |
+| `contexts.<Name>.terms` | map | yes | Term definitions keyed by PascalCase name. |
+| `contexts.<Name>.terms.<Term>.definition` | string | yes | 50 words max. What it IS. No impl detail. |
+| `contexts.<Name>.terms.<Term>.aliases` | list\<string\> | no | Alternative names to actively avoid. |
+| `contexts.<Name>.terms.<Term>.usage` | string | yes | One sentence using the term in a domain conversation. |
+| `contexts.<Name>.terms.<Term>.related` | list\<{term, relationship}\> | no | Only terms already defined. |
+| `contexts.<Name>.ambiguities` | map | no | Terms flagged as conflicting. Remove on resolution. |
+| `contexts.<Name>.ambiguities.<Term>.note` | string | yes | Describes the conflict. |
 
-```markdown
-# Ubiquitous Language Index
+## Script Invocation
 
-<!-- Last validated: <ISO date> -->
+All scripts use `uv run` from the skill's base directory. `<dict>` is the resolved `dictionaryPath`.
 
-## Bounded Contexts
-- [path/to/UBIQUITOUS_LANGUAGE.md](path/to/UBIQUITOUS_LANGUAGE.md) — <Bounded Context Name>
-
-## Unmapped Directories
-- `path/to/dir/` — no bounded context assigned yet
+**Query (read-only):**
+```
+uv run scripts/query.py --dict <dict> list-contexts
+uv run scripts/query.py --dict <dict> lookup <TermName> [--context <Context>]
+uv run scripts/query.py --dict <dict> list <Context> [--page N] [--page-size N]
 ```
 
-## Rules
+**Write:**
+```
+uv run scripts/write.py --dict <dict> add-term \
+  --context <Context> --term <TermName> --definition "<text>" \
+  [--aliases Alias1 Alias2] [--usage "<text>"] \
+  [--related "TermName:relationship" ...]
 
-- Root file updated every session start (revalidation timestamp) + when new scoped file created.
-- Scoped file updated immediately on term confirm — no batching.
-- Term names PascalCase to distinguish from prose.
-- **50 words max per definition.** Define what it IS. No impl detail. Aliases, usage note, and related terms live outside this budget.
-- **Be opinionated.** When multiple words exist for same concept, pick canonical term, list alternatives as `aliases:` to actively avoid.
-- **Project-specific only.** Before adding term, ask: unique to this context, or general programming concept? General concepts (timeouts, error types, utility patterns) don't belong even if project uses them heavily.
-- **Usage note required.** One sentence showing the term used in a realistic domain conversation. Must use at least one other defined term where possible.
-- **Related terms required when applicable.** List only terms already defined. Use a relationship label that describes directionality.
+uv run scripts/write.py --dict <dict> flag-ambiguity \
+  --context <Context> --term <TermName> --note "<text>"
 
-### Relationship Labels
+uv run scripts/write.py --dict <dict> resolve-ambiguity \
+  --context <Context> --term <TermName>
+```
+
+**Migrate (one-time):**
+```
+uv run scripts/migrate.py --project-root <root> --dict <dict> [--dry-run]
+```
+
+## Term Rules
+
+- **PascalCase** term names to distinguish from prose.
+- **50 words max per definition.** Define what it IS. No impl detail. Aliases, usage, and related live outside this budget.
+- **Be opinionated.** When multiple words exist for the same concept, pick one canonical term; list alternatives as `aliases` to actively avoid.
+- **Project-specific only.** Before adding a term, ask: unique to this domain, or a general programming concept? General concepts don't belong.
+- **Usage note required.** Must use at least one other defined term where possible.
+- **Related terms required when applicable.** List only already-defined terms. Use a relationship label.
+
+## Relationship Labels
 
 | Label | Meaning |
-|---|---|
+|-------|---------|
 | `contains` | this term owns one or more of the related term |
 | `part of` | this term is a component of the related term |
 | `produced by` | this term results from the related term |
@@ -60,53 +90,3 @@ Saved at project root `UBIQUITOUS_LANGUAGE.md`. Index + bounded context map only
 | `triggers` | this term causes the related term to occur |
 | `owned by` | this term's lifecycle is controlled by the related term |
 | `synonym of` | same concept, different name — one should be aliased |
-
-## Flagged Ambiguities
-
-Use when term used in conflicting ways not yet resolved.
-
-```markdown
-## Flagged Ambiguities
-
-### TermName
-Used to mean both X and Y. Resolution pending.
-```
-
-Remove entry once resolved and canonical def written under Terms.
-
-## Full Scoped File Example
-
-```markdown
-# Ubiquitous Language — Orders
-
-## Terms
-
-### Order
-aliases: PurchaseOrder
-Intent from a customer to acquire one or more products. Exists before payment is confirmed. Mutable until submitted.
-usage: "When a customer adds items to their cart and clicks 'Buy', that creates an Order."
-related:
-  - OrderLine (contains)
-  - Invoice (precedes)
-  - Customer (owned by)
-
-### OrderLine
-A single product-quantity pair within an Order. Quantity, price, and product reference captured at order time.
-usage: "Each product in an Order is represented as an OrderLine with its price locked at submission."
-related:
-  - Order (part of)
-  - Product (references)
-
-### Invoice
-aliases: Bill
-Formal record of what was charged for a fulfilled Order. Immutable once issued.
-usage: "Once payment is confirmed, an Invoice is generated from the Order's OrderLines."
-related:
-  - Order (produced by)
-  - Payment (triggers)
-
-## Flagged Ambiguities
-
-### LineItem
-Used to mean both OrderLine and Invoice line — resolution pending.
-```
