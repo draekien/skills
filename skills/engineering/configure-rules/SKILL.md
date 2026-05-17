@@ -19,6 +19,7 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
 | `react` | `react` in `package.json` dependencies | [references/react.md](references/react.md) |
 | `tanstack-query` | `@tanstack/react-query` or `@tanstack/query-core` in `package.json` dependencies | [references/tanstack-query.md](references/tanstack-query.md) |
 | `tanstack-router` | `@tanstack/react-router` or `@tanstack/router` in `package.json` dependencies | [references/tanstack-router.md](references/tanstack-router.md) |
+| `software-design` | any codebase | — |
 
 ## Workflow
 
