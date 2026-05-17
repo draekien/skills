@@ -47,6 +47,13 @@ Adding new skill, update `marketplace.json`:
 - List individual skill paths (e.g. `"./skills/drafting/skill-writing"`), not whole bucket dirs
 - `personal/` skills not public-facing — must not appear in any plugin entry
 
+## Project Configuration Conventions
+
+Skills that require per-project configuration use a shared dotfolder and config file:
+
+- **`.draekien/` directory** — vendor-namespaced folder at the project root. See [specs/draekien.md](specs/draekien.md).
+- **`.draekien/.skillsrc`** — JSON config file keyed by skill name. See [specs/skillsrc.md](specs/skillsrc.md). When writing a new skill that needs per-project config, register its keys in the Registered Keys table in that spec.
+
 ## Workflow
 
 - New skill in this repo: use `skill-creator` skill
