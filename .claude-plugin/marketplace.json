@@ -26,7 +26,7 @@
         "./skills/engineering/configure-claude-rules",
         "./skills/engineering/module-design"
       ],
-      "version": "0.10.0"
+      "version": "0.11.0"
     },
     {
       "name": "drafting-skills",
@@ -42,7 +42,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-claude-rules", "./skills/engineering/module-design"],
-      "version": "0.10.0"
+      "version": "0.11.0"
     },
     {
       "name": "productivity-skills",
@@ -50,7 +50,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video"],
-      "version": "0.3.1"
+      "version": "0.4.0"
     }
   ]
 }

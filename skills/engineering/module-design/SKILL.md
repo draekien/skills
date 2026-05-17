@@ -11,7 +11,7 @@ Guide the user through designing a new piece of code. Interview one question at 
 
 Run once on first invocation in this order:
 
-1. **Load config** — read `.draekien/.skillsrc` at the project root. If present and `module-design.specsDir` is set, use that as the spec output directory. Otherwise default to `docs/designs`.
+1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the configured spec output directory. If `.draekien/.skillsrc` is absent the script prints the default `docs/designs`.
 2. **DDD mode** — check for `UBIQUITOUS_LANGUAGE.md` at the project root. If found, load it and activate DDD mode (bounded context mapping, term capture, conflict detection — see [references/ddd-mode.md](references/ddd-mode.md)). If absent, skip DDD mode entirely.
 3. **Open question** — ask "What are you designing?" Wait for the answer before proceeding.
 
@@ -58,7 +58,7 @@ Present the draft to the user and apply any corrections before writing to disk.
 2. Check whether the directory exists.
    - **Exists** — write directly, no confirmation needed.
    - **Does not exist** — confirm the full path with the user before creating it.
-3. If the user provides a custom path that differs from the default, write it to `.draekien/.skillsrc` under `module-design.specsDir`. See [references/skillsrc-format.md](references/skillsrc-format.md) for keys and write rules.
+3. If the user provides a custom path that differs from the default, confirm with the user, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc set <path>` to persist it. The script merges only the `module-design` block and preserves all other skills' config.
 
 ## Recommended Rules Audit
 

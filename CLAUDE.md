@@ -58,3 +58,4 @@ Skills that require per-project configuration use a shared dotfolder and config 
 
 - New skill in this repo: use `skill-creator` skill
 - After writing skill: use `compact` caveman skill on yaml `description` and skill contents.
+- After adding a new skill: run `uv run scripts/check-manifest.py` from repo root and fix any reported gaps before committing.

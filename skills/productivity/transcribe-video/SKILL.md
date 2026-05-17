@@ -75,29 +75,11 @@ Check memory for a saved `whisper-model` preference.
 
 ## 4. Transcription
 
-Use the venv-local binaries. Replace `<whisper>` and `<yt-dlp>` with:
-- Windows: `whisper-env\Scripts\whisper` and `whisper-env\Scripts\yt-dlp`
-- Unix: `whisper-env/bin/whisper` and `whisper-env/bin/yt-dlp`
-
-### From a URL
-
 ```bash
-<yt-dlp> "<url>" -o "yt_tmp.%(ext)s" --no-playlist
+uv run scripts/transcribe.py "<source>" --model <model> --venv whisper-env
 ```
 
-Capture the downloaded filename from yt-dlp output, then:
-
-```bash
-<whisper> "<downloaded_file>" --model <model> --output_format txt
-```
-
-Delete the downloaded video file after transcription completes.
-
-### From a local file
-
-```bash
-<whisper> "<file_path>" --model <model> --output_format txt
-```
+`<source>` is the URL or local file path. The script handles download (for URLs), transcription, and temp file cleanup automatically. It prints the transcript file path on success.
 
 ## 5. Output
 

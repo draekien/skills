@@ -26,7 +26,7 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
 
 ## Workflow
 
-1. **Pick topics and presets.** In Explore mode, scan signals; in Preset mode, take user input. For each topic, ask the user to choose `recommended` or `strict`.
+1. **Pick topics and presets.** In Explore mode, run `uv run scripts/detect-topics.py <target-dir>` to detect topics from the repo's signals and present the results to the user. In Preset mode, take user input directly. For each topic, ask the user to choose `recommended` or `strict`.
 
 2. **Offer optional rules.** List `.md` files directly under `assets/<topic>/` (not in a subdirectory) with a one-line description each. Allow at most one selection per mutually-exclusive group:
    - `typescript`: `prefer-interfaces` ⨯ `prefer-types`

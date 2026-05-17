@@ -11,7 +11,7 @@ Establish DDD ubiquitous language scoped to bounded contexts. Interview user, ca
 
 Runs once on first invocation.
 
-1. Read `dictionaryPath` from `.draekien/.skillsrc` under the `get-specific` key. Default: `.draekien/ubiquitous-language.yaml`.
+1. Run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the configured dictionary path. If `.draekien/.skillsrc` is absent the script prints the default `.draekien/ubiquitous-language.yaml`.
 2. Check whether the dictionary file exists at `dictionaryPath`.
    - **Exists**: load all contexts and terms into conflict detection context using `scripts/query.py list-contexts` then `scripts/query.py list <Context>` for each. Skip to step 3.
    - **Does not exist**: scan project for any `UBIQUITOUS_LANGUAGE.md` files (excluding root index). If found, show the list and prompt user to migrate using `scripts/migrate.py`. After migration (or if none found), proceed.
