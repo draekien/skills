@@ -62,3 +62,9 @@ Skills for general workplace productivity: summarisation, research, meeting prep
 - [deep-research](skills/productivity/deep-research/SKILL.md) — Conducts structured multi-source research through a scoping interview, parallel agent researchers with adaptive source selection, and a synthesizer report.
 - [transcribe-video](skills/productivity/transcribe-video/SKILL.md) — Transcribes video or audio from a local file or URL to plain text using OpenAI Whisper.
 - [visualise](skills/productivity/visualise/SKILL.md) — Takes user-supplied input and produces a self-contained HTML visualisation opened in the browser.
+
+## Output Styles
+
+Skills that shift Claude's communication tone and voice.
+
+- [cte-mode](skills/output-styles/cte-mode/SKILL.md) — Adapts Claude's communication style for someone with CTE: short sentences, plain language, structured output, and patient tone.

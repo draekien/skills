@@ -25,9 +25,10 @@
         "./skills/engineering/get-specific",
         "./skills/engineering/react-composition-rules",
         "./skills/engineering/configure-claude-rules",
-        "./skills/engineering/module-design"
+        "./skills/engineering/module-design",
+        "./skills/output-styles/cte-mode"
       ],
-      "version": "0.14.0"
+      "version": "0.15.0"
     },
     {
       "name": "drafting-skills",
@@ -52,6 +53,14 @@
       "strict": false,
       "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise"],
       "version": "0.6.0"
+    },
+    {
+      "name": "output-styles",
+      "description": "Skills that shift Claude's communication tone and voice.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/output-styles/cte-mode"],
+      "version": "0.1.0"
     }
   ]
 }

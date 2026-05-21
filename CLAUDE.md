@@ -8,6 +8,7 @@ Repo stores agent skills in buckets under `skills/`. Each bucket groups skills b
 - **engineering** — Dev tasks: code review, debugging, architecture, workflows.
 - **personal** — Personal productivity: scheduling, decisions, organisation.
 - **productivity** — Workplace productivity: summarisation, research, meeting prep, task management.
+- **output-styles** — Tone and voice modes: communication style presets for different audiences and needs.
 
 ## Structure
 
