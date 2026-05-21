@@ -14,7 +14,7 @@ Interview the user relentlessly until the topic is fully pinned. Cover:
 - Scope boundaries (what's in, what's explicitly out)
 - Known context or prior work to skip
 - Desired depth (quick overview vs. exhaustive)
-- Output preference: inline report in the conversation, or written to a file (get a path)
+- Output preference: inline report in the conversation, or written to files in a directory (get a directory path)
 
 Ask one question at a time. If a question can be answered by exploring the project, do that instead of asking.
 
@@ -62,9 +62,9 @@ Each subagent receives its angle, scope, and the source menu. All run in paralle
 
 ## Phase 4 — Synthesize
 
-Spawn a separate synthesizer subagent with all researcher outputs and the original topic.
+Spawn a separate synthesizer subagent with all researcher outputs, the original topic, and the output preference.
 
-Synthesizer produces:
+Synthesizer produces a structured report with these sections:
 
 **Executive summary** — 2–4 sentences answering the core question.
 
@@ -76,7 +76,12 @@ Synthesizer produces:
 
 **Sources** — all URLs and file paths cited.
 
+For directory output the synthesizer also partitions findings by angle and collects a unified source list, ready for Phase 5 file writers.
+
 ## Phase 5 — Deliver
 
 - Inline: output the synthesizer report directly in the conversation.
-- File: write the report to the path the user specified in the interview.
+- Directory: spawn parallel writer subagents, one per output file, all writing simultaneously to the user's directory:
+  - `overview.md` — executive summary, cross-cutting themes, and open questions
+  - One `<angle-name>.md` per research angle — that angle's findings and sources
+  - `sources.md` — all URLs and file paths cited across all angles

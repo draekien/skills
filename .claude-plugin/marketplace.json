@@ -27,7 +27,7 @@
         "./skills/engineering/configure-claude-rules",
         "./skills/engineering/module-design"
       ],
-      "version": "0.12.0"
+      "version": "0.13.0"
     },
     {
       "name": "drafting-skills",
@@ -51,7 +51,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise"],
-      "version": "0.5.0"
+      "version": "0.6.0"
     }
   ]
 }
