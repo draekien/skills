@@ -6,7 +6,7 @@
 Validates that marketplace.json and bucket READMEs are consistent with actual skill directories.
 
 Usage:
-  uv run scripts/check-manifest.py
+  uv run tests/check-manifest.py
 
 Run from the repo root. No arguments.
 
@@ -26,7 +26,6 @@ import sys
 from pathlib import Path
 
 import yaml
-
 
 REPO_ROOT = Path(__file__).parent.parent
 MANIFEST_PATH = REPO_ROOT / ".claude-plugin" / "marketplace.json"
@@ -64,8 +63,7 @@ def main() -> int:
 
     # Collect all SKILL.md files, excluding personal bucket
     skill_mds = [
-        p for p in SKILLS_ROOT.rglob("SKILL.md")
-        if PERSONAL_BUCKET not in p.parts
+        p for p in SKILLS_ROOT.rglob("SKILL.md") if PERSONAL_BUCKET not in p.parts
     ]
 
     issues: list[str] = []
@@ -79,7 +77,9 @@ def main() -> int:
         if entry not in everything_skills:
             fm = parse_frontmatter(skill_md)
             name = fm.get("name", skill_dir.name)
-            issues.append(f"MISSING from marketplace.json everything.skills: {entry}  (name: {name})")
+            issues.append(
+                f"MISSING from marketplace.json everything.skills: {entry}  (name: {name})"
+            )
 
         bucket_readme = SKILLS_ROOT / bucket / "README.md"
         if bucket_readme.exists():
