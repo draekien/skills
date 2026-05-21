@@ -61,3 +61,4 @@ Skills for general workplace productivity: summarisation, research, meeting prep
 - [round-table](skills/productivity/round-table/SKILL.md) — Assembles a debate-style agent team with one champion per option and a fence sitter judge to deliver a structured verdict and recommendation.
 - [deep-research](skills/productivity/deep-research/SKILL.md) — Conducts structured multi-source research through a scoping interview, parallel agent researchers with adaptive source selection, and a synthesizer report.
 - [transcribe-video](skills/productivity/transcribe-video/SKILL.md) — Transcribes video or audio from a local file or URL to plain text using OpenAI Whisper.
+- [visualise](skills/productivity/visualise/SKILL.md) — Takes user-supplied input and produces a self-contained HTML visualisation opened in the browser.
