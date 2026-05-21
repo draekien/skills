@@ -68,3 +68,4 @@ Skills for general workplace productivity: summarisation, research, meeting prep
 Skills that shift Claude's communication tone and voice.
 
 - [cte-mode](skills/output-styles/cte-mode/SKILL.md) — Adapts Claude's communication style for someone with CTE: short sentences, plain language, structured output, and patient tone.
+- [eli10-mode](skills/output-styles/eli10-mode/SKILL.md) — Explains concepts simply using analogies, plain words, and concrete examples suited to a 10-year-old.

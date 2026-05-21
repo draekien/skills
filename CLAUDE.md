@@ -24,7 +24,7 @@ skills/
       assets/            optional: templates, icons, other output files
 ```
 
-- Every skill in `drafting/`, `engineering/`, `productivity/` needs entry in top-level `README.md`. Skills in `personal/` must not appear.
+- Every skill in `drafting/`, `engineering/`, `productivity/`, 'output-styles' needs entry in top-level `README.md`. Skills in `personal/` must not appear.
 - Each top-level `README.md` entry links skill name to its `SKILL.md`.
 - Each bucket has `README.md` listing all skills with one-line descriptions, names linked to `SKILL.md`.
 
