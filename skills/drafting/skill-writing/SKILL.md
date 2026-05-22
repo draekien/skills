@@ -1,30 +1,34 @@
 ---
 name: skill-writing
-description: Creates, updates, and refines agent skills following the Agent Skills open standard (agentskills.io). Three modes — create (new skill from scratch), update (revise existing skill for new requirements), refine (audit and rewrite for health and token efficiency). Use when building/scaffolding a skill, or when the user says "create a skill", "make a skill", "new skill", "scaffold a skill", "update this skill", "modify this skill", "revise this skill", "refine this skill", "audit this skill", "compress this skill", "optimize this skill", "skill is too verbose", "clean up this skill".
+description: Writes and improves agent skills to meet the Agent Skills open standard (agentskills.io). Use when building a new skill from scratch, revising an existing skill for new requirements, or auditing a skill for quality — or when the user says "create a skill", "make a skill", "new skill", "scaffold a skill", "update this skill", "modify this skill", "revise this skill", "refine this skill", "audit this skill", "compress this skill", "optimize this skill", "skill is too verbose", "clean up this skill".
 compatibility: Designed for Claude Code (or similar products with Agent Skills support)
 ---
 
-# Skill Writing
+A skill is a teaching document for a future LLM instance — it transfers intent and judgment so the agent can achieve a goal without the author present.
 
-Creates, updates, and refines agent skills per the [Agent Skills open standard](https://agentskills.io/specification). Three modes, each with its own workflow.
+## Skill Anatomy
 
-## Mode Detection
+Every skill has:
 
-Determine mode from trigger keywords first. If no keywords, check the filesystem.
+- **Frontmatter** — `name`, `description`, optional `compatibility`
+- **Body** — workflow steps, decision logic, and any information the agent needs on first activation
+- **Supporting files** — `scripts/`, `references/`, `assets/` as needed (see Content Placement)
 
-| Priority     | Signal                                                                                 | Mode       |
-| ------------ | -------------------------------------------------------------------------------------- | ---------- |
-| 1            | "create", "new skill", "make a skill", "scaffold"                                      | **create** |
-| 2            | "refine", "audit", "compress skill", "optimize skill", "too verbose", "clean up skill" | **refine** |
-| 3            | "update", "modify", "revise", "change this skill"                                      | **update** |
-| 4 (fallback) | Target path provided, `SKILL.md` exists at path                                        | **update** |
-| 5 (fallback) | Target path provided, no `SKILL.md` at path                                            | **create** |
+**Name** — 1–64 characters, `[a-z0-9-]` only, no leading/trailing/consecutive hyphens, matches parent directory name exactly. Verb-noun form preferred when name contains a verb (`transcribe-video`, `review-code`).
 
-Once mode is determined, read the corresponding reference file and follow it:
+**Description** — the sole activation signal; write as an API contract:
+```
+<verb> <what it does>. Use when <conditions>, or when the user says "<phrase 1>", "<phrase 2>".
+```
+1–1024 characters, imperative, embeds trigger phrases verbatim.
 
-- **Create:** [references/create.md](references/create.md)
-- **Update:** [references/update.md](references/update.md)
-- **Refine:** [references/refine.md](references/refine.md)
+## Context First, Then Interview
+
+When the request is clear and session context provides sufficient detail, proceed directly. When ambiguity remains:
+
+1. Extract what the session already provides — purpose, scope, trigger phrases, supporting file needs — before asking anything
+2. For each remaining unknown, ask one targeted question; give your recommendation and the key tradeoff
+3. Resolve dependencies between decisions before moving on
 
 ## Writing Standards
 
@@ -33,9 +37,10 @@ Apply these whenever writing or rewriting any `SKILL.md` content:
 - Third-person imperative: "Extract the text..." not "I will..." or "You should..."
 - One term per concept — never vary
 - No comments explaining what was removed or changed
-- **No tool names** — never reference specific agent tools (e.g. WebSearch, Grep, SendMessage) or MCP tool names; describe capabilities instead ("search the web", "read local files", "send a direct message") so the skill works across agents with different toolsets
+- **No tool names** — describe capabilities instead ("search the web", "read local files") so the skill works across agents with different toolsets
 - **Activation lives in the description** — never write a "When to use this skill" section in the body
-- **No narrative or session-dated examples** — content like "In session 2025-10-03 we found..." is too specific and decays into noise; replace with the abstract rule; generic illustrative examples (good vs poor pair) are fine
+- **No narrative or session-dated examples** — replace with the abstract rule; generic illustrative examples (good vs poor pair) are fine
+- **Never drop process logic from an existing skill without explicit confirmation** — silent removal is the hardest regression to catch
 
 ### Match freedom to fragility
 
@@ -76,6 +81,18 @@ In judgment-heavy phases, instructions should explain what good looks like and w
 
 Reserve bare imperative commands for deterministic operations where variation is a bug.
 
+### Body patterns
+
+Pick patterns that fit the task — don't force a template. Common shapes:
+
+- **Gotchas section** — for known pitfalls the agent would otherwise fall into
+- **Output template in `assets/`** — for outputs the agent should copy rather than invent
+- **Checklist** — when order matters but steps are independent
+- **Validation loop** — "if output doesn't satisfy X, retry with Y" for fragile generations
+- **Philosophy section** — opens with the core principle and explains *why* it matters before any workflow; use when task judgment matters more than step adherence
+- **Anti-pattern section** — names the common wrong approach, explains the mechanism by which it fails, contrasts with correct behaviour; "don't do X" gives the agent no way to recognise X in the wild
+- **Concept-named phases** — name phases by what the agent is doing conceptually rather than by sequence; names that encode the mental model survive when steps are skipped or reordered
+
 ## Content Placement
 
 Place content at the level where it is first needed.
@@ -85,10 +102,9 @@ Place content at the level where it is first needed.
 | Always loaded | `SKILL.md` body | Complete workflow steps, decision logic, all info needed on first activation                       |
 | On demand     | `references/`   | API schemas, data formats, lookup tables, verbose technical docs unlikely needed every run         |
 | Template      | `assets/`       | Output templates the agent copies rather than invents, static config files, example inputs/outputs |
+| Executable    | `scripts/`      | Deterministic operations too fragile or complex to re-derive each run; benefits from idempotency  |
 
 Link reference files from the body using relative paths. One level deep only — never reference a reference from a reference. Target body under 500 lines; when content exceeds this, split into `references/`.
-
-### Supporting files
 
 **`scripts/`** — use when the task is deterministic (variation = bug), the agent would re-derive complex logic each run, or the operation benefits from idempotency. See [references/script-design.md](references/script-design.md) for design rules and dependency approaches.
 
@@ -100,14 +116,9 @@ Link reference files from the body using relative paths. One level deep only —
 
 - **`scripts/validate.py`** — Checks all `[AUTO]` spec rules; exits non-zero on failure.
 
-## Post-Write Validation
+## After producing or improving a skill
 
-Run after completing any create, update, or refine workflow:
-
-```
-uv run scripts/validate.py <skill-dir>
-```
-
-Fix failures before confirming to user.
-Script checks all `[AUTO]` rules in [references/spec-rules.md](references/spec-rules.md).
-You must manually review `[LLM]` rules in [references/spec-rules.md](references/spec-rules.md).
+1. Spawn a subagent to act as LLM judge — brief it with the skill path and instruct it to read the skill, audit against [references/quality-criteria.md](references/quality-criteria.md), and check all `[LLM]` rules in [references/spec-rules.md](references/spec-rules.md); report every gap as a flat list
+2. Review findings — fix unambiguous gaps without asking; for gaps with meaningful tradeoffs, ask one question before fixing
+3. Run `uv run scripts/validate.py <skill-dir>` — fix any `[AUTO]` failures before confirming
+4. Verify all relative file links in the body resolve
