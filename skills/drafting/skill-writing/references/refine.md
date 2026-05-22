@@ -20,6 +20,12 @@ Identify problems across these categories. The writing principles define many of
 - Low-freedom step-by-step instructions where the task is variable and heuristic-driven.
 - High-freedom heuristics where the task is fragile or sequence-critical.
 
+**Reasoning-absent instructions**
+- Imperative commands in judgment-heavy phases that carry no reasoning ("do X" with no "so that Y" or "because Z").
+- Phase names that are generic sequence numbers when a concept name would encode the mental model.
+- Missing philosophy section in a skill where the agent needs to understand the goal before executing.
+- Missing anti-pattern section where a predictable wrong approach exists.
+
 **Trust violations**
 - Content the agent already knows from training (language syntax, common tool usage).
 - Paragraphs that don't justify their token cost.
