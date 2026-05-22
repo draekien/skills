@@ -6,33 +6,32 @@ compatibility: Designed for Claude Code (or similar products with Agent Skills s
 
 A skill is a teaching document for a future LLM instance — it transfers intent and judgment so the agent can achieve a goal without the author present.
 
+## Workflow
+
+1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything
+2. **Plan structure** — decide what belongs in the body versus references, scripts, or assets (see [Content Placement](#content-placement))
+3. **Write** — let the task's fragility and the agent's existing knowledge determine how much structure to impose; apply Writing Standards throughout
+4. **Run the [Quality Gate](#quality-gate)**
+
 ## Skill Anatomy
 
-Every skill has:
+See [references/specification.md](references/specification.md) for the full format specification — frontmatter fields, name/description constraints, directory structure, and progressive disclosure model.
 
-- **Frontmatter** — `name`, `description`, optional `compatibility`
-- **Body** — workflow steps, decision logic, and any information the agent needs on first activation
-- **Supporting files** — `scripts/`, `references/`, `assets/` as needed (see Content Placement)
-
-**Name** — 1–64 characters, `[a-z0-9-]` only, no leading/trailing/consecutive hyphens, matches parent directory name exactly. Verb-noun form preferred when name contains a verb (`transcribe-video`, `review-code`).
+**Name** — verb-noun form preferred when name contains a verb (`transcribe-video`, `review-code`).
 
 **Description** — the sole activation signal; write as an API contract:
 ```
 <verb> <what it does>. Use when <conditions>, or when the user says "<phrase 1>", "<phrase 2>".
 ```
-1–1024 characters, imperative, embeds trigger phrases verbatim.
+Imperative, embeds trigger phrases verbatim.
 
 ## Context First, Then Interview
 
-When the request is clear and session context provides sufficient detail, proceed directly. When ambiguity remains:
-
-1. Extract what the session already provides — purpose, scope, trigger phrases, supporting file needs — before asking anything
-2. For each remaining unknown, ask one targeted question; give your recommendation and the key tradeoff
-3. Resolve dependencies between decisions before moving on
+Exhaust what the session already provides before asking anything. If purpose, scope, trigger phrases, and supporting file needs are clear from context, proceed directly. When genuine gaps remain, surface them one at a time — give a recommendation and the key tradeoff, and resolve interdependent decisions before moving on.
 
 ## Writing Standards
 
-Apply these whenever writing or rewriting any `SKILL.md` content:
+These standards ensure the skill transfers cleanly — the agent reading it cold should receive the author's intent without noise or ambiguity:
 
 - Third-person imperative: "Extract the text..." not "I will..." or "You should..."
 - One term per concept — never vary
@@ -40,7 +39,7 @@ Apply these whenever writing or rewriting any `SKILL.md` content:
 - **No tool names** — describe capabilities instead ("search the web", "read local files") so the skill works across agents with different toolsets
 - **Activation lives in the description** — never write a "When to use this skill" section in the body
 - **No narrative or session-dated examples** — replace with the abstract rule; generic illustrative examples (good vs poor pair) are fine
-- **Never drop process logic from an existing skill without explicit confirmation** — silent removal is the hardest regression to catch
+- **Never drop process logic from an existing skill without explicit confirmation** — the future agent will lack that judgment without knowing it's missing
 
 ### Match freedom to fragility
 
@@ -64,13 +63,11 @@ Analogy: narrow bridge with cliffs → low freedom. Open field → high freedom.
 
 ### Trust the agent's intelligence
 
-Default to omitting context the agent already has. Challenge every paragraph against:
+Every token spent on knowledge the agent already carries is noise that buries the intent that actually needs to transfer. Challenge every paragraph against:
 
 - Does the agent really need this explanation?
 - Can this be assumed as common knowledge?
 - Does this content justify its token cost?
-
-If the answer is no, drop it.
 
 ### Carry the why, not just the what
 
@@ -83,7 +80,7 @@ Reserve bare imperative commands for deterministic operations where variation is
 
 ### Body patterns
 
-Pick patterns that fit the task — don't force a template. Common shapes:
+Choose structures that best surface the judgment the agent needs — the right pattern depends on what kind of knowledge needs to transfer:
 
 - **Gotchas section** — for known pitfalls the agent would otherwise fall into
 - **Output template in `assets/`** — for outputs the agent should copy rather than invent
@@ -95,11 +92,9 @@ Pick patterns that fit the task — don't force a template. Common shapes:
 
 ## Content Placement
 
-Place content at the level where it is first needed.
-
 | Level         | Location        | What belongs here                                                                                  |
 | ------------- | --------------- | -------------------------------------------------------------------------------------------------- |
-| Always loaded | `SKILL.md` body | Complete workflow steps, decision logic, all info needed on first activation                       |
+| Always loaded | `SKILL.md` body | Intent, judgment, and workflow — everything the agent needs to act without the author present      |
 | On demand     | `references/`   | API schemas, data formats, lookup tables, verbose technical docs unlikely needed every run         |
 | Template      | `assets/`       | Output templates the agent copies rather than invents, static config files, example inputs/outputs |
 | Executable    | `scripts/`      | Deterministic operations too fragile or complex to re-derive each run; benefits from idempotency  |
@@ -108,13 +103,42 @@ Link reference files from the body using relative paths. One level deep only —
 
 For script design rules and dependency approaches, see [references/script-design.md](references/script-design.md).
 
+### Referencing scripts
+
+List available scripts before first use so the agent knows they exist. Use relative paths from the skill directory root — both in the listing and in code block invocations.
+
+**Listing pattern:**
+
+~~~markdown
+## Available scripts
+
+- **`scripts/validate.py`** — Validates configuration files
+- **`scripts/process.py`** — Processes input data
+~~~
+
+**Invocation pattern:**
+
+~~~markdown
+Run the validation script:
+```bash
+uv run scripts/validate.py <skill-dir>
+```
+~~~
+
+The same relative-path convention applies inside `references/*.md` — execution paths in code blocks are always relative to the skill root.
+
 ## Available scripts
 
 - **`scripts/validate.py`** — Checks all `[AUTO]` spec rules; exits non-zero on failure.
 
-## After producing or improving a skill
+## Quality Gate
 
-1. Spawn a subagent to act as LLM judge — brief it with the skill path and instruct it to read the skill, audit against [references/quality-criteria.md](references/quality-criteria.md), and check all `[LLM]` rules in [references/spec-rules.md](references/spec-rules.md); report every gap as a flat list
+1. Spawn a subagent to act as LLM judge — brief it with the skill path and instruct it to read the skill, then audit against each of the following; report every gap as a flat list:
+   - **Skill Anatomy spec rules** — name and description constraints
+   - **Writing Standards** — voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, carry the why, body pattern choices
+   - **Content Placement rules** — right level for each piece of content, 500-line body limit
+   - **[references/quality-criteria.md](references/quality-criteria.md)** — all quality criteria
+   - **[references/spec-rules.md](references/spec-rules.md)** — all `[LLM]` rules
 2. Review findings — fix unambiguous gaps without asking; for gaps with meaningful tradeoffs, ask one question before fixing
 3. Run `uv run scripts/validate.py <skill-dir>` — fix any `[AUTO]` failures before confirming
 4. Verify all relative file links in the body resolve
