@@ -23,6 +23,7 @@
         "./skills/productivity/transcribe-video",
         "./skills/productivity/visualise",
         "./skills/productivity/steelman",
+        "./skills/productivity/devils-advocate",
         "./skills/engineering/get-specific",
         "./skills/engineering/react-composition-rules",
         "./skills/engineering/configure-claude-rules",
@@ -30,7 +31,7 @@
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.20.2"
+      "version": "0.20.3"
     },
     {
       "name": "drafting-skills",
@@ -53,8 +54,8 @@
       "description": "Skills for general workplace productivity: summarisation, research, meeting prep, and task management.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise", "./skills/productivity/steelman"],
-      "version": "0.7.0"
+      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise", "./skills/productivity/steelman", "./skills/productivity/devils-advocate"],
+      "version": "0.7.1"
     },
     {
       "name": "output-styles",

@@ -63,6 +63,7 @@ Skills for general workplace productivity: summarisation, research, meeting prep
 - [transcribe-video](skills/productivity/transcribe-video/SKILL.md) — Transcribes video or audio from a local file or URL to plain text using OpenAI Whisper.
 - [visualise](skills/productivity/visualise/SKILL.md) — Takes user-supplied input and produces a self-contained HTML visualisation opened in the browser.
 - [steelman](skills/productivity/steelman/SKILL.md) — Builds the strongest possible case for any perspective, idea, or decision by delegating to a focused subagent.
+- [devils-advocate](skills/productivity/devils-advocate/SKILL.md) — Challenges any topic, idea, or plan by surfacing the strongest objections, weakest assumptions, and most compelling counterarguments.
 
 ## Output Styles
 
