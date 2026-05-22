@@ -7,6 +7,13 @@ description: Builds and enforces a DDD ubiquitous language for a project. Discov
 
 Establish DDD ubiquitous language scoped to bounded contexts. Interview user, capture confirmed terms in `.draekien/ubiquitous-language.yaml` via scripts, detect conflicts throughout the session.
 
+## Available scripts
+
+- **`scripts/skillsrc.py`** — Reads and writes `get-specific` config from `.draekien/.skillsrc`.
+- **`scripts/query.py`** — Queries the ubiquitous language dictionary (`list-contexts`, `list`, `lookup`).
+- **`scripts/write.py`** — Writes terms and flags/resolves ambiguities in the dictionary.
+- **`scripts/migrate.py`** — Migrates legacy `UBIQUITOUS_LANGUAGE.md` files to the YAML dictionary.
+
 ## Session Start
 
 Runs once on first invocation.

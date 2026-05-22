@@ -24,6 +24,12 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
 
 > **Permission mode:** This skill writes to `.claude/rules/`, a protected path. In `auto` mode the classifier may block these writes, causing the skill to fail. Run in `default` or `acceptEdits` mode so writes can be approved as they are requested.
 
+## Available scripts
+
+- **`scripts/detect-topics.py`** — Scans repo signals and outputs detected topics as JSON.
+- **`scripts/check-rules.py`** — Compares source rule files against target directory; reports `new`, `modified`, or `identical` per file.
+- **`scripts/write-rules.py`** — Copies selected rule files into the target rules directory.
+
 ## Workflow
 
 1. **Pick topics and presets.** In Explore mode, run `uv run scripts/detect-topics.py <target-dir>` to detect topics from the repo's signals and present the results to the user. In Preset mode, take user input directly. For each topic, ask the user to choose `recommended` or `strict`.

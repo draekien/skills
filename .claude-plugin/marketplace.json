@@ -29,7 +29,7 @@
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.18.0"
+      "version": "0.18.1"
     },
     {
       "name": "drafting-skills",
@@ -45,7 +45,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-claude-rules", "./skills/engineering/module-design"],
-      "version": "0.12.1"
+      "version": "0.12.2"
     },
     {
       "name": "productivity-skills",
@@ -53,7 +53,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise"],
-      "version": "0.6.2"
+      "version": "0.6.3"
     },
     {
       "name": "output-styles",

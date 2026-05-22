@@ -7,6 +7,10 @@ description: Designs a new piece of code — from a single method to an entire a
 
 Guide the user through designing a new piece of code. Interview one question at a time; explore the project before asking. Enforce strict design principles as hard constraints during the interview. Produce an adaptive spec document, then spawn an independent subagent to audit it against the recommended rules.
 
+## Available scripts
+
+- **`scripts/skillsrc.py`** — Reads and writes `module-design` config from `.draekien/.skillsrc`.
+
 ## Session Start
 
 Run once on first invocation in this order:

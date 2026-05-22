@@ -6,6 +6,10 @@ compatibility: Requires uv and ffmpeg. openai-whisper, yt-dlp, and PyTorch are i
 
 Extracts speech from a video or audio source and saves it as a `.txt` file.
 
+## Available scripts
+
+- **`scripts/transcribe.py`** — Downloads (if URL), transcribes with Whisper, and writes a `.txt` file.
+
 ## 1. Dependency check
 
 Run these checks in parallel:
