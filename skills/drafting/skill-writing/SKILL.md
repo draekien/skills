@@ -76,16 +76,6 @@ In judgment-heavy phases, instructions should explain what good looks like and w
 
 Reserve bare imperative commands for deterministic operations where variation is a bug.
 
-### Test against your target models
-
-Skills augment models; effectiveness depends on the host model.
-
-- Smaller/faster models: does the skill provide enough scaffolding?
-- Mid-tier models: is it clear and efficient?
-- Largest models: does it avoid over-explaining?
-
-If the skill runs across model tiers, aim for instructions that work for all of them.
-
 ## Content Placement
 
 Place content at the level where it is first needed.
@@ -100,32 +90,24 @@ Link reference files from the body using relative paths. One level deep only —
 
 ### Supporting files
 
-**`scripts/`** — use when the task is deterministic (variation = bug), the agent would re-derive complex logic each run, or the operation benefits from idempotency.
-
-Script design rules (non-negotiable for agent compatibility):
-
-- No interactive prompts — must run fully unattended
-- Structured stdout (data output) vs stderr (diagnostic logs)
-- Actionable error messages — tell agent how to self-correct
-- Idempotent — safe to run twice
-- Dry-run flag for destructive operations
-- Meaningful exit codes (0 = success, non-zero = specific failure)
-- Output size guards to avoid harness truncation
-
-Dependency approaches (in order of preference):
-
-1. One-off invocation with pinned version: `uvx some-tool@1.2.3` or `npx tool@version`
-2. Self-contained script with PEP 723 inline deps (Python): `# dependencies = ["httpx==0.27.0"]`
-3. Full documented dependency list if above insufficient
+**`scripts/`** — use when the task is deterministic (variation = bug), the agent would re-derive complex logic each run, or the operation benefits from idempotency. See [references/script-design.md](references/script-design.md) for design rules and dependency approaches.
 
 **`references/`** — use when docs are verbose but not needed every activation, content is stable reference material (schemas, cheatsheets, domain specs), or loading every time wastes context.
 
 **`assets/`** — use when the agent needs a concrete template to copy (not invent), or static config/example files are needed.
 
+## Available scripts
+
+- **`scripts/validate.py`** — Checks all `[AUTO]` spec rules; exits non-zero on failure.
+
 ## Post-Write Validation
 
-Run the [validate script](scripts/validate.py) to check for spec compliance after any create, update, or refine workflow.
+Run after completing any create, update, or refine workflow:
+
+```
+uv run scripts/validate.py <skill-dir>
+```
 
 Fix failures before confirming to user.
 Script checks all `[AUTO]` rules in [references/spec-rules.md](references/spec-rules.md).
-You must manually review `[LLM]` rules in [references/llm-rules.md](references/spec-rules.md)
+You must manually review `[LLM]` rules in [references/spec-rules.md](references/spec-rules.md).
