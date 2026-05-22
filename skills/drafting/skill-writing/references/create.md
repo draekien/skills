@@ -44,6 +44,9 @@ Apply the writing principles and content placement rules. Pick patterns that fit
 - Output template in `assets/` for outputs the agent should copy rather than invent.
 - Checklist when order matters but steps are independent.
 - Validation loop ("if output doesn't satisfy X, retry with Y") for fragile generations.
+- **Philosophy section** — opens with the core principle and explains *why* it matters before any workflow. Use when task judgment matters more than step adherence; place before procedure. The agent internalises the model and applies it — rather than following steps that break when the situation doesn't match.
+- **Anti-pattern section** — names the common wrong approach, explains the mechanism by which it fails, and contrasts it with correct behaviour. "Don't do X" gives the agent no way to recognise X in the wild; naming and explaining it does.
+- **Concept-named phases** — name phases by what the agent is doing conceptually (*Build a Feedback Loop*, *Tracer Bullet*) rather than by sequence (*Step 1*, *Step 2*). Names that encode the mental model survive when steps are skipped or reordered; sequence numbers don't.
 
 ## Phase 5 — Assemble
 

@@ -29,7 +29,7 @@
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.16.1"
+      "version": "0.17.0"
     },
     {
       "name": "drafting-skills",
@@ -37,7 +37,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/drafting/draft-a-prd", "./skills/drafting/skill-writing"],
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     {
       "name": "engineering-skills",

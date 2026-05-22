@@ -41,9 +41,10 @@ Apply these whenever writing or rewriting any `SKILL.md` content:
 
 Calibrate specificity to how variable and fragile the task is:
 
-- **High freedom** — text-based heuristics. Use when multiple approaches are valid and decisions depend on context.
+- **High freedom** — reasoning-carrying prose. Use when multiple approaches are valid and judgment determines the path.
   ```
-  1. Analyse structure. 2. Check for bugs. 3. Suggest improvements.
+  Understand the current state of the codebase before suggesting changes — look for shallow
+  modules, tight coupling, and untested seams. The goal is to surface friction, not apply a checklist.
   ```
 - **Medium freedom** — pseudocode or parameterised templates. Use when a preferred pattern exists but some variation is acceptable.
   ```
@@ -65,6 +66,15 @@ Default to omitting context the agent already has. Challenge every paragraph aga
 - Does this content justify its token cost?
 
 If the answer is no, drop it.
+
+### Carry the why, not just the what
+
+In judgment-heavy phases, instructions should explain what good looks like and why — not just issue a command. An agent that understands the goal can adapt when exact steps don't fit. An agent with only commands cannot.
+
+- Weak: "Run `git status` to see uncommitted changes."
+- Strong: "Understand the working tree state before deciding what to stage — distinguish between intentional changes, generated artefacts, and files that might be sensitive."
+
+Reserve bare imperative commands for deterministic operations where variation is a bug.
 
 ### Test against your target models
 
