@@ -63,7 +63,7 @@ PaymentError   { code: ErrorCode, message: string }  // code is exhaustive enum 
 
 ### Bounded Context *(DDD mode only)*
 
-The bounded context this module belongs to, confirmed against the root `UBIQUITOUS_LANGUAGE.md` index. List any terms defined or referenced from the context's `UBIQUITOUS_LANGUAGE.md`.
+The bounded context this module belongs to, confirmed against `.draekien/ubiquitous-language.yaml`. List any terms defined or referenced from that dictionary during this session.
 
 ## Extended Sections (module and layer scope only)
 

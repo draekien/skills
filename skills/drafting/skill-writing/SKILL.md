@@ -124,11 +124,7 @@ Dependency approaches (in order of preference):
 
 ## Post-Write Validation
 
-Run after completing any create, update, or refine workflow:
-
-```
-uv run scripts/validate.py <skill-dir>
-```
+Run the [validate script](scripts/validate.py) to check for spec compliance after any create, update, or refine workflow.
 
 Fix failures before confirming to user.
 Script checks all `[AUTO]` rules in [references/spec-rules.md](references/spec-rules.md).

@@ -62,12 +62,12 @@ Present the draft to the user and apply any corrections before writing to disk.
 
 ## Recommended Rules Audit
 
-After writing the spec, spawn an independent subagent with this exact brief:
+After writing the spec, spawn an independent subagent to audit it. Brief it to:
 
-> You are a software design auditor. Read the spec at `<resolved-path>`. Check it against each of the following eight recommended design principles. For each violation found, quote the relevant spec text, name the rule, and suggest a concrete fix. If no violations, say so. Do not rewrite the spec — findings only.
->
-> Principles to check: Minimize Complexity, Deep Modules, Avoid Hasty Abstractions, Command-Query Separation, Fail Fast, Names as Documentation, Principle of Least Astonishment, Single Abstraction Level.
->
-> Full rule definitions are in `skills/engineering/module-design/references/design-principles.md`.
+- Read the spec at the resolved path.
+- Check each of the eight recommended principles: Minimize Complexity, Deep Modules, Avoid Hasty Abstractions, Command-Query Separation, Fail Fast, Names as Documentation, Principle of Least Astonishment, Single Abstraction Level.
+- For each violation: quote the offending spec text, name the rule, and suggest a concrete fix.
+- Report clean if no violations found. Do not rewrite the spec — findings only.
+- Full rule definitions are in `skills/engineering/module-design/references/design-principles.md`.
 
 Report the subagent's findings to the user as a numbered list of violations (or a confirmation of none). The user decides which findings to apply; update the spec only on explicit instruction.

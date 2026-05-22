@@ -29,7 +29,7 @@
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.17.0"
+      "version": "0.17.2"
     },
     {
       "name": "drafting-skills",
@@ -37,7 +37,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/drafting/draft-a-prd", "./skills/drafting/skill-writing"],
-      "version": "0.3.0"
+      "version": "0.3.1"
     },
     {
       "name": "engineering-skills",
@@ -45,7 +45,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-claude-rules", "./skills/engineering/module-design"],
-      "version": "0.12.0"
+      "version": "0.12.1"
     },
     {
       "name": "productivity-skills",
