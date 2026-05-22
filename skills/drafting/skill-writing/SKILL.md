@@ -106,11 +106,7 @@ Place content at the level where it is first needed.
 
 Link reference files from the body using relative paths. One level deep only — never reference a reference from a reference. Target body under 500 lines; when content exceeds this, split into `references/`.
 
-**`scripts/`** — use when the task is deterministic (variation = bug), the agent would re-derive complex logic each run, or the operation benefits from idempotency. See [references/script-design.md](references/script-design.md) for design rules and dependency approaches.
-
-**`references/`** — use when docs are verbose but not needed every activation, content is stable reference material (schemas, cheatsheets, domain specs), or loading every time wastes context.
-
-**`assets/`** — use when the agent needs a concrete template to copy (not invent), or static config/example files are needed.
+For script design rules and dependency approaches, see [references/script-design.md](references/script-design.md).
 
 ## Available scripts
 
