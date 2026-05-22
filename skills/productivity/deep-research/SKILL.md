@@ -26,11 +26,13 @@ Break the topic into research angles (typically 3–6). For each angle, state:
 
 - Name
 - One-sentence scope
-- Likely sources (from the source menu below)
+- Likely sources (web, codebase, memory — see Phase 3 source menu)
 
 Present the full angle list to the user and ask for confirmation — they may add, remove, or reframe angles. Do not spawn any agents until confirmed.
 
-## Source menu
+## Phase 3 — Research
+
+### Source menu
 
 Researchers pick sources adaptively based on their angle:
 
@@ -38,11 +40,15 @@ Researchers pick sources adaptively based on their angle:
 - **Codebase** — search and read local project files for context (relevant when topic is code-adjacent)
 - **Memory** — query available memory tools for prior relevant context from this project
 
-## Phase 3 — Research
+### Mode A — Parallel subagents (default)
 
-Detect which mode is available and use the highest available:
+Spawn one subagent per confirmed angle.
 
-### Mode B — Agent teams (preferred when available)
+Each subagent receives its angle, scope, and the source menu. All run in parallel. Collect all outputs when complete.
+
+### Mode B — Agent teams (use when available)
+
+Prefer Mode B over Mode A when agent teams are available — researchers can message each other directly, surfacing cross-cutting findings without waiting for the synthesis phase.
 
 Create a researcher team with one teammate per confirmed angle.
 
@@ -53,12 +59,6 @@ Each researcher receives:
 - Instructions: research their angle adaptively, send cross-cutting findings to relevant peers via direct message, escalate blockers to the lead via direct message, and signal "done" to the lead when their angle is exhausted
 
 Lead resolves blockers as they arrive. Wait until all researchers signal "done", then collect all outputs.
-
-### Mode A — Parallel subagents (default)
-
-Spawn one subagent per confirmed angle.
-
-Each subagent receives its angle, scope, and the source menu. All run in parallel. Collect all outputs when complete.
 
 ## Phase 4 — Synthesize
 
