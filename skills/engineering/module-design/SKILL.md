@@ -1,11 +1,11 @@
 ---
 name: module-design
-description: Designs a new piece of code — from a single method to an entire architectural layer — through structured interview, enforces software-design principles as hard constraints in real time, and produces an adaptive Markdown spec. Use when designing a new module, class, function, or architectural layer, or when the user says "design this", "help me design", "design a module", "design a class", "let's design", "plan this component".
+description: Applies software design principles to modules — from a single method to an entire architectural layer. Use when designing new code, auditing existing code for design problems, or when the user says "design this", "help me design", "audit this", "find design problems in", "what's wrong with this", "let's design", "plan this component".
 ---
 
 # Module Design
 
-Guide the user through designing a new piece of code. Interview one question at a time; explore the project before asking. Enforce strict design principles as hard constraints during the interview. Produce an adaptive spec document, then spawn an independent subagent to audit it against the recommended rules.
+Apply software design principles to whatever the user brings. Explore the project before asking; let the principles drive the analysis. Produce a spec for new designs or a violations report for existing ones.
 
 ## Available scripts
 
@@ -16,23 +16,11 @@ Guide the user through designing a new piece of code. Interview one question at 
 Run once on first invocation in this order:
 
 1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the configured spec output directory. If `.draekien/.skillsrc` is absent the script prints the default `docs/designs`.
-2. **DDD mode** — check for `.draekien/ubiquitous-language.yaml` at the project root. If found, activate DDD mode: run `uv run scripts/query.py --dict .draekien/ubiquitous-language.yaml list-contexts`, then for each context run `uv run scripts/query.py --dict .draekien/ubiquitous-language.yaml list <Context>` to load all terms into conflict-detection context. See [references/ddd-mode.md](references/ddd-mode.md). If the dictionary is absent but a `UBIQUITOUS_LANGUAGE.md` exists at the project root, inform the user that migration is needed and recommend running the `get-specific` skill first. If neither exists, skip DDD mode entirely.
-3. **Open question** — ask "What are you designing?" Wait for the answer before proceeding.
+2. **Open question** — ask "What are we looking at?" Wait for the answer before proceeding.
 
-## Interview
+## Understanding the module
 
-Ask one question at a time. If the answer can be determined by exploring the project (existing interfaces, call sites, data types), explore first rather than asking.
-
-Work through these in order, skipping any the user has already answered:
-
-1. **Scope** — is this a method, class, module, or layer? This governs spec depth.
-2. **Responsibility** — what is its single job? If the answer involves "and", surface that as a potential scope issue.
-3. **Callers** — who uses it and what do they care about? What must they not need to know?
-4. **Data contract** — what goes in, what comes out? What shape should errors take?
-5. **Side effects** — does it mutate state, perform I/O, or emit events? Which are intentional?
-6. **DDD placement** *(DDD mode only)* — which bounded context does this belong to?
-
-During DDD mode, run term capture and conflict detection after every response — see [references/ddd-mode.md](references/ddd-mode.md).
+Explore the project before asking questions. What matters is understanding scope, responsibility, callers, data contract, side effects, and boundaries — whether by reading existing code or by interviewing the user. If the module exists, the codebase already answers most of these.
 
 ## Strict Constraint Enforcement
 
@@ -48,21 +36,19 @@ These five rules are non-negotiable. Check each design decision against them as 
 
 Full rule definitions: [references/design-principles.md](references/design-principles.md).
 
-## Spec Draft
-
-Once the interview is complete, draft the spec. Adapt depth to scope — see [references/spec-format.md](references/spec-format.md) for section rules by scope.
-
-Present the draft to the user and apply any corrections before writing to disk.
-
 ## Output
 
-1. Determine the output path:
-   - Use `module-design.specsDir` from `.skillsrc` if set, otherwise `docs/designs`.
-   - Filename: `<module-name>.md` (kebab-case).
-2. Check whether the directory exists.
-   - **Exists** — write directly, no confirmation needed.
-   - **Does not exist** — confirm the full path with the user before creating it.
-3. If the user provides a custom path that differs from the default, confirm with the user, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc set <path>` to persist it. The script merges only the `module-design` block and preserves all other skills' config.
+For existing modules: produce a violations report. For each violation, quote the offending code, name the rule, and suggest a concrete fix. Offer to draft a redesign spec if the user wants one.
+
+For new modules: draft the spec once the design is understood. Adapt depth to scope — see [references/spec-format.md](references/spec-format.md) for section rules by scope. Present the draft to the user and apply any corrections before writing to disk.
+
+Spec output path:
+- Use `module-design.specsDir` from `.skillsrc` if set, otherwise `docs/designs`.
+- Filename: `<module-name>.md` (kebab-case).
+- **Exists** — write directly, no confirmation needed.
+- **Does not exist** — confirm the full path with the user before creating it.
+
+If the user provides a custom path that differs from the default, confirm with the user, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc set <path>` to persist it. The script merges only the `module-design` block and preserves all other skills' config.
 
 ## Recommended Rules Audit
 

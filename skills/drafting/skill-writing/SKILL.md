@@ -61,6 +61,8 @@ Calibrate specificity to how variable and fragile the task is:
 
 Analogy: narrow bridge with cliffs → low freedom. Open field → high freedom. Choose by terrain.
 
+If the judgment required is *whether* to follow a process at all — not just how to execute it — encoding the process is wrong regardless of terrain. Encode the principles and the goal instead; let the agent determine the path.
+
 ### Trust the agent's intelligence
 
 Every token spent on knowledge the agent already carries is noise that buries the intent that actually needs to transfer. Challenge every paragraph against:
@@ -89,6 +91,10 @@ Choose structures that best surface the judgment the agent needs — the right p
 - **Philosophy section** — opens with the core principle and explains *why* it matters before any workflow; use when task judgment matters more than step adherence
 - **Anti-pattern section** — names the common wrong approach, explains the mechanism by which it fails, contrasts with correct behaviour; "don't do X" gives the agent no way to recognise X in the wild
 - **Concept-named phases** — name phases by what the agent is doing conceptually rather than by sequence; names that encode the mental model survive when steps are skipped or reordered
+
+## Anti-patterns
+
+**Workflow scripting** — encoding a fixed sequence of steps when the task requires judgment about whether to follow a process at all. A skill that prescribes "interview the user, then write the spec" fails when the codebase already answers the interview questions and the spec is an artefact nobody needs. Encode the principles and the goal instead; let the agent determine the path. Recognise it by this tell: if removing every step header leaves nothing of substance, the steps were carrying the skill — not the intent.
 
 ## Content Placement
 
