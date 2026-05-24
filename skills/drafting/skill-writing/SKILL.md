@@ -147,4 +147,5 @@ The same relative-path convention applies inside `references/*.md` — execution
    - **[references/spec-rules.md](references/spec-rules.md)** — all `[LLM]` rules
 2. Review findings — fix unambiguous gaps without asking; for gaps with meaningful tradeoffs, ask one question before fixing
 3. Run `uv run scripts/validate.py <skill-dir>` — fix any `[AUTO]` failures before confirming
-4. Verify all relative file links in the body resolve
+4. If the skill contains Python scripts, run `uv tool run ruff check <skill-dir>/scripts/` — fix any reported issues before confirming
+5. Verify all relative file links in the body resolve
