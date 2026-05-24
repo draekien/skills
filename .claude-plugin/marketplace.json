@@ -31,7 +31,7 @@
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.21.0"
+      "version": "0.21.1"
     },
     {
       "name": "drafting-skills",
@@ -55,7 +55,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise", "./skills/productivity/steelman", "./skills/productivity/devils-advocate"],
-      "version": "0.7.1"
+      "version": "0.7.2"
     },
     {
       "name": "output-styles",

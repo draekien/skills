@@ -24,7 +24,9 @@ Only include what the visualisation actually needs.
 
 ## Frontend Aesthetics
 
-- **Typography** — Choose fonts that are beautiful, unique, and interesting. Load via Google Fonts or similar CDN. Avoid generic fonts (Arial, Inter, Roboto, system fonts, Space Grotesk). Pair a distinctive display font with a readable body font. Body text must be comfortable to read at length.
+- **Typography** — Pair a distinctive display font with a purpose-built body font. Load via Google Fonts or similar CDN. These are separate concerns with different constraints:
+  - *Display / headings*: Choose something beautiful, unique, and interesting. Avoid generic fonts (Arial, Inter, Roboto, system fonts, Space Grotesk).
+  - *Body / prose*: Must be designed for extended reading — a humanist sans-serif or a reading-optimised serif with high x-height and moderate stroke contrast. Never use decorative, display, geometric, or ultra-thin fonts for body text. Hard limits: minimum `1rem` (16px), line-height `1.5–1.7`, prose containers `max-width: 65ch`. On dark backgrounds, bump line-height by `0.05–0.1` and add `letter-spacing: 0.01–0.02em` to compensate for perceived weight loss.
 - **Color & Theme** — Commit to a cohesive aesthetic. Use CSS variables for consistency. Ensure sufficient contrast for readability. Vary between light and dark themes across generations — never converge on common choices.
 - **Motion** — CSS-only animations. Focus on high-impact moments: staggered page load reveals, hover states that surprise. Never animate content the user needs to read mid-animation.
 - **Spatial Composition** — Unexpected layouts. Asymmetry. Overlap. Generous negative space OR controlled density — but always guided by what makes the content easiest to parse.
