@@ -22,6 +22,7 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
 | `software-design` | any codebase | — |
 | `tailwind` | `tailwindcss` in `package.json` dependencies, or `@import "tailwindcss"` in any CSS file | [references/tailwind.md](references/tailwind.md) |
 | `python-scripts` | `# /// script` block, `uv run` usage, or `.py` files | [references/python-scripts.md](references/python-scripts.md) |
+| `astro` | `astro.config.*` or `astro` in `package.json` dependencies | [references/astro.md](references/astro.md) |
 
 > **Permission mode:** This skill writes to `.claude/rules/`, a protected path. In `auto` mode the classifier may block these writes, causing the skill to fail. Run in `default` or `acceptEdits` mode so writes can be approved as they are requested.
 
@@ -58,6 +59,7 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
    | `tanstack-router` | ESLint config; also confirm `@tanstack/eslint-plugin-router` is installed and `routeTree.gen.ts` is in ignore files |
    | `tailwind` | `package.json` (check `class-variance-authority`, `clsx`, `tailwind-merge`); `biome.json` (`css.parser.tailwindDirectives`); codebase (`cn` utility) |
    | `python-scripts` | `pyproject.toml` (`[tool.ruff]`, `[tool.mypy]`) |
+   | `astro` | `tsconfig.json` (extends chain); `eslint.config.*` (astro plugin); `astro.config.mjs` (`output`) |
 
 5. **Offer latest-practices search.** Ask whether to web-search `"<topic> best practices <current year>"` for rules not yet bundled. If yes, present candidates as a numbered list; each approved candidate becomes a new file under `.claude/rules/`.
 
