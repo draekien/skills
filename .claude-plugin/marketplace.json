@@ -31,7 +31,7 @@
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.23.1"
+      "version": "0.24.0"
     },
     {
       "name": "drafting-skills",
@@ -47,7 +47,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-claude-rules", "./skills/engineering/module-design"],
-      "version": "0.14.0"
+      "version": "0.15.0"
     },
     {
       "name": "productivity-skills",
