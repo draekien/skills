@@ -33,7 +33,7 @@ skills/
 `.claude-plugin/` has two files:
 
 - `marketplace.json` — plugin entries per bucket + `everything` meta-plugin
-- Bump version of affected plugin entry when skills change in that bucket. Once per feature branch max.
+- When skills change, bump both the affected bucket plugin entry and the `everything` entry. Once per feature branch max.
 
 `marketplace.json` contains:
 
