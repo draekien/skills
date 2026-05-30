@@ -21,6 +21,8 @@ Web-search `"<topic> best practices <current year>"` and `"<topic> code quality 
 
 ### 2. Propose
 
+Exclude any rule routinely enforced by the dominant linter for this topic — ESLint for JS/TS, Ruff for Python, Roslyn analysers for C#, etc. AI rules complement linters; they don't duplicate them. Rules linters can't enforce (architectural decisions, naming semantics, cross-cutting invariants, patterns requiring broader context) are the right candidates.
+
 Present candidates in three tiers, each rule with a one-line description plus tier reasoning. Get approval before writing.
 
 - **Recommended** — baseline quality; every project should follow.
@@ -70,7 +72,7 @@ Match the conciseness of existing rules in `assets/typescript/` and `assets/csha
 
 ### 4. Write `references/<topic>.md`
 
-Maps preset levels to expected tooling config (linter rules, compiler flags, project settings). Used by configure-claude-rules' tooling alignment check.
+Maps preset levels to expected tooling config (linter rules, compiler flags, project settings). Used by configure-claude-rules' tooling alignment check. For any rule category excluded from AI rules because linters cover it, list the equivalent linter rule or plugin here so the user knows where to configure it.
 
 Keep this file **config-only**: the "for each rule absent, report and ask" procedure lives in `configure-claude-rules/SKILL.md` — do not duplicate it.
 
