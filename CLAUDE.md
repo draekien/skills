@@ -57,7 +57,6 @@ Skills that require per-project configuration use a shared dotfolder and config 
 
 ## Workflow
 
-- New skill in this repo: use `skill-creator` skill
-- After writing skill: use `compact` caveman skill on yaml `description` and skill contents.
+- New skill in this repo: vet the concept with `vet-skill-idea`, then author it with `skill-writing`.
 - After adding a new skill: run `uv run tests/check-manifest.py` from repo root and fix any reported gaps before committing.
 - Match skill body complexity to task complexity — if the agent already knows how to execute the task, one sentence beats a structured checklist.
