@@ -17,6 +17,7 @@
       "skills": [
         "./skills/drafting/draft-a-prd",
         "./skills/drafting/skill-writing",
+        "./skills/drafting/vet-skill-idea",
         "./skills/productivity/get-aligned",
         "./skills/productivity/round-table",
         "./skills/productivity/deep-research",
@@ -31,15 +32,15 @@
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.24.0"
+      "version": "0.25.0"
     },
     {
       "name": "drafting-skills",
       "description": "Skills for writing and editing content: emails, documents, reports, and other written output.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/drafting/draft-a-prd", "./skills/drafting/skill-writing"],
-      "version": "0.6.1"
+      "skills": ["./skills/drafting/draft-a-prd", "./skills/drafting/skill-writing", "./skills/drafting/vet-skill-idea"],
+      "version": "0.7.0"
     },
     {
       "name": "engineering-skills",
