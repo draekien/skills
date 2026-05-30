@@ -6,3 +6,4 @@ Skills for software development tasks: code review, debugging, architecture, and
 - [get-specific](get-specific/SKILL.md) — Builds and enforces a DDD ubiquitous language scoped to bounded contexts through structured interview and real-time conflict detection.
 - [configure-claude-rules](configure-claude-rules/SKILL.md) — Writes AI behaviour rules into a repository's `.claude/rules/` directory from a curated, topic-organised rule library.
 - [module-design](module-design/SKILL.md) — Designs a new piece of code through structured interview, enforces software-design principles as hard constraints, and produces an adaptive Markdown spec.
+- [break-down-prd](break-down-prd/SKILL.md) — Decomposes a PRD into tracer-bullet tasks classified autonomous (AFK) versus human-in-the-loop (HIL), with per-bullet dependency trees that maximise parallel execution.

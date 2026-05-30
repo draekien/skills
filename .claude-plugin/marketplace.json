@@ -29,10 +29,11 @@
         "./skills/engineering/react-composition-rules",
         "./skills/engineering/configure-claude-rules",
         "./skills/engineering/module-design",
+        "./skills/engineering/break-down-prd",
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.25.0"
+      "version": "0.26.0"
     },
     {
       "name": "drafting-skills",
@@ -47,8 +48,8 @@
       "description": "Skills for software development tasks: code review, debugging, architecture, and technical workflows.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-claude-rules", "./skills/engineering/module-design"],
-      "version": "0.15.0"
+      "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-claude-rules", "./skills/engineering/module-design", "./skills/engineering/break-down-prd"],
+      "version": "0.16.0"
     },
     {
       "name": "productivity-skills",
