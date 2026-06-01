@@ -24,9 +24,9 @@ skills/
       assets/            optional: templates, icons, other output files
 ```
 
-- Every skill in `drafting/`, `engineering/`, `productivity/`, 'output-styles' needs entry in top-level `README.md`. Skills in `personal/` must not appear.
-- Each top-level `README.md` entry links skill name to its `SKILL.md`.
-- Each bucket has `README.md` listing all skills with one-line descriptions, names linked to `SKILL.md`.
+- The top-level `README.md` has one section per public bucket (`drafting/`, `engineering/`, `productivity/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
+- Each bucket `README.md` lists all its skills with one-line descriptions, skill names linked to `SKILL.md`. The bucket `README.md` is the single source of truth for a skill's one-liner — it is the only place that one-liner lives.
+- Skills in `personal/` must not appear in any public README.
 
 ## Plugin manifest
 
