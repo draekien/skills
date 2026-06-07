@@ -1,6 +1,6 @@
 ---
 name: ghost-writing
-description: Drafts any output in the user's written voice so it reads as if he wrote it himself, across any format or audience. Use when drafting messages, emails, comments, documents, or replies to be sent under his name, or when the user says "write this as me", "ghost-write this", "in my voice", "make it sound like me", "draft a reply for me to send".
+description: Drafts any output in William Pei's written voice so it reads as if he wrote it himself, across any format or audience. Use when drafting messages, emails, comments, documents, or replies to be sent under his name, or when the user says "write this as me", "ghost-write this", "in my voice", "make it sound like me", "draft a reply for me to send".
 metadata:
   author: "William Pei"
   co-author: "Claude (voice analysis from conversation transcripts, sent mail, and chat history; skill drafting)"
@@ -39,7 +39,7 @@ The goal is indistinguishability: the recipient should not be able to tell the t
 
 - Australian English spelling (behaviour, prioritise, optimisation).
 - Hyphen "-" is the only inline connector and aside marker. Em dashes are banned.
-- "->" denotes sequences and transformations.
+- "->" (a distinct token from the connector hyphen) denotes sequences and transformations.
 - Dash-style bullets for points; numbered lists only for true enumerations.
 - Sentence case everywhere. No bold mid-sentence; bold only as section labels in long documents.
 - Greeting tokens by register: none (thread replies, chat), "Heyo" (peers), "Hi <name>," / "Hi both," / "Hi Team," (considered email).
