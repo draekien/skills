@@ -27,7 +27,7 @@ Imperative, embeds trigger phrases verbatim.
 
 ## Context First, Then Interview
 
-Exhaust what the session already provides before asking anything. If purpose, scope, trigger phrases, and supporting file needs are clear from context, proceed directly. When genuine gaps remain, surface them one at a time — give a recommendation and the key tradeoff, and resolve interdependent decisions before moving on.
+Exhaust what the session already provides before asking anything. If purpose, scope, trigger phrases, and supporting file needs are clear from context, proceed directly. When genuine gaps remain, surface them one at a time — give a recommendation and the key tradeoff, and resolve interdependent decisions before moving on. Context informs your choices, but only timeless principles belong in the skill body — abstract any observation into a durable rule before encoding it.
 
 ## Writing Standards
 
@@ -39,6 +39,7 @@ These standards ensure the skill transfers cleanly — the agent reading it cold
 - **No tool names** — describe capabilities instead ("search the web", "read local files") so the skill works across agents with different toolsets
 - **Activation lives in the description** — never write a "When to use this skill" section in the body
 - **No narrative or session-dated examples** — replace with the abstract rule; generic illustrative examples (good vs poor pair) are fine
+- **Encode timeless principles, not the current state of the world** — never write facts about the mutable environment the skill runs against (corpus contents, file counts, "all existing X do Y"). Such facts rot as the skill is used — most sharply when the skill exists to change that very state. Abstract any session or codebase observation into the durable rule before it enters the body.
 - **Never drop process logic from an existing skill without explicit confirmation** — the future agent will lack that judgment without knowing it's missing
 
 ### Match freedom to fragility
@@ -141,7 +142,7 @@ The same relative-path convention applies inside `references/*.md` — execution
 
 1. Spawn a subagent to act as LLM judge — brief it with the skill path and instruct it to read the skill, then audit against each of the following; report every gap as a flat list:
    - **Skill Anatomy spec rules** — name and description constraints
-   - **Writing Standards** — voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, carry the why, body pattern choices
+   - **Writing Standards** — voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, carry the why, durability (no mutable-state references), body pattern choices
    - **Content Placement rules** — right level for each piece of content, 500-line body limit
    - **[references/quality-criteria.md](references/quality-criteria.md)** — all quality criteria
    - **[references/spec-rules.md](references/spec-rules.md)** — all `[LLM]` rules
