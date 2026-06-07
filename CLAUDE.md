@@ -30,23 +30,18 @@ skills/
 
 ## Plugin manifest
 
-`.claude-plugin/` has two files:
+`.claude-plugin/marketplace.json` contains:
 
-- `marketplace.json` — plugin entries per bucket + `everything` meta-plugin
-- When skills change, bump both the affected bucket plugin entry and the `everything` entry. Once per feature branch max.
-
-`marketplace.json` contains:
-
-- One `everything` entry listing every public-facing skill path across all buckets. Keep in sync when adding/removing skills.
+- One `everything` entry listing every public-facing skill path across all buckets.
 - One bucket entry per bucket with at least one skill; empty buckets omitted.
+- `personal/` skills live only in the `personal-skills` entry, never in `everything`.
 
-Adding new skill, update `marketplace.json`:
+Adding a new skill, update `marketplace.json`:
 
-- Add skill path to `everything` plugin's `skills` array
-- If bucket has entry, add path to its `skills` array
-- If bucket has no entry, add new plugin entry: `name: "<bucket>-skills"`, `source: "./"`, `strict: false`, `version: "0.1.0"`, `skills` array with skill path
-- List individual skill paths (e.g. `"./skills/drafting/skill-writing"`), not whole bucket dirs
-- `personal/` skills not public-facing — must not appear in any plugin entry
+- Add the skill path to its bucket entry. If the bucket has no entry, add one: `name: "<bucket>-skills"`, `source: "./"`, `strict: false`, `version: "0.1.0"`, `skills` array with the path.
+- Also add the path to the `everything` entry — except `personal/` skills, which stay out of `everything`.
+- List individual skill paths (e.g. `"./skills/drafting/skill-writing"`), not whole bucket dirs.
+- When skills change, bump the affected bucket entry and (for public skills) the `everything` entry. Once per feature branch max.
 
 ## Project Configuration Conventions
 

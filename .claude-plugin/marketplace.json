@@ -66,6 +66,14 @@
       "strict": false,
       "skills": ["./skills/output-styles/cte-mode", "./skills/output-styles/eli10-mode"],
       "version": "0.2.0"
+    },
+    {
+      "name": "personal-skills",
+      "description": "Skills for personal productivity and life admin: scheduling, decision-making, and personal organisation.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/personal/ghost-writing"],
+      "version": "0.1.0"
     }
   ]
 }
