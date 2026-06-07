@@ -39,3 +39,4 @@ The standard every skill must meet.
 **Outdated content**
 - Migration steps for already-completed migrations
 - References to deprecated names or patterns
+- References to the current state of the codebase/corpus that the skill's own use will invalidate
