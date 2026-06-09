@@ -1,5 +1,5 @@
 ---
-name: using-first-principles
+name: from-first-principles
 description: Reasons a problem up from its fundamental truths instead of from analogy, convention, or how it is usually done. Use when a problem feels stuck on inherited assumptions, when the standard approach seems wrong but it is unclear why, or when the user says "first principles", "think from first principles", "first principles thinking", "break this down to fundamentals", "why do we even do it this way".
 ---
 

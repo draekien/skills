@@ -10,4 +10,4 @@ Skills for general workplace productivity: summarisation, research, meeting prep
 - [steelman](steelman/SKILL.md) — Builds the strongest possible case for any perspective, idea, or decision by delegating to a focused subagent.
 - [devils-advocate](devils-advocate/SKILL.md) — Challenges any topic, idea, or plan by surfacing the strongest objections, weakest assumptions, and most compelling counterarguments.
 - [rubber-duck](rubber-duck/SKILL.md) — Acts as a patient listener that draws the solution out of the user through questions and reflection, never supplying the answer itself.
-- [using-first-principles](using-first-principles/SKILL.md) — Reasons a problem up from its fundamental truths by stripping away inherited assumptions, instead of reasoning from analogy or convention.
+- [from-first-principles](from-first-principles/SKILL.md) — Reasons a problem up from its fundamental truths by stripping away inherited assumptions, instead of reasoning from analogy or convention.
