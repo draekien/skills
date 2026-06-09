@@ -1,6 +1,6 @@
 # Script Design Rules
 
-Design rules and dependency approaches for scripts bundled with skills.
+Design rules, dependency approaches, and referencing patterns for scripts bundled with skills.
 
 ## Design rules (non-negotiable for agent compatibility)
 
@@ -18,3 +18,27 @@ Design rules and dependency approaches for scripts bundled with skills.
 1. One-off invocation with pinned version: `uvx some-tool@1.2.3` or `npx tool@version`
 2. Self-contained script with PEP 723 inline deps (Python): `# dependencies = ["httpx==0.27.0"]`
 3. Full documented dependency list if above insufficient
+
+## Referencing scripts
+
+List available scripts before first use so the agent knows they exist. Use relative paths from the skill directory root — both in the listing and in code block invocations.
+
+**Listing pattern:**
+
+~~~markdown
+## Available scripts
+
+- **`scripts/validate.py`** — Validates configuration files
+- **`scripts/process.py`** — Processes input data
+~~~
+
+**Invocation pattern:**
+
+~~~markdown
+Run the validation script:
+```bash
+uv run scripts/validate.py <skill-dir>
+```
+~~~
+
+The same relative-path convention applies inside `references/*.md` — execution paths in code blocks are always relative to the skill root.

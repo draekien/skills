@@ -9,7 +9,7 @@ A skill is a teaching document for a future LLM instance — it transfers intent
 ## Workflow
 
 1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything. When building from scratch and the concept's worthiness is uncertain, gate it first with the `vet-skill-idea` skill; if that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "vet-skill-idea"`
-2. **Plan structure** — decide what belongs in the body versus references, scripts, or assets (see [Content Placement](#content-placement))
+2. **Plan structure** — decide whether the skill needs persistent state (see [Stateful or Stateless](#stateful-or-stateless)), then what belongs in the body versus references, scripts, or assets (see [Content Placement](#content-placement))
 3. **Write** — let the task's fragility and the agent's existing knowledge determine how much structure to impose; apply Writing Standards throughout
 4. **Run the [Quality Gate](#quality-gate)**
 
@@ -99,6 +99,12 @@ Choose structures that best surface the judgment the agent needs — the right p
 
 **Workflow scripting** — encoding a fixed sequence of steps when the task requires judgment about whether to follow a process at all. A skill that prescribes "interview the user, then write the spec" fails when the codebase already answers the interview questions and the spec is an artefact nobody needs. Encode the principles and the goal instead; let the agent determine the path. Recognise it by this tell: if removing every step header leaves nothing of substance, the steps were carrying the skill — not the intent.
 
+## Stateful or Stateless
+
+A skill is stateless by default — each run starts fresh and derives what it needs from the session. Make a skill stateful only when it must remember something across sessions that cannot be re-derived. State comes in two kinds: **config** — per-project settings that change how the skill behaves (an output directory, a dictionary path) — and **working artefacts** — data the skill builds up and maintains across runs (a glossary, a set of specs). If the information is cheap to rediscover each session, it is not state; persisting it just creates a second source of truth that drifts.
+
+When the skill is stateful, apply every rule in [references/stateful-skills.md](references/stateful-skills.md) — each guards a distinct failure mode.
+
 ## Content Placement
 
 | Level         | Location        | What belongs here                                                                                  |
@@ -110,31 +116,7 @@ Choose structures that best surface the judgment the agent needs — the right p
 
 Link reference files from the body using relative paths. One level deep only — never reference a reference from a reference. Target body under 500 lines; when content exceeds this, split into `references/`.
 
-For script design rules and dependency approaches, see [references/script-design.md](references/script-design.md).
-
-### Referencing scripts
-
-List available scripts before first use so the agent knows they exist. Use relative paths from the skill directory root — both in the listing and in code block invocations.
-
-**Listing pattern:**
-
-~~~markdown
-## Available scripts
-
-- **`scripts/validate.py`** — Validates configuration files
-- **`scripts/process.py`** — Processes input data
-~~~
-
-**Invocation pattern:**
-
-~~~markdown
-Run the validation script:
-```bash
-uv run scripts/validate.py <skill-dir>
-```
-~~~
-
-The same relative-path convention applies inside `references/*.md` — execution paths in code blocks are always relative to the skill root.
+When the skill bundles scripts, see [references/script-design.md](references/script-design.md) for design rules, dependency approaches, and the listing/invocation patterns for referencing scripts from the body.
 
 ## Available scripts
 
@@ -145,6 +127,7 @@ The same relative-path convention applies inside `references/*.md` — execution
 1. Spawn a subagent to act as LLM judge — brief it with the skill path and instruct it to read the skill, then audit against each of the following; report every gap as a flat list:
    - **Skill Anatomy spec rules** — name and description constraints
    - **Writing Standards** — voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, carry the why, durability (no mutable-state references), body pattern choices
+   - **Stateful or Stateless rules** — state only where it cannot be re-derived; stateful skills satisfy every rule in [references/stateful-skills.md](references/stateful-skills.md)
    - **Content Placement rules** — right level for each piece of content, 500-line body limit
    - **[references/quality-criteria.md](references/quality-criteria.md)** — all quality criteria
    - **[references/spec-rules.md](references/spec-rules.md)** — all `[LLM]` rules
