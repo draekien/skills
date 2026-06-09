@@ -53,7 +53,7 @@ Skills for software development tasks: code review, debugging, architecture, and
 
 Skills for general workplace productivity: summarisation, research, meeting prep, and task management.
 
-**7 skills →** [browse the productivity bucket](skills/productivity/README.md)
+**8 skills →** [browse the productivity bucket](skills/productivity/README.md)
 
 ## Output Styles
 

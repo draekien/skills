@@ -9,3 +9,4 @@ Skills for general workplace productivity: summarisation, research, meeting prep
 - [visualise](visualise/SKILL.md) — Takes user-supplied input and produces a self-contained HTML visualisation opened in the browser.
 - [steelman](steelman/SKILL.md) — Builds the strongest possible case for any perspective, idea, or decision by delegating to a focused subagent.
 - [devils-advocate](devils-advocate/SKILL.md) — Challenges any topic, idea, or plan by surfacing the strongest objections, weakest assumptions, and most compelling counterarguments.
+- [rubber-duck](rubber-duck/SKILL.md) — Acts as a patient listener that draws the solution out of the user through questions and reflection, never supplying the answer itself.
