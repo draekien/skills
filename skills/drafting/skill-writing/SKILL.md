@@ -72,6 +72,8 @@ Every token spent on knowledge the agent already carries is noise that buries th
 - Can this be assumed as common knowledge?
 - Does this content justify its token cost?
 
+Those questions find what to cut. The inverse finds what to keep: a skill's highest-value content is the *delta from the agent's defaults* — what it would not do on its own, most sharply an instruction that countermands a strong reflex (to help, to solve, to elaborate). When a skill defines a role or behaviour the agent could already approximate, that delta is the whole payload; describing the role is not. Ask what is non-obvious to the agent, and write that.
+
 ### Carry the why, not just the what
 
 In judgment-heavy phases, instructions should explain what good looks like and why — not just issue a command. An agent that understands the goal can adapt when exact steps don't fit. An agent with only commands cannot.

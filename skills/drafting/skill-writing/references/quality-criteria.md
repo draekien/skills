@@ -21,6 +21,7 @@ The standard every skill must meet.
 **Trust violations**
 - Content the agent already knows from training (language syntax, common tool usage)
 - Paragraphs that don't justify their token cost
+- A role or behaviour skill that describes a role the agent could already approximate instead of the delta from its defaults — the corrections and reflexes-to-suppress that are its real payload
 
 **Body bloat**
 - "When to use this skill" sections — activation belongs in the description

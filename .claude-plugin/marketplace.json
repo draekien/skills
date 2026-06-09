@@ -42,7 +42,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/drafting/draft-a-prd", "./skills/drafting/skill-writing", "./skills/drafting/vet-skill-idea"],
-      "version": "0.8.0"
+      "version": "0.9.0"
     },
     {
       "name": "engineering-skills",
