@@ -114,7 +114,27 @@ For script design rules and dependency approaches, see [references/script-design
 
 ### Referencing scripts
 
-List available scripts before first use so the agent knows they exist (the [Available scripts](#available-scripts) section below shows the pattern). Use relative paths from the skill root in both the listing and code-block invocations — the same convention applies inside `references/*.md`.
+List available scripts before first use so the agent knows they exist. Use relative paths from the skill directory root — both in the listing and in code block invocations.
+
+**Listing pattern:**
+
+~~~markdown
+## Available scripts
+
+- **`scripts/validate.py`** — Validates configuration files
+- **`scripts/process.py`** — Processes input data
+~~~
+
+**Invocation pattern:**
+
+~~~markdown
+Run the validation script:
+```bash
+uv run scripts/validate.py <skill-dir>
+```
+~~~
+
+The same relative-path convention applies inside `references/*.md` — execution paths in code blocks are always relative to the skill root.
 
 ## Available scripts
 
