@@ -35,7 +35,7 @@ The standard every skill must meet.
 **Content placement**
 - Format specs, schemas, lookup tables in the body that belong in `references/`
 - Output templates described in prose that belong in `assets/`
-- Body over 80 lines when references could absorb the excess
+- Body over 500 lines when references could absorb the excess
 
 **Outdated content**
 - Migration steps for already-completed migrations
