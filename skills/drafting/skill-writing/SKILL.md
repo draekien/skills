@@ -27,7 +27,7 @@ Imperative, embeds trigger phrases verbatim.
 
 ## Context First, Then Interview
 
-Exhaust what the session already provides before asking anything. If purpose, scope, trigger phrases, and supporting file needs are clear from context, proceed directly. When genuine gaps remain, surface them one at a time — give a recommendation and the key tradeoff, and resolve interdependent decisions before moving on. Context informs your choices, but only timeless principles belong in the skill body — abstract any observation into a durable rule before encoding it.
+Exhaust what the session already provides before asking anything. If purpose, scope, trigger phrases, and supporting file needs are clear from context, proceed directly. When genuine gaps remain, surface them one at a time — give a recommendation and the key tradeoff, and resolve interdependent decisions before moving on. Context informs your choices, but only timeless principles belong in the skill body.
 
 ## Writing Standards
 
@@ -38,7 +38,7 @@ These standards ensure the skill transfers cleanly — the agent reading it cold
 - No comments explaining what was removed or changed
 - **No tool names** — describe capabilities instead ("search the web", "read local files") so the skill works across agents with different toolsets
 - **Activation lives in the description** — never write a "When to use this skill" section in the body
-- **No narrative or session-dated examples** — replace with the abstract rule; generic illustrative examples (good vs poor pair) are fine
+- **No narrative or session-dated examples** — generic illustrative examples (good vs poor pair) are fine
 - **Encode timeless principles, not the current state of the world** — never write facts about the mutable environment the skill runs against (corpus contents, file counts, "all existing X do Y"). Such facts rot as the skill is used — most sharply when the skill exists to change that very state. Abstract any session or codebase observation into the durable rule before it enters the body.
 - **Never drop process logic from an existing skill without explicit confirmation** — the future agent will lack that judgment without knowing it's missing
 
@@ -62,7 +62,7 @@ Calibrate specificity to how variable and fragile the task is:
 
 Analogy: narrow bridge with cliffs → low freedom. Open field → high freedom. Choose by terrain.
 
-If the judgment required is *whether* to follow a process at all — not just how to execute it — encoding the process is wrong regardless of terrain. Encode the principles and the goal instead; let the agent determine the path.
+If the judgment required is *whether* to follow a process at all — not just how to execute it — encoding the process is wrong regardless of terrain (see the Workflow scripting [anti-pattern](#anti-patterns)).
 
 ### Trust the agent's intelligence
 
@@ -71,6 +71,8 @@ Every token spent on knowledge the agent already carries is noise that buries th
 - Does the agent really need this explanation?
 - Can this be assumed as common knowledge?
 - Does this content justify its token cost?
+
+Those questions find what to cut. The inverse finds what to keep: a skill's highest-value content is the *delta from the agent's defaults* — what it would not do on its own, most sharply an instruction that countermands a strong reflex (to help, to solve, to elaborate). When a skill defines a role or behaviour the agent could already approximate, that delta is the whole payload; describing the role is not. Ask what is non-obvious to the agent, and write that.
 
 ### Carry the why, not just the what
 

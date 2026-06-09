@@ -75,7 +75,7 @@ Then work through `[LLM]` rules below.
 - `[LLM]` No info agent already knows (language syntax, common tools)
 - `[LLM]` Verbose reference material moved to `references/`
 - `[LLM]` Output templates moved to `assets/`
-- `[LLM]` Specificity matches task fragility — see `principles.md`
+- `[LLM]` Specificity matches task fragility
 - `[LLM]` No "When to use this skill" section in body — activation belongs in description
 - `[LLM]` No narrative or session-dated examples
 - `[LLM]` No references to mutable environment state that will drift as the skill is used

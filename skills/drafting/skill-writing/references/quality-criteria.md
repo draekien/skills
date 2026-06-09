@@ -21,6 +21,7 @@ The standard every skill must meet.
 **Trust violations**
 - Content the agent already knows from training (language syntax, common tool usage)
 - Paragraphs that don't justify their token cost
+- A role or behaviour skill that describes a role the agent could already approximate instead of the delta from its defaults — the corrections and reflexes-to-suppress that are its real payload
 
 **Body bloat**
 - "When to use this skill" sections — activation belongs in the description
@@ -34,7 +35,7 @@ The standard every skill must meet.
 **Content placement**
 - Format specs, schemas, lookup tables in the body that belong in `references/`
 - Output templates described in prose that belong in `assets/`
-- Body over 80 lines when references could absorb the excess
+- Body over 500 lines when references could absorb the excess
 
 **Outdated content**
 - Migration steps for already-completed migrations
