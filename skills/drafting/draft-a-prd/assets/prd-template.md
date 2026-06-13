@@ -22,7 +22,7 @@
 
 ## Out of Scope
 
-- [Specific exclusion]
+- [Specific exclusion — name the thing explicitly; 'future work' or 'later phase' are not valid exclusions]
 - [Specific exclusion]
 
 ## Additional Notes
