@@ -63,8 +63,10 @@ Mark each pattern **applies** or **skip** based on purpose. Simple display compo
 | 7   | Controlled vs uncontrolled | Component has internal state                                     |
 | 8   | Inversion of control       | Complex state transitions; consumers need to customise behaviour |
 | 9   | Headless components        | Behaviour must work with any UI / design system                  |
-| 10  | Render props               | Flexible rendering across different UI shapes                    |
+| 10  | Render props               | Flexible rendering across different UI shapes AND a hook alone cannot satisfy the consumer's rendering needs |
 | 11  | Avoid HOCs                 | Cross-cutting logic that would otherwise be a HOC                |
+
+When rules 3 and 7 both apply, the custom hook is where the controllable-state logic lives — implement `useControllableState` inside the hook, not in the component body.
 
 Present plan: component name, output path, applicable patterns (numbered), sub-components needed. Proceed immediately unless scope ambiguous.
 
@@ -83,9 +85,10 @@ Apply the patterns marked **applies** in this order (skip non-applicable):
 5. forwardRef
 6. Controlled vs uncontrolled
 7. Inversion of control (state reducer)
-8. Headless / render props
-9. Avoid HOCs
-10. Avoid prop drilling
+8. Headless components
+9. Render props
+10. Avoid HOCs
+11. Avoid prop drilling
 
 The rule files specify *how* to apply each pattern. Write the complete component file.
 
@@ -121,7 +124,7 @@ For each component file in scope:
 2. Check against all 11 rules
 3. Record each violation: rule name + one-line explanation of what code does wrong
 
-Skip inapplicable rules (e.g. skip forwardRef for component rendering no native element).
+Skip inapplicable rules (e.g. skip forwardRef for component rendering no native element). Determine applicability from source: skip forwardRef if no HTML element is rendered; skip compound components if the file defines a single component; skip inversion of control if the component has fewer than three state transitions.
 
 ### Step A4 — Report violations
 
@@ -163,9 +166,11 @@ For each violation, determine minimal extraction needed:
 | Stateful logic in component body      | Extract into `useXxx` hook                         |
 | Multiple unrelated responsibilities   | Split into separate components                     |
 | Nested component definitions          | Move to module scope                               |
-| Prop drilling through intermediaries  | Introduce `children` composition or scoped Context |
+| Prop drilling through intermediaries  | Introduce `children` composition first; add scoped Context only if the consumer cannot restructure the tree to compose directly |
 | HOC wrapper                           | Convert to hook consumed directly                  |
 | Multiple sub-components sharing state | Refactor to compound component with Context        |
+
+If any extraction requires changing the component's existing public API (prop names, ref shape, or context contract), flag it explicitly before executing: list each API change and ask for confirmation.
 
 Present plan as numbered list (what to extract, where it goes, name). Wait for confirmation before changes.
 
