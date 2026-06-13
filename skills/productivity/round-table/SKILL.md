@@ -16,6 +16,8 @@ Build the option list from user input, inference, or a combination:
 
 Always display the final option list and ask for confirmation before spawning any agents.
 
+Guard the option count: fewer than 2 options → tell the user a round-table needs at least 2 options and stop. Exactly 2 options → note this is a direct comparison and omit "consensus" framing from the synthesizer prompt.
+
 ## Step 2 — Spawn champion team
 
 Create an agent team with one champion teammate per confirmed option.
@@ -24,15 +26,20 @@ Each champion receives:
 - The debate topic
 - Their assigned option
 - The names of all other champions
-- Instructions: research their option if needed (skip if sufficient context already exists), build the strongest possible case for their assigned option, send challenges via SendMessage to other champions whenever they find evidence that weakens a competing option — treat this as a live scientific debate, not a one-shot argument — and send a "done" message to the lead when their investigation and challenges are exhausted
+- Instructions, in order:
+  1. Research their option if needed (skip if sufficient context already exists).
+  2. Build the strongest possible case for their assigned option.
+  3. Send challenges via SendMessage to other champions whenever they find evidence that weakens a competing option, and respond to challenges directed at them.
+  4. Treat this as a live scientific debate, not a one-shot argument — expect multiple rounds of challenge and rebuttal.
+  5. Send a "done" message to the lead only after (1) they have sent all challenges they intend to send, and (2) they have received and responded to any challenges directed at them. Do not send "done" while awaiting a reply to an outstanding challenge.
 
 ## Step 3 — Wait for close signals
 
-Wait until all champions send their "done" message to the lead. Collect the full debate transcript: all champion arguments and inter-champion messages exchanged.
+Wait until all champions send their "done" message to the lead. If a champion has not sent "done" within N rounds of inter-champion messaging (default 3 per pair), the lead sends a "wrap up — send your done signal" message; proceed once all done signals are received or the wrap-up has been sent to all remaining champions. Collect the full debate transcript: all champion arguments and inter-champion messages exchanged.
 
 ## Step 4 — Spawn synthesizer
 
-Spawn a single subagent with the full debate transcript and the topic.
+Spawn a single subagent with the topic and the debate transcript. Format the transcript grouped by champion (labelled with their option), separating the arguments they made, the challenges they sent, and the challenges they received with their rebuttals.
 
 Synthesizer instructions: analyse the debate — what arguments held up, what was successfully challenged, where consensus emerged — then deliver a recommendation. The recommendation may be conditional ("use X if Y, use Z if W").
 
