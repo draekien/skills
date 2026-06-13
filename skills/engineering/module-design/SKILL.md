@@ -20,7 +20,7 @@ Run once on first invocation in this order:
 
 ## DDD Mode
 
-If `.draekien/ubiquitous-language.yaml` exists at the project root, DDD mode is active. Follow all instructions in references/ddd-mode.md for the session.
+If `.draekien/ubiquitous-language.yaml` exists at the project root, DDD mode is active. Follow all instructions in [references/ddd-mode.md](references/ddd-mode.md) for the session.
 
 ## Understanding the module
 
@@ -59,7 +59,7 @@ If the user provides a custom path that differs from the default, confirm with t
 After writing the spec, spawn an independent subagent to audit it. Brief it to:
 
 - Read the spec at the resolved path.
-- Check each recommended principle listed in references/design-principles.md under the Recommended Rules heading.
+- Check each recommended principle listed in [references/design-principles.md](references/design-principles.md) under the Recommended Rules heading.
 - For each violation: quote the offending spec text, name the rule, and suggest a concrete fix.
 - Report clean if no violations found. Do not rewrite the spec — findings only.
 - Full rule definitions are in `skills/engineering/module-design/references/design-principles.md`.

@@ -29,7 +29,7 @@ Enforce these rules without exception:
 - **No implementation details** — no file paths, architecture decisions, or library and framework names; describe *what*, not *how*
 - **Testing decisions** — state the testing methodology (e.g. automated, manual, exploratory) and any constraints (e.g. no production data, specific environments); do not enumerate individual test cases or assign ownership
 - **Problem statement** — state who experiences the problem and why it matters; no solution language
-- **Open questions** — populate from deferred decisions; omit the section entirely if none
+- **Open questions** — omit the section entirely if none
 
 ## Phase 3 — Review
 

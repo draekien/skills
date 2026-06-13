@@ -62,7 +62,7 @@ Each researcher receives:
 - The source menu
 - Instructions: research their angle adaptively, send cross-cutting findings to relevant peers via direct message, escalate blockers to the lead via direct message, and send the lead a direct message containing only the word DONE when their angle is exhausted, then stop
 
-Lead resolves blockers as they arrive. Wait until all researchers signal "done", then collect all outputs.
+Lead resolves blockers as they arrive. Wait until all researchers have sent DONE, then collect all outputs.
 
 ## Phase 4 — Synthesize
 
