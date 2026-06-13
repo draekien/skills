@@ -34,9 +34,13 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
 
 ## Workflow
 
-1. **Pick topics and presets.** In Explore mode, run `uv run scripts/detect-topics.py <target-dir>` to detect topics from the repo's signals and present the results to the user. In Preset mode, take user input directly. For each topic, ask the user to choose `recommended` or `strict`.
+1. **Pick topics and presets.** In Explore mode, run `uv run scripts/detect-topics.py <target-dir>` to detect topics from the repo's signals and present the results to the user. In Preset mode, take user input directly. Present all detected topics in a single message and ask the user to choose `recommended` or `strict` for each — do not pause between topics.
 
-2. **Offer optional rules.** List `.md` files directly under `assets/<topic>/` (not in a subdirectory) with a one-line description each. Allow at most one selection per mutually-exclusive group:
+   If no topics are detected, tell the user no signals were found and list all available topics manually, inviting them to select any that apply.
+
+   If the user supplies topic names after Explore detection, merge the lists — de-duplicate and treat any user-named topic as confirmed regardless of detection signals.
+
+2. **Offer optional rules.** List `.md` files directly under `assets/<topic>/` (not in a subdirectory) with a one-line description each. Derive the one-line description from the file's first heading or first sentence — do not fabricate descriptions from the filename alone. Allow at most one selection per mutually-exclusive group:
    - `typescript`: `prefer-interfaces` ⨯ `prefer-types`
    - `python-scripts`: `click-cli` ⨯ `typer-cli`
 
@@ -48,7 +52,7 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
 
    Files with status `identical` are automatically skipped. For each file with status `modified`, present the filename and ask: overwrite or keep? Build the final write list from all `new` files plus any `modified` files the user approved.
 
-4. **Check tooling alignment.** For each selected topic, read its reference file for the expected config per preset, then read the corresponding config in the target repo (resolving any inheritance chain). For each expected setting that is absent or weaker, report it and ask whether to update the config, leave it, or note it for later. Skip the check if no config file exists.
+4. **Check tooling alignment.** For each selected topic, read its reference file for the expected config per preset, then read the corresponding config in the target repo (resolving any inheritance chain). For each expected setting that is absent or weaker, report it and ask whether to update the config, leave it, or note it for later. If the user chooses to update, directly edit the config file in the target repo using the exact values from the reference file. Skip the check if no config file exists. Topics absent from this table (e.g. software-design) have no tooling config to check — skip step 4 for them.
 
    | Topic | Target config files |
    |-------|---------------------|
@@ -61,7 +65,7 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
    | `python-scripts` | `pyproject.toml` (`[tool.ruff]`, `[tool.mypy]`) |
    | `astro` | `tsconfig.json` (extends chain); `eslint.config.*` (astro plugin); `astro.config.mjs` (`output`) |
 
-5. **Offer latest-practices search.** Ask whether to web-search `"<topic> best practices <current year>"` for rules not yet bundled. If yes, present candidates as a numbered list; each approved candidate becomes a new file under `.claude/rules/`.
+5. **Offer latest-practices search.** Ask whether to web-search `"<topic> best practices <current year>"` for rules not yet bundled. If yes, present candidates as a numbered list. For each approved candidate, author a new markdown file following [references/writing-rules.md](references/writing-rules.md), name it `<topic>-<short-slug>.md`, and add it to the write list for step 6.
 
 6. **Write rules.** Pass the final write list from step 3 to the write script:
 
@@ -69,7 +73,7 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
    uv run scripts/write-rules.py --target <target-rules-dir> <source-file> [...]
    ```
 
-   The script creates `.claude/rules/` if missing and copies each file flat (no per-topic subdirectory). Source tiers:
+   The script creates `.claude/rules/` if missing and copies each file flat into `.claude/rules/` — even though the runtime supports subdirectories, this skill always writes flat. Source tiers:
    - `recommended` → `assets/<topic>/recommended/`
    - `strict` → `assets/<topic>/recommended/` and `assets/<topic>/strict/`
    - Optional rules → `assets/<topic>/` (root, not a subdirectory)
