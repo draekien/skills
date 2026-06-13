@@ -61,6 +61,7 @@ Optional: one closing sentence on edge cases or when the rule does not apply.
 ```
 
 Common `paths` mappings by topic:
+
 - TypeScript/TSX → `**/*.{ts,tsx}`
 - React (JSX/components) → `**/*.{tsx,jsx}`
 - C# → `**/*.cs`
@@ -84,7 +85,7 @@ Omit this file entirely if the topic has no associated tooling config.
 
 Two table edits, no new prose sections:
 
-- **Topics table** — add one row: `\`<topic>\` | <detection signals> | [references/<topic>.md](references/<topic>.md)`. Omit the reference link if step 4 was skipped.
+- **Topics table** — add one row: ``{{topic}} | {{detection signals}} | [references/{{topic}}.md](references/{{topic}}.md)``. Omit the reference link if step 4 was skipped.
 - **Workflow step 4 table** — if a reference was written, add one row mapping the topic to its target config files.
 
 If the topic has mutually-exclusive optional rules, also add a bullet under workflow step 2.

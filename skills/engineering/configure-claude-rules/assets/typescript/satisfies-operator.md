@@ -31,6 +31,7 @@ palette.red; // [number, number, number] | string — widened, unsafe to use wit
 ```
 
 Use `satisfies` when:
+
 - Declaring config or lookup objects that must conform to a type but whose values need precise types downstream.
 - Replacing `as` casts that exist only to confirm shape conformance, not to override the type.
 

@@ -3,7 +3,11 @@ name: visualise
 description: Takes user-supplied input and produces a self-contained HTML file that visualises it. Use when the user wants to see data, text, or structured content rendered visually, or when the user says "visualise this", "show me a chart", "make a diagram", "render this as HTML".
 ---
 
-Pick the most informative visual form for the input, generate a self-contained HTML file (no external requests), validate it, then report the full path.
+Pick the most informative visual form for the input, generate a self-contained HTML file (no non-CDN external requests — approved CDN libraries are permitted), validate it, then report the full path.
+
+If the input has no clear visual form, default to a formatted document layout (readable typography, structured sections) rather than forcing a chart. Never ask the user to clarify — pick the most informative form and proceed.
+
+Write the output file to the user's current working directory, named `visualisation.html` (or a descriptive slug, e.g. `sales-2025.html`).
 
 Apply the aesthetic and design thinking guidance in [references/design-thinking.md](references/design-thinking.md).
 

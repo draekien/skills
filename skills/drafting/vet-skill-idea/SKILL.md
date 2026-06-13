@@ -8,7 +8,9 @@ Every skill's description loads into context for every session in its scope. An 
 
 ## The gates
 
-A concept warrants a skill only by clearing all five. Each gate carries the test that discriminates a pass from a failure, and where a failure routes instead.
+A concept warrants a skill only by clearing all four. Each gate carries the test that discriminates a pass from a failure, and where a failure routes instead.
+
+If the concept description is too vague to test against a gate, ask one focused question to clarify it before proceeding — do not evaluate a concept you cannot fairly test.
 
 ### Net-new capability
 
@@ -26,12 +28,16 @@ One unified job. Test: state the purpose in one sentence without "and", and writ
 
 A skill is one vehicle among several, and often the wrong one. A durable fact belongs in memory. An always-on project convention belongs in the project's rules or instructions file. An automated, deterministic behaviour — "after every X, do Y" — belongs in a hook, which the harness runs reliably; an agent reading a skill cannot guarantee it fires. A recurring one-keystroke invocation is a slash command. If another vehicle fits better, name it and route there.
 
-### Recurrence
-
-Skills earn their keep through repeated use. Test: will this fire more than a handful of times across the project's life? A genuine one-off should just be done now — building, maintaining, and loading a skill for it costs more than it returns.
-
 ## Verdict
 
-A concept that clears all five gates is worth building. Otherwise route it and name the gate it failed so the decision is legible: **split** into single-responsibility skills (single responsibility), **redirect** to the better home and say which (right home), or **just do the task** now without a skill (recurrence). When the goal or the capability gate fails, drop the idea.
+Route by the first gate that fails, and name the gate so the decision is legible:
+
+- Net-new capability fails → drop.
+- Sound goal fails → drop.
+- Single responsibility fails → split into single-responsibility skills.
+- Right home fails → redirect to the named vehicle.
+- Clears all four → worth building.
+
+If multiple gates fail, name all of them in the verdict — the person needs the full picture to reframe or drop the idea.
 
 Once a concept passes, hand off to the `skill-writing` skill to author it. If that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "skill-writing"` before authoring.

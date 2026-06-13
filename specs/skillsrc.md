@@ -19,15 +19,18 @@ JSON object. Top-level keys are skill names (matching each skill's `name` frontm
 ## Rules for Skills
 
 **Reading:**
+
 - Use the skill's own `scripts/skillsrc.py get` to read config values (see [Script convention](#script-convention) below).
 - If the file or the skill's block is absent, the script falls back to the skill's documented defaults — do not error.
 
 **Writing:**
+
 - Use the skill's own `scripts/skillsrc.py set <value>` to write config values.
 - Always confirm any write with the user before executing the script.
 - If `.draekien/` does not exist, follow the directory creation protocol in [specs/draekien.md](draekien.md) before running the script.
 
 **Key naming:**
+
 - Use `camelCase` keys.
 - Document every key the skill reads or writes in the skill's own reference file. Do not rely on undocumented keys.
 
@@ -36,12 +39,14 @@ JSON object. Top-level keys are skill names (matching each skill's `name` frontm
 Every skill that reads or writes `.skillsrc` must bundle `scripts/skillsrc.py` in its own `scripts/` directory. Each script is hardcoded to its own skill's section only — it never reads or writes another skill's block.
 
 **Interface:**
+
 ```
 uv run scripts/skillsrc.py --config <path-to-.skillsrc> get
 uv run scripts/skillsrc.py --config <path-to-.skillsrc> set <value>
 ```
 
 **Implementation rules:**
+
 - `get`: read the skill's block, print the value; print the default if the file or key is absent; exit 0.
 - `set`: parse existing JSON → merge only the skill's block → rewrite the file; exit 0.
 - `dependencies = []` — stdlib only (`json`, `pathlib`, `argparse`).

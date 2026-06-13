@@ -15,12 +15,16 @@ Apply software design principles to whatever the user brings. Explore the projec
 
 Run once on first invocation in this order:
 
-1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the configured spec output directory. If `.draekien/.skillsrc` is absent the script prints the default `docs/designs`.
+1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the spec output directory. If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `module-design.specsDir`; default to `docs/designs` if absent.
 2. **Open question** — ask "What are we looking at?" Wait for the answer before proceeding.
+
+## DDD Mode
+
+If `.draekien/ubiquitous-language.yaml` exists at the project root, DDD mode is active. Follow all instructions in [references/ddd-mode.md](references/ddd-mode.md) for the session.
 
 ## Understanding the module
 
-Explore the project before asking questions. What matters is understanding scope, responsibility, callers, data contract, side effects, and boundaries — whether by reading existing code or by interviewing the user. If the module exists, the codebase already answers most of these.
+Ask the opening question, then explore the project, then ask further targeted questions. What matters is understanding scope, responsibility, callers, data contract, side effects, and boundaries — whether by reading existing code or by interviewing the user. If the module exists, the codebase already answers most of these.
 
 ## Strict Constraint Enforcement
 
@@ -38,14 +42,15 @@ Full rule definitions: [references/design-principles.md](references/design-princ
 
 ## Output
 
-For existing modules: produce a violations report. For each violation, quote the offending code, name the rule, and suggest a concrete fix. Offer to draft a redesign spec if the user wants one.
+For existing modules: produce a violations report. For each violation, quote the offending code, name the rule, and suggest a concrete fix. Offer to draft a redesign spec if the user wants one. If no violations are found, state that explicitly and offer to draft a redesign spec or run the recommended-rules audit.
 
 For new modules: draft the spec once the design is understood. Adapt depth to scope — see [references/spec-format.md](references/spec-format.md) for section rules by scope. Present the draft to the user and apply any corrections before writing to disk.
 
 Spec output path:
+
 - Use `module-design.specsDir` from `.skillsrc` if set, otherwise `docs/designs`.
 - Filename: `<module-name>.md` (kebab-case).
-- **Exists** — write directly, no confirmation needed.
+- **Exists** — write directly, no confirmation needed. (Config writes still require confirmation per skillsrc-format.md.)
 - **Does not exist** — confirm the full path with the user before creating it.
 
 If the user provides a custom path that differs from the default, confirm with the user, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc set <path>` to persist it. The script merges only the `module-design` block and preserves all other skills' config.
@@ -55,7 +60,7 @@ If the user provides a custom path that differs from the default, confirm with t
 After writing the spec, spawn an independent subagent to audit it. Brief it to:
 
 - Read the spec at the resolved path.
-- Check each of the eight recommended principles: Minimize Complexity, Deep Modules, Avoid Hasty Abstractions, Command-Query Separation, Fail Fast, Names as Documentation, Principle of Least Astonishment, Single Abstraction Level.
+- Check each recommended principle listed in [references/design-principles.md](references/design-principles.md) under the Recommended Rules heading.
 - For each violation: quote the offending spec text, name the rule, and suggest a concrete fix.
 - Report clean if no violations found. Do not rewrite the spec — findings only.
 - Full rule definitions are in `skills/engineering/module-design/references/design-principles.md`.

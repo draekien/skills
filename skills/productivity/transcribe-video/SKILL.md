@@ -19,17 +19,16 @@ Run these checks in parallel:
 | ffmpeg | `ffmpeg -version` |
 | uv | `uv --version` |
 
-If any dependency is missing, list all missing ones and ask the user to confirm before installing. Install commands are in [references/install.md](references/install.md).
+If ffmpeg or uv is missing, list all missing system tools and ask the user to confirm before running the install commands. No confirmation is needed for Python packages installed into the venv. Install commands are in [references/install.md](references/install.md).
 
 ## 2. Environment setup
 
 Check whether the environment is already set up:
 
-```bash
-uv pip show --python whisper-env openai-whisper yt-dlp
-```
+- Windows: `whisper-env\Scripts\pip show openai-whisper yt-dlp`
+- Unix: `whisper-env/bin/pip show openai-whisper yt-dlp`
 
-If both packages are found (exit 0), skip to the **CUDA check** below.
+If both packages are found, skip to the **CUDA check** below.
 
 Otherwise, install Python 3.12 and create the venv:
 
@@ -53,9 +52,9 @@ uv pip install --python whisper-env openai-whisper yt-dlp
 uv pip install --python whisper-env openai-whisper yt-dlp
 ```
 
-### CUDA check
+## 2a. CUDA check (every invocation)
 
-Run on every invocation to verify whether the installed torch supports GPU acceleration:
+Verify whether the installed torch supports GPU acceleration:
 
 - Windows: `whisper-env\Scripts\python -c "import torch; print(torch.cuda.is_available())"`
 - Unix: `whisper-env/bin/python -c "import torch; print(torch.cuda.is_available())"`
@@ -66,7 +65,7 @@ If the result is `False`, warn the user: GPU acceleration is unavailable and CPU
 
 Check memory for a saved `whisper-model` preference.
 
-- **Found:** use it silently.
+- **Found:** use it, but tell the user which model is being used and offer to change it.
 - **Not found:** present the table below, ask the user to choose, then save the choice to memory as a user preference keyed `whisper-model`.
 
 | Model | Download size | Notes |
@@ -79,12 +78,16 @@ Check memory for a saved `whisper-model` preference.
 
 ## 4. Transcription
 
+Run from the repo root (the directory containing `whisper-env`):
+
 ```bash
 uv run scripts/transcribe.py "<source>" --model <model> --venv whisper-env
 ```
 
 `<source>` is the URL or local file path. The script handles download (for URLs), transcription, and temp file cleanup automatically. It prints the transcript file path on success.
 
+If the script exits non-zero, read its stderr and report it verbatim. Common causes: unsupported URL, private/geo-blocked video, corrupted local file.
+
 ## 5. Output
 
-Whisper writes `<source_name>.txt` in the working directory. Report the output path and offer to display the transcript inline.
+The script prints the exact output path on success. Report that path; do not infer the filename yourself. Offer to display the transcript inline.
