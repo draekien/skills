@@ -51,7 +51,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/engineering/react-composition-rules", "./skills/engineering/get-specific", "./skills/engineering/configure-claude-rules", "./skills/engineering/module-design", "./skills/engineering/break-down-prd"],
-      "version": "0.16.0"
+      "version": "0.17.0"
     },
     {
       "name": "productivity-skills",
@@ -59,7 +59,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise", "./skills/productivity/steelman", "./skills/productivity/devils-advocate", "./skills/productivity/rubber-duck", "./skills/productivity/from-first-principles"],
-      "version": "0.10.0"
+      "version": "0.11.0"
     },
     {
       "name": "output-styles",
@@ -67,7 +67,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/output-styles/cte-mode", "./skills/output-styles/eli10-mode"],
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     {
       "name": "personal-skills",
@@ -75,7 +75,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/personal/ghost-writing"],
-      "version": "0.2.0"
+      "version": "0.3.0"
     }
   ]
 }
