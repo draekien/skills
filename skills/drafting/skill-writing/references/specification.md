@@ -99,4 +99,4 @@ Keep `SKILL.md` under 500 lines. Move detailed reference material to separate fi
 
 ## File references
 
-Use relative paths from the skill root. Keep references one level deep from `SKILL.md` — avoid deeply nested reference chains.
+Use relative paths from the skill root. Keep references one level deep from `SKILL.md` — never reference a file from within a referenced file.

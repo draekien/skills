@@ -8,7 +8,7 @@ A skill is a teaching document for a future LLM instance — it transfers intent
 
 ## Workflow
 
-1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything. When building from scratch and the concept's worthiness is uncertain, gate it first with the `vet-skill-idea` skill; if that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "vet-skill-idea"`
+1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything. When building from scratch and the concept's worthiness is uncertain, gate it first with the `vet-skill-idea` skill; if that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "vet-skill-idea"`; if the verdict is to not proceed, surface the reasons to the user and stop — do not continue to the remaining workflow steps
 2. **Plan structure** — decide whether the skill needs persistent state (see [Stateful or Stateless](#stateful-or-stateless)), then what belongs in the body versus references, scripts, or assets (see [Content Placement](#content-placement))
 3. **Write** — let the task's fragility and the agent's existing knowledge determine how much structure to impose; apply Writing Standards throughout
 4. **Run the [Quality Gate](#quality-gate)**
@@ -125,10 +125,13 @@ When the skill bundles scripts, see [references/script-design.md](references/scr
 ## Quality Gate
 
 1. Spawn three LLM-judge subagents in parallel — give each the skill path and a single specialised remit so it audits deeply rather than spreading thin. Each reads the skill and reports every gap in its remit as a flat list:
-   - **Spec & structure judge** — Skill Anatomy spec rules (name and description constraints); all `[LLM]` rules in [references/spec-rules.md](references/spec-rules.md); Content Placement (right level for each piece of content, 500-line body limit); Stateful or Stateless rules (state only where it cannot be re-derived; stateful skills satisfy every rule in [references/stateful-skills.md](references/stateful-skills.md))
-   - **Writing-standards judge** — Writing Standards (voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, carry the why, durability with no mutable-state references, body pattern choices); all quality criteria in [references/quality-criteria.md](references/quality-criteria.md)
-   - **Prompt-analysis judge** — the skill body analysed as a prompt per [references/prompt-analysis.md](references/prompt-analysis.md): contradictions, ambiguity, persona/voice consistency, cognitive load, semantic coverage, and composition conflicts with linked files, applying the findings discipline
+
+   | Judge | What to read | What to check |
+   | --- | --- | --- |
+   | **Spec & structure** | Skill Anatomy; all `[LLM]` rules in [references/spec-rules.md](references/spec-rules.md); [references/stateful-skills.md](references/stateful-skills.md) when stateful | Name and description constraints; every `[LLM]` rule; Content Placement (right level for each piece, 500-line body limit); state only where it cannot be re-derived, and stateful skills satisfy every stateful-skills.md rule |
+   | **Writing-standards** | all quality criteria in [references/quality-criteria.md](references/quality-criteria.md) | Voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, carry the why, durability (no mutable-state references), body pattern choices |
+   | **Prompt-analysis** | [references/prompt-analysis.md](references/prompt-analysis.md) | The body as a prompt: contradictions, ambiguity, persona/voice consistency, cognitive load, semantic coverage, composition conflicts with linked files — applying the findings discipline |
 2. Merge the three judges' findings, then review — fix unambiguous gaps without asking; for gaps with meaningful tradeoffs, ask one question before fixing
-3. Run `uv run scripts/validate.py <skill-dir>` — fix any `[AUTO]` failures before confirming
+3. Run `uv run scripts/validate.py <skill-dir>` — fix any `[AUTO]` failures before confirming (if uv is unavailable, check `[AUTO]` rules manually against [references/spec-rules.md](references/spec-rules.md) before confirming)
 4. If the skill contains Python scripts, run `uv tool run ruff check <skill-dir>/scripts/` — fix any reported issues before confirming
 5. Verify all relative file links in the body resolve
