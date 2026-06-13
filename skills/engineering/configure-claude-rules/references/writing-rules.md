@@ -1,6 +1,6 @@
 # Writing `.claude/rules/` Files
 
-Source: https://code.claude.com/docs/en/memory#organize-rules-with-claude/rules/
+Source: <https://code.claude.com/docs/en/memory#organize-rules-with-claude/rules/>
 
 ## What rules are
 

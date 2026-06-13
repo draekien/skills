@@ -47,6 +47,7 @@ For existing modules: produce a violations report. For each violation, quote the
 For new modules: draft the spec once the design is understood. Adapt depth to scope — see [references/spec-format.md](references/spec-format.md) for section rules by scope. Present the draft to the user and apply any corrections before writing to disk.
 
 Spec output path:
+
 - Use `module-design.specsDir` from `.skillsrc` if set, otherwise `docs/designs`.
 - Filename: `<module-name>.md` (kebab-case).
 - **Exists** — write directly, no confirmation needed. (Config writes still require confirmation per skillsrc-format.md.)

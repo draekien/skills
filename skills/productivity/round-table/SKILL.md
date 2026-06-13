@@ -23,6 +23,7 @@ Guard the option count: fewer than 2 options → tell the user a round-table nee
 Create an agent team with one champion teammate per confirmed option.
 
 Each champion receives:
+
 - The debate topic
 - Their assigned option
 - The names of all other champions

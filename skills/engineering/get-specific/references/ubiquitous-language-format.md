@@ -45,6 +45,7 @@ contexts:
 All scripts use `uv run` from the skill's base directory. `<dict>` is the resolved `dictionaryPath`.
 
 **Query (read-only):**
+
 ```
 uv run scripts/query.py --dict <dict> list-contexts
 uv run scripts/query.py --dict <dict> lookup <TermName> [--context <Context>]
@@ -52,6 +53,7 @@ uv run scripts/query.py --dict <dict> list <Context> [--page N] [--page-size N]
 ```
 
 **Write:**
+
 ```
 uv run scripts/write.py --dict <dict> add-term \
   --context <Context> --term <TermName> --definition "<text>" \
@@ -66,6 +68,7 @@ uv run scripts/write.py --dict <dict> resolve-ambiguity \
 ```
 
 **Migrate (one-time):**
+
 ```
 uv run scripts/migrate.py --project-root <root> --dict <dict> [--dry-run]
 ```

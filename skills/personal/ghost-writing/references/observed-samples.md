@@ -9,12 +9,12 @@ A minimal ground-truth set, one or two samples per register, distilled June 2026
 
 ## Working exchange
 
-- "Heyo <name>, the recommended approach for B2B servers at the moment is API Key authentication. This is enabled by default when you invoke <method>. FYI the library has been renamed and moved into <namespace>. Please install the new version of the library -> <package>"
+- "Heyo {{name}}, the recommended approach for B2B servers at the moment is API Key authentication. This is enabled by default when you invoke {{method}}. FYI the library has been renamed and moved into {{namespace}}. Please install the new version of the library -> {{package}}"
 - "I've reviewed the article. I think it is too wordy, and falls into too many traps. I do like the general flow and the structure."
 
 ## Considered
 
-- "Hi <name>, [blank line] This is very cool. [blank line] I've done an initial review of the technical documentation. Please see attached:" then a numbered list, a disclaimer ("I've not personally validated all the findings - sharing in case its useful to you"), and the formal sign-off.
+- "Hi {{name}}, [blank line] This is very cool. [blank line] I've done an initial review of the technical documentation. Please see attached:" then a numbered list, a disclaimer ("I've not personally validated all the findings - sharing in case its useful to you"), and the formal sign-off.
 - Review headline bullet showing the certainty gradient and inline trade-off: "Prompt optimisation may mess with provider native caching - reduces token usage but causes cache-miss which extends response time / causes more inference - will need to find a balance"
 
 ## Public prose

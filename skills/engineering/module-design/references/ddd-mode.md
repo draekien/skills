@@ -18,6 +18,7 @@ After every user response, run term capture and conflict detection concurrently.
 4. Determine the bounded context from the confirmed map. If ambiguous, ask.
 5. Before first write to any context, confirm the bounded context assignment.
 6. Write immediately using:
+
    ```
    uv run scripts/write.py --dict .draekien/ubiquitous-language.yaml add-term \
      --context <Context> --term <TermName> --definition "<text>" \
@@ -30,6 +31,7 @@ After every user response, run term capture and conflict detection concurrently.
 - **Definition conflict** — user uses a defined term contradicting its stored meaning: hard interrupt, surface both meanings, ask which is canonical. Run `add-term` on resolution.
 - **Cross-context collision** — same term defined differently in two contexts: surface explicitly, ask if intentional. Both stand if deliberate (DDD allows intentional ambiguity across contexts).
 - **Vague language** — user word matches 2+ defined terms: hard interrupt, list matching terms with definition summaries, wait for disambiguation. Run `flag-ambiguity` until resolved; run `resolve-ambiguity` once canonical meaning is confirmed:
+
   ```
   uv run scripts/write.py --dict .draekien/ubiquitous-language.yaml flag-ambiguity \
     --context <Context> --term <TermName> --note "<text>"

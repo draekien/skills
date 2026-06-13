@@ -57,6 +57,7 @@ Researchers can message each other directly, surfacing cross-cutting findings wi
 Create a researcher team with one teammate per confirmed angle.
 
 Each researcher receives:
+
 - Their assigned angle and scope
 - The names of all other researchers and the lead
 - The source menu

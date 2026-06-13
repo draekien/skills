@@ -1,6 +1,6 @@
 # Agent Skills Specification
 
-> Source: https://agentskills.io/specification
+> Source: <https://agentskills.io/specification>
 
 ## Directory structure
 

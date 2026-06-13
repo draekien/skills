@@ -20,9 +20,11 @@ See [references/specification.md](references/specification.md) for the full form
 **Name** — verb-noun form preferred when name contains a verb (`transcribe-video`, `review-code`).
 
 **Description** — the sole activation signal; write as an API contract:
+
 ```
 <verb> <what it does>. Use when <conditions>, or when the user says "<phrase 1>", "<phrase 2>".
 ```
+
 Imperative, embeds trigger phrases verbatim.
 
 ## Context First, Then Interview
@@ -47,15 +49,20 @@ These standards ensure the skill transfers cleanly — the agent reading it cold
 Calibrate specificity to how variable and fragile the task is:
 
 - **High freedom** — reasoning-carrying prose. Use when multiple approaches are valid and judgment determines the path.
+
   ```
   Understand the current state of the codebase before suggesting changes — look for shallow
   modules, tight coupling, and untested seams. The goal is to surface friction, not apply a checklist.
   ```
+
 - **Medium freedom** — pseudocode or parameterised templates. Use when a preferred pattern exists but some variation is acceptable.
+
   ```
   def generate_report(data, format="markdown", include_charts=True): ...
   ```
+
 - **Low freedom** — exact scripts, few or no parameters. Use when operations are fragile, consistency is critical, or a specific sequence must hold.
+
   ```
   Run exactly: python scripts/migrate.py --verify --backup
   ```
@@ -131,6 +138,7 @@ When the skill bundles scripts, see [references/script-design.md](references/scr
    | **Spec & structure** | Skill Anatomy; all `[LLM]` rules in [references/spec-rules.md](references/spec-rules.md); [references/stateful-skills.md](references/stateful-skills.md) when stateful | Name and description constraints; every `[LLM]` rule; Content Placement (right level for each piece, 500-line body limit); state only where it cannot be re-derived, and stateful skills satisfy every stateful-skills.md rule |
    | **Writing-standards** | all quality criteria in [references/quality-criteria.md](references/quality-criteria.md) | Voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, carry the why, durability (no mutable-state references), body pattern choices |
    | **Prompt-analysis** | [references/prompt-analysis.md](references/prompt-analysis.md) | The body as a prompt: contradictions, ambiguity, persona/voice consistency, cognitive load, semantic coverage, composition conflicts with linked files — applying the findings discipline |
+
 2. Merge the three judges' findings, then review — fix unambiguous gaps without asking; for gaps with meaningful tradeoffs, ask one question before fixing
 3. Run `uv run scripts/validate.py <skill-dir>` — fix any `[AUTO]` failures before confirming (if uv is unavailable, check `[AUTO]` rules manually against [references/spec-rules.md](references/spec-rules.md) before confirming)
 4. If the skill contains Python scripts, run `uv tool run ruff check <skill-dir>/scripts/` — fix any reported issues before confirming
