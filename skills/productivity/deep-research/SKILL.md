@@ -40,6 +40,10 @@ Researchers pick sources adaptively based on their angle:
 - **Codebase** — search and read local project files for context (relevant when topic is code-adjacent)
 - **Memory** — query available memory tools for prior relevant context from this project
 
+### Researcher mode — select before spawning
+
+If agent teams enabled: Mode B. Otherwise: Mode A. If unsure, ask the user: "Do you have agent teams enabled?" The compatibility note in the frontmatter will confirm this.
+
 ### Mode A — Parallel subagents (default)
 
 Spawn one subagent per confirmed angle.
@@ -48,7 +52,7 @@ Each subagent receives its angle, scope, and the source menu. All run in paralle
 
 ### Mode B — Agent teams (use when available)
 
-Prefer Mode B over Mode A when agent teams are available — researchers can message each other directly, surfacing cross-cutting findings without waiting for the synthesis phase.
+Researchers can message each other directly, surfacing cross-cutting findings without waiting for the synthesis phase.
 
 Create a researcher team with one teammate per confirmed angle.
 
@@ -56,13 +60,15 @@ Each researcher receives:
 - Their assigned angle and scope
 - The names of all other researchers and the lead
 - The source menu
-- Instructions: research their angle adaptively, send cross-cutting findings to relevant peers via direct message, escalate blockers to the lead via direct message, and signal "done" to the lead when their angle is exhausted
+- Instructions: research their angle adaptively, send cross-cutting findings to relevant peers via direct message, escalate blockers to the lead via direct message, and send the lead a direct message containing only the word DONE when their angle is exhausted, then stop
 
 Lead resolves blockers as they arrive. Wait until all researchers signal "done", then collect all outputs.
 
 ## Phase 4 — Synthesize
 
-Spawn a separate synthesizer subagent with all researcher outputs, the original topic, and the output preference.
+Spawn a separate synthesizer subagent. Pass it: (1) each researcher's output labelled with its angle name, (2) the original topic verbatim, (3) the confirmed angle list, (4) the output preference. Instruct it to follow the Phase 4 report structure.
+
+If a researcher returns no output or errors, note the angle as "unresolved" and include it in the synthesizer brief. The synthesizer must surface unresolved angles in Open Questions rather than omitting them.
 
 Synthesizer produces a structured report with these sections:
 
