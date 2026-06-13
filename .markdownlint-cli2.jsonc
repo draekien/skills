@@ -1,0 +1,21 @@
+{
+  "config": {
+    "default": true,
+    // Skill prompts deliberately use long lines; don't enforce a wrap width.
+    "MD013": false,
+    // Files lead with YAML frontmatter, not an h1.
+    "MD041": false,
+    // Allow repeated headings as long as they aren't siblings (e.g. "## Output" in different sections).
+    "MD024": { "siblings_only": true },
+    // Don't renumber ordered lists — some skills use deliberate continuous numbering across subsections.
+    "MD029": false,
+    // Plain fenced blocks (directory trees, output samples) intentionally have no language.
+    "MD040": false,
+    // Bold labels (e.g. **Token waste**) are a deliberate authoring convention, not headings.
+    "MD036": false,
+    // Compact pipe tables are fine.
+    "MD060": false
+  },
+  "globs": ["**/*.md"],
+  "ignores": ["node_modules"]
+}
