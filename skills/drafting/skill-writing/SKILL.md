@@ -124,14 +124,11 @@ When the skill bundles scripts, see [references/script-design.md](references/scr
 
 ## Quality Gate
 
-1. Spawn a subagent to act as LLM judge — brief it with the skill path and instruct it to read the skill, then audit against each of the following; report every gap as a flat list:
-   - **Skill Anatomy spec rules** — name and description constraints
-   - **Writing Standards** — voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, carry the why, durability (no mutable-state references), body pattern choices
-   - **Stateful or Stateless rules** — state only where it cannot be re-derived; stateful skills satisfy every rule in [references/stateful-skills.md](references/stateful-skills.md)
-   - **Content Placement rules** — right level for each piece of content, 500-line body limit
-   - **[references/quality-criteria.md](references/quality-criteria.md)** — all quality criteria
-   - **[references/spec-rules.md](references/spec-rules.md)** — all `[LLM]` rules
-2. Review findings — fix unambiguous gaps without asking; for gaps with meaningful tradeoffs, ask one question before fixing
+1. Spawn three LLM-judge subagents in parallel — give each the skill path and a single specialised remit so it audits deeply rather than spreading thin. Each reads the skill and reports every gap in its remit as a flat list:
+   - **Spec & structure judge** — Skill Anatomy spec rules (name and description constraints); all `[LLM]` rules in [references/spec-rules.md](references/spec-rules.md); Content Placement (right level for each piece of content, 500-line body limit); Stateful or Stateless rules (state only where it cannot be re-derived; stateful skills satisfy every rule in [references/stateful-skills.md](references/stateful-skills.md))
+   - **Writing-standards judge** — Writing Standards (voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, carry the why, durability with no mutable-state references, body pattern choices); all quality criteria in [references/quality-criteria.md](references/quality-criteria.md)
+   - **Prompt-analysis judge** — the skill body analysed as a prompt per [references/prompt-analysis.md](references/prompt-analysis.md): contradictions, ambiguity, persona/voice consistency, cognitive load, semantic coverage, and composition conflicts with linked files, applying the findings discipline
+2. Merge the three judges' findings, then review — fix unambiguous gaps without asking; for gaps with meaningful tradeoffs, ask one question before fixing
 3. Run `uv run scripts/validate.py <skill-dir>` — fix any `[AUTO]` failures before confirming
 4. If the skill contains Python scripts, run `uv tool run ruff check <skill-dir>/scripts/` — fix any reported issues before confirming
 5. Verify all relative file links in the body resolve
