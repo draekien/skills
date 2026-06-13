@@ -23,13 +23,13 @@ If the file is absent the script prints the default `.draekien/break-down-prd`. 
 
 ## Get the PRD
 
-Work from a PRD in the draft-a-prd format — Problem Statement, Goals / Success Criteria, User Stories, Testing Decisions, Out of Scope, Additional Notes, Open Questions. Use a file path if the user gives one; otherwise use the PRD already in the conversation; otherwise ask where it is.
+Work from a PRD in the draft-a-prd format — Problem Statement, Goals / Success Criteria, User Stories, Testing Decisions, Out of Scope, Additional Notes, Open Questions. Use a file path if the user gives one; otherwise use the PRD already in the conversation; otherwise ask where it is. If the PRD does not use this format, map its content onto these sections and note any absent ones; missing Open Questions and missing measurable Goals must both be surfaced as gaps in the overview coverage table before proceeding.
 
 ## Structure as tracer bullets
 
 A tracer bullet is a thin slice that runs end-to-end in the real system — lean but complete, with real structure and error handling, not a throwaway prototype. The breakdown is an ordered sequence of bullets:
 
-- **Bullet 1 is the walking skeleton** — the thinnest path that touches every major component end-to-end, built around the riskiest or most uncertain part of the PRD. Find that risk in the Open Questions, in anything novel or unproven, and in the Testing Decisions' constraints, and attack it first. That is where the plan is most likely wrong, so the earliest feedback is worth the most.
+- **Bullet 1 is the walking skeleton** — the thinnest slice that connects the riskiest part of the PRD to at least one real entry point and one real persistence/output boundary. It need not touch every component; it must touch those the skeleton's risk depends on. Find that risk in the Open Questions, in anything novel or unproven, and in the Testing Decisions' constraints, and attack it first. That is where the plan is most likely wrong, so the earliest feedback is worth the most.
 - **Each later bullet adds one capability**, also end-to-end, so the system stays demoable after every bullet. A reviewer can judge how close each increment is to the target.
 
 Bullets run in sequence. Within a bullet, two tasks are parallel unless a dependency forces an order between them — so order tasks by genuine dependency, never by guesswork, and let the dependency tree expose the maximum that can run at once.
@@ -50,7 +50,7 @@ A task is HIL only when it is *irreducibly* so — when one of these holds and c
 
 Everything else is AFK.
 
-When a task is HIL, **decompose it**. Split it into smaller tracer bullets and peel the AFK parts away — the setup, the scaffolding, the reversible preparation — until only the smallest kernel still carries the HIL reason. A "deploy to production" task is mostly AFK (build, stage, dry-run, prepare rollback) wrapped around one HIL kernel (approve the cutover). Isolate that kernel and tag only it HIL.
+When a task is HIL, **decompose it**. Split it into finer-grained tasks within the same bullet (or across bullets if the scope warrants) and peel the AFK parts away — the setup, the scaffolding, the reversible preparation — until only the smallest kernel still carries the HIL reason. A "deploy to production" task is mostly AFK (build, stage, dry-run, prepare rollback) wrapped around one HIL kernel (approve the cutover). Isolate that kernel and tag only it HIL.
 
 ### Honest classification is the whole point
 
@@ -65,11 +65,11 @@ Create one file per bullet plus an overview, in `<outputDir>/<prd-slug>/`:
 - `00-overview.md` — from [assets/overview-template.md](assets/overview-template.md)
 - `01-<slug>.md`, `02-<slug>.md`, … — one self-contained file per bullet, from [assets/bullet-template.md](assets/bullet-template.md)
 
-A bullet file is self-contained: an executor needs nothing beyond it — the goal, the PRD items it serves (quoted), the task checklist with `[AFK]`/`[HIL]` tags, the Mermaid dependency tree, and the HIL callouts naming the human decision each HIL task needs.
+A bullet file is self-contained: an executor needs nothing beyond it — the goal, the PRD items it serves (quoted), the task checklist with `[AFK]`/`[HIL]` tags, the Mermaid dependency tree, and the HIL callouts naming the human decision each HIL task needs and the HIL criterion that makes it irreducible (judgment / credential / blocked-on-info / high-risk approval).
 
-Every task cites the PRD user story or measurable goal it serves. The overview's coverage table maps each PRD user story and each measurable goal to the task(s) covering it, and flags any that no task covers — an uncovered requirement is a gap to surface, not to ship.
+Every task cites the PRD user story or measurable goal it serves. The inline `serves:` field is authoritative; the header block is a derived summary — keep it in sync when tasks change. The overview's coverage table maps each PRD user story and each measurable goal to the task(s) covering it, and flags any that no task covers — an uncovered requirement is a gap to surface, not to ship.
 
-If `<outputDir>` is under `.draekien/` and that directory does not yet exist, confirm its creation with the user before the first write. If the user chooses a custom output directory, confirm it, then persist it:
+If `<outputDir>` is under `.draekien/` and that directory does not yet exist, confirm its creation with the user before the first write. If the user declines, ask for an alternative path, persist it with the `set` command, and write nothing until a confirmed output directory exists. If the user chooses a custom output directory, confirm it, then persist it:
 
 ```bash
 uv run scripts/skillsrc.py --config .draekien/.skillsrc set <path>
@@ -77,4 +77,4 @@ uv run scripts/skillsrc.py --config .draekien/.skillsrc set <path>
 
 ## Review
 
-This runs mostly without interruption. Once the files are written, present a summary — bullet order, AFK versus HIL counts, the front-loaded risks, and any coverage gaps — and invite feedback. Revise until the user confirms.
+This runs mostly without interruption. Once the files are written, present a summary — bullet order, AFK versus HIL counts, the front-loaded risks, and any coverage gaps — and invite feedback. On each revision cycle, re-run the coverage check and update the overview table before presenting the revised summary. Complete when the user explicitly approves.
