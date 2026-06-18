@@ -5,7 +5,7 @@ description: Applies established testing principles to write tests that catch re
 
 A test earns its place only if it can fail when the code is wrong. Most tests that pass review fail this bar silently: they execute the code, raise coverage, and assert nothing that would break if the behaviour regressed. The job is not to produce tests that pass — it is to produce tests that would fail for the right reason. This discipline holds identically whether writing new tests or judging existing ones; auditing is just applying the same pillars to code already on the page.
 
-The pillars below are independent. Each defends against a distinct failure, and no pillar covers for another — a test can satisfy one and still be worthless under the rest. Hold every test against all of them.
+The pillars below are independent. Each defends against a distinct failure, and no pillar covers for another — a test can satisfy one and still be worthless under the rest. Hold every test against all of them. See [references/examples.md](references/examples.md) for a bad/good pseudocode pair illustrating each pillar.
 
 ## Falsifiability
 
