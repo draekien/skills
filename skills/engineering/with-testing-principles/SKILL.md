@@ -22,6 +22,8 @@ Expected values come from the specification, the requirements, or first-principl
 
 This is the trap to watch most closely when tests are written against code that already exists: the path of least resistance is to run it, capture the output, and assert equality. Derive the expectation independently instead. When the independently-derived value disagrees with the code's actual output, that disagreement is a finding — surface it as a possible bug rather than quietly adopting the code's answer.
 
+When the requirement cannot be established from the available context — no specification, no documented contract, and the correct behaviour is not derivable from first principles — stop and ask the user for it. Do not infer the expectation from the code's current output as a fallback; that is the bug-blessing trap wearing a different hat, and a test built on a guessed requirement is worse than no test, because it looks authoritative. State precisely what is undetermined and what is needed to proceed.
+
 ## Edge-case enumeration
 
 Falsifiability and independent derivation interrogate the tests that exist; neither says anything about the cases never written. High line coverage on the happy path while every boundary goes untested is coverage theatre — impressive numbers over exposed logic.
