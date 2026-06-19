@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Skill eval readout</title>
+<style>
+  /*
+    Frozen renderer for the skill-evals suite. Do not regenerate per run.
+    It fetches ./activation/runs.jsonl, ./impact/runs.jsonl and the suite
+    version files they reference, then draws the readout. Serve the folder
+    over http (see README.md) — file:// blocks the fetches.
+
+    Aesthetic: an instrument readout, not a dashboard. The data is the hero
+    (tabular monospace numerals); suite versions render as bands on the trace
+    so a changed suite never reads as one continuous trend; amber is reserved
+    for misfires alone — warmth marks where to look in a cool instrument field.
+  */
+  :root {
+    --ground: #0F141B;          /* ink / blue-slate */
+    --ground-raised: #161D27;
+    --text: #D7DEE8;
+    --muted: rgba(215, 222, 232, 0.52);
+    --faint: rgba(215, 222, 232, 0.13);
+    --hair: rgba(215, 222, 232, 0.09);
+    --recall: #34C9B0;          /* channel A */
+    --precision: #6E8BFF;       /* channel B */
+    --warn: #E8A33C;            /* misfires only */
+    --font-data: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+    --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; }
+
+  body {
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 248px minmax(0, 1fr);
+    min-height: 100vh;
+  }
+
+  /* ---- left rail: the instrument label ---- */
+  .rail {
+    border-right: 1px solid var(--hair);
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+  }
+
+  .brand { display: flex; flex-direction: column; gap: 6px; }
+  .brand-mark {
+    font-family: var(--font-data);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .brand-skill {
+    font-family: var(--font-data);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    word-break: break-word;
+  }
+
+  .modes { display: flex; flex-direction: column; gap: 2px; }
+  .mode-btn {
+    appearance: none;
+    background: none;
+    border: 0;
+    border-left: 2px solid transparent;
+    color: var(--muted);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    text-align: left;
+    padding: 9px 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .mode-btn:hover { color: var(--text); }
+  .mode-btn[aria-selected="true"] {
+    color: var(--text);
+    border-left-color: var(--recall);
+    background: var(--ground-raised);
+  }
+  .mode-btn:disabled { opacity: 0.34; cursor: default; }
+  .mode-btn .tally {
+    font-family: var(--font-data);
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rail-foot {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .rail-foot .legend { display: flex; align-items: center; gap: 8px; }
+  .swatch { width: 11px; height: 3px; border-radius: 2px; flex: none; }
+
+  /* ---- main readout ---- */
+  .readout { padding: 40px 48px 64px; max-width: 1100px; }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+  .head h1 {
+    font-family: var(--font-ui);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .head .stamp {
+    font-family: var(--font-data);
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* hero metric pair — the current signal */
+  .metrics {
+    display: flex;
+    gap: 56px;
+    flex-wrap: wrap;
+    margin-bottom: 44px;
+  }
+  .metric { display: flex; flex-direction: column; gap: 8px; }
+  .metric .num {
+    font-family: var(--font-data);
+    font-size: 68px;
+    line-height: 0.92;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .metric.recall .num { color: var(--recall); }
+  .metric.precision .num { color: var(--precision); }
+  .metric .delta {
+    font-family: var(--font-data);
+    font-size: 13px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .metric .delta.up { color: var(--recall); }
+  .metric .delta.down { color: var(--warn); }
+
+  /* trace */
+  .panel { margin-bottom: 44px; }
+  .panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+  }
+  .chart-wrap {
+    position: relative;
+    border: 1px solid var(--hair);
+    border-radius: 3px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.012), transparent);
+  }
+  canvas { display: block; width: 100%; height: 260px; }
+  .chart-note {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 24px;
+  }
+
+  /* detail lists */
+  .detail { display: grid; gap: 28px; }
+  .findings { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  @media (max-width: 760px) { .findings { grid-template-columns: 1fr; } }
+
+  .list-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--hair);
+    margin-bottom: 12px;
+  }
+  .list-head .count {
+    font-family: var(--font-data);
+    font-size: 20px;
+    font-variant-numeric: tabular-nums;
+  }
+  .miss .count { color: var(--warn); }
+  .clean .count { color: var(--recall); }
+
+  ul.rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  ul.rows li {
+    display: flex;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--faint);
+    font-size: 14px;
+  }
+  ul.rows li .gutter {
+    font-family: var(--font-data);
+    color: var(--warn);
+    flex: none;
+    user-select: none;
+  }
+  .clean ul.rows li .gutter { color: var(--recall); }
+  ul.rows li .body { color: var(--text); }
+  .row-empty { color: var(--muted); font-size: 13px; padding: 9px 0; }
+
+  /* impact task rows */
+  .task {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--faint);
+  }
+  .task-top { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+  .task-prompt { font-size: 14px; color: var(--text); }
+  .verdict-tag {
+    font-family: var(--font-data);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    flex: none;
+    white-space: nowrap;
+  }
+  .verdict-tag.skill { background: rgba(52,201,176,0.14); color: var(--recall); }
+  .verdict-tag.baseline { background: rgba(232,163,60,0.14); color: var(--warn); }
+  .verdict-tag.tie { background: var(--faint); color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .chip {
+    font-size: 12px;
+    padding: 3px 9px;
+    border-radius: 2px;
+    border: 1px solid var(--hair);
+    color: var(--muted);
+  }
+  .chip.met { border-color: rgba(52,201,176,0.4); color: var(--recall); }
+  .chip.missed { border-color: rgba(232,163,60,0.4); color: var(--warn); }
+
+  .unvalidated {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--warn);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .unvalidated::before { content: "○"; }
+
+  /* page-level empty state */
+  .blank {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 48px;
+  }
+  .blank .big { font-family: var(--font-data); font-size: 19px; color: var(--text); }
+  .blank p { max-width: 440px; color: var(--muted); margin: 0; }
+
+  a { color: var(--recall); }
+
+  @media (max-width: 720px) {
+    .shell { grid-template-columns: 1fr; }
+    .rail { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
+    .rail-foot { margin: 0; }
+    .readout { padding: 28px 20px 48px; }
+    .metric .num { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+<div id="app"><!-- rendered by script --></div>
+
+<script>
+"use strict";
+
+const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const COLOR = {
+  recall: "#34C9B0", precision: "#6E8BFF", warn: "#E8A33C",
+  hair: "rgba(215,222,232,0.09)", faint: "rgba(215,222,232,0.18)",
+  muted: "rgba(215,222,232,0.52)",
+};
+
+const state = { mode: null, data: { activation: null, impact: null }, suites: {} };
+
+// ---- data loading -------------------------------------------------------
+
+async function fetchText(path) {
+  try {
+    const r = await fetch(path, { cache: "no-store" });
+    if (!r.ok) return null;
+    return await r.text();
+  } catch (e) { return null; }
+}
+
+function parseJsonl(text) {
+  if (!text) return [];
+  return text.split("\n")
+    .map(l => l.trim())
+    .filter(Boolean)
+    .map(l => { try { return JSON.parse(l); } catch (e) { return null; } })
+    .filter(Boolean);
+}
+
+async function loadSuite(mode, version) {
+  const key = mode + ":" + version;
+  if (state.suites[key] !== undefined) return state.suites[key];
+  const text = await fetchText(`./${mode}/suite/v${version}.json`);
+  const suite = text ? safeJson(text) : null;
+  state.suites[key] = suite;
+  return suite;
+}
+
+function safeJson(t) { try { return JSON.parse(t); } catch (e) { return null; } }
+
+async function boot() {
+  const [act, imp] = await Promise.all([
+    fetchText("./activation/runs.jsonl"),
+    fetchText("./impact/runs.jsonl"),
+  ]);
+  state.data.activation = parseJsonl(act);
+  state.data.impact = parseJsonl(imp);
+
+  const hasAct = state.data.activation.length > 0;
+  const hasImp = state.data.impact.length > 0;
+  state.mode = hasAct ? "activation" : hasImp ? "impact" : "activation";
+
+  if (!hasAct && !hasImp) { renderBlank(); return; }
+  await render();
+}
+
+// ---- helpers ------------------------------------------------------------
+
+const fmt = n => (n === null || n === undefined || Number.isNaN(n)) ? "—" : n.toFixed(2);
+function shortDate(ts) {
+  if (!ts) return "—";
+  const d = new Date(ts);
+  if (Number.isNaN(d.getTime())) return ts;
+  return d.toISOString().slice(0, 16).replace("T", " ");
+}
+function el(tag, attrs, ...kids) {
+  const n = document.createElement(tag);
+  if (attrs) for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") n.className = v;
+    else if (k === "text") n.textContent = v;
+    else if (k === "html") n.innerHTML = v;
+    else n.setAttribute(k, v);
+  }
+  for (const kid of kids) if (kid) n.append(kid);
+  return n;
+}
+
+// ---- shell --------------------------------------------------------------
+
+function skillName() {
+  for (const m of ["activation", "impact"]) {
+    const s = state.suites[m + ":" + (latest(m) || {}).suiteVersion];
+    if (s && s.targetSkill) return s.targetSkill;
+    const runs = state.data[m] || [];
+    if (runs.length && runs[runs.length - 1].targetSkill) return runs[runs.length - 1].targetSkill;
+  }
+  return "(skill)";
+}
+function latest(mode) {
+  const runs = state.data[mode] || [];
+  return runs.length ? runs[runs.length - 1] : null;
+}
+
+function rail() {
+  const counts = { activation: state.data.activation.length, impact: state.data.impact.length };
+  const mk = (mode, label) => {
+    const b = el("button", {
+      class: "mode-btn", role: "tab", id: "tab-" + mode,
+      "aria-selected": state.mode === mode ? "true" : "false",
+    },
+      el("span", { text: label }),
+      el("span", { class: "tally", text: String(counts[mode]) }),
+    );
+    if (counts[mode] === 0) b.disabled = true;
+    else b.addEventListener("click", () => { state.mode = mode; render(); });
+    return b;
+  };
+  return el("nav", { class: "rail" },
+    el("div", { class: "brand" },
+      el("div", { class: "brand-mark", text: "skill·eval" }),
+      el("div", { class: "brand-skill", text: skillName() }),
+    ),
+    el("div", { class: "modes", role: "tablist" },
+      mk("activation", "Activation"),
+      mk("impact", "Impact"),
+    ),
+    el("div", { class: "rail-foot" },
+      el("div", { class: "eyebrow", text: "channels" }),
+      legend(COLOR.recall, state.mode === "impact" ? "judge win-rate" : "recall"),
+      state.mode === "impact" ? null : legend(COLOR.precision, "precision"),
+      legend(COLOR.warn, "misfire / unvalidated"),
+    ),
+  );
+}
+function legend(color, label) {
+  return el("div", { class: "legend" },
+    el("span", { class: "swatch", style: `background:${color}` }),
+    el("span", { text: label }),
+  );
+}
+
+// ---- render dispatch ----------------------------------------------------
+
+async function render() {
+  const app = document.getElementById("app");
+  const run = latest(state.mode);
+  if (run) await loadSuite(state.mode, run.suiteVersion);
+
+  app.innerHTML = "";
+  const shell = el("div", { class: "shell" });
+  shell.append(rail());
+  shell.append(state.mode === "impact" ? readoutImpact() : readoutActivation());
+  app.append(shell);
+
+  const cv = app.querySelector("canvas");
+  if (cv) drawTrend(cv, state.mode);
+}
+
+function renderBlank() {
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+  app.append(el("div", { class: "blank" },
+    el("div", { class: "eyebrow", text: "skill·eval" }),
+    el("div", { class: "big", text: "No runs yet" }),
+    el("p", { text: "Run the eval to populate this readout. Each run appends to activation/runs.jsonl or impact/runs.jsonl, and this page reads them back." }),
+  ));
+}
+
+// ---- activation readout -------------------------------------------------
+
+function readoutActivation() {
+  const runs = state.data.activation;
+  const run = runs[runs.length - 1];
+  const prev = runs.length > 1 ? runs[runs.length - 2] : null;
+  const suite = state.suites["activation:" + run.suiteVersion];
+
+  const main = el("main", { class: "readout" });
+  main.append(el("header", { class: "head" },
+    el("h1", { text: "Activation" }),
+    el("div", { class: "stamp", text: `suite v${run.suiteVersion} · run ${shortDate(run.ts)}` }),
+  ));
+
+  main.append(el("div", { class: "metrics" },
+    metric("recall", "Recall", run.recall, prev && samVer(prev, run) ? prev.recall : null, "should-fire caught"),
+    metric("precision", "Precision", run.precision, prev && samVer(prev, run) ? prev.precision : null, "fires that were right"),
+  ));
+
+  main.append(trendPanel("activation", runs));
+
+  // detail: the two misfire lists
+  const fn = (run.misfires && run.misfires.falseNegatives) || [];
+  const fp = (run.misfires && run.misfires.falsePositives) || [];
+  main.append(el("div", { class: "detail" },
+    el("div", { class: "findings" },
+      misfireList(fn.length ? "miss" : "clean", "Missed", "should fire, stayed silent", fn, suite, "↓"),
+      misfireList(fp.length ? "miss" : "clean", "Fired wrongly", "should stay silent, fired", fp, suite, "↑"),
+    ),
+  ));
+  return main;
+}
+
+function samVer(a, b) { return a.suiteVersion === b.suiteVersion; }
+
+function metric(cls, label, value, prevValue, sub) {
+  const kids = [
+    el("div", { class: "eyebrow", text: label }),
+    el("div", { class: "num", text: fmt(value) }),
+  ];
+  if (prevValue !== null && prevValue !== undefined) {
+    const d = value - prevValue;
+    const dir = Math.abs(d) < 0.005 ? "" : d > 0 ? "up" : "down";
+    const sign = d > 0 ? "+" : "";
+    kids.push(el("div", { class: "delta " + dir, text: `${sign}${d.toFixed(2)} vs prev` }));
+  } else {
+    kids.push(el("div", { class: "delta", text: sub }));
+  }
+  return el("div", { class: "metric " + cls }, ...kids);
+}
+
+function misfireList(cls, title, sub, ids, suite, glyph) {
+  const promptText = id => {
+    if (!suite || !suite.prompts) return id;
+    const p = suite.prompts.find(x => x.id === id);
+    return p ? p.text : id;
+  };
+  const rows = el("ul", { class: "rows" });
+  if (!ids.length) {
+    rows.append(el("li", {}, el("span", { class: "row-empty", text: "None — clean on this class." })));
+  } else {
+    for (const id of ids) {
+      rows.append(el("li", {},
+        el("span", { class: "gutter", text: glyph }),
+        el("span", { class: "body", text: promptText(id) }),
+      ));
+    }
+  }
+  return el("section", { class: cls },
+    el("div", { class: "list-head" },
+      el("span", { class: "count", text: String(ids.length) }),
+      el("div", {},
+        el("div", { class: "eyebrow", text: title }),
+        el("div", { class: "eyebrow", style: "letter-spacing:0.04em;text-transform:none;font-weight:400", text: sub }),
+      ),
+    ),
+    rows,
+  );
+}
+
+// ---- impact readout -----------------------------------------------------
+
+function readoutImpact() {
+  const runs = state.data.impact;
+  const run = runs[runs.length - 1];
+  const prev = runs.length > 1 ? runs[runs.length - 2] : null;
+  const suite = state.suites["impact:" + run.suiteVersion];
+
+  const main = el("main", { class: "readout" });
+  main.append(el("header", { class: "head" },
+    el("h1", { text: "Impact" }),
+    el("div", { class: "stamp", text: `suite v${run.suiteVersion} · run ${shortDate(run.ts)}` }),
+  ));
+
+  const wr = run.judge ? run.judge.winRate : null;
+  const pwr = prev && prev.judge && samVer(prev, run) ? prev.judge.winRate : null;
+  const hv = run.humanVerdict;
+  main.append(el("div", { class: "metrics" },
+    metric("recall", "Judge win-rate", wr, pwr, "skill beat baseline (blind, first-pass)"),
+    el("div", { class: "metric" },
+      el("div", { class: "eyebrow", text: "Human verdict" }),
+      el("div", { class: "num", style: "font-size:34px;line-height:1.2;color:" + (hv ? "var(--text)" : "var(--warn)"),
+        text: hv ? (hv.winner === "skill" ? "skill" : hv.winner === "baseline" ? "baseline" : "tie") : "unvalidated" }),
+      el("div", { class: "delta", text: hv && hv.note ? hv.note : "judge is triage; the human call is the verdict" }),
+    ),
+  ));
+
+  main.append(trendPanel("impact", runs));
+
+  const detail = el("div", { class: "detail" });
+  const perTask = (run.judge && run.judge.perTask) || [];
+  if (!perTask.length) {
+    detail.append(el("div", { class: "row-empty", text: "No per-task breakdown recorded for this run." }));
+  } else {
+    const taskPrompt = id => {
+      if (!suite || !suite.tasks) return id;
+      const t = suite.tasks.find(x => x.id === id);
+      return t ? t.prompt : id;
+    };
+    detail.append(el("div", { class: "eyebrow", text: "Per-task deltas" }));
+    for (const t of perTask) {
+      const chips = el("div", { class: "chips" });
+      for (const c of (t.criteriaMet || [])) chips.append(el("span", { class: "chip met", text: "✓ " + c }));
+      for (const c of (t.criteriaMissed || [])) chips.append(el("span", { class: "chip missed", text: "✗ " + c }));
+      detail.append(el("div", { class: "task" },
+        el("div", { class: "task-top" },
+          el("div", { class: "task-prompt", text: taskPrompt(t.taskId) }),
+          el("span", { class: "verdict-tag " + (t.winner || "tie"), text: t.winner || "tie" }),
+        ),
+        chips,
+      ));
+    }
+  }
+  if (!hv) detail.append(el("div", { class: "unvalidated", text: "This run has no human verdict — the trend marks it hollow. Validate to lock it in." }));
+  main.append(detail);
+  return main;
+}
+
+// ---- trend panel + canvas ----------------------------------------------
+
+function trendPanel(mode, runs) {
+  const wrap = el("div", { class: "chart-wrap" });
+  wrap.append(el("canvas", {}));
+  if (runs.length < 2) {
+    wrap.append(el("div", { class: "chart-note",
+      text: "Trend appears after the second run. One run is a reading, not a trend." }));
+  }
+  return el("section", { class: "panel" },
+    el("div", { class: "panel-head" },
+      el("div", { class: "eyebrow", text: "Trend — segmented by suite version" }),
+      el("div", { class: "eyebrow", style: "text-transform:none;letter-spacing:0.02em;font-weight:400",
+        text: `${runs.length} run${runs.length === 1 ? "" : "s"}` }),
+    ),
+    wrap,
+  );
+}
+
+function seriesFor(mode, runs) {
+  if (mode === "activation") {
+    return [
+      { color: COLOR.recall, pts: runs.map(r => r.recall) },
+      { color: COLOR.precision, pts: runs.map(r => r.precision) },
+    ];
+  }
+  return [
+    { color: COLOR.recall, pts: runs.map(r => (r.judge ? r.judge.winRate : null)),
+      validated: runs.map(r => !!r.humanVerdict) },
+  ];
+}
+
+function drawTrend(canvas, mode) {
+  const runs = state.data[mode];
+  if (runs.length < 2) return;
+
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.clientWidth, cssH = canvas.clientHeight;
+  canvas.width = cssW * dpr; canvas.height = cssH * dpr;
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+
+  const padL = 40, padR = 24, padT = 26, padB = 26;
+  const plotW = cssW - padL - padR, plotH = cssH - padT - padB;
+  const n = runs.length;
+  const x = i => padL + (n === 1 ? plotW / 2 : (plotW * i) / (n - 1));
+  const y = v => padT + plotH * (1 - v);
+
+  // version bands: group consecutive runs sharing suiteVersion
+  const groups = [];
+  for (let i = 0; i < n; i++) {
+    const v = runs[i].suiteVersion;
+    const g = groups[groups.length - 1];
+    if (g && g.v === v) g.end = i; else groups.push({ v, start: i, end: i });
+  }
+
+  const series = seriesFor(mode, runs);
+
+  function paint(progress) {
+    ctx.clearRect(0, 0, cssW, cssH);
+
+    // alternating version bands + boundary rules + labels
+    groups.forEach((g, gi) => {
+      const x0 = g.start === 0 ? 0 : (x(g.start) + x(g.start - 1)) / 2;
+      const x1 = g.end === n - 1 ? cssW : (x(g.end) + x(g.end + 1)) / 2;
+      if (gi % 2 === 1) {
+        ctx.fillStyle = "rgba(255,255,255,0.022)";
+        ctx.fillRect(x0, padT - 14, x1 - x0, plotH + 22);
+      }
+      if (g.start !== 0) {
+        ctx.strokeStyle = COLOR.faint;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(x0, padT - 14); ctx.lineTo(x0, padT + plotH + 8); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      ctx.fillStyle = COLOR.muted;
+      ctx.font = "600 10px " + getComputedStyle(document.body).fontFamily;
+      ctx.textBaseline = "top";
+      ctx.fillText("v" + g.v, x0 + 6, padT - 16);
+    });
+
+    // y gridlines at 0, .5, 1
+    ctx.font = "11px ui-monospace, monospace";
+    ctx.fillStyle = COLOR.muted;
+    ctx.textBaseline = "middle";
+    [0, 0.5, 1].forEach(v => {
+      ctx.strokeStyle = COLOR.hair;
+      ctx.beginPath(); ctx.moveTo(padL, y(v)); ctx.lineTo(cssW - padR, y(v)); ctx.stroke();
+      ctx.fillText(v.toFixed(1), 8, y(v));
+    });
+
+    const shown = 1 + (n - 1) * progress;
+
+    for (const s of series) {
+      // line
+      ctx.strokeStyle = s.color;
+      ctx.lineWidth = 2;
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      let started = false;
+      for (let i = 0; i < n; i++) {
+        if (i > shown) break;
+        const v = s.pts[i];
+        if (v === null || v === undefined) { started = false; continue; }
+        const px = x(i), py = y(v);
+        if (!started) { ctx.moveTo(px, py); started = true; } else { ctx.lineTo(px, py); }
+      }
+      ctx.stroke();
+      // points
+      for (let i = 0; i < n; i++) {
+        if (i > shown) break;
+        const v = s.pts[i];
+        if (v === null || v === undefined) continue;
+        const px = x(i), py = y(v);
+        const hollow = s.validated && !s.validated[i];
+        ctx.beginPath();
+        ctx.arc(px, py, 3.2, 0, Math.PI * 2);
+        if (hollow) {
+          ctx.fillStyle = COLOR.warn; ctx.fill();
+          ctx.fillStyle = "#0F141B"; // punch the centre back to ground → hollow ring
+          ctx.beginPath(); ctx.arc(px, py, 1.6, 0, Math.PI * 2); ctx.fill();
+        } else {
+          ctx.fillStyle = s.color; ctx.fill();
+        }
+      }
+    }
+  }
+
+  if (REDUCED) { paint(1); return; }
+  const dur = 620;
+  const start = performance.now();
+  function frame(t) {
+    const p = Math.min(1, (t - start) / dur);
+    const eased = 1 - Math.pow(1 - p, 3);
+    paint(eased);
+    if (p < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+let resizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    const cv = document.querySelector("canvas");
+    if (cv) drawTrend(cv, state.mode);
+  }, 120);
+});
+
+boot();
+</script>
+</body>
+</html>

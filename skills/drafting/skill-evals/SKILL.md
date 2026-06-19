@@ -1,6 +1,6 @@
 ---
 name: skill-evals
-description: Builds and runs an empirical eval suite against an existing skill — measures whether its description activates correctly (precision and recall over a labelled prompt corpus) and whether loading it improves agent output (blind A/B against pre-committed criteria). Use when evaluating, testing, or measuring a skill's quality, validating a skill's triggers, or when the user says "eval this skill", "test this skill", "run a skill eval", "measure the impact of this skill", "check the description hit rate", "is this skill's description firing".
+description: Builds and runs an empirical eval suite against an existing skill — measures whether its description activates correctly (precision and recall over a labelled prompt corpus) and whether loading it improves agent output (blind A/B against pre-committed criteria). The suite and every run are persisted so the eval is repeatable and a skill's scores can be tracked across edits. Use when evaluating, testing, or measuring a skill's quality, validating a skill's triggers, or when the user says "eval this skill", "test this skill", "run a skill eval", "re-run a skill eval", "track this skill's eval over time", "measure the impact of this skill", "check the description hit rate", "is this skill's description firing".
 ---
 
 A skill makes two empirical claims, and the author's intuition cannot settle either. The `description` claims *I am the right tool for this class of situation* — an activation claim. The body claims *loading me makes the work better* — an impact claim. An eval measures whether each claim holds against evidence the author has not seen yet. The discipline is to commit to what a passing result looks like *before* running anything, then run an agent under controlled conditions and report the gap between claim and reality.
@@ -13,10 +13,10 @@ Both eval modes ride one spine. Only what is held fixed and what is judged diffe
 
 Every eval, of either mode, is the same four moves. Skip one and the result stops meaning anything.
 
-1. **Commit ground truth first.** Have an isolated subagent generate the candidate scenarios — corpus prompts (activation) or tasks (impact) — so they are shaped by the skill's purpose rather than by its exact wording or the result the author wants. Then the orchestrator commits their labels (activation) or success criteria (impact) — with the human author approving them before any eval run — derived from the skill's intent, never from outputs already seen. A criterion authored after the output exists describes the output, not the goal, and the eval can no longer fail.
+1. **Commit ground truth first.** Have an isolated subagent generate the candidate scenarios — corpus prompts (activation) or tasks (impact) — so they are shaped by the skill's purpose rather than by its exact wording or the result the author wants. Then the orchestrator commits their labels (activation) or success criteria (impact) — with the human author approving them before any eval run — derived from the skill's intent, never from outputs already seen. A criterion authored after the output exists describes the output, not the goal, and the eval can no longer fail. Committing is literal: the approved suite is written to disk as a hash-keyed version (`v1`, `v2`…) and frozen. A re-run reuses the existing frozen suite — that reuse is what makes the eval repeatable — and mints the next version only when the suite's content genuinely changes. Regenerating the suite from scratch on every run is the bug, not the feature: it swaps the test set out from under the trend, so no two runs are comparable.
 2. **Run each scenario in its own isolated subagent.** Hold everything fixed except the one variable under test — the prompt (activation) or the presence of the skill (impact). One subagent per run, its context limited to that scenario and carrying nothing about the eval's purpose, the other runs, or the outcome anyone expects. Shared or carried-over context bleeds the answer from one run into the next; isolation is what makes "controlled" more than a label.
 3. **Judge blind as a first pass, then validate with the human.** A judge subagent scores each result against the committed standard without being told which run the author hopes will win — blindness stops it from scoring the hope instead of the work. But an LLM judge shares the blind spots of the agents it judges and is swayed by the same plausible-but-wrong output, so its verdict is triage, not truth: it narrows the set the author has to inspect. The human author makes the final call on whether the agent did a good job. Where scoring is mechanical — comparing a fire/no-fire decision against a label — no judge subagent is needed, and the human instead reviews the misfires that scoring surfaces.
-4. **Report the gap as a self-contained HTML artefact.** A single number ("80%") tells the author nothing they can act on. Render the specific misfires — *this* prompt that should have fired and didn't, *this* part of the output the skill failed to improve — into a self-contained HTML file (styles and scripts inlined, no external dependencies, opens offline) that lays the findings out visually so the author can take in the result at a glance and run the final validation quickly. For the activation eval, show precision and recall alongside the two named lists: the should-fire prompts it missed and the should-stay-silent prompts it fired on. For the impact eval, pair each task's two outputs with the judge's first-pass verdict and the committed criteria each delta served or missed, leaving the author's final call as the last step. The artefact is the deliverable; the grade is not.
+4. **Append the run; read the gap from the history.** A single number ("80%") tells the author nothing they can act on, and a single run tells them nothing about whether the skill is moving. Each run appends a record — precision and recall, or the judge's per-task verdicts — to a persisted log, and a frozen HTML report (copied into the output directory once, never regenerated) reads the whole history back. It plots each metric's trend *segmented by suite version* — so scores measured against different test sets never join into one misleading line — and surfaces the latest run's specific misfires: *this* prompt that should have fired and didn't, *this* part of the output the skill failed to improve. For the activation eval, it shows precision and recall alongside the two named lists: the should-fire prompts it missed and the should-stay-silent prompts it fired on. For the impact eval, it pairs each task with the judge's first-pass verdict and the committed criteria each delta served or missed, marks any run the human has not yet validated, and leaves the author's final call as the last step. Because the report fetches the run and suite files, view it over a local server (see *Persisted state and run history*), not by opening the file directly. The history is the deliverable; the grade is not.
 
 The point of the eval is to find where the skill falls short, not to confirm it works. An eval that cannot produce a failing result is theatre. Treat a clean pass with suspicion and check the corpus and criteria were demanding enough to bite.
 
@@ -44,6 +44,36 @@ This mode tests the body's claim that the skill changes the work for the better.
 
 **Judge the pair blind, then hand the author the call.** A judge subagent scores both outputs against the criteria without being told which arm had the skill — blindness is what stops it from rewarding the output it was told to prefer. Treat that score as a first pass: an LLM judge can be convinced by the same polished-but-wrong output that would convince the agent it is judging, so the author validates the verdict rather than trusting it. The finding is the delta: where the skill changed the output and whether that change served the criteria. A skill that produces no delta is not earning its context cost. A skill that produces a delta the criteria do not value is teaching something, but not the thing it claims — and that gap is the most useful thing the eval can surface.
 
+## Persisted state and run history
+
+Repeatability is a property of state, not of intent: an eval you cannot re-run against the identical inputs cannot detect a regression. Everything the eval commits lives under one directory per evaluated skill — `<outputDir>/<skill-name>/`, where `outputDir` defaults to `.draekien/skill-evals` and is read via `scripts/skillsrc.py`:
+
+```text
+<skill-name>/
+  report.html             frozen renderer, copied once from assets
+  README.md               how to view it
+  activation/
+    suite/v1.json …       frozen corpus + labels, one file per version
+    runs.jsonl            one run record per line
+  impact/
+    suite/v1.json …       frozen tasks + criteria, one file per version
+    runs.jsonl
+```
+
+`scripts/eval_state.py` owns the file mechanics so they stay exact and repeatable: `init-output` scaffolds the directory and copies the report; `commit-suite` reuses the frozen suite when its content hash is unchanged and mints the next version when it is not; `append-run` validates a run against its suite version, stamps it, and appends it. The orchestrator generates and judges; the script does the deterministic writes. Follow the `.draekien/` creation protocol before the first write.
+
+**Versioning is the honesty mechanism.** A suite is frozen on approval and reused on every later run — that is what holds the inputs fixed. When you deliberately improve the suite (add a hard negative, fix a mislabel, add a task), its content hash changes and the next run records the new version; the report draws each version as its own band, so pre-change and post-change scores are never silently compared on one line. Reusing the frozen suite is the default; minting a version is a deliberate act.
+
+**Impact runs carry the judge's score and, where given, the human's verdict.** The blind first-pass judge score is logged on every run as the cheap trend signal; the human's validated verdict supersedes it and is what the trend treats as truth. A run left unvalidated is marked as such rather than counted as settled — the judge triages, the human decides.
+
+**Viewing the report.** Because `report.html` fetches the run and suite files, it needs a server — `file://` blocks the reads. Start one as a background task, hand the author the URL, then stop it when they are done:
+
+```sh
+python -m http.server 8787 --directory <outputDir>/<skill-name>
+```
+
+Point the author at `http://localhost:8787/report.html`. Run the server with the Bash tool's background mode so the session is not blocked, and kill the background task once the author has seen the readout.
+
 ## Anti-patterns
 
 Each of these produces a number that looks like a result and means nothing. Name them on sight.
@@ -56,3 +86,4 @@ Each of these produces a number that looks like a result and means nothing. Name
 - **Judge as authority** — taking the LLM judge's verdict as the verdict. It shares the blind spots of the agent it judges, so a plausible-but-wrong output sails past both. The judge triages; the human decides.
 - **Single-sample certainty** — one task, one run, treated as proof. Output variance alone can swing a single comparison either way; the conclusion is noise dressed as signal.
 - **The unfailable eval** — a corpus and criteria so undemanding that no realistic skill could fail them. A pass carries no information. If nothing in the suite could ever come back red, it is measuring nothing.
+- **Trend drift** — comparing runs whose suite changed between them as if they sat on one trend line. The scores measure different test sets, so the slope is an artefact of the drift, not the skill. Versioned suites and per-version bands are the cure; regenerating the suite each run is the cause.
