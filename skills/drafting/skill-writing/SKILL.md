@@ -9,7 +9,7 @@ A skill is a teaching document for a future LLM instance — it transfers intent
 ## Workflow
 
 1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything. When building from scratch and the concept's worthiness is uncertain, gate it first with the `vet-skill-idea` skill; if that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "vet-skill-idea"`; if the verdict is to not proceed, surface the reasons to the user and stop — do not continue to the remaining workflow steps
-2. **Plan structure** — decide whether the skill needs persistent state (see [Stateful or Stateless](#stateful-or-stateless)), then what belongs in the body versus references, scripts, or assets (see [Content Placement](#content-placement))
+2. **Plan structure** — characterise the skill on both axes — knowledge↔procedural (see [Knowledge or Procedural](#knowledge-or-procedural)) and stateful↔stateless (see [Stateful or Stateless](#stateful-or-stateless)) — then decide what belongs in the body versus references, scripts, or assets (see [Content Placement](#content-placement))
 3. **Write** — let the task's fragility and the agent's existing knowledge determine how much structure to impose; apply Writing Standards throughout
 4. **Run the [Quality Gate](#quality-gate)**
 
@@ -105,6 +105,33 @@ Choose structures that best surface the judgment the agent needs — the right p
 ## Anti-patterns
 
 **Workflow scripting** — encoding a fixed sequence of steps when the task requires judgment about whether to follow a process at all. A skill that prescribes "interview the user, then write the spec" fails when the codebase already answers the interview questions and the spec is an artefact nobody needs. Encode the principles and the goal instead; let the agent determine the path. Recognise it by this tell: if removing every step header leaves nothing of substance, the steps were carrying the skill — not the intent.
+
+## Knowledge or Procedural
+
+Every skill sits on a spectrum between two purposes, and most carry some of
+both. **Knowledge** skills seed information the agent would otherwise lack — a
+team's coding standards, a person's preferences, how a technology works,
+principles to follow; the payload is the information. **Procedural** skills
+change how the agent works — a workflow, an output style, an SOP, a process to
+follow; the payload is the behaviour. Name where the skill sits before writing,
+because each end stresses different standards and suggests a different
+invocation default:
+
+- **Toward knowledge** — the value is the *delta from what the agent already
+  knows* (see [Trust the agent's intelligence](#trust-the-agents-intelligence));
+  state only what is non-obvious, keep facts durable (no mutable-state
+  references), and let the bulk live in `references/` with the body as a thin
+  router. Consider making it not user-invocable so it surfaces by automatic
+  relevance rather than as a manual command.
+- **Toward procedural** — calibrate [freedom to fragility](#match-freedom-to-fragility),
+  [carry the why](#carry-the-why-not-just-the-what), and avoid
+  [workflow scripting](#anti-patterns); the judgment lives in the body. Consider
+  making it not model-invocable so the user turns the process on deliberately
+  rather than the agent auto-firing it onto unrelated tasks.
+
+These invocation controls (`user-invocable`, `disable-model-invocation`) are
+harness-specific frontmatter, not part of the open standard — recommendations to
+weigh where supported, not defaults to apply blindly.
 
 ## Stateful or Stateless
 
