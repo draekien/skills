@@ -127,7 +127,7 @@ When the skill bundles scripts, see [references/script-design.md](references/scr
 
 ## Available scripts
 
-- **`scripts/validate.py`** — Checks all `[AUTO]` spec rules; exits non-zero on failure. Harness-specific frontmatter fields and non-portable value forms (e.g. the `allowed-tools` list form) pass with non-blocking portability warnings rather than failing.
+- **`scripts/validate.py`** — Checks all `[AUTO]` spec rules; exits non-zero on failure. Harness-specific frontmatter fields pass with a non-blocking portability warning; a non-portable form of a shared open-standard field (e.g. an `allowed-tools` YAML list) fails.
 
 ## Quality Gate
 

@@ -47,7 +47,7 @@ Then work through `[LLM]` rules below.
 
 ### `allowed-tools` field (if present)
 
-- `[AUTO]` Space-separated string is the portable form; a YAML list is accepted with a warning (the list form works only in Claude Code, not in the open standard or other harnesses)
+- `[AUTO]` Must be a space-separated string, not a YAML list. `allowed-tools` is a shared open-standard field other harnesses honour only as a string, so the list form (valid in Claude Code) fails rather than warns
 - `[LLM]` Tools listed valid and no broader than skill's stated purpose
 
 ### Frontmatter formatting

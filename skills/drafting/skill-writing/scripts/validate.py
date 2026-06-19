@@ -291,19 +291,18 @@ def check_optional_fields(fm: dict, r: Results):
 
     allowed_tools = fm.get("allowed-tools")
     if allowed_tools is not None:
-        if isinstance(allowed_tools, str):
-            r.ok("allowed-tools: portable space-separated string form")
-        elif isinstance(allowed_tools, list):
-            r.warn(
-                "allowed-tools: YAML list form is Claude Code-specific",
-                'The open standard and other harnesses expect a space-separated '
-                'string like "Bash Read Write"; the list form works only in Claude Code',
-            )
-        else:
-            r.fail(
-                "allowed-tools: must be a space-separated string (or YAML list)",
-                f"Got {type(allowed_tools).__name__}",
-            )
+        # allowed-tools is a shared open-standard field — other harnesses honour
+        # it only as a space-separated string. A YAML list works in Claude Code
+        # but breaks that contract elsewhere, so it fails (not a warning). This is
+        # the line between fail and warn: harness-only *fields* warn (others ignore
+        # them); a non-portable form of a *shared* field fails.
+        r.check(
+            isinstance(allowed_tools, str),
+            "allowed-tools: must be a space-separated string (not a YAML list)",
+            f'Got {type(allowed_tools).__name__} — other harnesses honour this '
+            f'shared field only as a string like "Bash Read Write"; the list form '
+            f"works only in Claude Code",
+        )
 
 
 def check_body(body: str, skill_dir: Path, r: Results):
