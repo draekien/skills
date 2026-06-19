@@ -10,7 +10,7 @@ Usage:
     uv run validate.py <skill-dir>/SKILL.md
 
 Exit codes:
-    0  all checks passed
+    0  all checks passed (warnings, if any, do not fail the run)
     1  one or more checks failed
     2  usage or parse error
 """
@@ -26,7 +26,49 @@ except ImportError:
     print("pyyaml not available — run with: uv run validate.py", file=sys.stderr)
     sys.exit(2)
 
-_KNOWN_FIELDS = {"name", "description", "compatibility", "metadata", "allowed-tools"}
+# Fields defined by the Agent Skills open standard (agentskills.io/specification).
+# Portable across every conformant harness.
+_STANDARD_FIELDS = {
+    "name",
+    "description",
+    "license",
+    "compatibility",
+    "metadata",
+    "allowed-tools",
+}
+
+# Harness-specific extensions to the open standard, grouped by the harness that
+# defines them. These fields are valid for that harness but are NOT portable —
+# a skill using them may be ignored or rejected by other harnesses. Using one is
+# a warning, never an error.
+#
+# Claude Code is currently the only Agent Skills harness that documents SKILL.md
+# frontmatter beyond the open standard. The others (GitHub Copilot, Cursor,
+# Windsurf, Cline, Amp, Gemini CLI) read SKILL.md but document only the
+# open-standard fields, so they contribute no extension set here. Add a new
+# `_<HARNESS>_HARNESS_FIELDS` set and register it below when that changes.
+# Source of truth (keep in sync): https://code.claude.com/docs/en/skills.md
+_CLAUDE_HARNESS_FIELDS = {
+    "when_to_use",
+    "argument-hint",
+    "arguments",
+    "disable-model-invocation",
+    "user-invocable",
+    "disallowed-tools",
+    "model",
+    "effort",
+    "context",
+    "agent",
+    "hooks",
+    "paths",
+    "shell",
+}
+
+# Map each harness-specific field to the harness that defines it, so warnings can
+# name the harness. Extend with `**{f: "<Harness>" for f in _<HARNESS>_FIELDS}`.
+_HARNESS_FIELD_OWNER = {f: "Claude Code" for f in _CLAUDE_HARNESS_FIELDS}
+
+_KNOWN_FIELDS = _STANDARD_FIELDS | set(_HARNESS_FIELD_OWNER)
 
 # Model-specific terms that indicate non-portable instructions
 _MODEL_TERMS = [
@@ -90,10 +132,14 @@ class Results:
         self._items: list[dict] = []
 
     def ok(self, rule: str):
-        self._items.append({"passed": True, "rule": rule, "detail": ""})
+        self._items.append({"level": "pass", "rule": rule, "detail": ""})
 
     def fail(self, rule: str, detail: str):
-        self._items.append({"passed": False, "rule": rule, "detail": detail})
+        self._items.append({"level": "fail", "rule": rule, "detail": detail})
+
+    def warn(self, rule: str, detail: str):
+        """A non-blocking advisory — surfaced to the user but does not fail the run."""
+        self._items.append({"level": "warn", "rule": rule, "detail": detail})
 
     def check(self, cond: bool, rule: str, detail: str):
         if cond:
@@ -107,7 +153,11 @@ class Results:
 
     @property
     def failed(self):
-        return [r for r in self._items if not r["passed"]]
+        return [r for r in self._items if r["level"] == "fail"]
+
+    @property
+    def warnings(self):
+        return [r for r in self._items if r["level"] == "warn"]
 
 
 # ---------------------------------------------------------------------------
@@ -122,6 +172,19 @@ def check_frontmatter_formatting(raw_fm: str, fm: dict, r: Results):
         "frontmatter: no unknown fields",
         f"Unknown fields: {unknown} — check for typos",
     )
+
+    # Harness-specific fields are valid but non-portable — warn, don't block.
+    by_owner: dict[str, list[str]] = {}
+    for k in fm:
+        owner = _HARNESS_FIELD_OWNER.get(k)
+        if owner:
+            by_owner.setdefault(owner, []).append(k)
+    for owner, fields in sorted(by_owner.items()):
+        r.warn(
+            f"frontmatter: {owner}-specific field(s) in use",
+            f"{sorted(fields)} are {owner} extensions, not part of the Agent Skills "
+            f"open standard — skills using them may not be portable to other harnesses",
+        )
 
     for field in ("name", "description"):
         val = fm.get(field)
@@ -228,11 +291,19 @@ def check_optional_fields(fm: dict, r: Results):
 
     allowed_tools = fm.get("allowed-tools")
     if allowed_tools is not None:
-        r.check(
-            isinstance(allowed_tools, str),
-            "allowed-tools: must be a space-separated string (not a list)",
-            f'Got {type(allowed_tools).__name__} — use a quoted string like "Bash Read Write"',
-        )
+        if isinstance(allowed_tools, str):
+            r.ok("allowed-tools: portable space-separated string form")
+        elif isinstance(allowed_tools, list):
+            r.warn(
+                "allowed-tools: YAML list form is Claude Code-specific",
+                'The open standard and other harnesses expect a space-separated '
+                'string like "Bash Read Write"; the list form works only in Claude Code',
+            )
+        else:
+            r.fail(
+                "allowed-tools: must be a space-separated string (or YAML list)",
+                f"Got {type(allowed_tools).__name__}",
+            )
 
 
 def check_body(body: str, skill_dir: Path, r: Results):
@@ -408,18 +479,20 @@ def main():
     results = validate(skill_path)
     items = results.items
     failed = results.failed
+    warnings = results.warnings
 
+    icons = {"pass": "pass", "fail": "FAIL", "warn": "warn"}
     width = 52
     print("\nAgent Skills Validator")
     print(f"Skill: {skill_path}")
     print("-" * width)
     for item in items:
-        icon = "pass" if item["passed"] else "FAIL"
-        print(f"  [{icon}]  {item['rule']}")
+        print(f"  [{icons[item['level']]}]  {item['rule']}")
         if item["detail"]:
             print(f"           {item['detail']}")
     print("-" * width)
-    print(f"  {len(items) - len(failed)} passed, {len(failed)} failed\n")
+    passed = len(items) - len(failed) - len(warnings)
+    print(f"  {passed} passed, {len(failed)} failed, {len(warnings)} warnings\n")
 
     sys.exit(0 if not failed else 1)
 

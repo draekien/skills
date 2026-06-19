@@ -47,12 +47,12 @@ Then work through `[LLM]` rules below.
 
 ### `allowed-tools` field (if present)
 
-- `[AUTO]` Space-separated string (not YAML list)
+- `[AUTO]` Space-separated string is the portable form; a YAML list is accepted with a warning (the list form works only in Claude Code, not in the open standard or other harnesses)
 - `[LLM]` Tools listed valid and no broader than skill's stated purpose
 
 ### Frontmatter formatting
 
-- `[AUTO]` No unknown or misspelled field names
+- `[AUTO]` No unknown or misspelled field names. Open-standard fields (`name`, `description`, `license`, `compatibility`, `metadata`, `allowed-tools`) pass silently. Harness-specific extensions pass with a non-blocking portability warning; today the only harness defining any is Claude Code (`when_to_use`, `argument-hint`, `arguments`, `disable-model-invocation`, `user-invocable`, `disallowed-tools`, `model`, `effort`, `context`, `agent`, `hooks`, `paths`, `shell`; see <https://code.claude.com/docs/en/skills.md>). Anything else fails as a likely typo.
 - `[AUTO]` `name` and `description` plain strings (not YAML integers or booleans)
 - `[AUTO]` No trailing whitespace on any frontmatter line
 - `[AUTO]` No block scalar notation (`|` or `>`) in frontmatter values
