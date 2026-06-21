@@ -380,6 +380,20 @@ async function boot() {
 // ---- helpers ------------------------------------------------------------
 
 const fmt = n => (n === null || n === undefined || Number.isNaN(n)) ? "—" : n.toFixed(2);
+function fmtTokens(n) {
+  if (n === null || n === undefined || Number.isNaN(n)) return "—";
+  const a = Math.abs(n);
+  if (a >= 1000) return (n / 1000).toFixed(a >= 10000 ? 0 : 1) + "k";
+  return String(Math.round(n));
+}
+function signed(n, fn) {
+  if (n === null || n === undefined || Number.isNaN(n)) return "—";
+  return (n > 0 ? "+" : n < 0 ? "−" : "") + fn(Math.abs(n));
+}
+function fmtDuration(ms) {
+  if (ms === null || ms === undefined || Number.isNaN(ms)) return "—";
+  return (ms / 1000).toFixed(1) + "s";
+}
 function shortDate(ts) {
   if (!ts) return "—";
   const d = new Date(ts);
@@ -561,6 +575,27 @@ function misfireList(cls, title, sub, ids, suite, glyph) {
 
 // ---- impact readout -----------------------------------------------------
 
+// Token / wall-clock premium the skill arm spent over baseline. Rendered as a
+// plain tile, not a trend channel: cost lives on a different scale from the
+// 0–1 win-rate and would distort the trace. Muted, not amber — a premium is a
+// price to weigh against the delta, not a misfire.
+function costTile(run) {
+  const cost = run.cost;
+  if (!cost || !cost.withSkill || !cost.baseline) return null;
+  const has = v => v !== null && v !== undefined && !Number.isNaN(v);
+  const wt = cost.withSkill.tokens, bt = cost.baseline.tokens;
+  const wm = cost.withSkill.durationMs, bm = cost.baseline.durationMs;
+  const dTok = has(wt) && has(bt) ? wt - bt : null;
+  const dMs = has(wm) && has(bm) ? wm - bm : null;
+  return el("div", { class: "metric" },
+    el("div", { class: "eyebrow", text: "Token cost vs baseline" }),
+    el("div", { class: "num", style: "font-size:34px;line-height:1.2", text: signed(dTok, fmtTokens) }),
+    el("div", { class: "delta", text: dMs === null
+      ? "what the skill spent to change the output"
+      : signed(dMs, fmtDuration) + " wall-clock · the price of the delta" }),
+  );
+}
+
 function readoutImpact() {
   const runs = state.data.impact;
   const run = runs[runs.length - 1];
@@ -584,6 +619,7 @@ function readoutImpact() {
         text: hv ? (hv.winner === "skill" ? "skill" : hv.winner === "baseline" ? "baseline" : "tie") : "unvalidated" }),
       el("div", { class: "delta", text: hv && hv.note ? hv.note : "judge is triage; the human call is the verdict" }),
     ),
+    costTile(run),
   ));
 
   main.append(trendPanel("impact", runs));
@@ -601,8 +637,15 @@ function readoutImpact() {
     detail.append(el("div", { class: "eyebrow", text: "Per-task deltas" }));
     for (const t of perTask) {
       const chips = el("div", { class: "chips" });
-      for (const c of (t.criteriaMet || [])) chips.append(el("span", { class: "chip met", text: "✓ " + c }));
-      for (const c of (t.criteriaMissed || [])) chips.append(el("span", { class: "chip missed", text: "✗ " + c }));
+      const chip = (c, cls, glyph) => {
+        const text = typeof c === "string" ? c : (c.criterion || c.text || "");
+        const ev = typeof c === "string" ? null : c.evidence;
+        const node = el("span", { class: "chip " + cls, text: glyph + " " + text });
+        if (ev) { node.setAttribute("title", ev); node.style.cursor = "help"; }
+        return node;
+      };
+      for (const c of (t.criteriaMet || [])) chips.append(chip(c, "met", "✓"));
+      for (const c of (t.criteriaMissed || [])) chips.append(chip(c, "missed", "✗"));
       detail.append(el("div", { class: "task" },
         el("div", { class: "task-top" },
           el("div", { class: "task-prompt", text: taskPrompt(t.taskId) }),

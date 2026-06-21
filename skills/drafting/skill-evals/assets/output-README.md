@@ -13,6 +13,11 @@ impact/
   runs.jsonl             one run record per line
 ```
 
+Each impact run also records the token and wall-clock cost of both arms
+(with-skill versus baseline), so the readout shows the premium the skill spent
+next to the quality delta it bought — a skill can improve output and still not
+be worth its context cost.
+
 ## Viewing the report
 
 `report.html` loads the run and suite files with `fetch`, which browsers block
