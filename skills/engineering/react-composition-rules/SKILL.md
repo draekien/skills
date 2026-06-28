@@ -68,6 +68,8 @@ Mark each pattern **applies** or **skip** based on purpose. Simple display compo
 
 When rules 3 and 7 both apply, the custom hook is where the controllable-state logic lives — implement `useControllableState` inside the hook, not in the component body.
 
+When rules 3 and 9 both apply, implement the headless pattern (rule 9) — a headless hook is a custom hook whose return value includes prop-getters; do not create a separate plain hook alongside it.
+
 Present plan: component name, output path, applicable patterns (numbered), sub-components needed. Proceed immediately unless scope ambiguous.
 
 ### Step C3 — Read applicable rule files
@@ -81,26 +83,20 @@ Apply the patterns marked **applies** in this order (skip non-applicable):
 1. Stable identity
 2. Single responsibility
 3. Custom hooks
-4. Compound components
-5. forwardRef
-6. Controlled vs uncontrolled
-7. Inversion of control (state reducer)
-8. Headless components
-9. Render props
-10. Avoid HOCs
-11. Avoid prop drilling
+4. Avoid prop drilling
+5. Compound components
+6. forwardRef
+7. Controlled vs uncontrolled
+8. Inversion of control (state reducer)
+9. Headless components
+10. Render props
+11. Avoid HOCs
 
 The rule files specify *how* to apply each pattern. Write the complete component file.
 
 ### Step C5 — Verify
 
-For each pattern applied, confirm Do items satisfied and Don't items avoided. Report as checklist:
-
-```
-✓ Stable component identity — all components defined at module scope
-✓ Custom hooks — logic extracted into useXxx hook
-✗ forwardRef — not applied (no native element wrapper)
-```
+For each pattern applied, confirm the rule file's Do items are satisfied and Don't items avoided. Mark each ✓ (satisfied), ✗ (violated), or — (not applicable), with a one-line note on violations only.
 
 Flag any rule relevant but not fully satisfied with brief explanation.
 
@@ -124,22 +120,11 @@ For each component file in scope:
 2. Check against all 11 rules
 3. Record each violation: rule name + one-line explanation of what code does wrong
 
-Skip inapplicable rules (e.g. skip forwardRef for component rendering no native element). Determine applicability from source: skip forwardRef if no HTML element is rendered; skip compound components if the file defines a single component; skip inversion of control if the component has fewer than three state transitions.
+Skip inapplicable rules (e.g. skip forwardRef for component rendering no native element). Determine applicability from source: skip forwardRef if no HTML element is rendered; skip compound components if the file defines a single component; skip inversion of control if the component dispatches fewer than three distinct action types (or has fewer than three independent setState calls if no reducer is present).
 
 ### Step A4 — Report violations
 
-Group by file. Clean files: single ✓. Files with violations, list each as ✗:
-
-```
-src/components/UserCard.tsx
-  ✗ Single responsibility — fetches data and renders in the same component body
-  ✗ Custom hooks — useState + useEffect are inline, not extracted
-
-src/components/Button.tsx
-  ✓ No violations
-```
-
-Summarise: total files scanned, total violations found.
+Group by file. For each file with violations list each as ✗ with rule name and one-line explanation; for clean files output a single ✓. End with a summary line: total files scanned and total violations.
 
 ### Step A5 — Offer next steps
 
@@ -166,7 +151,7 @@ For each violation, determine minimal extraction needed:
 | Stateful logic in component body      | Extract into `useXxx` hook                         |
 | Multiple unrelated responsibilities   | Split into separate components                     |
 | Nested component definitions          | Move to module scope                               |
-| Prop drilling through intermediaries  | Introduce `children` composition first; add scoped Context only if the consumer cannot restructure the tree to compose directly |
+| Prop drilling through intermediaries  | Introduce `children` composition first; add a Context whose Provider wraps only the affected subtree (not a global/app-level Provider) only if the consumer cannot restructure the tree to compose directly |
 | HOC wrapper                           | Convert to hook consumed directly                  |
 | Multiple sub-components sharing state | Refactor to compound component with Context        |
 

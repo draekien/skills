@@ -50,7 +50,7 @@ The run history is not a scoreboard; it is the input to the next edit. A finishe
 
 ## Persisted state and run history
 
-Repeatability is a property of state, not of intent: an eval you cannot re-run against the identical inputs cannot detect a regression. Everything the eval commits lives under one directory per evaluated skill — `<outputDir>/<skill-name>/`, where `outputDir` defaults to `.draekien/skill-evals` and is read via `scripts/skillsrc.py`:
+Repeatability is a property of state, not of intent: an eval you cannot re-run against the identical inputs cannot detect a regression. Everything the eval commits lives under one directory per evaluated skill — `<outputDir>/<skill-name>/`, where `outputDir` defaults to `.draekien/skill-evals` and is read via `scripts/skillsrc.py` using the key `skill-evals.outputDir`; if the key is absent or the file does not exist, fall back to the default without error:
 
 ```text
 <skill-name>/
@@ -64,7 +64,7 @@ Repeatability is a property of state, not of intent: an eval you cannot re-run a
     runs.jsonl
 ```
 
-`scripts/eval_state.py` owns the file mechanics so they stay exact and repeatable: `init-output` scaffolds the directory and copies the report; `commit-suite` reuses the frozen suite when its content hash is unchanged and mints the next version when it is not; `append-run` validates a run against its suite version, stamps it, and appends it. The orchestrator generates and judges; the script does the deterministic writes. Follow the `.draekien/` creation protocol before the first write.
+`scripts/eval_state.py` owns the file mechanics so they stay exact and repeatable: `init-output` scaffolds the directory and copies the report; `commit-suite` reuses the frozen suite when its content hash is unchanged and mints the next version when it is not; `append-run` validates a run against its suite version, stamps it, and appends it. The orchestrator generates and judges; the script does the deterministic writes. Before the first write, ensure the `.draekien/` directory exists at the project root: if it is absent, create it and create an empty `.draekien/.skillsrc` JSON file (`{}`). Then scaffold the output directory with `uv run scripts/eval_state.py init-output <skill-name>`.
 
 **Versioning is the honesty mechanism.** A suite is frozen on approval and reused on every later run — that is what holds the inputs fixed. When you deliberately improve the suite (add a hard negative, fix a mislabel, add a task), its content hash changes and the next run records the new version; the report draws each version as its own band, so pre-change and post-change scores are never silently compared on one line. Reusing the frozen suite is the default; minting a version is a deliberate act.
 
@@ -76,7 +76,7 @@ Repeatability is a property of state, not of intent: an eval you cannot re-run a
 python -m http.server 8787 --directory <outputDir>/<skill-name>
 ```
 
-Point the author at `http://localhost:8787/report.html`. Run the server with the Bash tool's background mode so the session is not blocked, and kill the background task once the author has seen the readout.
+Point the author at `http://localhost:8787/report.html`. Start the server as a background process so the session is not blocked, and stop it once the author has seen the readout.
 
 ## Anti-patterns
 

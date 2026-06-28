@@ -15,7 +15,7 @@ Choose a clear conceptual direction and execute it with precision. The key is in
 
 Load libraries via CDN — do not bundle or download anything. Recommended options:
 
-- **Tailwind CSS** — `<script src="https://cdn.tailwindcss.com"></script>` for utility-first styling
+- **Tailwind CSS** — `<script src="https://cdn.tailwindcss.com"></script>` for utility-first styling. Prefer inline `<style>` rules or a non-Tailwind library when font-size compliance must be verified by the validator. If Tailwind is used, manually audit all `text-*` utility classes to confirm body text meets the 1rem minimum before reporting the file to the user.
 - **Chart.js** — for charts and graphs
 - **D3.js** — for complex data visualisations
 - **Alpine.js** — for lightweight interactivity without a framework

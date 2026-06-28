@@ -8,7 +8,7 @@ A skill is a teaching document for a future LLM instance — it transfers intent
 
 ## Workflow
 
-1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything. When building from scratch and the concept's worthiness is uncertain, gate it first with the `vet-skill-idea` skill; if that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "vet-skill-idea"`; if the verdict is to not proceed, surface the reasons to the user and stop — do not continue to the remaining workflow steps
+1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything. When building from scratch and the user has not already validated the concept (no prior research, no vet-skill-idea output in session, and no clear existing use-case driving the request), gate it first with the `vet-skill-idea` skill; if that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "vet-skill-idea"`; if the verdict is to not proceed, surface the reasons to the user and stop — do not continue to the remaining workflow steps
 2. **Plan structure** — characterise the skill on both axes — knowledge↔procedural (see [Knowledge or Procedural](#knowledge-or-procedural)) and stateful↔stateless (see [Stateful or Stateless](#stateful-or-stateless)) — then decide what belongs in the body versus references, scripts, or assets (see [Content Placement](#content-placement))
 3. **Write** — let the task's fragility and the agent's existing knowledge determine how much structure to impose; apply Writing Standards throughout
 4. **Run the [Quality Gate](#quality-gate)**
