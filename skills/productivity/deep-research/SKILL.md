@@ -28,7 +28,7 @@ Break the topic into research angles (typically 3–6). For each angle, state:
 - One-sentence scope
 - Likely sources (web, codebase, memory — see Phase 3 source menu)
 
-Present the full angle list to the user and ask for confirmation — they may add, remove, or reframe angles. Do not spawn any agents until confirmed.
+Present the full angle list to the user and ask for confirmation — they may add, remove, or reframe angles. Do not spawn any agents until confirmed. If the user rejects the list entirely, re-decompose based on their feedback and present a revised list; repeat until confirmed.
 
 ## Phase 3 — Research
 
@@ -38,11 +38,11 @@ Researchers pick sources adaptively based on their angle:
 
 - **Web** — search the web and fetch pages for articles, documentation, papers, announcements
 - **Codebase** — search and read local project files for context (relevant when topic is code-adjacent)
-- **Memory** — query available memory tools for prior relevant context from this project
+- **Memory** — query available memory tools (e.g. mcp__membank__query_memory) for prior relevant context. Skip this source if no memory tools are available in the current environment.
 
 ### Researcher mode — select before spawning
 
-If agent teams enabled: Mode B. Otherwise: Mode A. If unsure, ask the user: "Do you have agent teams enabled?" The compatibility note in the frontmatter will confirm this.
+If direct agent-to-agent messaging is available: Mode B. Otherwise: Mode A. If unsure, ask the user whether agents in their environment can message each other directly.
 
 ### Mode A — Parallel subagents (default)
 
@@ -63,11 +63,11 @@ Each researcher receives:
 - The source menu
 - Instructions: research their angle adaptively, send cross-cutting findings to relevant peers via direct message, escalate blockers to the lead via direct message, and send the lead a direct message containing only the word DONE when their angle is exhausted, then stop
 
-Lead resolves blockers as they arrive. Wait until all researchers have sent DONE, then collect all outputs.
+Lead resolves blockers as they arrive: if the blocker is a missing source or access issue, instruct the researcher to skip that source and note it as unresolved; if the angle itself is unresolvable, mark it unresolved, notify the researcher to stop, and include it in the synthesizer brief as an Open Question. Wait until all researchers have sent DONE, then collect all outputs.
 
 ## Phase 4 — Synthesize
 
-Spawn a separate synthesizer subagent. Pass it: (1) each researcher's output labelled with its angle name, (2) the original topic verbatim, (3) the confirmed angle list, (4) the output preference. Instruct it to follow the Phase 4 report structure.
+Spawn a separate synthesizer subagent. Pass it: (1) each researcher's output labelled with its angle name, (2) the original topic verbatim, (3) the confirmed angle list, (4) the output preference. Instruct it to produce a report with these sections, in this order: (1) Executive Summary — 2–4 sentences answering the core question; (2) Findings — one section per research angle with key facts, evidence, and notable sources; (3) Cross-cutting Themes — patterns or tensions across multiple angles; (4) Open Questions — gaps the research could not resolve, including any unresolved angles; (5) Sources — all URLs and file paths cited.
 
 If a researcher returns no output or errors, note the angle as "unresolved" and include it in the synthesizer brief. The synthesizer must surface unresolved angles in Open Questions rather than omitting them.
 

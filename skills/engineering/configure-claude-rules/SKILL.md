@@ -24,6 +24,8 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
 | `python-scripts` | `# /// script` block, `uv run` usage, or `.py` files | [references/python-scripts.md](references/python-scripts.md) |
 | `astro` | `astro.config.*` or `astro` in `package.json` dependencies | [references/astro.md](references/astro.md) |
 
+> `software-design` is universal — always include it in Explore recommendations, listed last after any technology-specific topics detected.
+>
 > **Permission mode:** This skill writes to `.claude/rules/`, a protected path. In `auto` mode the classifier may block these writes, causing the skill to fail. Run in `default` or `acceptEdits` mode so writes can be approved as they are requested.
 
 ## Available scripts
@@ -43,6 +45,8 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
 2. **Offer optional rules.** List `.md` files directly under `assets/<topic>/` (not in a subdirectory) with a one-line description each. Derive the one-line description from the file's first heading or first sentence — do not fabricate descriptions from the filename alone. Allow at most one selection per mutually-exclusive group:
    - `typescript`: `prefer-interfaces` ⨯ `prefer-types`
    - `python-scripts`: `click-cli` ⨯ `typer-cli`
+
+   Optional files for all other topics (e.g. `csharp`, `tanstack-router`, `react`) are freely multi-selectable — the user may choose any combination unless a group is listed above.
 
 3. **Check existing rules.** Resolve the full list of source files for the selected topics and presets. If `.claude/rules/` exists, run the check script (path relative to skill root):
 
@@ -73,7 +77,7 @@ Writes `.claude/rules/` files from bundled assets in `assets/<topic>/`. See [ref
    uv run scripts/write-rules.py --target <target-rules-dir> <source-file> [...]
    ```
 
-   The script creates `.claude/rules/` if missing and copies each file flat into `.claude/rules/` — even though the runtime supports subdirectories, this skill always writes flat. Source tiers:
+   The script creates `.claude/rules/` if missing and copies each file flat into `.claude/rules/` — subdirectory organisation is not preserved. If a new rule was authored in step 5 with a subdirectory path in mind, note that it will be placed at the `.claude/rules/` root instead. Source tiers:
    - `recommended` → `assets/<topic>/recommended/`
    - `strict` → `assets/<topic>/recommended/` and `assets/<topic>/strict/`
    - Optional rules → `assets/<topic>/` (root, not a subdirectory)

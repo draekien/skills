@@ -9,7 +9,7 @@ Creates a structured PRD by interviewing the user, aligning on scope, then writi
 
 ## Phase 1 — Alignment
 
-If the opening message or prior conversation supplies enough information to populate every required section of the template (Problem Statement, Goals, User Stories, Out of Scope, Testing Decisions) without guessing, skip directly to Phase 2.
+If the opening message or prior conversation supplies enough information to populate every required section of the template (Problem Statement, Goals, User Stories, Out of Scope, Testing Decisions) — Additional Notes is optional and does not affect this check without guessing, skip directly to Phase 2.
 
 Otherwise, interview relentlessly about every aspect of the request until shared understanding is reached. Walk down each branch of the design tree, resolving dependencies between decisions one by one. For high-stakes decisions where the choice materially changes scope or architecture, briefly note the key trade-off and your recommendation. For low-stakes clarifications, just ask.
 

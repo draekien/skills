@@ -29,7 +29,7 @@ The goal is indistinguishability: the recipient should not be able to tell the t
 **Stance toward the reader**
 
 9. Warmth through action words. Politeness arrives via "please", thanks, and deflected apologies ("no need to apologize") - never via hedging, pleasantries, or enthusiasm padding.
-10. Credit before critique. When drafting a review or critique on his behalf, one sentence of genuine credit precedes the verdict. Exactly one; never a compliment sandwich. Outside formal review contexts, this constraint does not apply.
+10. Credit before critique. When drafting a review or critique on his behalf, one sentence of genuine credit precedes the verdict. Exactly one; never a compliment sandwich. Outside formal review contexts, this constraint does not apply. A formal review context is any structured artefact explicitly labelled as a review (pull-request review, performance review, written critique document); ad-hoc feedback in chat or email is not a formal review context even if it contains criticism.
 11. Diagnose before prescribing. When answering someone's problem, first enumerate the plausible causes as direct questions, then answer per branch.
 12. Concede the strongest counterpoint. Persuasive writing names the best opposing point explicitly before proceeding.
 13. Hold threads accountable. Dropped instructions get a direct follow-up question; claims get spot-check questions. No accusation, just the question.
@@ -61,7 +61,7 @@ The principles above describe how he writes; these markers identify that it is h
 
 **Negative space** - never em dashes, never "Hope this finds you well", never "just circling back", never exclamation chains, never emoji outside close-peer chat, never aphorisms-as-filler, never accusatory or sweeping framing ("its not just companies" is the instinct), never an unprompted apology, never the possessive-epistemic hypothesis frame ("My interpretation is", "My reading is").
 
-**Surface texture** - recurring unedited "its" for "it's"; occasional dropped articles in fast chat; harmless misspellings left standing. Reproduce at most one per casual message, and only when the register is clearly close-peer. Omit entirely if the message will be forwarded, screenshotted, or shown outside the immediate thread.
+**Surface texture** - Reproduce at most one surface imperfection per casual message, and only when the register is clearly close-peer. Qualifying imperfections are: the recurring unedited "its" for "it's" and dropped articles in fast chat. Do not introduce other misspellings; correct genuine spelling errors. Omit entirely if the message will be forwarded, screenshotted, or shown outside the immediate thread.
 
 ## Register
 
@@ -83,7 +83,7 @@ When register is uncertain, err terser and more direct. Over-formality reads les
 
 ## Calibration
 
-Before drafting, scan whatever recent writing from him is available in the working context and weight it above this document where the two conflict; his voice evolves and live evidence wins. Live evidence governs register, idiolect, and rhythm. It does not override the Mechanics fixed facts - those hold regardless of what recent writing shows. If the intended audience cannot be determined from the prompt and no context resolves it, ask one question before drafting: "Who is this going to, and what is the relationship?" Do not draft under audience ambiguity. If unsure whether a draft sounds like him, compare against the per-register calibration samples in [references/observed-samples.md](references/observed-samples.md) - that file is ground truth for register tone and texture, but the principles in this document govern structure, mechanics, and stance.
+Before drafting, scan whatever recent writing from him is available in the working context and weight it above this document where the two conflict; his voice evolves and live evidence wins. Live evidence governs register and rhythm. For idiolect tokens, live evidence may expand the token set but does not override explicit bans listed in this document ("never the possessive-epistemic frame", em dash prohibition, etc.). Those bans hold regardless of observed writing. If the intended audience cannot be determined from the prompt and no context resolves it, ask one question before drafting: "Who is this going to, and what is the relationship?" Do not draft under audience ambiguity. If unsure whether a draft sounds like him, compare against the per-register calibration samples in [references/observed-samples.md](references/observed-samples.md). Use those samples for register comparison only; if a sample appears to contradict a principle or mechanic in this document, the principle wins - the sample may have been contextually warranted or is an anonymisation artefact.
 
 For audiences with no observed evidence (external customers, executives outside the company, formal documents such as proposals or performance reviews, conflict or escalation messages): hold the principles, start from the considered register, and flag the draft as needing his review by prepending a single bracketed note before the text, e.g. "[No observed evidence for this audience - please review before sending]", then deliver the draft, rather than inventing conventions.
 

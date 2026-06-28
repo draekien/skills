@@ -1,6 +1,6 @@
 ## Rule: Avoid HOCs — Use Hooks Instead
 
-No new HOCs for cross-cutting concerns (auth, permissions, theming, feature flags, logging). Use custom hooks. `React.memo` and `React.forwardRef` OK.
+No new HOCs for cross-cutting concerns (auth, permissions, theming, feature flags, logging). Use custom hooks. `React.memo` and `React.forwardRef` are not HOCs — `React.forwardRef` is required when wrapping a native element (see forward-ref rule).
 
 **Do:**
 

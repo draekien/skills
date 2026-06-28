@@ -30,17 +30,17 @@ Run every response after session start, concurrently.
 
 ### Interview
 
-Ask one DDD-framed question at a time — domain events, aggregates, bounded context membership. If the question concerns project structure, naming conventions, or existing terminology (facts observable in the codebase), explore and present findings rather than asking. If it concerns intent, ownership, or business meaning, always ask the user. Continue until shared understanding reached.
+Ask one DDD-framed question at a time — domain events, aggregates, bounded context membership. If the question concerns project structure, naming conventions, or existing terminology (facts observable in the codebase), explore and present findings rather than asking. If it concerns intent, ownership, or business meaning, always ask the user. Continue until the user explicitly confirms they are done, or until all domain nouns surfaced during the session have confirmed definitions in the dictionary.
 
 ### Term Capture
 
 When a noun is judged domain-specific and not yet defined in any loaded context:
 
-1. Propose a definition to the user. When proposing a definition, also propose a one-sentence usage example (the `--usage` argument). Confirm both before writing. If no other terms are yet defined, the usage note may omit cross-references — write with whatever context is available.
+1. Propose a definition to the user. When proposing a definition, also propose a one-sentence usage example (the `--usage` argument). Confirm both before writing. If no other terms are yet defined in the dictionary, the usage note may not reference other domain terms — write with whatever context is available. Once any other term is defined, the usage note must reference at least one defined term where the relationship is meaningful.
 2. Search codebase for the term. Read surrounding context.
 3. If semantic contradiction found: hard interrupt, surface the conflict, wait for resolution. If the user updates the definition, replace the proposed definition with the new one and proceed to step 4 (do not repeat step 2). If the user confirms the definition is correct, note the code divergence and proceed to step 4.
 4. No contradiction: determine bounded context from the confirmed map. If ambiguous, ask.
-5. Before first write to any context, confirm the bounded context assignment. If the agent's inferred context for a term differs from the context it proposed during definition confirmation, re-confirm before writing.
+5. Before first write to any context, confirm the bounded context assignment. If the bounded context the agent would now assign to a term differs from the bounded context it proposed during definition confirmation, re-confirm the bounded context assignment before writing.
 6. Write immediately using `scripts/write.py add-term` — no batching.
 
 See [references/ubiquitous-language-format.md](references/ubiquitous-language-format.md) for schema and full script invocation reference.
@@ -50,5 +50,5 @@ See [references/ubiquitous-language-format.md](references/ubiquitous-language-fo
 Check every response against all loaded definitions. A term absent from the codebase is neutral — not a contradiction.
 
 - **Definition conflict** — user uses a defined term contradicting its stored meaning: hard interrupt, surface both meanings, ask which is canonical. Run `scripts/write.py add-term` immediately on resolution.
-- **Cross-context collision** — same term defined differently in two contexts: surface explicitly, ask if intentional. Both definitions stand if deliberate (DDD allows intentional ambiguity across contexts). If not intentional, treat as a Definition conflict: ask which definition is canonical, update the incorrect context with the corrected definition, and flag the other pending review.
+- **Cross-context collision** — same term defined differently in two contexts: surface explicitly, ask if intentional. Both definitions stand if deliberate (DDD allows intentional ambiguity across contexts). Mark the collision as intentional in the loaded conflict-detection context so it is not re-surfaced on subsequent responses. Run `scripts/write.py flag-ambiguity` on both contexts with a note recording the intentional divergence. If not intentional, treat as a Definition conflict: ask which definition is canonical, update the incorrect context with the corrected definition, and flag the other pending review.
 - **Vague language** — user word matches 2+ defined terms: hard interrupt, list matching terms with definition summaries, wait for disambiguation. Run `scripts/write.py flag-ambiguity` until resolved; run `scripts/write.py resolve-ambiguity` once canonical meaning is confirmed.

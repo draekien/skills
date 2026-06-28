@@ -28,7 +28,7 @@ Check whether the environment is already set up:
 - Windows: `whisper-env\Scripts\pip show openai-whisper yt-dlp`
 - Unix: `whisper-env/bin/pip show openai-whisper yt-dlp`
 
-If both packages are found, skip to the **CUDA check** below.
+If both packages are found, skip to the **CUDA check** step below.
 
 Otherwise, install Python 3.12 and create the venv:
 
@@ -52,9 +52,7 @@ uv pip install --python whisper-env openai-whisper yt-dlp
 uv pip install --python whisper-env openai-whisper yt-dlp
 ```
 
-## 2a. CUDA check (every invocation)
-
-Verify whether the installed torch supports GPU acceleration:
+**CUDA check** — run this whether or not the env was already set up:
 
 - Windows: `whisper-env\Scripts\python -c "import torch; print(torch.cuda.is_available())"`
 - Unix: `whisper-env/bin/python -c "import torch; print(torch.cuda.is_available())"`

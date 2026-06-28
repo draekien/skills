@@ -13,13 +13,7 @@ Turn a PRD into an ordered set of tracer bullets — thin, end-to-end, always-de
 
 ## Session start
 
-Resolve the output directory:
-
-```bash
-uv run scripts/skillsrc.py --config .draekien/.skillsrc get
-```
-
-If the file is absent the script prints the default `.draekien/break-down-prd`. Write the breakdown to `<outputDir>/<prd-slug>/`, where `<prd-slug>` is the kebab-cased feature name.
+Resolve the output directory: run the skillsrc helper script to read the output directory from `.draekien/.skillsrc` (default: `.draekien/break-down-prd`). Write the breakdown to `<outputDir>/<prd-slug>/`, where `<prd-slug>` is the kebab-cased feature name.
 
 ## Get the PRD
 
@@ -69,12 +63,8 @@ A bullet file is self-contained: an executor needs nothing beyond it — the goa
 
 Every task cites the PRD user story or measurable goal it serves. The inline `serves:` field is authoritative; the header block is a derived summary — keep it in sync when tasks change. The overview's coverage table maps each PRD user story and each measurable goal to the task(s) covering it, and flags any that no task covers — an uncovered requirement is a gap to surface, not to ship.
 
-If `<outputDir>` is under `.draekien/` and that directory does not yet exist, confirm its creation with the user before the first write. If the user declines, ask for an alternative path, persist it with the `set` command, and write nothing until a confirmed output directory exists. If the user chooses a custom output directory, confirm it, then persist it:
-
-```bash
-uv run scripts/skillsrc.py --config .draekien/.skillsrc set <path>
-```
+If `<outputDir>` is under `.draekien/` and that directory does not yet exist, confirm its creation with the user before the first write. If the user declines, ask for an alternative path, persist it with the `set` command, and write nothing until a confirmed output directory exists. If the user chooses a custom output directory, confirm it, then persist it using the skillsrc helper script's `set` command.
 
 ## Review
 
-This runs mostly without interruption. Once the files are written, present a summary — bullet order, AFK versus HIL counts, the front-loaded risks, and any coverage gaps — and invite feedback. On each revision cycle, re-run the coverage check and update the overview table before presenting the revised summary. Complete when the user explicitly approves.
+Once the files are written (including any required confirmations already obtained), present a summary — bullet order, AFK versus HIL counts, the front-loaded risks, and any coverage gaps — and invite feedback. On each revision cycle, re-audit every bullet file: for each task's `serves:` field, confirm the referenced PRD item still exists and is still required. Then rebuild the overview table from those audited mappings, flag any PRD user story or measurable goal no task covers, and update the overview file before presenting the revised summary. Complete when the user explicitly approves.

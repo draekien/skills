@@ -29,6 +29,7 @@
 
 [Anything relevant that doesn't fit above — background context, dependencies, decisions already made.]
 
+<!-- Omit this entire section if there are no open questions. Do not include it with empty or placeholder content. -->
 ## Open Questions
 
 - [Unresolved question that may affect scope or delivery]
