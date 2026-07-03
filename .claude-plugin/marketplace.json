@@ -34,10 +34,11 @@
         "./skills/engineering/module-design",
         "./skills/engineering/break-down-prd",
         "./skills/engineering/with-testing-principles",
+        "./skills/ui-ux/design-dashboards",
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.37.1"
+      "version": "0.38.0"
     },
     {
       "name": "drafting-skills",
@@ -62,6 +63,14 @@
       "strict": false,
       "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise", "./skills/productivity/steelman", "./skills/productivity/devils-advocate", "./skills/productivity/rubber-duck", "./skills/productivity/from-first-principles"],
       "version": "0.11.1"
+    },
+    {
+      "name": "ui-ux-skills",
+      "description": "Skills for user interface and experience design: dashboards, visual design, and usability.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/ui-ux/design-dashboards"],
+      "version": "0.1.0"
     },
     {
       "name": "output-styles",

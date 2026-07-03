@@ -55,6 +55,12 @@ Skills for general workplace productivity: summarisation, research, meeting prep
 
 **8 skills →** [browse the productivity bucket](skills/productivity/README.md)
 
+## UI/UX
+
+Skills for user interface and experience design: dashboards, visual design, and usability.
+
+**1 skill →** [browse the ui-ux bucket](skills/ui-ux/README.md)
+
 ## Output Styles
 
 Skills that shift Claude's communication tone and voice.
