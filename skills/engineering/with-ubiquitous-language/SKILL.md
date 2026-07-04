@@ -1,16 +1,16 @@
 ---
-name: get-specific
+name: with-ubiquitous-language
 description: Builds and enforces a shared project vocabulary (a DDD ubiquitous language). Discovers bounded contexts by exploring the codebase, interviews you to surface domain terms, and tracks definitions in a project dictionary, flagging conflicts as they arise. Use when terminology feels ambiguous, or before implementing a feature that needs a shared vocabulary.
 disable-model-invocation: true
 ---
 
-# Get Specific
+# With Ubiquitous Language
 
 Establish DDD ubiquitous language scoped to bounded contexts. Interview user, capture confirmed terms in `.draekien/ubiquitous-language.yaml` via scripts, detect conflicts throughout the session.
 
 ## Available scripts
 
-- **`scripts/skillsrc.py`** — Reads and writes `get-specific` config from `.draekien/.skillsrc`.
+- **`scripts/skillsrc.py`** — Reads and writes `with-ubiquitous-language` config from `.draekien/.skillsrc`.
 - **`scripts/query.py`** — Queries the ubiquitous language dictionary (`list-contexts`, `list`, `lookup`).
 - **`scripts/write.py`** — Writes terms and flags/resolves ambiguities in the dictionary.
 - **`scripts/migrate.py`** — Migrates legacy `UBIQUITOUS_LANGUAGE.md` files to the YAML dictionary.
@@ -19,8 +19,8 @@ Establish DDD ubiquitous language scoped to bounded contexts. Interview user, ca
 
 Runs once on first invocation.
 
-1. If the user wants the dictionary stored somewhere other than the default, confirm the path with them, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill get-specific set dictionaryPath <path>` before continuing. Otherwise skip straight to the next step.
-2. Run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill get-specific get dictionaryPath --default .draekien/ubiquitous-language.yaml` to read the configured dictionary path. If `.draekien/.skillsrc` is absent the script prints the default `.draekien/ubiquitous-language.yaml`. If the script exits non-zero, fall back to the default path `.draekien/ubiquitous-language.yaml` and tell the user the config could not be read and the default path is being used.
+1. If the user wants the dictionary stored somewhere other than the default, confirm the path with them, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill with-ubiquitous-language set dictionaryPath <path>` before continuing. Otherwise skip straight to the next step.
+2. Run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill with-ubiquitous-language get dictionaryPath --default .draekien/ubiquitous-language.yaml` to read the configured dictionary path. If `.draekien/.skillsrc` is absent the script prints the default `.draekien/ubiquitous-language.yaml`. If the script exits non-zero, fall back to the default path `.draekien/ubiquitous-language.yaml` and tell the user the config could not be read and the default path is being used.
 3. Check whether the dictionary file exists at `dictionaryPath`.
    - **Exists**: load all contexts and terms into conflict detection context using `scripts/query.py list-contexts` then `scripts/query.py list <Context>` for each. If `query.py` exits non-zero or the dictionary fails to parse, tell the user the dictionary could not be read and is being treated as empty, then proceed as if no contexts were loaded. Skip to step 4.
    - **Does not exist**: scan project for any `UBIQUITOUS_LANGUAGE.md` files, excluding a top-level `UBIQUITOUS_LANGUAGE.md` at the project root (that file is a table-of-contents index, not a per-context glossary). If found, show the list and prompt user to migrate using `scripts/migrate.py`. After migration (or if none found), confirm with the user that a new dictionary will be created at `dictionaryPath`, then proceed.

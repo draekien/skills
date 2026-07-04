@@ -1,7 +1,7 @@
 ---
 name: draft-a-prd
 description: Creates a structured product requirements document, first aligning with you on scope and requirements before writing it. Use when defining a new feature or product and you need a complete PRD.
-argument-hint: [feature or product description]
+argument-hint: "[feature or product description]"
 disable-model-invocation: true
 ---
 

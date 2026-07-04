@@ -58,7 +58,7 @@ uv run scripts/skillsrc.py --config <path-to-.skillsrc> --skill <skill-name> set
 2. Requires `core.symlinks=true` in the git config (`git config core.symlinks true` — needed once per clone on Windows, otherwise git checks the symlink out as a plain text file containing the path).
 3. Invoke with `--skill <skill-name>` and the key documented in [Registered Keys](#registered-keys) below.
 
-See `skills/engineering/module-design/scripts/skillsrc.py` and `skills/engineering/get-specific/scripts/skillsrc.py` as reference symlinks.
+See `skills/engineering/module-design/scripts/skillsrc.py` and `skills/engineering/with-ubiquitous-language/scripts/skillsrc.py` as reference symlinks.
 
 ## Example
 
@@ -80,7 +80,7 @@ Skills that use `.skillsrc` must register their keys here.
 | Skill | Key | Type | Default | Description |
 |-------|-----|------|---------|-------------|
 | `module-design` | `specsDir` | string | `docs/designs` | Directory (relative to repo root) where design specs are written |
-| `get-specific` | `dictionaryPath` | string | `.draekien/ubiquitous-language.yaml` | Path (relative to repo root) to the ubiquitous language YAML dictionary |
+| `with-ubiquitous-language` | `dictionaryPath` | string | `.draekien/ubiquitous-language.yaml` | Path (relative to repo root) to the ubiquitous language YAML dictionary |
 | `break-down-prd` | `outputDir` | string | `.draekien/break-down-prd` | Directory (relative to repo root) where PRD breakdowns are written; the skill appends `/<prd-slug>/` per breakdown |
 | `skill-evals` | `outputDir` | string | `.draekien/skill-evals` | Directory (relative to repo root) where eval state is written; the skill appends `/<skill-name>/` per evaluated skill |
 | `transcribe-video` | `whisperModel` | string | `base` | Preferred Whisper model size (`tiny`, `base`, `small`, `medium`, `large`) |

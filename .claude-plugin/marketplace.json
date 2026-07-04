@@ -15,21 +15,21 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/drafting/draft-a-prd",
         "./skills/drafting/skill-evals",
         "./skills/drafting/skill-writing",
         "./skills/drafting/vet-skill-idea",
         "./skills/productivity/get-aligned",
-        "./skills/productivity/round-table",
         "./skills/productivity/deep-research",
         "./skills/productivity/transcribe-video",
         "./skills/productivity/visualise",
-        "./skills/productivity/from-first-principles",
+        "./skills/problem-solving/round-table",
+        "./skills/problem-solving/from-first-principles",
         "./skills/roles/steelman",
         "./skills/roles/devils-advocate",
         "./skills/roles/rubber-duck",
-        "./skills/engineering/get-specific",
+        "./skills/engineering/with-ubiquitous-language",
         "./skills/engineering/module-design",
+        "./skills/engineering/draft-a-prd",
         "./skills/engineering/break-down-prd",
         "./skills/engineering/with-testing-principles",
         "./skills/ui-ux/design-callouts",
@@ -37,31 +37,39 @@
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.41.0"
+      "version": "0.42.0"
     },
     {
       "name": "drafting-skills",
       "description": "Skills for writing and editing content: emails, documents, reports, and other written output.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/drafting/draft-a-prd", "./skills/drafting/skill-evals", "./skills/drafting/skill-writing", "./skills/drafting/vet-skill-idea"],
-      "version": "0.16.2"
+      "skills": ["./skills/drafting/skill-evals", "./skills/drafting/skill-writing", "./skills/drafting/vet-skill-idea"],
+      "version": "0.17.0"
     },
     {
       "name": "engineering-skills",
       "description": "Skills for software development tasks: code review, debugging, architecture, and technical workflows.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/engineering/get-specific", "./skills/engineering/module-design", "./skills/engineering/break-down-prd", "./skills/engineering/with-testing-principles"],
-      "version": "0.19.1"
+      "skills": ["./skills/engineering/with-ubiquitous-language", "./skills/engineering/module-design", "./skills/engineering/draft-a-prd", "./skills/engineering/break-down-prd", "./skills/engineering/with-testing-principles"],
+      "version": "0.20.0"
     },
     {
       "name": "productivity-skills",
       "description": "Skills for general workplace productivity: summarisation, research, meeting prep, and task management.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise", "./skills/productivity/from-first-principles"],
-      "version": "0.12.0"
+      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise"],
+      "version": "0.13.0"
+    },
+    {
+      "name": "problem-solving-skills",
+      "description": "Skills for working through a hard problem or decision: reasoning from fundamentals, or debating between competing options.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/problem-solving/round-table", "./skills/problem-solving/from-first-principles"],
+      "version": "0.1.0"
     },
     {
       "name": "roles-skills",

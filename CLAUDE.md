@@ -8,6 +8,7 @@ Repo stores agent skills in buckets under `skills/`. Each bucket groups skills b
 - **engineering** — Dev tasks: code review, debugging, architecture, workflows.
 - **personal** — Personal productivity: scheduling, decisions, organisation.
 - **productivity** — Workplace productivity: summarisation, research, meeting prep, task management.
+- **problem-solving** — Working through a hard problem or decision: reasoning from fundamentals, debating between options.
 - **roles** — Fixed-persona skills: advocate, listener, critic stances used to sharpen thinking.
 - **ui-ux** — User interface and experience design: dashboards, visual design, usability.
 - **output-styles** — Tone and voice modes: communication style presets for different audiences and needs.
@@ -27,7 +28,7 @@ skills/
       assets/            optional: templates, icons, other output files
 ```
 
-- The top-level `README.md` has one section per public bucket (`drafting/`, `engineering/`, `productivity/`, `roles/`, `ui-ux/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
+- The top-level `README.md` has one section per public bucket (`drafting/`, `engineering/`, `productivity/`, `problem-solving/`, `roles/`, `ui-ux/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
 - Each bucket `README.md` lists all its skills with one-line descriptions, skill names linked to `SKILL.md`. The bucket `README.md` is the single source of truth for a skill's one-liner — it is the only place that one-liner lives.
 - Skills in `personal/` must not appear in any public README.
 
