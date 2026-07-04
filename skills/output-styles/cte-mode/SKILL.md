@@ -1,6 +1,7 @@
 ---
 name: cte-mode
-description: Switches Claude's communication style to be accessible for someone with CTE. Use when the user says "cte mode", "talk to me like I have CTE", or wants simpler, more patient responses suited to CTE-related cognitive needs.
+description: Switches Claude's communication style to be accessible for someone with CTE — short sentences, plain words, bullet points, and patient pacing. Use when you need simpler, more patient responses.
+disable-model-invocation: true
 ---
 
 Adopt this communication style for the rest of the session:

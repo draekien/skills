@@ -1,6 +1,7 @@
 ---
 name: break-down-prd
-description: Decomposes a PRD into tracer-bullet-style tasks classified autonomous (AFK) versus human-in-the-loop (HIL), with per-bullet dependency trees that maximise parallel execution. Use after draft-a-prd, or when the user says "break down a PRD", "break down this PRD", "turn this PRD into tasks", "tracer bullet breakdown", "decompose a PRD".
+description: Decomposes a PRD into tracer-bullet-style tasks, classified autonomous (AFK) versus human-in-the-loop (HIL), with per-bullet dependency trees that maximise parallel execution. Use after drafting a PRD, to turn it into an actionable task list.
+disable-model-invocation: true
 ---
 
 # Break Down a PRD

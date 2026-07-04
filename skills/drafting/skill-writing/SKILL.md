@@ -1,14 +1,15 @@
 ---
 name: skill-writing
-description: Writes and improves agent skills to meet the Agent Skills open standard (agentskills.io). Use when building a new skill from scratch, revising an existing skill for new requirements, or auditing a skill for quality — or when the user says "create a skill", "make a skill", "new skill", "scaffold a skill", "update this skill", "modify this skill", "revise this skill", "refine this skill", "audit this skill", "compress this skill", "optimize this skill", "skill is too verbose", "clean up this skill".
+description: Writes and improves agent skills to meet the Agent Skills open standard (agentskills.io). Use when creating a new skill from scratch, revising an existing one for new requirements, or auditing a skill for quality.
 compatibility: Designed for Claude Code (or similar products with Agent Skills support)
+disable-model-invocation: true
 ---
 
 A skill is a teaching document for a future LLM instance — it transfers intent and judgment so the agent can achieve a goal without the author present.
 
 ## Workflow
 
-1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything. When building from scratch and the user has not already validated the concept (no prior research, no vet-skill-idea output in session, and no clear existing use-case driving the request), gate it first with the `vet-skill-idea` skill; if that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "vet-skill-idea"`; if the verdict is to not proceed, surface the reasons to the user and stop — do not continue to the remaining workflow steps
+1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything. When building from scratch and the user has not already validated the concept (no prior research, no vet-skill-idea output in session, and no clear existing use-case driving the request), ask the user to run `/vet-skill-idea` first — it is not model-invocable, so it must be invoked directly; if that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "vet-skill-idea"`; if the verdict is to not proceed, surface the reasons to the user and stop — do not continue to the remaining workflow steps
 2. **Plan structure** — characterise the skill on both axes — knowledge↔procedural (see [Knowledge or Procedural](#knowledge-or-procedural)) and stateful↔stateless (see [Stateful or Stateless](#stateful-or-stateless)) — then decide what belongs in the body versus references, scripts, or assets (see [Content Placement](#content-placement))
 3. **Write** — let the task's fragility and the agent's existing knowledge determine how much structure to impose; apply Writing Standards throughout
 4. **Run the [Quality Gate](#quality-gate)**

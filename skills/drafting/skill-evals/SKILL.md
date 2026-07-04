@@ -1,6 +1,7 @@
 ---
 name: skill-evals
-description: Builds and runs an empirical eval suite against an existing skill — measures whether its description activates correctly (precision and recall over a labelled prompt corpus) and whether loading it improves agent output (blind A/B against pre-committed criteria). The suite and every run are persisted so the eval is repeatable and a skill's scores can be tracked across edits. Use when evaluating, testing, or measuring a skill's quality, validating a skill's triggers, or when the user says "eval this skill", "test this skill", "run a skill eval", "re-run a skill eval", "track this skill's eval over time", "measure the impact of this skill", "check the description hit rate", "is this skill's description firing".
+description: Builds and runs an empirical eval suite for an existing skill, measuring whether its description activates correctly and whether it actually improves the agent's output. The suite and every run are persisted, so a skill's scores can be tracked across edits. Use when you want to test a skill's quality or track it over time.
+disable-model-invocation: true
 ---
 
 A skill makes two empirical claims, and the author's intuition cannot settle either. The `description` claims *I am the right tool for this class of situation* — an activation claim. The body claims *loading me makes the work better* — an impact claim. An eval measures whether each claim holds against evidence the author has not seen yet. The discipline is to commit to what a passing result looks like *before* running anything, then run an agent under controlled conditions and report the gap between claim and reality.

@@ -1,6 +1,7 @@
 ---
 name: from-first-principles
-description: Reasons a problem up from its fundamental truths instead of from analogy, convention, or how it is usually done. Use when a problem feels stuck on inherited assumptions, when the standard approach seems wrong but it is unclear why, or when the user says "first principles", "think from first principles", "first principles thinking", "break this down to fundamentals", "why do we even do it this way".
+description: Reasons a problem up from its fundamental truths instead of leaning on analogy, convention, or how it is usually done. Use when a problem feels stuck on inherited assumptions, or the standard approach seems wrong but it is unclear why.
+disable-model-invocation: true
 ---
 
 Reason from first principles. The answer is rebuilt from what is actually true, not copied from how the problem is usually solved.

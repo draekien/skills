@@ -1,6 +1,7 @@
 ---
 name: steelman
-description: Builds the strongest possible case for any perspective, idea, or decision by delegating to a focused subagent. Use when stress-testing a position, pressure-testing a decision, or making sure the best version of an argument has been heard — or when the user says "steelman this", "steelman my idea", "make the best case for", "strongest argument for".
+description: Builds the strongest possible case for a perspective, idea, or decision, using a dedicated subagent. Use when you want to see the best version of an argument before deciding whether to act on it.
+disable-model-invocation: true
 ---
 
 Spawn a subagent to build the strongest possible case *for* the target. Determine the target from the user's most recent message; if absent, scan earlier turns for the most recently discussed position or idea. If it is unclear, ask what to steelman.

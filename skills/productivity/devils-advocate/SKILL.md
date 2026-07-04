@@ -1,6 +1,7 @@
 ---
 name: devils-advocate
-description: Challenges any topic, idea, plan, or position by surfacing the strongest objections, weakest assumptions, and most compelling counterarguments. Use when stress-testing a decision before committing, exposing blind spots in a proposal, or pressure-testing reasoning — or when the user says "play devil's advocate", "devil's advocate this", "argue against this", "poke holes in this", "what's wrong with this", "challenge my thinking".
+description: Challenges a topic, idea, plan, or position by surfacing the strongest objections, weakest assumptions, and most compelling counterarguments. Use when you want to pressure-test a decision or expose blind spots before committing to it.
+disable-model-invocation: true
 ---
 
 Spawn a subagent to build the strongest possible case *against* the target. Determine the target from the user's most recent message. If no target is stated or clearly implied there, ask: "What should I challenge?"

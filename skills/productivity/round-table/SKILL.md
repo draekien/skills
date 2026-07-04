@@ -1,7 +1,8 @@
 ---
 name: round-table
-description: 'Assembles an adversarial agent team to compare competing options, approaches, or technologies. Champions debate via direct messaging — each builds a case and actively challenges the others — then a synthesizer subagent analyses the debate and delivers a recommendation. Use when comparing options or approaches, or when the user says "round-table X vs Y", "run a round-table on...", "round-table these options: A, B, C".'
+description: Assembles an adversarial agent team to compare competing options, approaches, or technologies. Champions debate each other directly, then a synthesizer subagent analyses the debate and delivers a recommendation. Use when comparing options and you want a rigorously debated comparison rather than a single opinion.
 compatibility: Requires Claude Code with agent teams enabled. Champions run on a fast mid-tier model; the synthesizer subagent runs on the highest-capability model available.
+disable-model-invocation: true
 ---
 
 Runs an adversarial debate: N champion teammates argue and challenge each other via direct messaging, then a synthesizer subagent analyses the settled debate and delivers a recommendation.

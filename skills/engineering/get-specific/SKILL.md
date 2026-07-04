@@ -1,6 +1,7 @@
 ---
 name: get-specific
-description: Builds and enforces a DDD ubiquitous language for a project. Discovers bounded contexts by exploring the codebase, interviews users to surface domain terms, tracks definitions in a centralised YAML dictionary inside .draekien/, and detects terminology conflicts in real time. Use when terminology feels ambiguous, before implementing features, or when the user says "get specific", "define our terms", "what do we mean by X", or wants to establish shared vocabulary before acting.
+description: Builds and enforces a shared project vocabulary (a DDD ubiquitous language). Discovers bounded contexts by exploring the codebase, interviews you to surface domain terms, and tracks definitions in a project dictionary, flagging conflicts as they arise. Use when terminology feels ambiguous, or before implementing a feature that needs a shared vocabulary.
+disable-model-invocation: true
 ---
 
 # Get Specific
