@@ -1,6 +1,7 @@
 ---
 name: vet-skill-idea
-description: Evaluates whether an idea should become an agent skill, checking it against worthiness criteria and routing it to build, split, redirect, or drop. Run this before writing a new skill, to avoid adding one that is not worth the ongoing context cost.
+description: Evaluates whether an idea should become an agent skill, checking it against worthiness criteria and routing it to build, split, redirect, or drop. Use when about to write a new skill, to avoid adding one that is not worth the ongoing context cost.
+argument-hint: [skill idea]
 compatibility: Designed for Claude Code (or similar products with Agent Skills support)
 disable-model-invocation: true
 ---
@@ -27,11 +28,11 @@ One unified job. Test: state the purpose in one sentence without "and", and writ
 
 ### Right home
 
-A skill is one vehicle among several, and often the wrong one. A durable fact belongs in memory. An always-on project convention belongs in the project's rules or instructions file. An automated, deterministic behaviour — "after every X, do Y" — belongs in a hook, which the harness runs reliably; an agent reading a skill cannot guarantee it fires. A recurring one-keystroke invocation is a slash command. If another vehicle fits better, name it and route there.
+A skill is one vehicle among several, and often the wrong one. A durable fact belongs in memory — it doesn't need re-teaching each session. An always-on project convention belongs in the project's rules or instructions file — it should apply without being invoked. An automated, deterministic behaviour — "after every X, do Y" — belongs in a hook, which the harness runs reliably; an agent reading a skill cannot guarantee it fires. A recurring one-keystroke invocation is a slash command — no judgment is needed to decide when it fires. If another vehicle fits better, name it and route there.
 
 ## Verdict
 
-Route by the first gate that fails, and name the gate so the decision is legible:
+Evaluate all four gates before concluding — do not stop at the first failure. Then route by the earliest gate (in the order above) that failed, and name every gate that failed so the decision is legible:
 
 - Net-new capability fails → drop.
 - Sound goal fails → drop.

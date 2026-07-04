@@ -16,8 +16,8 @@ Apply software design principles to whatever the user brings. Explore the projec
 Run once on first invocation in this order:
 
 1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the spec output directory. If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `module-design.specsDir`; default to `docs/designs` if absent.
-   1b. **Load ubiquitous language** — if `.draekien/ubiquitous-language.yaml` exists, run `uv run scripts/query.py --dict .draekien/ubiquitous-language.yaml` to load all bounded contexts and terms into working memory before proceeding.
-2. **Open question** — ask "What are we looking at?" Wait for the answer before proceeding.
+2. **Load ubiquitous language** — if `.draekien/ubiquitous-language.yaml` exists, run `uv run scripts/query.py --dict .draekien/ubiquitous-language.yaml` to load all bounded contexts and terms into working memory before proceeding.
+3. **Open question** — if the module or system in scope isn't already clear from the conversation, ask what to look at before proceeding.
 
 ## DDD Mode
 
@@ -43,7 +43,7 @@ Full rule definitions: [references/design-principles.md](references/design-princ
 
 ## Output
 
-For existing modules: produce a violations report. For each violation, quote the offending code, name the rule, and suggest a concrete fix. Offer to draft a redesign spec if the user wants one. If no violations are found, state that explicitly and offer to draft a redesign spec or run the recommended-rules audit.
+For existing modules: produce a violations report. For each violation, quote the offending code, name the rule, and suggest a concrete fix. Offer to draft a redesign spec if the user wants one. If no violations are found, state that explicitly and offer to draft a redesign spec. Once a spec exists at the resolved path (drafted now or from an earlier session), also offer to run the recommended-rules audit against it.
 
 For new modules: draft the spec once the design is understood. Adapt depth to scope — see [references/spec-format.md](references/spec-format.md) for section rules by scope. Present the draft to the user and apply any corrections before writing to disk.
 
@@ -51,19 +51,13 @@ Spec output path:
 
 - Use `module-design.specsDir` from `.skillsrc` if set, otherwise `docs/designs`.
 - Filename: `<module-name>.md` (kebab-case).
-- **Exists** — write directly, no confirmation needed. (Config writes still require confirmation per skillsrc-format.md.)
+- **Exists** — write directly, no confirmation needed. (Config writes still require confirmation per [references/skillsrc-format.md](references/skillsrc-format.md).)
 - **Does not exist** — confirm the full path with the user before creating it.
 
 If the user provides a custom path that differs from the default, confirm with the user, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc set <path>` to persist it. The script merges only the `module-design` block and preserves all other skills' config.
 
 ## Recommended Rules Audit
 
-After writing the spec, spawn an independent subagent to audit it. Brief it to:
-
-- Read the spec at the resolved path.
-- Check each recommended principle listed in [references/design-principles.md](references/design-principles.md) under the Recommended Rules heading.
-- For each violation: quote the offending spec text, name the rule, and suggest a concrete fix.
-- Report clean if no violations found. Do not rewrite the spec — findings only.
-- Full rule definitions are in `references/design-principles.md`.
+After writing the spec, run the recommended-rules audit — see [references/recommended-rules-audit.md](references/recommended-rules-audit.md) for the subagent brief.
 
 Report the subagent's findings to the user as a numbered list of violations (or a confirmation of none). The user decides which findings to apply; update the spec only on explicit instruction.

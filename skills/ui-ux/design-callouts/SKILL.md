@@ -35,7 +35,7 @@ Before choosing any component, confirm a callout is warranted at all:
 Decide by consequence and scope, in order:
 
 1. **User must decide before anything else continues** (destructive or blocking) → alert dialog: modal, focus-trapped.
-2. **Form validation failed** → inline error at each field plus an error summary that receives focus, with identical wording in both, each summary entry linking to its field. Never report validation in a toast or notification banner.
+2. **Form validation failed** → inline error at each field plus an error summary that receives focus, with identical wording in both, each summary entry linking to its field. Never report validation in a toast or banner.
 3. **System-wide condition needing attention until resolved** → page-top banner: persistent, never auto-dismissed, non-dismissible while the condition holds.
 4. **Scoped to one section or object** → section/inline message placed immediately adjacent to what it describes — proximity tells the reader what the message is about.
 5. **Ignorable confirmation with zero consequence if missed** → toast. No actions inside — a toast that needs a button (even Undo) must persist until dismissed and offer the same action in persistent UI, and at that point an inline or actionable message is usually the better component. At least a 6-second floor scaled to message length, paused on hover/focus; a persistent record elsewhere.
@@ -44,7 +44,6 @@ Decide by consequence and scope, in order:
 Cross-cutting rules:
 
 - **Severity is color + icon + text, always all three.** Info / success / warning / error is the universal scale; color alone fails 1 in 20 readers and every screen reader (WCAG 1.4.1).
-- **An action revokes auto-dismiss.** The moment a message carries a button, it persists until acted on or dismissed — every mature design system converges on this.
 - **Say what happened and how to fix it**, in plain language, one to two sentences, leading with the most critical fact. No "an error occurred", no blame ("invalid", "forbidden"), no apology theatrics. Errors and warnings must include a path to resolution — a passive error is a dead end.
 
 Severity taxonomies, placement conventions, persistence rules, validation patterns, and stacking models: [references/status-messaging.md](references/status-messaging.md).

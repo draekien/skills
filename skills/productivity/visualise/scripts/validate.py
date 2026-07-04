@@ -6,7 +6,11 @@
 Validate a generated HTML visualisation for structure, self-containment, and typography.
 
 Usage:
-    uv run scripts/validate.py <path-to-html-file>
+    uv run scripts/validate.py <path-to-html-file> [--json]
+
+--json prints the check results as a JSON object {passed, failed, items:
+[{rule, passed, detail}, ...]} on stdout (no other stdout output); without
+it, a human-readable report is printed on stdout instead.
 
 Exit codes:
     0  all checks passed
@@ -15,6 +19,7 @@ Exit codes:
 """
 
 import io
+import json
 import re
 import sys
 from html.parser import HTMLParser
@@ -114,7 +119,7 @@ def _check_font_sizes(style_content: str, style_start_line: int, r: Results):
             abs_line = style_start_line + i
             r.fail(
                 f"typography: font-size {m.group(1)}{unit} on line ~{abs_line}",
-                f"Body text minimum is 1rem (16px) — change to font-size: 1rem or larger",
+                "Body text minimum is 1rem (16px) — change to font-size: 1rem or larger",
             )
 
 
@@ -165,11 +170,14 @@ def main() -> int:
     if isinstance(sys.stdout, io.TextIOWrapper) and sys.stdout.encoding.lower() != "utf-8":
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-    if len(sys.argv) != 2:
-        print("Usage: uv run scripts/validate.py <path-to-html-file>", file=sys.stderr)
+    args = [a for a in sys.argv[1:] if a != "--json"]
+    as_json = "--json" in sys.argv[1:]
+
+    if len(args) != 1:
+        print("Usage: uv run scripts/validate.py <path-to-html-file> [--json]", file=sys.stderr)
         return 2
 
-    html_path = Path(sys.argv[1])
+    html_path = Path(args[0])
     if not html_path.exists():
         print(f"File not found: {html_path}", file=sys.stderr)
         return 2
@@ -181,17 +189,20 @@ def main() -> int:
     items = results.items
     failed = results.failed
 
-    width = 60
-    print("\nVisualise Validator")
-    print(f"File: {html_path}")
-    print("-" * width)
-    for item in items:
-        icon = "pass" if item["passed"] else "FAIL"
-        print(f"  [{icon}]  {item['rule']}")
-        if item["detail"]:
-            print(f"           {item['detail']}")
-    print("-" * width)
-    print(f"  {len(items) - len(failed)} passed, {len(failed)} failed\n")
+    if as_json:
+        print(json.dumps({"passed": len(items) - len(failed), "failed": len(failed), "items": items}))
+    else:
+        width = 60
+        print("\nVisualise Validator")
+        print(f"File: {html_path}")
+        print("-" * width)
+        for item in items:
+            icon = "pass" if item["passed"] else "FAIL"
+            print(f"  [{icon}]  {item['rule']}")
+            if item["detail"]:
+                print(f"           {item['detail']}")
+        print("-" * width)
+        print(f"  {len(items) - len(failed)} passed, {len(failed)} failed\n")
 
     return 0 if not failed else 1
 

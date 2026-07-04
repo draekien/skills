@@ -1,5 +1,5 @@
 # /// script
-# dependencies = ["pyyaml>=6.0"]
+# dependencies = ["pyyaml==6.0.2"]
 # ///
 import argparse
 import os
@@ -47,8 +47,7 @@ def cmd_flag_ambiguity(data, context, term_name, note):
 def cmd_resolve_ambiguity(data, context, term_name):
     ambiguities = data.get("contexts", {}).get(context, {}).get("ambiguities", {})
     if term_name not in ambiguities:
-        print(f"No ambiguity flag found for '{term_name}' in context '{context}'.")
-        sys.exit(1)
+        return None
     del ambiguities[term_name]
     if not ambiguities:
         del data["contexts"][context]["ambiguities"]
@@ -105,9 +104,12 @@ def main():
         print(f"Flagged '{args.term}' as ambiguous in context '{args.context}'.")
 
     elif args.command == "resolve-ambiguity":
-        data = cmd_resolve_ambiguity(data, args.context, args.term)
-        save_dict(args.dict, data)
-        print(f"Resolved ambiguity for '{args.term}' in context '{args.context}'.")
+        result = cmd_resolve_ambiguity(data, args.context, args.term)
+        if result is None:
+            print(f"Ambiguity for '{args.term}' in context '{args.context}' already resolved.")
+        else:
+            save_dict(args.dict, result)
+            print(f"Resolved ambiguity for '{args.term}' in context '{args.context}'.")
 
 
 if __name__ == "__main__":

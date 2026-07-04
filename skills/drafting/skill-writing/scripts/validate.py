@@ -6,8 +6,12 @@
 Validate an agent skill against the Agent Skills open standard.
 
 Usage:
-    uv run validate.py <skill-dir>
-    uv run validate.py <skill-dir>/SKILL.md
+    uv run validate.py <skill-dir> [--json]
+    uv run validate.py <skill-dir>/SKILL.md [--json]
+
+--json prints the check results as a JSON array of {rule, level, detail}
+objects on stdout (no other stdout output); without it, a human-readable
+report is printed on stderr instead, keeping stdout free for data output.
 
 Exit codes:
     0  all checks passed (warnings, if any, do not fail the run)
@@ -16,6 +20,7 @@ Exit codes:
 """
 
 import io
+import json
 import re
 import sys
 from pathlib import Path
@@ -466,11 +471,13 @@ def main():
     ):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-    if len(sys.argv) != 2:
-        print("Usage: uv run validate.py <skill-dir>", file=sys.stderr)
+    args = [a for a in sys.argv[1:] if a != "--json"]
+    as_json = "--json" in sys.argv[1:]
+    if len(args) != 1:
+        print("Usage: uv run validate.py <skill-dir> [--json]", file=sys.stderr)
         sys.exit(2)
 
-    skill_path = Path(sys.argv[1])
+    skill_path = Path(args[0])
     if not skill_path.exists():
         print(f"Path does not exist: {skill_path}", file=sys.stderr)
         sys.exit(2)
@@ -480,18 +487,24 @@ def main():
     failed = results.failed
     warnings = results.warnings
 
-    icons = {"pass": "pass", "fail": "FAIL", "warn": "warn"}
-    width = 52
-    print("\nAgent Skills Validator")
-    print(f"Skill: {skill_path}")
-    print("-" * width)
-    for item in items:
-        print(f"  [{icons[item['level']]}]  {item['rule']}")
-        if item["detail"]:
-            print(f"           {item['detail']}")
-    print("-" * width)
-    passed = len(items) - len(failed) - len(warnings)
-    print(f"  {passed} passed, {len(failed)} failed, {len(warnings)} warnings\n")
+    if as_json:
+        print(json.dumps(items))
+    else:
+        icons = {"pass": "pass", "fail": "FAIL", "warn": "warn"}
+        width = 52
+        print("\nAgent Skills Validator", file=sys.stderr)
+        print(f"Skill: {skill_path}", file=sys.stderr)
+        print("-" * width, file=sys.stderr)
+        for item in items:
+            print(f"  [{icons[item['level']]}]  {item['rule']}", file=sys.stderr)
+            if item["detail"]:
+                print(f"           {item['detail']}", file=sys.stderr)
+        print("-" * width, file=sys.stderr)
+        passed = len(items) - len(failed) - len(warnings)
+        print(
+            f"  {passed} passed, {len(failed)} failed, {len(warnings)} warnings\n",
+            file=sys.stderr,
+        )
 
     sys.exit(0 if not failed else 1)
 

@@ -11,10 +11,8 @@ The pillars below are independent. Each defends against a distinct failure, and 
 
 A test that cannot fail is not a test. Before trusting any assertion, establish that it bites: that some realistic defect in the code under test would turn it red.
 
-- **At write time**, prove falsifiability through the test, never by editing the code under test. Either write the test before the implementation exists so red comes for free, or flip the expected value in the assertion, confirm the test fails, then restore it. Flipping a literal in the test is trivially reversible and touches nothing else; mutating source code to prove a point risks leaving the codebase broken and is never necessary here.
+- **At write time**, prove falsifiability through the test, never by editing the code under test. Either write the test before the implementation exists so red comes for free, or flip the expected value in the assertion, confirm the test fails, then restore it. Flipping a literal in the test is trivially reversible and touches nothing else; mutating source code to prove a point risks leaving the codebase broken and is never necessary here — if it ever happens, restore it before moving on.
 - **At audit time**, the code already exists, so falsifiability is checked by mutation: imagine a plausible bug — an off-by-one, a flipped comparison, a dropped branch, a swapped operand — and ask whether any test would catch it. A mutation that survives every test exposes a gap, not a passing suite. Where a mutation-testing tool is available, this reasoning can be made empirical; where it is not, reason through the mutations by hand.
-
-Never leave source code mutated. Any change made to provoke a failure is restored before moving on.
 
 ## Independent derivation
 
@@ -57,7 +55,7 @@ Each test pins one behaviour, structured so a failure names its cause. Arrange t
 
 These are the failure modes that pass casual review while verifying nothing. Name them on sight, both when writing tests and when auditing:
 
-- **The tautology** — an assertion that restates the implementation under test. Green by construction; can never fail meaningfully.
+- **The tautology** — an assertion that restates the code under test. Green by construction; can never fail meaningfully.
 - **The no-op** — a test that invokes the code and asserts nothing, or only that no exception was thrown. Buys coverage, proves almost nothing.
 - **Bug-blessing** — expectations copied from the code's current output, freezing today's behaviour, defects and all, as the spec.
 - **Coverage theatre** — input classes never given a test; boundaries and error paths absent from the suite entirely, however high the line percentage.

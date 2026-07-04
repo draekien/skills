@@ -30,6 +30,7 @@ Once created in a session, treat it as present for the remainder — do not re-c
 |------|---------|------|
 | `.skillsrc` | Per-skill configuration keyed by skill name | [specs/skillsrc.md](skillsrc.md) |
 | `ubiquitous-language.yaml` | DDD ubiquitous language dictionary (bounded contexts + terms) | managed by `get-specific` skill |
+| `skill-evals/` | Per-evaluated-skill eval state (frozen suites, run history, report) | managed by `skill-evals` skill — see [skills/drafting/skill-evals/SKILL.md](../skills/drafting/skill-evals/SKILL.md) |
 
 Future files added by new skills must be documented here and in their own spec.
 

@@ -15,6 +15,7 @@ set  — merges specsDir into the file, preserving all other skills' keys
 Exit codes:
   0  success
   2  usage error
+  3  config file unreadable or not valid JSON
 """
 
 import argparse
@@ -30,7 +31,17 @@ DEFAULT = "docs/designs"
 def load(config_path: Path) -> dict:
     if not config_path.exists():
         return {}
-    return json.loads(config_path.read_text(encoding="utf-8"))
+    try:
+        return json.loads(config_path.read_text(encoding="utf-8"))
+    except OSError as e:
+        print(f"error: could not read {config_path}: {e}", file=sys.stderr)
+        sys.exit(3)
+    except json.JSONDecodeError:
+        print(
+            f"error: {config_path} is not valid JSON — fix or delete it",
+            file=sys.stderr,
+        )
+        sys.exit(3)
 
 
 def cmd_get(config_path: Path) -> int:

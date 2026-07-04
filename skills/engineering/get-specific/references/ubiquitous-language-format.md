@@ -79,7 +79,6 @@ uv run scripts/migrate.py --project-root <root> --dict <dict> [--dry-run]
 - **50 words max per definition.** Define what it IS. No impl detail. Aliases, usage, and related live outside this budget.
 - **Be opinionated.** When multiple words exist for the same concept, pick one canonical term; list alternatives as `aliases` to actively avoid.
 - **Project-specific only.** Before adding a term, ask: unique to this domain, or a general programming concept? General concepts don't belong.
-- **Usage note required.** Must use at least one other defined term where possible.
 - **Related terms required when applicable.** List only already-defined terms. Use a relationship label.
 
 ## Relationship Labels

@@ -1,15 +1,18 @@
 ---
 name: skill-writing
 description: Writes and improves agent skills to meet the Agent Skills open standard (agentskills.io). Use when creating a new skill from scratch, revising an existing one for new requirements, or auditing a skill for quality.
-compatibility: Designed for Claude Code (or similar products with Agent Skills support)
+argument-hint: [skill-name-or-path]
 disable-model-invocation: true
 ---
 
-A skill is a teaching document for a future LLM instance — it transfers intent and judgment so the agent can achieve a goal without the author present.
+A skill is a teaching document for a future agent — it transfers intent and judgment so the agent can achieve a goal without the author present.
 
 ## Workflow
 
-1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything. When building from scratch and the user has not already validated the concept (no prior research, no vet-skill-idea output in session, and no clear existing use-case driving the request), ask the user to run `/vet-skill-idea` first — it is not model-invocable, so it must be invoked directly; if that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "vet-skill-idea"`; if the verdict is to not proceed, surface the reasons to the user and stop — do not continue to the remaining workflow steps
+1. **Gather context** — understand purpose, scope, trigger phrases, and supporting file needs from session before asking anything.
+   - If building from scratch and the concept isn't already validated (no prior research, no vet-skill-idea output in session, no clear existing use-case driving the request): ask the user to run `/vet-skill-idea` first — it is not model-invocable, so it must be invoked directly.
+   - If `/vet-skill-idea` isn't installed, recommend the user add it with `npx skills add draekien/skills --skill "vet-skill-idea"`.
+   - If the verdict is to not proceed, surface the reasons to the user and stop — do not continue to the remaining workflow steps.
 2. **Plan structure** — characterise the skill on both axes — knowledge↔procedural (see [Knowledge or Procedural](#knowledge-or-procedural)) and stateful↔stateless (see [Stateful or Stateless](#stateful-or-stateless)) — then decide what belongs in the body versus references, scripts, or assets (see [Content Placement](#content-placement))
 3. **Write** — let the task's fragility and the agent's existing knowledge determine how much structure to impose; apply Writing Standards throughout
 4. **Run the [Quality Gate](#quality-gate)**
@@ -20,7 +23,7 @@ See [references/specification.md](references/specification.md) for the full form
 
 **Name** — verb-noun form preferred when name contains a verb (`transcribe-video`, `review-code`).
 
-**Argument hint** — if the skill takes arguments, add an `argument-hint` frontmatter field with a free-text usage cue, e.g. `[issue-number]` or `[filename] [format]`. This is a harness-specific extension, not part of the open standard, but it's the one worth adding by default: it's supported under that exact name on more than one harness, and a harness that doesn't recognize it just ignores the field — there's no working structure to fall back to for expected arguments otherwise, so the cost of including it is zero and the upside is real. Don't invent a structured argument schema beyond this hint; that capability exists on at most one harness today and isn't worth designing a skill around.
+**Argument hint** — if the skill takes arguments, add an `argument-hint` frontmatter field with a free-text usage cue, e.g. `[issue-number]` or `[filename] [format]`. This is a harness-specific extension, not part of the open standard, but it's the one worth adding by default: a harness that doesn't recognize it just ignores the field, so the cost of including it is zero and the upside is real when a harness does support it. Don't invent a structured argument schema beyond this hint — that level of harness-specific capability isn't worth designing a skill around.
 
 **Description** — the sole activation signal; write as an API contract:
 
@@ -32,7 +35,7 @@ Imperative, embeds trigger phrases verbatim.
 
 ## Context First, Then Interview
 
-Exhaust what the session already provides before asking anything. If purpose, scope, trigger phrases, and supporting file needs are clear from context, proceed directly. When genuine gaps remain, surface them one at a time — give a recommendation and the key tradeoff, and resolve interdependent decisions before moving on. Context informs your choices, but only timeless principles belong in the skill body.
+Exhaust what the session already provides before asking anything. If purpose, scope, trigger phrases, and supporting file needs are clear from context, proceed directly. When genuine gaps remain, surface them one at a time — give a recommendation and the key tradeoff, and resolve interdependent decisions before moving on. Only timeless principles belong in the skill body, even though context informs the choices made along the way.
 
 ## Writing Standards
 
@@ -40,7 +43,7 @@ These standards ensure the skill transfers cleanly — the agent reading it cold
 
 - Third-person imperative: "Extract the text..." not "I will..." or "You should..."
 - One term per concept — never vary
-- No comments explaining what was removed or changed
+- No comments explaining what was removed or changed — the reading agent needs the correct current instruction, not a changelog of the authoring process
 - **No tool names** — describe capabilities instead ("search the web", "read local files") so the skill works across agents with different toolsets
 - **Activation lives in the description** — never write a "When to use this skill" section in the body
 - **No narrative or session-dated examples** — generic illustrative examples (good vs poor pair) are fine
@@ -49,7 +52,7 @@ These standards ensure the skill transfers cleanly — the agent reading it cold
 
 ### Match freedom to fragility
 
-Calibrate specificity to how variable and fragile the task is:
+Calibrate freedom to how variable and fragile the task is:
 
 - **High freedom** — reasoning-carrying prose. Use when multiple approaches are valid and judgment determines the path.
 
@@ -84,7 +87,7 @@ Every token spent on knowledge the agent already carries is noise that buries th
 
 Those questions find what to cut. The inverse finds what to keep: a skill's highest-value content is the *delta from the agent's defaults* — what it would not do on its own, most sharply an instruction that countermands a strong reflex (to help, to solve, to elaborate). When a skill defines a role or behaviour the agent could already approximate, that delta is the whole payload; describing the role is not. Ask what is non-obvious to the agent, and write that.
 
-Run the **deletion test** on anything you're unsure about: delete the paragraph and check whether the agent's output would actually change. If it wouldn't, the paragraph was dead weight — cut it, unless it's process logic from an existing skill, which the rule above requires confirming before removing regardless of what the deletion test says. Bloat traces back to one of three causes:
+Run the **deletion test** on anything uncertain: delete the paragraph and check whether the agent's output would actually change. If it wouldn't, the paragraph was dead weight — cut it, unless it's process logic from an existing skill, which the rule above requires confirming before removing regardless of what the deletion test says. Bloat traces back to one of three causes:
 
 - **Duplication** — the same rule stated in more than one place; give each concept a single source of truth and cross-reference it, never restate it
 - **Sediment** — older instructions nobody revisited as the skill evolved, now superseded or irrelevant; delete rather than layering a correction on top
@@ -185,10 +188,10 @@ When the skill bundles scripts, see [references/script-design.md](references/scr
    | Judge | What to read | What to check |
    | --- | --- | --- |
    | **Spec & structure** | Skill Anatomy; all `[LLM]` rules in [references/spec-rules.md](references/spec-rules.md); [references/stateful-skills.md](references/stateful-skills.md) when stateful; [references/script-design.md](references/script-design.md) when the skill bundles scripts | Name and description constraints; every `[LLM]` rule; Content Placement (right level for each piece, 500-line body limit); state only where it cannot be re-derived, and stateful skills satisfy every stateful-skills.md rule; bundled scripts satisfy every script-design.md rule |
-   | **Writing-standards** | all quality criteria in [references/quality-criteria.md](references/quality-criteria.md) | Voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, deletion-test failures (duplication, sediment, no-ops), leading-word consistency, a shortchanged step that should be split into its own skill, carry the why, durability (no mutable-state references), body pattern choices, branch material misplaced in the body |
+   | **Writing-standards** | all quality criteria in [references/quality-criteria.md](references/quality-criteria.md) | Voice, terminology consistency, no tool names, freedom calibration, trust the agent's intelligence, deletion-test failures (duplication, sediment, no-ops), leading-word term reused verbatim everywhere the skill touches that concept (a read-through can confirm the term wasn't restated in different words elsewhere; confirming it actually took hold in agent behavior requires a separate live run, not this read-through), a shortchanged step that should be split into its own skill, carry the why, durability (no mutable-state references), body pattern choices, branch material misplaced in the body |
    | **Prompt-analysis** | [references/prompt-analysis.md](references/prompt-analysis.md) | The body as a prompt: contradictions, ambiguity, persona/voice consistency, cognitive load, semantic coverage, composition conflicts with linked files — applying the findings discipline |
 
 2. Merge the three judges' findings, then review — fix unambiguous gaps without asking; for gaps with meaningful tradeoffs, ask one question before fixing
 3. Run `uv run scripts/validate.py <skill-dir>` — fix any `[AUTO]` failures before confirming (if uv is unavailable, check `[AUTO]` rules manually against [references/spec-rules.md](references/spec-rules.md) before confirming)
-4. If the skill contains Python scripts, run `uv tool run ruff check <skill-dir>/scripts/` — fix any reported issues before confirming
+4. If the skill contains Python scripts, run `uv tool run ruff check <skill-dir>/scripts/` — fix any reported issues before confirming (if uv is unavailable, review the scripts manually for style and correctness issues before confirming)
 5. Verify all relative file links in the body resolve

@@ -25,7 +25,7 @@ The dashboard's type determines refresh rate, density, and interactivity before 
 
 Interactivity follows type, not taste: cross-filtering and deep drill-downs belong on analytical dashboards where exploration is the job; on operational and strategic dashboards they work against the speed goal.
 
-## Choose each display
+## Choose each tile
 
 For every tile, decide in this order:
 
@@ -42,7 +42,7 @@ For every tile, decide in this order:
 
    The full decision tree — including time-series variants, spatial, flow, and when each chart breaks down — is in [references/chart-selection.md](references/chart-selection.md).
 
-Prefer encodings the eye judges accurately: length and 2D position beat area, angle, and color intensity (Cleveland & McGill). This is why bars and lines outperform pies, gauges, and treemaps for quantitative comparison — and why gauges, 3D effects, and dual axes are banned outright (see anti-patterns).
+Prefer encodings the eye judges accurately: length and 2D position beat area, angle, and color intensity (Cleveland & McGill). This is why bars and lines outperform pies, gauges, and treemaps for quantitative comparison — and why gauges and 3D effects are banned outright, while dual axes are avoided by default — used only when truly unavoidable, and then with both axes explicitly labeled on the chart face (see anti-patterns).
 
 ## KPI cards
 
@@ -55,23 +55,23 @@ A bare number is not a KPI — without context the reader cannot tell good from 
 
 When a metric has no target or prior period yet, omit the delta and label the card as a baseline with no comparison — never invent one.
 
-Cap primary KPIs at 4–6 per view (working memory tops out around 7 competing elements). Set alert thresholds from statistical baselines — control limits, seasonally adjusted bands — not raw distance from target, or the dashboard trains its readers to react to noise.
+Cap primary KPIs at 4–6 per screen (working memory tops out around 7 competing elements). Set alert thresholds from statistical baselines — control limits, seasonally adjusted bands — not raw distance from target, or the dashboard trains its readers to react to noise.
 
 ## Layout
 
 - Most important KPI top-left; eyes scan data-dense screens in an F-pattern, so importance decays rightward and downward. (Simple, action-oriented operational screens may instead use a Z-pattern — status top-left, primary action bottom-right.)
 - Structure vertically: status KPIs above the fold ("are we OK?"), trends and comparisons in the middle ("what's changing?"), detail and filters at the bottom ("why?").
-- One screen, no scrolling for the primary view. If content demands scrolling, the metric list needs cutting, not the canvas extending.
+- One screen, no scrolling. If content demands scrolling, the metric list needs cutting, not the canvas extending.
 - Group with whitespace and section headers (Gestalt proximity), not color. Keep tile styling strictly consistent — same type scale, title placement, and filter position everywhere; inconsistency breaks scannability more than any single bad chart.
-- Grey/neutral baseline palette with one or two accents reserved for the data that matters; red/amber/green reserved for status semantics only. Never encode meaning with color alone — pair it with an icon, label, or position (roughly 1 in 20 readers has a color-vision deficiency; avoid red/green pairings, prefer blue/orange).
+- Grey/neutral baseline palette with one or two accents reserved for the data that matters (status colors stay reserved per KPI cards above). Never encode meaning with color alone — pair it with an icon, label, or position (roughly 1 in 20 readers has a color-vision deficiency; avoid red/green pairings, prefer blue/orange).
 - One global time range and filter set by default; any tile that overrides it must say so visibly. Tiles silently disagreeing on time grain is the fastest way to destroy trust.
-- Show data freshness ("as of 10:42") on live dashboards, and skeleton placeholders — not spinners — while tiles load.
+- Show data freshness ("as of 10:42") on live dashboards, and skeleton placeholders — not spinners — while tiles load, so the layout stays stable and the reader isn't left guessing what's about to appear.
 
 Full layout, color, typography, interactivity, accessibility, and loading-state rules: [references/visual-design.md](references/visual-design.md).
 
 ## Anti-patterns
 
-Name these on sight — when auditing, report each finding as the specific anti-pattern with its fix:
+Name these on sight:
 
 - **Data dump** — 20+ tiles because the data existed. Fix: cut to the metrics that serve the named decision; move the rest to drill-down.
 - **Vanity wall** — big impressive numbers with no target, delta, or action. Fix: complete KPI cards or demotion.
@@ -81,4 +81,4 @@ Name these on sight — when auditing, report each finding as the specific anti-
 - **Aggregation hiding the story** — portfolio-level averages that mask or reverse subgroup trends (Simpson's paradox). Fix: show the breakdown alongside the aggregate.
 - **No owner, stale data** — an unmaintained dashboard is worse than none; one detected staleness incident and readers never come back. Fix: named owner, freshness badge, pipeline alerting.
 
-The full catalog — eighteen anti-patterns with recognition cues and corrections: [references/anti-patterns.md](references/anti-patterns.md).
+The full catalog — with recognition cues and corrections: [references/anti-patterns.md](references/anti-patterns.md).

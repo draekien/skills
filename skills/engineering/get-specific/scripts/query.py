@@ -1,5 +1,5 @@
 # /// script
-# dependencies = ["pyyaml>=6.0"]
+# dependencies = ["pyyaml==6.0.2"]
 # ///
 import argparse
 import sys
@@ -97,7 +97,12 @@ def main():
     try:
         data = load_dict(args.dict)
     except FileNotFoundError:
-        print(f"Dictionary not found: {args.dict}")
+        print(
+            f"Dictionary not found: {args.dict}. "
+            "Run skillsrc.py get to resolve the configured path, "
+            "or create it via write.py add-term.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     if args.command == "list-contexts":

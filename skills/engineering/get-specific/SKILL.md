@@ -19,10 +19,10 @@ Establish DDD ubiquitous language scoped to bounded contexts. Interview user, ca
 
 Runs once on first invocation.
 
-1. Run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the configured dictionary path. If `.draekien/.skillsrc` is absent the script prints the default `.draekien/ubiquitous-language.yaml`. If the script exits non-zero, fall back to the default path `.draekien/ubiquitous-language.yaml` and inform the user: "Could not read config; using default dictionary path."
+1. Run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the configured dictionary path. If `.draekien/.skillsrc` is absent the script prints the default `.draekien/ubiquitous-language.yaml`. If the script exits non-zero, fall back to the default path `.draekien/ubiquitous-language.yaml` and tell the user the config could not be read and the default path is being used.
 2. Check whether the dictionary file exists at `dictionaryPath`.
-   - **Exists**: load all contexts and terms into conflict detection context using `scripts/query.py list-contexts` then `scripts/query.py list <Context>` for each. Skip to step 3.
-   - **Does not exist**: scan project for any `UBIQUITOUS_LANGUAGE.md` files (excluding root index). If found, show the list and prompt user to migrate using `scripts/migrate.py`. After migration (or if none found), proceed.
+   - **Exists**: load all contexts and terms into conflict detection context using `scripts/query.py list-contexts` then `scripts/query.py list <Context>` for each. If `query.py` exits non-zero or the dictionary fails to parse, tell the user the dictionary could not be read and is being treated as empty, then proceed as if no contexts were loaded. Skip to step 3.
+   - **Does not exist**: scan project for any `UBIQUITOUS_LANGUAGE.md` files, excluding a top-level `UBIQUITOUS_LANGUAGE.md` at the project root (that file is a table-of-contents index, not a per-context glossary). If found, show the list and prompt user to migrate using `scripts/migrate.py`. After migration (or if none found), confirm with the user that a new dictionary will be created at `dictionaryPath`, then proceed.
 3. Scan project structure. Infer a bounded context name for each candidate dir (PascalCase, domain-meaningful — exclude `utils`, `shared`, `common`). Merge with any contexts already in the dictionary. Confirm full mapping with user; apply corrections.
 
 ## Active Behaviors
@@ -31,11 +31,11 @@ Run every response after session start, concurrently.
 
 ### Interview
 
-Ask one DDD-framed question at a time — domain events, aggregates, bounded context membership. If the question concerns project structure, naming conventions, or existing terminology (facts observable in the codebase), explore and present findings rather than asking. If it concerns intent, ownership, or business meaning, always ask the user. Continue until the user explicitly confirms they are done, or until all domain nouns surfaced during the session have confirmed definitions in the dictionary.
+Ask one DDD-framed question at a time — domain events, aggregates, bounded context membership. If the question concerns project structure, naming conventions, or existing terminology (facts observable in the codebase), explore and present findings rather than asking. If it concerns intent, ownership, or business meaning, always ask the user. Continue until the user explicitly confirms they are done, or until all candidate terms surfaced during the session have confirmed definitions in the dictionary.
 
 ### Term Capture
 
-When a noun is judged domain-specific and not yet defined in any loaded context:
+A candidate term is a word or phrase surfaced during the Interview that has not yet been captured in the dictionary. When a candidate term is judged domain-specific — unique to this domain, not a general programming concept — and not yet defined in any loaded context:
 
 1. Propose a definition to the user. When proposing a definition, also propose a one-sentence usage example (the `--usage` argument). Confirm both before writing. If no other terms are yet defined in the dictionary, the usage note may not reference other domain terms — write with whatever context is available. Once any other term is defined, the usage note must reference at least one defined term where the relationship is meaningful.
 2. Search codebase for the term. Read surrounding context.
@@ -50,6 +50,6 @@ See [references/ubiquitous-language-format.md](references/ubiquitous-language-fo
 
 Check every response against all loaded definitions. A term absent from the codebase is neutral — not a contradiction.
 
-- **Definition conflict** — user uses a defined term contradicting its stored meaning: hard interrupt, surface both meanings, ask which is canonical. Run `scripts/write.py add-term` immediately on resolution.
+- **Definition conflict** — user uses a defined term contradicting its stored definition: hard interrupt, surface both definitions, ask which is canonical. Run `scripts/write.py add-term` immediately on resolution.
 - **Cross-context collision** — same term defined differently in two contexts: surface explicitly, ask if intentional. Both definitions stand if deliberate (DDD allows intentional ambiguity across contexts). Mark the collision as intentional in the loaded conflict-detection context so it is not re-surfaced on subsequent responses. Run `scripts/write.py flag-ambiguity` on both contexts with a note recording the intentional divergence. If not intentional, treat as a Definition conflict: ask which definition is canonical, update the incorrect context with the corrected definition, and flag the other pending review.
 - **Vague language** — user word matches 2+ defined terms: hard interrupt, list matching terms with definition summaries, wait for disambiguation. Run `scripts/write.py flag-ambiguity` until resolved; run `scripts/write.py resolve-ambiguity` once canonical meaning is confirmed.
