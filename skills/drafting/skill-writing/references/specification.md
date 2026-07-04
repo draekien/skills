@@ -92,10 +92,10 @@ Contains static resources: templates, images, data files, lookup tables, schemas
 Agents load skills progressively:
 
 1. **Metadata** (~100 tokens): `name` and `description` loaded at startup for all skills
-2. **Instructions** (< 5000 tokens recommended): full `SKILL.md` body loaded on activation
+2. **Instructions**: full `SKILL.md` body loaded on activation
 3. **Resources** (as needed): files in `scripts/`, `references/`, or `assets/` loaded only when required
 
-Keep `SKILL.md` under 500 lines. Move detailed reference material to separate files.
+Keep `SKILL.md` under 500 lines — the enforced constraint on instruction size. Move detailed reference material to separate files.
 
 ## File references
 
