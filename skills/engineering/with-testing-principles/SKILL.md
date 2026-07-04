@@ -1,6 +1,7 @@
 ---
 name: with-testing-principles
 description: Applies established testing principles to write tests that catch real bugs, and to audit existing tests for the failure modes that pass review yet verify nothing. Language- and framework-agnostic; covers unit through end-to-end. Use when writing tests, adding coverage, or reviewing a test suite's quality — or when the user says "write tests", "add tests", "add test coverage", "review these tests", "are these tests any good", "test this".
+argument-hint: "[code or feature to write tests for, or existing tests to audit]"
 ---
 
 A test earns its place only if it can fail when the code is wrong. Most tests that pass review fail this bar silently: they execute the code, raise coverage, and assert nothing that would break if the behaviour regressed. The job is not to produce tests that pass — it is to produce tests that would fail for the right reason. This discipline holds identically whether writing new tests or judging existing ones; auditing is just applying the same pillars to code already on the page.
