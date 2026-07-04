@@ -86,12 +86,7 @@ Then work through `[LLM]` rules below.
 - `[AUTO]` Bash: no interactive `read VAR` commands
 - `[AUTO]` Python PEP 723 dependencies all version-pinned
 - `[AUTO]` Network calls (`requests`, `httpx`, `curl`, etc.) declared in `compatibility:`
-- `[LLM]` Scripts self-contained or clearly document all dependencies
-- `[LLM]` Stdout carries data output; stderr carries diagnostic logs
-- `[LLM]` Error messages tell agent how to self-correct
-- `[LLM]` Scripts idempotent (safe to run twice)
-- `[LLM]` Destructive operations have `--dry-run` flag
-- `[LLM]` Exit codes meaningful (0 = success, non-zero = specific failure)
+- `[LLM]` Scripts satisfy every design rule in script-design.md (self-contained or documented dependencies, structured stdout/stderr, actionable errors, idempotent, dry-run flag on destructive operations, meaningful exit codes)
 
 ## Security
 
@@ -102,6 +97,5 @@ Then work through `[LLM]` rules below.
 
 ## LLM-agnostic portability
 
-- `[AUTO]` Body contains no model-specific terms (same check as body section above)
 - `[LLM]` Platform-specific extensions documented in `compatibility:` or separate note, not in core instructions
 - `[LLM]` Description trigger behaviour tested against example queries
