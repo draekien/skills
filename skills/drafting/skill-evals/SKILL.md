@@ -1,7 +1,7 @@
 ---
 name: skill-evals
 description: Builds and runs an empirical eval suite for an existing skill, measuring whether its description activates correctly and whether it actually improves the agent's output. The suite and every run are persisted, so a skill's scores can be tracked across edits. Use when you want to test a skill's quality or track it over time.
-argument-hint: [skill-name-or-path]
+argument-hint: "[skill-name-or-path]"
 disable-model-invocation: true
 ---
 

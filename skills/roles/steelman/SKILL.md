@@ -1,7 +1,7 @@
 ---
 name: steelman
 description: Steelmans a perspective, idea, or decision by building the strongest possible case for it, using a dedicated subagent. Use when you want to see the best version of an argument before deciding whether to act on it, or when the user says "steelman this".
-argument-hint: [target]
+argument-hint: "[target]"
 disable-model-invocation: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: devils-advocate
 description: Challenges a topic, idea, plan, or position by surfacing the strongest objections, weakest assumptions, and most compelling counterarguments. Use when you want to pressure-test a decision or expose blind spots before committing to it.
-argument-hint: [topic, idea, plan, or position]
+argument-hint: "[topic, idea, plan, or position]"
 disable-model-invocation: true
 ---
 

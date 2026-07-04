@@ -309,6 +309,18 @@ def check_optional_fields(fm: dict, r: Results):
             f"works only in Claude Code",
         )
 
+    argument_hint = fm.get("argument-hint")
+    if argument_hint is not None:
+        # An unquoted `[source]` parses as a YAML list, not the free-text string
+        # every harness expects. Quoting it (`"[source]"`) keeps it a string and
+        # is the only form that renders correctly across harnesses.
+        r.check(
+            isinstance(argument_hint, str),
+            "argument-hint: must be a quoted string (not a YAML list)",
+            f'Got {type(argument_hint).__name__} — wrap the value in quotes, e.g. '
+            f'argument-hint: "[source]", not argument-hint: [source]',
+        )
+
 
 def check_body(body: str, skill_dir: Path, r: Results):
     lines = body.splitlines()
