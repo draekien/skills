@@ -33,7 +33,8 @@ Then work through `[LLM]` rules below.
 - `[LLM]` States what skill does (not just what it is)
 - `[LLM]` States when to use it (trigger conditions)
 - `[LLM]` Imperative phrasing ("Extracts...", not "A skill that...")
-- `[LLM]` Domain-specific keywords matching natural trigger phrases
+- `[LLM]` If model-invocable (default, or `disable-model-invocation` absent/false): domain-specific keywords matching natural trigger phrases, dense enough for activation matching
+- `[LLM]` If user-invocable only (`disable-model-invocation: true`): plain, scannable language for a human choosing from a command list, not trigger-phrase density — reads like a CLI `--help` one-liner
 
 ### `compatibility` field (if present)
 

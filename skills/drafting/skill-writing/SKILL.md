@@ -37,13 +37,19 @@ The hint earns its keep most when the body actually branches on what's supplied 
 
 ### Description
 
-The sole activation signal; write as an API contract:
+The sole activation signal — but who it's written for depends on how the skill is invoked:
 
-```
-<verb> <what it does>. Use when <conditions>, or when the user says "<phrase 1>", "<phrase 2>".
-```
+- **Model-invocable** (the default; true unless `disable-model-invocation: true` is set) — write as an API contract the model matches against a request:
 
-Imperative, embeds trigger phrases verbatim.
+  ```
+  <verb> <what it does>. Use when <conditions>, or when the user says "<phrase 1>", "<phrase 2>".
+  ```
+
+  Imperative, dense with domain keywords and trigger phrases embedded verbatim — this text is matched against user intent, not read by a person choosing from a menu.
+
+- **User-invocable only** (`disable-model-invocation: true`) — write for a human scanning a command list, not for activation matching. Favor plain, scannable language over trigger-phrase density: say what it produces and when someone would reach for it, the way a CLI `--help` line does, so the reader can decide in one pass whether this is the command they want.
+
+If both invocation paths are open, write the model-invocable form — it still reads fine to a human, while a keyword-dense description makes a poor menu label for a human-only skill.
 
 ## Context First, Then Interview
 
