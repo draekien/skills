@@ -39,6 +39,7 @@ The standard every skill must meet.
 - Sequential numbered steps for behaviours that are concurrent or trigger-based
 - One-time setup mixed with recurring behaviours
 - Sub-flows presented as peers of their parent steps
+- An early step whose attention keeps getting pulled toward a later step's goal visible in the same file, that a live run confirms gets rushed or skipped — a candidate for splitting into its own skill
 
 **Content placement**
 
