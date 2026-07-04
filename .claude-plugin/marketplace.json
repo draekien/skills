@@ -34,11 +34,12 @@
         "./skills/engineering/module-design",
         "./skills/engineering/break-down-prd",
         "./skills/engineering/with-testing-principles",
+        "./skills/ui-ux/design-callouts",
         "./skills/ui-ux/design-dashboards",
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.38.0"
+      "version": "0.39.0"
     },
     {
       "name": "drafting-skills",
@@ -69,8 +70,8 @@
       "description": "Skills for user interface and experience design: dashboards, visual design, and usability.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/ui-ux/design-dashboards"],
-      "version": "0.1.0"
+      "skills": ["./skills/ui-ux/design-callouts", "./skills/ui-ux/design-dashboards"],
+      "version": "0.2.0"
     },
     {
       "name": "output-styles",
