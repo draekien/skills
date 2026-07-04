@@ -12,6 +12,7 @@ Repo stores agent skills in buckets under `skills/`. Each bucket groups skills b
 - **roles** — Fixed-persona skills: advocate, listener, critic stances used to sharpen thinking.
 - **ui-ux** — User interface and experience design: dashboards, visual design, usability.
 - **output-styles** — Tone and voice modes: communication style presets for different audiences and needs.
+- **meta** — Meta-skills: skills about authoring, vetting, and evaluating skills themselves.
 - **archived** — Retired skills kept for reference. Must NOT be indexed or promoted in any README.md, and must NEVER be registered in `marketplace.json` (no bucket entry, no `everything` entry).
 
 ## Structure

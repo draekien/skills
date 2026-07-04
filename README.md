@@ -78,3 +78,9 @@ Skills for user interface and experience design: dashboards, visual design, and 
 Skills that shift Claude's communication tone and voice.
 
 **2 skills →** [browse the output-styles bucket](skills/output-styles/README.md)
+
+## Meta
+
+Meta-skills: skills about authoring, vetting, and evaluating skills themselves.
+
+**0 skills →** [browse the meta bucket](skills/meta/README.md)
