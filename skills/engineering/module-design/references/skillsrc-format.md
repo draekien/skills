@@ -1,6 +1,6 @@
 # skillsrc — module-design Keys
 
-Configuration is stored in `.draekien/.skillsrc`. For the full format spec and write rules, see `specs/skillsrc.md` in this repository.
+Configuration is stored in `.draekien/.skillsrc`, a JSON file shared across skills — each skill owns only its own top-level block.
 
 ## Keys Used by This Skill
 

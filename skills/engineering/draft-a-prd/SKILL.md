@@ -1,22 +1,17 @@
 ---
 name: draft-a-prd
 description: Creates a structured product requirements document, first aligning with you on scope and requirements before writing it. Use when defining a new feature or product and you need a complete PRD.
+argument-hint: "[feature or product description]"
 disable-model-invocation: true
 ---
 
 # Draft a PRD
 
-Creates a structured PRD by interviewing the user, aligning on scope, then writing a complete document.
-
 ## Phase 1 — Alignment
 
-If the opening message or prior conversation supplies enough information to populate every required section of the template (Problem Statement, Goals, User Stories, Out of Scope, Testing Decisions) — Additional Notes is optional and does not affect this check without guessing, skip directly to Phase 2.
+If the opening message or prior conversation supplies — without guessing — enough information to populate every required section of the template (Problem Statement, Goals, User Stories, Out of Scope, Testing Decisions; Additional Notes is optional and does not affect this check), skip directly to Phase 2.
 
-Otherwise, interview relentlessly about every aspect of the request until shared understanding is reached. Walk down each branch of the design tree, resolving dependencies between decisions one by one. For high-stakes decisions where the choice materially changes scope or architecture, briefly note the key trade-off and your recommendation. For low-stakes clarifications, just ask.
-
-Ask questions one at a time. If a question is answerable by exploring the project, explore the project instead.
-
-If the user cannot answer a question, make a reasonable stated assumption and continue. Record every unresolved decision in the Open Questions section.
+Otherwise, tell the user that scope isn't resolved yet and ask them to run `/get-aligned` to work through the open decisions — it is not model-invocable, so it must be invoked directly. Once they confirm alignment, or ask to proceed early, record every remaining unresolved decision and stated assumption in the Open Questions section and continue to Phase 2.
 
 ## Phase 2 — Draft
 
@@ -34,4 +29,4 @@ Enforce these rules without exception:
 
 ## Phase 3 — Review
 
-Present the draft and invite feedback. Revise until the user explicitly confirms the document is complete. On confirmation, output the final PRD in full as the closing response.
+Present the draft and invite feedback. Revise until the user explicitly confirms the PRD is complete. On confirmation, output the final PRD in full as the closing response.

@@ -1,5 +1,5 @@
 # /// script
-# dependencies = ["pyyaml>=6.0"]
+# dependencies = ["pyyaml==6.0.2"]
 # ///
 """
 Migrates UBIQUITOUS_LANGUAGE.md files to .draekien/ubiquitous-language.yaml.
@@ -84,9 +84,9 @@ def _parse_terms(section):
 
         skip = {"aliases:", "usage:", "related:"}
         def_lines = [
-            l for l in body.splitlines()
-            if l.strip() and not any(l.strip().startswith(p) for p in skip)
-            and not l.strip().startswith("- ")
+            line for line in body.splitlines()
+            if line.strip() and not any(line.strip().startswith(p) for p in skip)
+            and not line.strip().startswith("- ")
         ]
         if def_lines:
             term["definition"] = " ".join(def_lines)
@@ -140,7 +140,7 @@ def main():
     for f in scoped_files:
         print(f"  {os.path.relpath(f, args.project_root)}")
     if root_file:
-        print(f"  UBIQUITOUS_LANGUAGE.md (root index — skipped)")
+        print("  UBIQUITOUS_LANGUAGE.md (root index — skipped)")
 
     if args.dry_run:
         print("\n[dry-run] No files written.")
@@ -170,7 +170,7 @@ def main():
     for f in scoped_files:
         print(f"  {os.path.relpath(f, args.project_root)}")
     if root_file:
-        print(f"  UBIQUITOUS_LANGUAGE.md (root index)")
+        print("  UBIQUITOUS_LANGUAGE.md (root index)")
 
 
 if __name__ == "__main__":

@@ -56,6 +56,7 @@ def download(source: str, yt_dlp: str) -> Path:
     if not match:
         match = re.search(r"Destination: (.+)", result.stdout)
     if not match:
+        print(result.stdout, file=sys.stderr)
         raise RuntimeError("Could not determine downloaded filename from yt-dlp output")
 
     return Path(match.group(1).strip())

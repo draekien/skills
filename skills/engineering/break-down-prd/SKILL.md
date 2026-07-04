@@ -1,6 +1,7 @@
 ---
 name: break-down-prd
 description: Decomposes a PRD into tracer-bullet-style tasks, classified autonomous (AFK) versus human-in-the-loop (HIL), with per-bullet dependency trees that maximise parallel execution. Use after drafting a PRD, to turn it into an actionable task list.
+argument-hint: "[prd-file-path]"
 disable-model-invocation: true
 ---
 
@@ -14,11 +15,11 @@ Turn a PRD into an ordered set of tracer bullets — thin, end-to-end, always-de
 
 ## Session start
 
-Resolve the output directory: run the skillsrc helper script to read the output directory from `.draekien/.skillsrc` (default: `.draekien/break-down-prd`). Write the breakdown to `<outputDir>/<prd-slug>/`, where `<prd-slug>` is the kebab-cased feature name.
+Resolve the output directory: run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill break-down-prd get outputDir --default .draekien/break-down-prd` to read the output directory (default: `.draekien/break-down-prd`). If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `break-down-prd.outputDir`; default to `.draekien/break-down-prd` if absent. Note `<outputDir>/<prd-slug>/` (where `<prd-slug>` is the kebab-cased feature name) as the destination for the breakdown — do not create it or write to it yet; the actual write happens in Write the breakdown, after the PRD is read and, if the directory is new under `.draekien/`, after the user confirms its creation.
 
 ## Get the PRD
 
-Work from a PRD in the draft-a-prd format — Problem Statement, Goals / Success Criteria, User Stories, Testing Decisions, Out of Scope, Additional Notes, Open Questions. Use a file path if the user gives one; otherwise use the PRD already in the conversation; otherwise ask where it is. If the PRD does not use this format, map its content onto these sections and note any absent ones; missing Open Questions and missing measurable Goals must both be surfaced as gaps in the overview coverage table before proceeding.
+Work from a PRD in the draft-a-prd format — Problem Statement, Goals / Success Criteria, User Stories, Testing Decisions, Out of Scope, Additional Notes, Open Questions. Use a file path if the user gives one; otherwise use the PRD already in the conversation; otherwise ask where it is. If the PRD does not use this format, map its content onto these sections and note any absent ones; missing Open Questions and missing measurable Goals must both be surfaced as gaps in the coverage table before proceeding — as their own rows (e.g. `| Open Questions section | ⚠️ MISSING FROM PRD |`), not as task-coverage rows, since no PRD item exists yet to map to tasks.
 
 ## Structure as tracer bullets
 
@@ -62,10 +63,10 @@ Create one file per bullet plus an overview, in `<outputDir>/<prd-slug>/`:
 
 A bullet file is self-contained: an executor needs nothing beyond it — the goal, the PRD items it serves (quoted), the task checklist with `[AFK]`/`[HIL]` tags, the Mermaid dependency tree, and the HIL callouts naming the human decision each HIL task needs and the HIL criterion that makes it irreducible (judgment / credential / blocked-on-info / high-risk approval).
 
-Every task cites the PRD user story or measurable goal it serves. The inline `serves:` field is authoritative; the header block is a derived summary — keep it in sync when tasks change. The overview's coverage table maps each PRD user story and each measurable goal to the task(s) covering it, and flags any that no task covers — an uncovered requirement is a gap to surface, not to ship.
+Every task cites the PRD user story or measurable goal it serves. The inline `serves:` field is authoritative; the header block is a derived summary — keep it in sync when tasks change. The coverage table maps each PRD user story and each measurable goal to the task(s) covering it, and flags any that no task covers — an uncovered requirement is a gap to surface, not to ship.
 
-If `<outputDir>` is under `.draekien/` and that directory does not yet exist, confirm its creation with the user before the first write. If the user declines, ask for an alternative path, persist it with the `set` command, and write nothing until a confirmed output directory exists. If the user chooses a custom output directory, confirm it, then persist it using the skillsrc helper script's `set` command.
+If `<outputDir>` is under `.draekien/` and that directory does not yet exist, confirm its creation with the user before the first write. If the user declines, ask for an alternative path, persist it with `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill break-down-prd set outputDir <path>`, and write nothing until a confirmed output directory exists. If the user chooses a custom output directory, confirm it, then persist it with the same `set` command. The script merges only the `break-down-prd` block and preserves all other skills' config.
 
 ## Review
 
-Once the files are written (including any required confirmations already obtained), present a summary — bullet order, AFK versus HIL counts, the front-loaded risks, and any coverage gaps — and invite feedback. On each revision cycle, re-audit every bullet file: for each task's `serves:` field, confirm the referenced PRD item still exists and is still required. Then rebuild the overview table from those audited mappings, flag any PRD user story or measurable goal no task covers, and update the overview file before presenting the revised summary. Complete when the user explicitly approves.
+Once the files are written (including any required confirmations already obtained), present a summary — bullet order, AFK versus HIL counts, the risks attacked first, and any coverage gaps — and invite feedback. On each revision cycle, re-audit every bullet file: for each task's `serves:` field, confirm the referenced PRD item still exists and is still required. Then rebuild the coverage table from those audited mappings, flag any PRD user story or measurable goal no task covers, and update the overview file before presenting the revised summary. Complete when the user explicitly approves.

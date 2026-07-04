@@ -33,7 +33,8 @@ Then work through `[LLM]` rules below.
 - `[LLM]` States what skill does (not just what it is)
 - `[LLM]` States when to use it (trigger conditions)
 - `[LLM]` Imperative phrasing ("Extracts...", not "A skill that...")
-- `[LLM]` Domain-specific keywords matching natural trigger phrases
+- `[LLM]` If model-invocable (default, or `disable-model-invocation` absent/false): domain-specific keywords matching natural trigger phrases, dense enough for activation matching
+- `[LLM]` If user-invocable only (`disable-model-invocation: true`): plain, scannable language for a human choosing from a command list, not trigger-phrase density — reads like a CLI `--help` one-liner
 
 ### `compatibility` field (if present)
 
@@ -52,8 +53,10 @@ Then work through `[LLM]` rules below.
 
 ### `argument-hint` field
 
-- `[LLM]` Present whenever the skill body expects the invoker to supply arguments — this harness-specific extension warns rather than fails on harnesses that don't define it, so it costs nothing to include
-- `[LLM]` Free text only (e.g. `[issue-number]`); not used to encode a structured/typed argument schema — that capability isn't broadly supported and isn't worth designing a skill around
+- `[LLM]` Present whenever the skill exposes distinct modes or input forms worth advertising (a term looked up, a command run, no argument at all) — not gated on whether it merely "takes arguments." It is the only place signaling which capabilities a skill exposes, and earns its keep whether the body branches on the input procedurally or the modes are entry points into a knowledge skill. A harness-specific extension that warns rather than fails on harnesses that don't define it, so it costs nothing to include
+- `[AUTO]` Must be a quoted string, e.g. `argument-hint: "[issue-number]"` — the unquoted form (`argument-hint: [issue-number]`) parses as a YAML list, not the free-text string every harness expects
+- `[LLM]` Free text only (e.g. `"[issue-number]"`, or `"[write|audit] [target]"` / `"[cmdA|cmdB · cmdC|cmdD] [target]"` for a skill with a fixed set of named modes or sub-commands — even just two); not used to encode a structured/typed argument schema — that capability isn't broadly supported and isn't worth designing a skill around
+- `[LLM]` When the skill branches on a fixed set of modes, the hint names them pipe-separated rather than spelling the branch out as a descriptive phrase — `"[write|audit] [target]"`, not `"[code to write tests for, or existing tests to audit]"`
 
 ### Frontmatter formatting
 

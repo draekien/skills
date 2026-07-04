@@ -1,6 +1,7 @@
 ---
 name: with-testing-principles
 description: Applies established testing principles to write tests that catch real bugs, and to audit existing tests for the failure modes that pass review yet verify nothing. Language- and framework-agnostic; covers unit through end-to-end. Use when writing tests, adding coverage, or reviewing a test suite's quality — or when the user says "write tests", "add tests", "add test coverage", "review these tests", "are these tests any good", "test this".
+argument-hint: "[write|audit] [target]"
 ---
 
 A test earns its place only if it can fail when the code is wrong. Most tests that pass review fail this bar silently: they execute the code, raise coverage, and assert nothing that would break if the behaviour regressed. The job is not to produce tests that pass — it is to produce tests that would fail for the right reason. This discipline holds identically whether writing new tests or judging existing ones; auditing is just applying the same pillars to code already on the page.
@@ -11,10 +12,8 @@ The pillars below are independent. Each defends against a distinct failure, and 
 
 A test that cannot fail is not a test. Before trusting any assertion, establish that it bites: that some realistic defect in the code under test would turn it red.
 
-- **At write time**, prove falsifiability through the test, never by editing the code under test. Either write the test before the implementation exists so red comes for free, or flip the expected value in the assertion, confirm the test fails, then restore it. Flipping a literal in the test is trivially reversible and touches nothing else; mutating source code to prove a point risks leaving the codebase broken and is never necessary here.
+- **At write time**, prove falsifiability through the test, never by editing the code under test. Either write the test before the implementation exists so red comes for free, or flip the expected value in the assertion, confirm the test fails, then restore it. Flipping a literal in the test is trivially reversible and touches nothing else; mutating source code to prove a point risks leaving the codebase broken and is never necessary here — if it ever happens, restore it before moving on.
 - **At audit time**, the code already exists, so falsifiability is checked by mutation: imagine a plausible bug — an off-by-one, a flipped comparison, a dropped branch, a swapped operand — and ask whether any test would catch it. A mutation that survives every test exposes a gap, not a passing suite. Where a mutation-testing tool is available, this reasoning can be made empirical; where it is not, reason through the mutations by hand.
-
-Never leave source code mutated. Any change made to provoke a failure is restored before moving on.
 
 ## Independent derivation
 
@@ -46,7 +45,7 @@ The sharpest form of this failure: configuring a mock to return a value, then as
 
 ## One reason to fail
 
-Each test pins one behaviour, structured so a failure names its cause. Arrange the preconditions, act once on the code under test, assert the outcome — keeping these phases distinct keeps the test legible and its failure diagnostic.
+Each test pins one behaviour, structured so a failure names its cause. Structure it as **Arrange-Act-Assert**: arrange the preconditions, act once on the code under test, assert the outcome — keeping these phases distinct keeps the test legible and its failure diagnostic.
 
 - One behaviour per test. A test asserting many unrelated things — assertion roulette — reports only which line tripped, not which behaviour broke.
 - Name the test for the behaviour and condition it pins, so a failing test communicates what regressed without reading its body.
@@ -57,7 +56,7 @@ Each test pins one behaviour, structured so a failure names its cause. Arrange t
 
 These are the failure modes that pass casual review while verifying nothing. Name them on sight, both when writing tests and when auditing:
 
-- **The tautology** — an assertion that restates the implementation under test. Green by construction; can never fail meaningfully.
+- **The tautology** — an assertion that restates the code under test. Green by construction; can never fail meaningfully.
 - **The no-op** — a test that invokes the code and asserts nothing, or only that no exception was thrown. Buys coverage, proves almost nothing.
 - **Bug-blessing** — expectations copied from the code's current output, freezing today's behaviour, defects and all, as the spec.
 - **Coverage theatre** — input classes never given a test; boundaries and error paths absent from the suite entirely, however high the line percentage.

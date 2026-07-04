@@ -53,7 +53,19 @@ Skills for software development tasks: code review, debugging, architecture, and
 
 Skills for general workplace productivity: summarisation, research, meeting prep, and task management.
 
-**8 skills →** [browse the productivity bucket](skills/productivity/README.md)
+**4 skills →** [browse the productivity bucket](skills/productivity/README.md)
+
+## Problem Solving
+
+Skills for working through a hard problem or decision: reasoning from fundamentals, or debating between competing options.
+
+**2 skills →** [browse the problem-solving bucket](skills/problem-solving/README.md)
+
+## Roles
+
+Skills that adopt a fixed persona or stance to sharpen thinking: an advocate, a listener, a critic.
+
+**3 skills →** [browse the roles bucket](skills/roles/README.md)
 
 ## UI/UX
 

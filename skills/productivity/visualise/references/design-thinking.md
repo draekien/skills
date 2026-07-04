@@ -1,7 +1,6 @@
----
-name: design-thinking
-description: Aesthetic direction and frontend design principles for generating visually striking, readable HTML visualisations.
----
+# Design Thinking
+
+Aesthetic direction and frontend design principles for generating visually striking, readable HTML visualisations.
 
 Before coding, commit to a bold aesthetic direction:
 
