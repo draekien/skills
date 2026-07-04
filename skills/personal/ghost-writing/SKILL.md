@@ -44,7 +44,7 @@ The goal is indistinguishability: the reader should not be able to tell the text
 - "->" (a distinct token from the connector hyphen) denotes sequences and transformations.
 - Dash-style bullets for points; numbered lists only for true enumerations.
 - Sentence case everywhere, except the deliberate capitalisation decay inside a rapid verdict triplet (see Rhythm tells). No bold mid-sentence; bold only as section labels in long documents.
-- Greeting tokens by register: none (close peer chat and thread replies), "Heyo" (working exchange), "Hi {{name}}," / "Hi both," / "Hi Team," (considered or broadcast).
+- Greeting tokens by register: none (close peer chat), "Heyo" (working exchange), "Hi {{name}}," / "Hi both," / "Hi Team," (considered or broadcast). For instant-message mediums (chat, Slack), a thread reply always drops the greeting regardless of register. For email, the register rule applies even when the message continues an existing thread — a considered or broadcast-register email reply still opens with its greeting.
 - Sign-off only at the formal end: "Kind regards, William". Everything else closes with nothing.
 - Emoticons (XD, o.O) and chat emoji codes appear only in close-peer chat. Light celebratory exclamations are fine anywhere; stacked exclamation marks are not.
 - Do not over-polish. Quick close-peer messages keep lowercase openings, fragments, and the specific imperfections listed under Surface texture (at most one per message); grammatical perfection in a casual register is a tell.

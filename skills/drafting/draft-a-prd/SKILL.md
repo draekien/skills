@@ -11,11 +11,7 @@ disable-model-invocation: true
 
 If the opening message or prior conversation supplies — without guessing — enough information to populate every required section of the template (Problem Statement, Goals, User Stories, Out of Scope, Testing Decisions; Additional Notes is optional and does not affect this check), skip directly to Phase 2.
 
-Otherwise, interview relentlessly about every aspect of the request until shared understanding is reached. Walk down each branch of the decision tree, resolving dependencies between decisions one by one. For high-stakes decisions where the choice materially changes scope or architecture, briefly note the key trade-off and your recommendation. For low-stakes clarifications, just ask.
-
-Ask questions one at a time. If a question is answerable by exploring the project, explore the project instead.
-
-If the user cannot answer a question, make a reasonable stated assumption and continue. Record every unresolved decision in the Open Questions section.
+Otherwise, tell the user that scope isn't resolved yet and ask them to run `/get-aligned` to work through the open decisions — it is not model-invocable, so it must be invoked directly. Once they confirm alignment, or ask to proceed early, record every remaining unresolved decision and stated assumption in the Open Questions section and continue to Phase 2.
 
 ## Phase 2 — Draft
 

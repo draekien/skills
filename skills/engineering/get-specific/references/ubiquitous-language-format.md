@@ -44,12 +44,17 @@ contexts:
 
 All scripts use `uv run` from the skill's base directory. `<dict>` is the resolved `dictionaryPath`.
 
-**Query (read-only):**
+**Query (read-only):** each command prints a single JSON object to stdout.
 
 ```
 uv run scripts/query.py --dict <dict> list-contexts
+  -> {"contexts": [{"name": <Context>, "termCount": <int>}, ...]}
+
 uv run scripts/query.py --dict <dict> lookup <TermName> [--context <Context>]
+  -> {"term": <TermName>, "results": [{"name", "context", "definition", "aliases"?, "usage"?, "related"?}, ...]}
+
 uv run scripts/query.py --dict <dict> list <Context> [--page N] [--page-size N]
+  -> {"context": <Context>, "found": <bool>, "total", "page", "pageSize", "hasMore", "terms": [{"name", "definition"}, ...]}
 ```
 
 **Write:**

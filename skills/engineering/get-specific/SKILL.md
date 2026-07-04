@@ -10,7 +10,7 @@ Establish DDD ubiquitous language scoped to bounded contexts. Interview user, ca
 
 ## Available scripts
 
-- **`scripts/skillsrc.py`** — Reads and writes `get-specific` config from `.draekien/.skillsrc`.
+- **`scripts/skillsrc.py`** (symlink to [specs/skillsrc.py](../../../specs/skillsrc.py)) — Reads and writes `get-specific` config from `.draekien/.skillsrc`.
 - **`scripts/query.py`** — Queries the ubiquitous language dictionary (`list-contexts`, `list`, `lookup`).
 - **`scripts/write.py`** — Writes terms and flags/resolves ambiguities in the dictionary.
 - **`scripts/migrate.py`** — Migrates legacy `UBIQUITOUS_LANGUAGE.md` files to the YAML dictionary.
@@ -19,11 +19,12 @@ Establish DDD ubiquitous language scoped to bounded contexts. Interview user, ca
 
 Runs once on first invocation.
 
-1. Run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the configured dictionary path. If `.draekien/.skillsrc` is absent the script prints the default `.draekien/ubiquitous-language.yaml`. If the script exits non-zero, fall back to the default path `.draekien/ubiquitous-language.yaml` and tell the user the config could not be read and the default path is being used.
-2. Check whether the dictionary file exists at `dictionaryPath`.
-   - **Exists**: load all contexts and terms into conflict detection context using `scripts/query.py list-contexts` then `scripts/query.py list <Context>` for each. If `query.py` exits non-zero or the dictionary fails to parse, tell the user the dictionary could not be read and is being treated as empty, then proceed as if no contexts were loaded. Skip to step 3.
+1. If the user wants the dictionary stored somewhere other than the default, confirm the path with them, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill get-specific set dictionaryPath <path>` before continuing. Otherwise skip straight to the next step.
+2. Run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill get-specific get dictionaryPath --default .draekien/ubiquitous-language.yaml` to read the configured dictionary path. If `.draekien/.skillsrc` is absent the script prints the default `.draekien/ubiquitous-language.yaml`. If the script exits non-zero, fall back to the default path `.draekien/ubiquitous-language.yaml` and tell the user the config could not be read and the default path is being used.
+3. Check whether the dictionary file exists at `dictionaryPath`.
+   - **Exists**: load all contexts and terms into conflict detection context using `scripts/query.py list-contexts` then `scripts/query.py list <Context>` for each. If `query.py` exits non-zero or the dictionary fails to parse, tell the user the dictionary could not be read and is being treated as empty, then proceed as if no contexts were loaded. Skip to step 4.
    - **Does not exist**: scan project for any `UBIQUITOUS_LANGUAGE.md` files, excluding a top-level `UBIQUITOUS_LANGUAGE.md` at the project root (that file is a table-of-contents index, not a per-context glossary). If found, show the list and prompt user to migrate using `scripts/migrate.py`. After migration (or if none found), confirm with the user that a new dictionary will be created at `dictionaryPath`, then proceed.
-3. Scan project structure. Infer a bounded context name for each candidate dir (PascalCase, domain-meaningful — exclude `utils`, `shared`, `common`). Merge with any contexts already in the dictionary. Confirm full mapping with user; apply corrections.
+4. Scan project structure. Infer a bounded context name for each candidate dir (PascalCase, domain-meaningful — exclude `utils`, `shared`, `common`). Merge with any contexts already in the dictionary. Confirm full mapping with user; apply corrections.
 
 ## Active Behaviors
 
@@ -49,6 +50,8 @@ See [references/ubiquitous-language-format.md](references/ubiquitous-language-fo
 ### Conflict Detection
 
 Check every response against all loaded definitions. A term absent from the codebase is neutral — not a contradiction.
+
+If more than one hard interrupt fires in the same response, surface only the highest-priority one and re-evaluate the rest on the next response, in this order: Definition conflict (a term already has a canonical definition being contradicted — the most authoritative signal), then Cross-context collision, then Vague language, then Term Capture's semantic contradiction.
 
 - **Definition conflict** — user uses a defined term contradicting its stored definition: hard interrupt, surface both definitions, ask which is canonical. Run `scripts/write.py add-term` immediately on resolution.
 - **Cross-context collision** — same term defined differently in two contexts: surface explicitly, ask if intentional. Both definitions stand if deliberate (DDD allows intentional ambiguity across contexts). Mark the collision as intentional in the loaded conflict-detection context so it is not re-surfaced on subsequent responses. Run `scripts/write.py flag-ambiguity` on both contexts with a note recording the intentional divergence. If not intentional, treat as a Definition conflict: ask which definition is canonical, update the incorrect context with the corrected definition, and flag the other pending review.

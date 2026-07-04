@@ -9,19 +9,14 @@ Apply software design principles to whatever the user brings. Explore the projec
 
 ## Available scripts
 
-- **`scripts/skillsrc.py`** — Reads and writes `module-design` config from `.draekien/.skillsrc`.
+- **`scripts/skillsrc.py`** (symlink to [specs/skillsrc.py](../../../specs/skillsrc.py)) — Reads and writes `module-design` config from `.draekien/.skillsrc`.
 
 ## Session Start
 
 Run once on first invocation in this order:
 
-1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the spec output directory. If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `module-design.specsDir`; default to `docs/designs` if absent.
-2. **Load ubiquitous language** — if `.draekien/ubiquitous-language.yaml` exists, run `uv run scripts/query.py --dict .draekien/ubiquitous-language.yaml` to load all bounded contexts and terms into working memory before proceeding.
-3. **Open question** — if the module or system in scope isn't already clear from the conversation, ask what to look at before proceeding.
-
-## DDD Mode
-
-If `.draekien/ubiquitous-language.yaml` exists at the project root, DDD mode is active. Follow all instructions in [references/ddd-mode.md](references/ddd-mode.md) for the session.
+1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design get specsDir --default docs/designs` to read the spec output directory. If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `module-design.specsDir`; default to `docs/designs` if absent.
+2. **Open question** — if the module or system in scope isn't already clear from the conversation, ask what to look at before proceeding.
 
 ## Understanding the module
 
@@ -54,7 +49,7 @@ Spec output path:
 - **Exists** — write directly, no confirmation needed. (Config writes still require confirmation per [references/skillsrc-format.md](references/skillsrc-format.md).)
 - **Does not exist** — confirm the full path with the user before creating it.
 
-If the user provides a custom path that differs from the default, confirm with the user, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc set <path>` to persist it. The script merges only the `module-design` block and preserves all other skills' config.
+If the user provides a custom path that differs from the default, confirm with the user, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design set specsDir <path>` to persist it. The script merges only the `module-design` block and preserves all other skills' config.
 
 ## Recommended Rules Audit
 

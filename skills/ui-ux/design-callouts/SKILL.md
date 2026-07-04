@@ -7,7 +7,7 @@ disable-model-invocation: true
 A callout spends the reader's attention to redirect it. Callouts fail in two opposite ways: too quiet — an error vanishing in a five-second toast nobody saw — or too loud — a page of warning boxes readers have learned to skip. Both come from choosing the component before classifying the message. Every rule below derives from three commitments:
 
 - **Match disruption to consequence.** Interruption is a cost; pay it in proportion to what happens if the message is missed. A missable confirmation earns a transient toast; a data-loss warning the user can keep working alongside earns a persistent banner; a decision the user must resolve before safely continuing earns an alert dialog. Escalating past the consequence trains users to ignore the tier; underspending loses the message.
-- **Never the only channel.** Anything the user must see or act on needs a persistent home — the main content flow, an inline message, a notification log. Transient and hover-triggered surfaces may amplify essential content but must never own it. Throughout this skill, content or an action is *essential* when losing it makes the task impossible, unsafe, or unrecoverable; an action is essential when no other route to the same outcome exists.
+- **Never the only channel.** Anything the user must see or act on needs a persistent home — the main content flow, an inline message, a notification log. Transient and hover-triggered surfaces may echo essential content that already has a persistent home, but must never be its sole source. Throughout this skill, content or an action is *essential* when losing it makes the task impossible, unsafe, or unrecoverable; an action is essential when no other route to the same outcome exists.
 - **Every callout devalues the next.** Attention habituates: clinical-alert studies show 49–96% of interruptive alerts get overridden once they become routine. Treat callouts as a budget; when two compete, merge or demote one.
 
 These rules apply identically when designing from scratch and when auditing — auditing is holding what exists against the same commitments and reporting each violation with its fix.
@@ -26,7 +26,7 @@ Keep the branches clean: education surfaces must not carry errors or status (a t
 
 Before choosing any component, confirm a callout is warranted at all:
 
-- Content essential to completing the task → main body, field label, or button label — never a callout.
+- Content essential to completing the task, with no persistent copy elsewhere → main body, field label, or button label — never a callout. (A callout may still echo essential content that already has a persistent home — e.g., a warning restating a destructive step immediately before it — but must never be its only copy.)
 - Content already visible on screen → nothing; delete the redundant callout.
 - A second callout adjacent to another, or a third competing in the same view → restructure the content or flow instead of adding one more.
 

@@ -30,7 +30,7 @@ A model-invocable skill is selected on its `description` alone. This mode measur
 
 **Derive positives that test generalisation, not string-matching.** Give the generating subagent the skill's *purpose* but not its body, so the positives reflect how people phrase the need rather than echoing the description's own wording. Seed from the situations the skill is meant to serve, then paraphrase away from any literal trigger phrase — different vocabulary, implied rather than stated need, the request buried mid-sentence. A description that only fires on its own trigger phrases quoted verbatim is brittle in exactly the way this catches. If every positive is lifted word-for-word from the description, the eval tests the corpus, not the skill.
 
-**Run the selection decision in isolation.** Present the skill's name and description to a subagent acting as the selector — alongside a realistic set of competing skill descriptions, because in production the choice is never the skill against nothing. The selector sees only the prompt and the competing descriptions, never the corpus label for that prompt; showing it the label leaks the answer and the run measures nothing. For each corpus prompt, record the binary: fire or no-fire.
+**Run the selection decision in isolation.** Present the skill's name and description to a subagent acting as the selector, alongside the competing skill descriptions committed into the frozen suite — sourced from the skills available at commit time, because in production the choice is never the skill against nothing. Freezing the competitor set alongside the prompts and labels is what lets a re-run against the same suite version select against an identical field; an unfrozen, live-resampled set would make two runs against one suite version incomparable. The selector sees only the prompt and the competing descriptions, never the corpus label for that prompt; showing it the label leaks the answer and the run measures nothing. For each corpus prompt, record the binary: fire or no-fire.
 
 **Score precision and recall separately, then read the misfires.** Recall is, of the prompts that should fire, how many did. Precision is, of the prompts where it fired, how many should have. They fail in opposite directions and demand opposite fixes, so a blended score hides the diagnosis. The actionable output is the two lists: false negatives (should-fire prompts it missed → the description is too narrow or its triggers too literal, broaden or add phrasings) and false positives (should-stay-silent prompts it fired on → the description is too broad, tighten the scope). Each named misfire points at the words to change.
 
@@ -54,11 +54,11 @@ The run history is not a scoreboard; it is the input to the next edit. A finishe
 
 **Available scripts**
 
-- `scripts/skillsrc.py` — reads and writes the `skill-evals.outputDir` config key in `.draekien/.skillsrc`
+- `scripts/skillsrc.py` (symlink to [specs/skillsrc.py](../../../specs/skillsrc.py)) — reads and writes the `skill-evals.outputDir` config key in `.draekien/.skillsrc`
 - `scripts/eval_state.py` — owns the output directory's file mechanics: scaffolding, suite freezing/versioning, and run-record writes
 
 ```bash
-uv run scripts/skillsrc.py --config .draekien/.skillsrc get
+uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill skill-evals get outputDir --default .draekien/skill-evals
 ```
 
 Repeatability is a property of state, not of intent: an eval that cannot be re-run against identical inputs cannot detect a regression. Everything the eval commits lives under one directory per evaluated skill — `<outputDir>/<skill-name>/`, where `outputDir` defaults to `.draekien/skill-evals` and is read via `scripts/skillsrc.py` using the key `skill-evals.outputDir`; if the key is absent or the file does not exist, fall back to the default without error:
@@ -68,7 +68,7 @@ Repeatability is a property of state, not of intent: an eval that cannot be re-r
   report.html             frozen renderer, copied once from assets
   README.md               how to view it
   activation/
-    suite/v1.json …       frozen corpus + labels, one file per version
+    suite/v1.json …       frozen corpus + labels + competing descriptions, one file per version
     runs.jsonl            one run record per line
   impact/
     suite/v1.json …       frozen tasks + criteria, one file per version
@@ -83,7 +83,7 @@ uv run scripts/eval_state.py init-output --dir <outputDir>/<skill-name>
 
 Each appended run record must use exactly the keys `report.html` reads back, or the report renders that field blank with no error: activation — `suiteVersion`, `ts`, `recall`, `precision`, `misfires: { falseNegatives: [...promptIds], falsePositives: [...promptIds] }`; impact — `suiteVersion`, `ts`, `judge: { winRate, perTask: [{ taskId, winner, criteriaMet: [...], criteriaMissed: [...] }] }`, `humanVerdict: { winner, note } | null`, `cost: { withSkill: { tokens, durationMs }, baseline: { tokens, durationMs } }`.
 
-**Versioning is the honesty mechanism.** A suite is frozen on approval and reused on every later run — that is what holds the inputs fixed. When the suite is deliberately improved (a hard negative added, a mislabel fixed, a task added), its content hash changes and the next run records the new version; the report draws each version as its own band, so pre-change and post-change scores are never silently compared on one line. Reusing the frozen suite is the default; minting a version is a deliberate act.
+**Versioning is the honesty mechanism.** A suite is frozen on approval and reused on every later run — that is what holds the inputs fixed. When the suite is deliberately improved (a hard negative added, a mislabel fixed, a task added, the competing-description set changed), its content hash changes and the next run records the new version; the report draws each version as its own band, so pre-change and post-change scores are never silently compared on one line. Reusing the frozen suite is the default; minting a version is a deliberate act.
 
 **Impact runs carry the judge's score, the per-arm token and wall-clock cost, and, where given, the author's verdict.** The blind first-pass judge score is logged on every run as the cheap trend signal; the author's validated verdict supersedes it and is what the trend treats as truth. A run left unvalidated is marked as such rather than counted as settled — the judge triages, the author decides. The cost the run captured (with-skill versus baseline) rides alongside the verdict so the readout shows the token premium next to the quality it bought.
 
@@ -99,12 +99,12 @@ Point the author at `http://localhost:8787/report.html`.
 
 Each of these produces a number that looks like a result and means nothing. Name them on sight.
 
-- **Recall theatre** — a positives-only corpus reporting a high hit rate. Says nothing about over-firing; a description that fires on everything scores perfectly. Hard negatives are the cure.
-- **Verbatim-trigger corpus** — positives copied word-for-word from the description, so the eval confirms string-matching rather than whether the skill generalises to how people actually phrase the need.
-- **Criteria drift** — writing or loosening success criteria after seeing the outputs until the skill passes. The criteria must predate the outputs, or the eval is a post-hoc justification wearing the costume of a test.
-- **Verdict leakage** — the judge knows which output came from the skill. It then scores the label, not the work, and every result tilts toward the expected answer.
-- **Context bleed** — generation, the eval runs, or judging share or reuse context, so the skill's wording, the committed labels, or one run's output seeps into the next. The numbers look controlled; nothing was. A separate isolated subagent per step is the cure.
-- **Judge as authority** — taking the LLM judge's verdict as the verdict. It shares the blind spots of the agent it judges, so a plausible-but-wrong output sails past both. The judge triages; the author decides.
-- **Single-sample certainty** — one task, one run, treated as proof. Output variance alone can swing a single comparison either way; the conclusion is noise dressed as signal.
-- **The unfailable eval** — a corpus and criteria so undemanding that no realistic skill could fail them. A pass carries no information. If nothing in the suite could ever come back red, it is measuring nothing.
-- **Trend drift** — comparing runs whose suite changed between them as if they sat on one trend line. The scores measure different test sets, so the slope is an artefact of the drift, not the skill. Versioned suites and per-version bands are the cure; regenerating the suite each run is the cause.
+- **Recall theatre** — see "Build a labelled corpus with both classes" above.
+- **Verbatim-trigger corpus** — see "Derive positives that test generalisation, not string-matching" above.
+- **Criteria drift** — see "Commit ground truth first" above.
+- **Verdict leakage** — see "Run the selection decision in isolation" and "Judge blind as a first pass, then validate with the author" above.
+- **Context bleed** — see "Run each scenario in its own isolated subagent" above.
+- **Judge as authority** — see "Judge blind as a first pass, then validate with the author" above.
+- **Single-sample certainty** — see "Choose representative tasks, more than one" above.
+- **The unfailable eval** — see "The point of the eval is to find where the skill falls short, not to confirm it works" above.
+- **Trend drift** — see "Append the run; read the gap from the history" and "Versioning is the honesty mechanism" above.

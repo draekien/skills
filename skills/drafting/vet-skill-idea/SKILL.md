@@ -6,13 +6,13 @@ compatibility: Designed for Claude Code (or similar products with Agent Skills s
 disable-model-invocation: true
 ---
 
-Every skill's description loads into context for every session in its scope. An unworthy skill is permanent tax that also dilutes activation for the skills that earn their place — so the default answer is no. The job here is to find the reason *not* to build a skill; only a concept that survives every gate below deserves one.
+Every skill's description loads into context for every session in its scope. An unworthy skill is permanent tax that also dilutes activation for the skills that earn their place — so the default answer is no. The job here is to find the reason *not* to build a skill; only an idea that survives every gate below deserves one.
 
 ## The gates
 
-A concept warrants a skill only by clearing all four. Each gate carries the test that discriminates a pass from a failure, and where a failure routes instead.
+An idea warrants a skill only by clearing all four. Each gate carries the test that discriminates a pass from a failure, and where a failure routes instead.
 
-If the concept description is too vague to test against a gate, ask one focused question to clarify it before proceeding — do not evaluate a concept you cannot fairly test.
+If the idea description is too vague to test against a gate, ask one focused question to clarify it before proceeding — do not evaluate an idea you cannot fairly test.
 
 ### Net-new capability
 
@@ -20,11 +20,11 @@ A skill is worth its context only if the agent does the task materially worse wi
 
 ### Sound goal, not a gamed metric
 
-A skill should instill a concept that moves the work toward the real outcome every time it runs — not chase a number for its own sake. Test: can the skill be satisfied while missing the point? If success is box-ticking rather than the idea landing, the skill optimises the proxy and rots the target. Reframe it around the underlying concept so that using it *causes* the outcome, or drop it.
+A skill should instill an idea that moves the work toward the real outcome every time it runs — not chase a metric for its own sake. Test: can the skill be satisfied while missing the outcome? If success is box-ticking rather than the outcome landing, the skill optimises the metric and forgets the outcome. Reframe it around the outcome so that using it *causes* the outcome, or drop it.
 
 ### Single responsibility
 
-One unified job. Test: state the purpose in one sentence without "and", and write a description that fires on one clear class of situations. A concept that needs several unrelated triggers is several skills wearing one name — split it into those pieces and run each back through the gates.
+One unified job. Test: state the purpose in one sentence without "and", and write a description that fires on one clear class of situations. An idea that needs several unrelated triggers is several skills wearing one name — split it into those pieces and run each back through the gates.
 
 ### Right home
 
@@ -42,4 +42,4 @@ Evaluate all four gates before concluding — do not stop at the first failure. 
 
 If multiple gates fail, name all of them in the verdict — the person needs the full picture to reframe or drop the idea.
 
-Once a concept passes, hand off to the `skill-writing` skill to author it. If that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "skill-writing"` before authoring.
+Once an idea passes, recommend the user run `/skill-writing` to author it — it is not model-invocable, so it must be invoked directly. If that skill is not installed, recommend the user add it with `npx skills add draekien/skills --skill "skill-writing"` first.

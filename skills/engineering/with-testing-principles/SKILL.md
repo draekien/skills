@@ -44,7 +44,7 @@ The sharpest form of this failure: configuring a mock to return a value, then as
 
 ## One reason to fail
 
-Each test pins one behaviour, structured so a failure names its cause. Arrange the preconditions, act once on the code under test, assert the outcome — keeping these phases distinct keeps the test legible and its failure diagnostic.
+Each test pins one behaviour, structured so a failure names its cause. Structure it as **Arrange-Act-Assert**: arrange the preconditions, act once on the code under test, assert the outcome — keeping these phases distinct keeps the test legible and its failure diagnostic.
 
 - One behaviour per test. A test asserting many unrelated things — assertion roulette — reports only which line tripped, not which behaviour broke.
 - Name the test for the behaviour and condition it pins, so a failing test communicates what regressed without reading its body.

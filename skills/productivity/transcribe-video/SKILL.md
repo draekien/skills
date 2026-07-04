@@ -11,6 +11,7 @@ Extracts speech from a video or audio source and saves it as a `.txt` file.
 ## Available scripts
 
 - **`scripts/transcribe.py`** — Downloads (if URL), transcribes with Whisper, and writes a `.txt` file.
+- **`scripts/skillsrc.py`** (symlink to [specs/skillsrc.py](../../../specs/skillsrc.py)) — Reads and writes `transcribe-video` config from `.draekien/.skillsrc`.
 
 ## 1. Dependency check
 
@@ -63,10 +64,10 @@ If the result is `False`, warn the user: GPU acceleration is unavailable and CPU
 
 ## 3. Model selection
 
-Check memory for a saved `whisper-model` preference.
+Run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill transcribe-video get whisperModel` to check for a saved `whisperModel` preference.
 
 - **Found:** use it, but tell the user which model is being used and offer to change it.
-- **Not found:** present the table below, ask the user to choose, then save the choice to memory as a user preference keyed `whisper-model`.
+- **Not found:** present the table below, ask the user to choose, then confirm with the user before saving it by running `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill transcribe-video set whisperModel <model>`.
 
 | Model | Download size | Notes |
 |---|---|---|

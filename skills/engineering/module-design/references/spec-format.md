@@ -61,10 +61,6 @@ PaymentRequest { amount: Money, currency: CurrencyCode, card: CardToken }
 PaymentError   { code: ErrorCode, message: string }  // code is exhaustive enum — no stringly-typed errors
 ```
 
-### Bounded Context *(DDD mode only)*
-
-The bounded context this module belongs to, confirmed against `.draekien/ubiquitous-language.yaml`. List any terms defined or referenced from that dictionary during this session.
-
 ## Extended Sections (module and layer scope only)
 
 ### Internal Decomposition

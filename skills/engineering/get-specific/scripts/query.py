@@ -2,6 +2,7 @@
 # dependencies = ["pyyaml==6.0.2"]
 # ///
 import argparse
+import json
 import sys
 import yaml
 
@@ -13,67 +14,63 @@ def load_dict(path):
 
 def cmd_list_contexts(data):
     contexts = data.get("contexts", {})
-    if not contexts:
-        print("No contexts defined.")
-        return
-    for name, ctx in contexts.items():
-        term_count = len(ctx.get("terms", {}))
-        print(f"  {name} ({term_count} term{'s' if term_count != 1 else ''})")
+    return {
+        "contexts": [
+            {"name": name, "termCount": len(ctx.get("terms", {}))}
+            for name, ctx in contexts.items()
+        ]
+    }
 
 
 def cmd_lookup(data, term_name, context=None):
     contexts = data.get("contexts", {})
+    results = []
     if context:
         ctx = contexts.get(context, {})
         term = ctx.get("terms", {}).get(term_name)
         if term:
-            _print_term(term_name, term, context)
-        else:
-            print(f"Term '{term_name}' not found in context '{context}'.")
+            results.append(_term_result(term_name, term, context))
     else:
-        found = []
         for ctx_name, ctx_data in contexts.items():
             term = ctx_data.get("terms", {}).get(term_name)
             if term:
-                found.append((ctx_name, term))
-        if not found:
-            print(f"Term '{term_name}' not found.")
-        else:
-            for ctx_name, term in found:
-                _print_term(term_name, term, ctx_name)
+                results.append(_term_result(term_name, term, ctx_name))
+    return {"term": term_name, "results": results}
 
 
 def cmd_list(data, context, page, page_size):
     contexts = data.get("contexts", {})
     ctx = contexts.get(context)
     if not ctx:
-        print(f"Context '{context}' not found.")
-        return
+        return {"context": context, "found": False, "terms": []}
     terms = list(ctx.get("terms", {}).items())
     total = len(terms)
     start = (page - 1) * page_size
     end = start + page_size
     page_terms = terms[start:end]
-    print(f"Context: {context} — {total} term{'s' if total != 1 else ''} (page {page}, {page_size}/page)")
-    for name, term in page_terms:
-        definition = term.get("definition", "(no definition)")
-        truncated = definition[:80] + ("..." if len(definition) > 80 else "")
-        print(f"  {name}: {truncated}")
-    if end < total:
-        print(f"\n  (--page {page + 1} for more)")
+    return {
+        "context": context,
+        "found": True,
+        "total": total,
+        "page": page,
+        "pageSize": page_size,
+        "hasMore": end < total,
+        "terms": [
+            {"name": name, "definition": term.get("definition", "(no definition)")}
+            for name, term in page_terms
+        ],
+    }
 
 
-def _print_term(name, term, context):
-    print(f"\n### {name} [{context}]")
+def _term_result(name, term, context):
+    result = {"name": name, "context": context, "definition": term.get("definition", "(no definition)")}
     if "aliases" in term:
-        print(f"aliases: {', '.join(term['aliases'])}")
-    print(term.get("definition", "(no definition)"))
+        result["aliases"] = term["aliases"]
     if "usage" in term:
-        print(f"usage: {term['usage']}")
+        result["usage"] = term["usage"]
     if "related" in term:
-        print("related:")
-        for r in term["related"]:
-            print(f"  - {r['term']} ({r['relationship']})")
+        result["related"] = term["related"]
+    return result
 
 
 def main():
@@ -106,11 +103,11 @@ def main():
         sys.exit(1)
 
     if args.command == "list-contexts":
-        cmd_list_contexts(data)
+        print(json.dumps(cmd_list_contexts(data)))
     elif args.command == "lookup":
-        cmd_lookup(data, args.term, getattr(args, "context", None))
+        print(json.dumps(cmd_lookup(data, args.term, getattr(args, "context", None))))
     elif args.command == "list":
-        cmd_list(data, args.context, args.page, args.page_size)
+        print(json.dumps(cmd_list(data, args.context, args.page, args.page_size)))
     else:
         parser.print_help()
 

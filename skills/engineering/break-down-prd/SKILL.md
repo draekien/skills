@@ -11,11 +11,11 @@ Turn a PRD into an ordered set of tracer bullets — thin, end-to-end, always-de
 
 ## Available scripts
 
-- **`scripts/skillsrc.py`** — Reads and writes the `break-down-prd` output directory in `.draekien/.skillsrc`.
+- **`scripts/skillsrc.py`** (symlink to [specs/skillsrc.py](../../../specs/skillsrc.py)) — Reads and writes the `break-down-prd` output directory in `.draekien/.skillsrc`.
 
 ## Session start
 
-Resolve the output directory: run `uv run scripts/skillsrc.py --config .draekien/.skillsrc get` to read the output directory (default: `.draekien/break-down-prd`). If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `break-down-prd.outputDir`; default to `.draekien/break-down-prd` if absent. Note `<outputDir>/<prd-slug>/` (where `<prd-slug>` is the kebab-cased feature name) as the destination for the breakdown — do not create it or write to it yet; the actual write happens in Write the breakdown, after the PRD is read and, if the directory is new under `.draekien/`, after the user confirms its creation.
+Resolve the output directory: run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill break-down-prd get outputDir --default .draekien/break-down-prd` to read the output directory (default: `.draekien/break-down-prd`). If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `break-down-prd.outputDir`; default to `.draekien/break-down-prd` if absent. Note `<outputDir>/<prd-slug>/` (where `<prd-slug>` is the kebab-cased feature name) as the destination for the breakdown — do not create it or write to it yet; the actual write happens in Write the breakdown, after the PRD is read and, if the directory is new under `.draekien/`, after the user confirms its creation.
 
 ## Get the PRD
 
@@ -65,7 +65,7 @@ A bullet file is self-contained: an executor needs nothing beyond it — the goa
 
 Every task cites the PRD user story or measurable goal it serves. The inline `serves:` field is authoritative; the header block is a derived summary — keep it in sync when tasks change. The coverage table maps each PRD user story and each measurable goal to the task(s) covering it, and flags any that no task covers — an uncovered requirement is a gap to surface, not to ship.
 
-If `<outputDir>` is under `.draekien/` and that directory does not yet exist, confirm its creation with the user before the first write. If the user declines, ask for an alternative path, persist it with `uv run scripts/skillsrc.py --config .draekien/.skillsrc set <path>`, and write nothing until a confirmed output directory exists. If the user chooses a custom output directory, confirm it, then persist it with the same `set` command. The script merges only the `break-down-prd` block and preserves all other skills' config.
+If `<outputDir>` is under `.draekien/` and that directory does not yet exist, confirm its creation with the user before the first write. If the user declines, ask for an alternative path, persist it with `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill break-down-prd set outputDir <path>`, and write nothing until a confirmed output directory exists. If the user chooses a custom output directory, confirm it, then persist it with the same `set` command. The script merges only the `break-down-prd` block and preserves all other skills' config.
 
 ## Review
 

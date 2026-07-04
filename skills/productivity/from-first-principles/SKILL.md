@@ -16,6 +16,6 @@ Do three things:
 
 **Rebuild upward.** From the fundamentals that survived, construct the solution — even if it lands far from the conventional answer. If it converges on the standard approach, that is fine, but only because the fundamentals forced it there, not because it was the default. When this happens, say so directly: state which assumptions were tested and held, and confirm the conventional answer is load-bearing, not merely inherited.
 
-Deliver as: (1) the assumptions discarded and why each failed, (2) the fundamentals that survived, (3) the solution rebuilt from those fundamentals. Keep each section tight.
+Deliver as: (1) each list (b) assumption and its verdict — discarded and why it failed, or held and why it's load-bearing, (2) the fundamentals that survived, (3) the solution rebuilt from those fundamentals. Keep each section tight.
 
-The failure mode is relabelling: taking the conventional answer and dressing its parts in the language of "fundamentals" without ever decomposing. If the reasoning never discards an assumption or reaches a non-obvious conclusion, the mode was performed, not used. Genuine first-principles work changes something — which assumption falls, and what follows from its absence.
+The failure mode is relabelling: taking the conventional answer and dressing its parts in the language of "fundamentals" without ever seriously interrogating list (b) — asking of each item whether it is a law of the domain or just convention wearing the costume of one. If no item was actually tested against that question, the mode was performed, not used, regardless of whether the conclusion matches convention. Genuine first-principles work shows its interrogation: which assumptions were tested, and why each held or fell.

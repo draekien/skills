@@ -47,15 +47,15 @@ If direct agent-to-agent messaging is available: Mode B. Otherwise: Mode A. If u
 
 ### Mode A — Parallel subagents (default)
 
-Spawn one subagent per confirmed angle.
+Spawn one researcher (as a subagent) per confirmed angle.
 
-Each subagent receives its angle, scope, and the source menu. All run in parallel. Collect all outputs when complete.
+Each researcher receives its angle, scope, and the source menu. All run in parallel. Collect all outputs when complete.
 
 ### Mode B — Agent teams (use when available)
 
 Researchers can message each other directly, surfacing cross-cutting findings without waiting for the synthesis phase.
 
-Create a researcher team with one teammate per confirmed angle.
+Create a researcher team with one researcher (teammate) per confirmed angle.
 
 Each researcher receives:
 
