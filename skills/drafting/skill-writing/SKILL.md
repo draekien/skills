@@ -20,6 +20,8 @@ See [references/specification.md](references/specification.md) for the full form
 
 **Name** — verb-noun form preferred when name contains a verb (`transcribe-video`, `review-code`).
 
+**Argument hint** — if the skill takes arguments, add an `argument-hint` frontmatter field with a free-text usage cue, e.g. `[issue-number]` or `[filename] [format]`. This is a harness-specific extension, not part of the open standard, but it's the one worth adding by default: it's supported under that exact name on more than one harness, and a harness that doesn't recognize it just ignores the field — there's no working structure to fall back to for expected arguments otherwise, so the cost of including it is zero and the upside is real. Don't invent a structured argument schema beyond this hint; that capability exists on at most one harness today and isn't worth designing a skill around.
+
 **Description** — the sole activation signal; write as an API contract:
 
 ```

@@ -50,9 +50,14 @@ Then work through `[LLM]` rules below.
 - `[AUTO]` Must be a space-separated string, not a YAML list. `allowed-tools` is a shared open-standard field other harnesses honour only as a string, so the list form (valid in Claude Code) fails rather than warns
 - `[LLM]` Tools listed valid and no broader than skill's stated purpose
 
+### `argument-hint` field
+
+- `[LLM]` Present whenever the skill body expects the invoker to supply arguments — this harness-specific extension warns rather than fails on harnesses that don't define it, so it costs nothing to include
+- `[LLM]` Free text only (e.g. `[issue-number]`); not used to encode a structured/typed argument schema — that capability isn't broadly supported and isn't worth designing a skill around
+
 ### Frontmatter formatting
 
-- `[AUTO]` No unknown or misspelled field names. Open-standard fields (`name`, `description`, `license`, `compatibility`, `metadata`, `allowed-tools`) pass silently. Harness-specific extensions pass with a non-blocking portability warning; today the only harness defining any is Claude Code (`when_to_use`, `argument-hint`, `arguments`, `disable-model-invocation`, `user-invocable`, `disallowed-tools`, `model`, `effort`, `context`, `agent`, `hooks`, `paths`, `shell`; see <https://code.claude.com/docs/en/skills.md>). Anything else fails as a likely typo.
+- `[AUTO]` No unknown or misspelled field names. Open-standard fields (`name`, `description`, `license`, `compatibility`, `metadata`, `allowed-tools`) pass silently. Harness-specific extensions pass with a non-blocking portability warning rather than failing — a skill using one still validates, but authors should confirm which harnesses recognize the field before relying on it. Anything else fails as a likely typo.
 - `[AUTO]` `name` and `description` plain strings (not YAML integers or booleans)
 - `[AUTO]` No trailing whitespace on any frontmatter line
 - `[AUTO]` No block scalar notation (`|` or `>`) in frontmatter values
