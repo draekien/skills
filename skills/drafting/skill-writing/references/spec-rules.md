@@ -52,7 +52,7 @@ Then work through `[LLM]` rules below.
 
 ### `argument-hint` field
 
-- `[LLM]` Present whenever the skill body expects the invoker to supply arguments — this harness-specific extension warns rather than fails on harnesses that don't define it, so it costs nothing to include
+- `[LLM]` Present whenever the skill body expects the invoker to supply arguments — this harness-specific extension warns rather than fails on harnesses that don't define it, so it costs nothing to include. Most valuable when the body branches on what's supplied (a term looked up versus a command run versus no argument at all); the hint is the only place telling the invoker which input forms exist and what each triggers
 - `[AUTO]` Must be a quoted string, e.g. `argument-hint: "[issue-number]"` — the unquoted form (`argument-hint: [issue-number]`) parses as a YAML list, not the free-text string every harness expects
 - `[LLM]` Free text only (e.g. `"[issue-number]"`, or `"[cmdA|cmdB · cmdC|cmdD] [target]"` for a skill with a fixed set of sub-commands); not used to encode a structured/typed argument schema — that capability isn't broadly supported and isn't worth designing a skill around
 
