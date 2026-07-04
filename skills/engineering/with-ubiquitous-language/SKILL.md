@@ -1,7 +1,7 @@
 ---
 name: with-ubiquitous-language
 description: Builds and enforces a shared project vocabulary (a DDD ubiquitous language). Discovers bounded contexts by exploring the codebase, interviews you to surface domain terms, and tracks definitions in a project dictionary, flagging conflicts as they arise. Use when terminology feels ambiguous, or before implementing a feature that needs a shared vocabulary.
-disable-model-invocation: true
+argument-hint: "[migrate|term-or-context]"
 ---
 
 # With Ubiquitous Language
@@ -19,12 +19,26 @@ Establish DDD ubiquitous language scoped to bounded contexts. Interview user, ca
 
 Runs once on first invocation.
 
-1. If the user wants the dictionary stored somewhere other than the default, confirm the path with them, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill with-ubiquitous-language set dictionaryPath <path>` before continuing. Otherwise skip straight to the next step.
-2. Run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill with-ubiquitous-language get dictionaryPath --default .draekien/ubiquitous-language.yaml` to read the configured dictionary path. If `.draekien/.skillsrc` is absent the script prints the default `.draekien/ubiquitous-language.yaml`. If the script exits non-zero, fall back to the default path `.draekien/ubiquitous-language.yaml` and tell the user the config could not be read and the default path is being used.
-3. Check whether the dictionary file exists at `dictionaryPath`.
-   - **Exists**: load all contexts and terms into conflict detection context using `scripts/query.py list-contexts` then `scripts/query.py list <Context>` for each. If `query.py` exits non-zero or the dictionary fails to parse, tell the user the dictionary could not be read and is being treated as empty, then proceed as if no contexts were loaded. Skip to step 4.
-   - **Does not exist**: scan project for any `UBIQUITOUS_LANGUAGE.md` files, excluding a top-level `UBIQUITOUS_LANGUAGE.md` at the project root (that file is a table-of-contents index, not a per-context glossary). If found, show the list and prompt user to migrate using `scripts/migrate.py`. After migration (or if none found), confirm with the user that a new dictionary will be created at `dictionaryPath`, then proceed.
-4. Scan project structure. Infer a bounded context name for each candidate dir (PascalCase, domain-meaningful — exclude `utils`, `shared`, `common`). Merge with any contexts already in the dictionary. Confirm full mapping with user; apply corrections.
+1. Run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill with-ubiquitous-language get dictionaryPath --default .draekien/ubiquitous-language.yaml` to read the configured dictionary path. If `.draekien/.skillsrc` is absent the script prints the default `.draekien/ubiquitous-language.yaml`. If the script exits non-zero, fall back to the default path `.draekien/ubiquitous-language.yaml` and tell the user the config could not be read and the default path is being used.
+2. Check whether the dictionary file exists at `dictionaryPath`.
+   - **Exists**: load all contexts and terms into conflict detection context using `scripts/query.py list-contexts` then `scripts/query.py list <Context>` for each. If `query.py` exits non-zero or the dictionary fails to parse, tell the user the dictionary could not be read and is being treated as empty, then proceed as if no contexts were loaded. Skip to step 3.
+   - **Does not exist**: scan project for any `UBIQUITOUS_LANGUAGE.md` files, excluding a top-level `UBIQUITOUS_LANGUAGE.md` at the project root (that file is a table-of-contents index, not a per-context glossary). If found, show the list and prompt user to migrate using `scripts/migrate.py`. After migration (or if none found), ask the user if the dictionary should live somewhere other than `dictionaryPath`; if so, confirm the path and persist it with `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill with-ubiquitous-language set dictionaryPath <path>`. Confirm with the user that a new dictionary will be created at the resolved path, then proceed.
+3. Scan project structure. Infer a bounded context name for each candidate dir (PascalCase, domain-meaningful — exclude `utils`, `shared`, `common`). Merge with any contexts already in the dictionary. Confirm full mapping with user; apply corrections.
+4. Check whether invoking `with-ubiquitous-language` is already referenced in `AGENTS.md` or `CLAUDE.md`. Check session context first — if either file's contents are already loaded there, that satisfies the check; only read the files from the project root if neither appears in context. If the reference is missing, ask the user for permission to register it there so future sessions invoke the skill without being told. On confirmation, append (creating the file if needed; if both `AGENTS.md` and `CLAUDE.md` are absent, ask which to create):
+
+   ```markdown
+   ## Ubiquitous Language
+
+   Invoke `with-ubiquitous-language` before introducing or using domain terminology, to query or add to the project's dictionary.
+   ```
+
+   If the user declines, don't ask again this session.
+
+## Manual Query
+
+If invoked with a term or context name as the argument, skip straight to a lookup: resolve `dictionaryPath` (step 1 above), then run `scripts/query.py lookup <term>` to find a term across all contexts, or `scripts/query.py list <context>` to list every term in a bounded context. Present the result and stop — do not enter the Interview or Conflict Detection behaviors below.
+
+If invoked with `migrate`, run step 2's migration path directly via `scripts/migrate.py`, then stop.
 
 ## Active Behaviors
 
