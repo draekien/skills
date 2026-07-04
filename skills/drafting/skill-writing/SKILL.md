@@ -55,13 +55,13 @@ If both invocation paths are open, write the model-invocable form — it still r
 
 ### Argument hint
 
-If the skill takes arguments, add an `argument-hint` frontmatter field with a free-text usage cue:
+The `argument-hint` is a quoted, free-text usage cue — the only place that signals which capabilities a skill exposes and what to supply. It earns its keep whenever the skill offers distinct modes worth advertising, whether the body branches on them procedurally or they are entry points into a knowledge skill, as this skill's own hint does.
 
-- **Single input** — `argument-hint: "[issue-number]"` or `argument-hint: "[filename] [format]"`.
-- **Fixed modes or sub-commands** — name them pipe-separated instead of spelling the branch out as a phrase, even for just two modes: `argument-hint: "[write|audit] [target]"`, not `argument-hint: "[code to write tests for, or existing tests to audit]"`. Group more than a couple of commands by category with `·`: `argument-hint: "[cmdA|cmdB · cmdC|cmdD] [target]"`.
-- **Quoting** — always quote the value; an unquoted `[issue-number]` parses as a YAML list, not the string every harness expects.
+- **Single input** — `"[issue-number]"` or `"[filename] [format]"`.
+- **Fixed modes** — name them pipe-separated rather than as a descriptive phrase, even for two: `"[write|audit] [target]"`, not `"[code to write tests for, or existing tests to audit]"`. Group more than a couple by category with `·`: `"[cmdA|cmdB · cmdC|cmdD] [target]"`.
+- **Always quote** — an unquoted `[issue-number]` parses as a YAML list, not the string every harness expects.
 
-The hint earns its keep most when the body actually branches on what's supplied — it's the only place that tells the invoker which input forms the skill recognizes and what each does. This is a harness-specific extension, not part of the open standard, but a harness that doesn't recognize it just ignores the field, so the cost of including it is zero. Don't invent a structured, typed argument schema beyond this free-text hint — that level of harness-specific capability isn't worth designing a skill around.
+It is a harness-specific extension; a harness that doesn't recognize it ignores the field, so including it costs nothing. Don't push it into a structured, typed argument schema — that isn't broadly supported or worth designing around.
 
 ## Knowledge or Procedural
 
