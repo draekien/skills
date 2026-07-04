@@ -24,10 +24,10 @@
         "./skills/productivity/deep-research",
         "./skills/productivity/transcribe-video",
         "./skills/productivity/visualise",
-        "./skills/productivity/steelman",
-        "./skills/productivity/devils-advocate",
-        "./skills/productivity/rubber-duck",
         "./skills/productivity/from-first-principles",
+        "./skills/roles/steelman",
+        "./skills/roles/devils-advocate",
+        "./skills/roles/rubber-duck",
         "./skills/engineering/get-specific",
         "./skills/engineering/module-design",
         "./skills/engineering/break-down-prd",
@@ -37,7 +37,7 @@
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode"
       ],
-      "version": "0.40.1"
+      "version": "0.41.0"
     },
     {
       "name": "drafting-skills",
@@ -60,8 +60,16 @@
       "description": "Skills for general workplace productivity: summarisation, research, meeting prep, and task management.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise", "./skills/productivity/steelman", "./skills/productivity/devils-advocate", "./skills/productivity/rubber-duck", "./skills/productivity/from-first-principles"],
-      "version": "0.11.2"
+      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/round-table", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise", "./skills/productivity/from-first-principles"],
+      "version": "0.12.0"
+    },
+    {
+      "name": "roles-skills",
+      "description": "Skills that adopt a fixed persona or stance to sharpen thinking: an advocate, a listener, a critic.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/roles/steelman", "./skills/roles/devils-advocate", "./skills/roles/rubber-duck"],
+      "version": "0.1.0"
     },
     {
       "name": "ui-ux-skills",
