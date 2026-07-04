@@ -54,7 +54,7 @@ The run history is not a scoreboard; it is the input to the next edit. A finishe
 
 **Available scripts**
 
-- `scripts/skillsrc.py` (symlink to [specs/skillsrc.py](../../../specs/skillsrc.py)) — reads and writes the `skill-evals.outputDir` config key in `.draekien/.skillsrc`
+- `scripts/skillsrc.py` — reads and writes the `skill-evals.outputDir` config key in `.draekien/.skillsrc`
 - `scripts/eval_state.py` — owns the output directory's file mechanics: scaffolding, suite freezing/versioning, and run-record writes
 
 ```bash

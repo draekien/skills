@@ -10,7 +10,7 @@ Establish DDD ubiquitous language scoped to bounded contexts. Interview user, ca
 
 ## Available scripts
 
-- **`scripts/skillsrc.py`** (symlink to [specs/skillsrc.py](../../../specs/skillsrc.py)) — Reads and writes `get-specific` config from `.draekien/.skillsrc`.
+- **`scripts/skillsrc.py`** — Reads and writes `get-specific` config from `.draekien/.skillsrc`.
 - **`scripts/query.py`** — Queries the ubiquitous language dictionary (`list-contexts`, `list`, `lookup`).
 - **`scripts/write.py`** — Writes terms and flags/resolves ambiguities in the dictionary.
 - **`scripts/migrate.py`** — Migrates legacy `UBIQUITOUS_LANGUAGE.md` files to the YAML dictionary.

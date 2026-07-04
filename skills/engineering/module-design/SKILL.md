@@ -9,7 +9,7 @@ Apply software design principles to whatever the user brings. Explore the projec
 
 ## Available scripts
 
-- **`scripts/skillsrc.py`** (symlink to [specs/skillsrc.py](../../../specs/skillsrc.py)) — Reads and writes `module-design` config from `.draekien/.skillsrc`.
+- **`scripts/skillsrc.py`** — Reads and writes `module-design` config from `.draekien/.skillsrc`.
 
 ## Session Start
 

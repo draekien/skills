@@ -11,7 +11,7 @@ Turn a PRD into an ordered set of tracer bullets — thin, end-to-end, always-de
 
 ## Available scripts
 
-- **`scripts/skillsrc.py`** (symlink to [specs/skillsrc.py](../../../specs/skillsrc.py)) — Reads and writes the `break-down-prd` output directory in `.draekien/.skillsrc`.
+- **`scripts/skillsrc.py`** — Reads and writes the `break-down-prd` output directory in `.draekien/.skillsrc`.
 
 ## Session start
 

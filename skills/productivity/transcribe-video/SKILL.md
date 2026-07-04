@@ -11,7 +11,7 @@ Extracts speech from a video or audio source and saves it as a `.txt` file.
 ## Available scripts
 
 - **`scripts/transcribe.py`** — Downloads (if URL), transcribes with Whisper, and writes a `.txt` file.
-- **`scripts/skillsrc.py`** (symlink to [specs/skillsrc.py](../../../specs/skillsrc.py)) — Reads and writes `transcribe-video` config from `.draekien/.skillsrc`.
+- **`scripts/skillsrc.py`** — Reads and writes `transcribe-video` config from `.draekien/.skillsrc`.
 
 ## 1. Dependency check
 
