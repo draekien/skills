@@ -6,8 +6,10 @@ The standard every skill must meet.
 
 - Verbatim LLM response templates (`> "..."` blocks dictating exact phrasing) — describe behaviour, not words
 - Prose describing what the agent will say rather than rules it must follow
-- Repeated explanations of the same rule across multiple sections
+- Repeated explanations of the same rule across multiple sections (duplication — give the concept one source of truth)
 - Examples in the body that belong in `references/` or `assets/`
+- Instructions that pass the deletion test (removing them wouldn't change agent output) — no-ops that read as if they matter but don't
+- Superseded or stale instructions left in place instead of removed (sediment)
 
 **Mis-calibrated freedom**
 
@@ -43,6 +45,12 @@ The standard every skill must meet.
 - Format specs, schemas, lookup tables in the body that belong in `references/`
 - Output templates described in prose that belong in `assets/`
 - Body over 500 lines when references could absorb the excess
+- Single-branch material (a template, edge case, or reference doc only one use-path needs) left in the body instead of behind a context pointer
+
+**Steering**
+
+- A concept re-described in different words each time instead of anchored on one repeated leading word
+- Bespoke phrasing invented for an idea that already has a standard domain term with strong training priors
 
 **Outdated content**
 
