@@ -21,11 +21,23 @@ A skill is a teaching document for a future agent — it transfers intent and ju
 
 See [references/specification.md](references/specification.md) for the full format specification — frontmatter fields, name/description constraints, directory structure, and progressive disclosure model.
 
-**Name** — verb-noun form preferred when name contains a verb (`transcribe-video`, `review-code`).
+### Name
 
-**Argument hint** — if the skill takes arguments, add an `argument-hint` frontmatter field with a free-text usage cue, e.g. `argument-hint: "[issue-number]"` or `argument-hint: "[filename] [format]"`. The hint earns its keep most when the body actually branches on what's supplied — a term looked up versus a command run versus no argument at all — because it's the only place that tells the invoker which input forms the skill recognizes and what each does; a skill that only ever does one thing with its input needs the hint far less. When the branches are a fixed set of named modes or sub-commands — even just two, like a write/audit or design/audit split — name them pipe-separated rather than spelling the branch out as a descriptive phrase: `argument-hint: "[write|audit] [target]"`, not `argument-hint: "[code to write tests for, or existing tests to audit]"`. For more than a couple of commands, group by category with `·`: `argument-hint: "[cmdA|cmdB · cmdC|cmdD] [target]"`. Always quote the value — an unquoted `[issue-number]` parses as a YAML list, not the string every harness expects. This is a harness-specific extension, not part of the open standard, but it's the one worth adding by default: a harness that doesn't recognize it just ignores the field, so the cost of including it is zero and the upside is real when a harness does support it. Don't invent a structured, typed argument schema beyond this free-text hint — that level of harness-specific capability isn't worth designing a skill around.
+Verb-noun form preferred when the name contains a verb (`transcribe-video`, `review-code`).
 
-**Description** — the sole activation signal; write as an API contract:
+### Argument hint
+
+If the skill takes arguments, add an `argument-hint` frontmatter field with a free-text usage cue:
+
+- **Single input** — `argument-hint: "[issue-number]"` or `argument-hint: "[filename] [format]"`.
+- **Fixed modes or sub-commands** — name them pipe-separated instead of spelling the branch out as a phrase, even for just two modes: `argument-hint: "[write|audit] [target]"`, not `argument-hint: "[code to write tests for, or existing tests to audit]"`. Group more than a couple of commands by category with `·`: `argument-hint: "[cmdA|cmdB · cmdC|cmdD] [target]"`.
+- **Quoting** — always quote the value; an unquoted `[issue-number]` parses as a YAML list, not the string every harness expects.
+
+The hint earns its keep most when the body actually branches on what's supplied — it's the only place that tells the invoker which input forms the skill recognizes and what each does. This is a harness-specific extension, not part of the open standard, but a harness that doesn't recognize it just ignores the field, so the cost of including it is zero. Don't invent a structured, typed argument schema beyond this free-text hint — that level of harness-specific capability isn't worth designing a skill around.
+
+### Description
+
+The sole activation signal; write as an API contract:
 
 ```
 <verb> <what it does>. Use when <conditions>, or when the user says "<phrase 1>", "<phrase 2>".
