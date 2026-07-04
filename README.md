@@ -47,7 +47,7 @@ Skills for writing and editing content: emails, documents, reports, and other wr
 
 Skills for software development tasks: code review, debugging, architecture, and technical workflows.
 
-**5 skills →** [browse the engineering bucket](skills/engineering/README.md)
+**3 skills →** [browse the engineering bucket](skills/engineering/README.md)
 
 ## Productivity
 

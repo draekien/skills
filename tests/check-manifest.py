@@ -10,9 +10,9 @@ Usage:
 
 Run from the repo root. No arguments.
 
-Checks:
-  1. Every non-personal SKILL.md has a path entry in marketplace.json "everything.skills"
-  2. Every non-personal SKILL.md has an entry in its bucket README.md
+Checks (personal and archived buckets are excluded):
+  1. Every non-personal, non-archived SKILL.md has a path entry in marketplace.json "everything.skills"
+  2. Every non-personal, non-archived SKILL.md has an entry in its bucket README.md
   3. Every path in marketplace.json "everything.skills" resolves to a real SKILL.md
 
 Exit codes:
@@ -31,6 +31,7 @@ REPO_ROOT = Path(__file__).parent.parent
 MANIFEST_PATH = REPO_ROOT / ".claude-plugin" / "marketplace.json"
 SKILLS_ROOT = REPO_ROOT / "skills"
 PERSONAL_BUCKET = "personal"
+ARCHIVED_BUCKET = "archived"
 
 
 def parse_frontmatter(skill_md: Path) -> dict:
@@ -61,9 +62,11 @@ def main() -> int:
 
     everything_skills = set(everything_plugin.get("skills", []))
 
-    # Collect all SKILL.md files, excluding personal bucket
+    # Collect all SKILL.md files, excluding personal and archived buckets
     skill_mds = [
-        p for p in SKILLS_ROOT.rglob("SKILL.md") if PERSONAL_BUCKET not in p.parts
+        p
+        for p in SKILLS_ROOT.rglob("SKILL.md")
+        if PERSONAL_BUCKET not in p.parts and ARCHIVED_BUCKET not in p.parts
     ]
 
     issues: list[str] = []

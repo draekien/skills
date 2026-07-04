@@ -10,6 +10,7 @@ Repo stores agent skills in buckets under `skills/`. Each bucket groups skills b
 - **productivity** — Workplace productivity: summarisation, research, meeting prep, task management.
 - **ui-ux** — User interface and experience design: dashboards, visual design, usability.
 - **output-styles** — Tone and voice modes: communication style presets for different audiences and needs.
+- **archived** — Retired skills kept for reference. Must NOT be indexed or promoted in any README.md, and must NEVER be registered in `marketplace.json` (no bucket entry, no `everything` entry).
 
 ## Structure
 
