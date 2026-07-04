@@ -29,7 +29,6 @@
         "./skills/productivity/rubber-duck",
         "./skills/productivity/from-first-principles",
         "./skills/engineering/get-specific",
-        "./skills/engineering/configure-claude-rules",
         "./skills/engineering/module-design",
         "./skills/engineering/break-down-prd",
         "./skills/engineering/with-testing-principles",
@@ -53,7 +52,7 @@
       "description": "Skills for software development tasks: code review, debugging, architecture, and technical workflows.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/engineering/get-specific", "./skills/engineering/configure-claude-rules", "./skills/engineering/module-design", "./skills/engineering/break-down-prd", "./skills/engineering/with-testing-principles"],
+      "skills": ["./skills/engineering/get-specific", "./skills/engineering/module-design", "./skills/engineering/break-down-prd", "./skills/engineering/with-testing-principles"],
       "version": "0.19.0"
     },
     {
