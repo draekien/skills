@@ -1,6 +1,7 @@
 ---
 name: design-dashboards
-description: Applies dashboard design principles to design, build, or review dashboards — classifying the dashboard type, selecting the right chart for each question, structuring KPIs and layout, and catching common anti-patterns. Use when designing or building a dashboard, choosing visualizations for data, or auditing an existing dashboard — or when the user says "design a dashboard", "build a dashboard", "create a dashboard", "review my dashboard", "which chart should I use", "improve this dashboard".
+description: Applies dashboard design principles to design, build, or review dashboards — classifying the dashboard type, selecting the right chart for each question, structuring KPIs and layout, and catching common anti-patterns. Use when designing or building a dashboard, choosing visualizations for data, or auditing an existing dashboard.
+disable-model-invocation: true
 ---
 
 A dashboard is a single-screen answer to a specific question for a specific audience. Dashboards fail when they are built for available data instead of a named decision — the result is a wall of metrics nobody uses. Before any visual decision, establish: who reads this, what decision they make from it, and how fast they need the answer. Every rule below derives from three commitments:

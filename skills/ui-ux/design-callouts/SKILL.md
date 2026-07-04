@@ -1,6 +1,7 @@
 ---
 name: design-callouts
-description: Applies callout design principles to design, build, review, or write callouts — classifying whether the need is a status message, a documentation admonition, or an attention/onboarding overlay, selecting the least disruptive component that does the job, and enforcing accessibility requirements. Use when designing or reviewing notifications, toasts, banners, alerts, error messages, tooltips, onboarding tours, or admonitions in docs — or when the user says "add a toast", "design a notification", "error message UX", "which alert component", "add a callout", "review my notifications", "add a warning to the docs".
+description: Applies callout design principles to design, build, review, or write callouts — classifying whether the need is a status message, a documentation admonition, or an attention/onboarding overlay, selecting the least disruptive component that does the job, and enforcing accessibility requirements. Use when designing or reviewing notifications, toasts, banners, alerts, error messages, tooltips, onboarding tours, or admonitions in docs.
+disable-model-invocation: true
 ---
 
 A callout spends the reader's attention to redirect it. Callouts fail in two opposite ways: too quiet — an error vanishing in a five-second toast nobody saw — or too loud — a page of warning boxes readers have learned to skip. Both come from choosing the component before classifying the message. Every rule below derives from three commitments:

@@ -1,6 +1,7 @@
 ---
 name: visualise
-description: Takes user-supplied input and produces a self-contained HTML file that visualises it. Use when the user wants to see data, text, or structured content rendered visually, or when the user says "visualise this", "show me a chart", "make a diagram", "render this as HTML".
+description: Turns data, text, or structured content into a self-contained HTML visualisation, such as a chart or diagram. Use when you want something rendered visually rather than described in text.
+disable-model-invocation: true
 ---
 
 Pick the most informative visual form for the input, generate a self-contained HTML file (no non-CDN external requests — approved CDN libraries are permitted), validate it, then report the full path.

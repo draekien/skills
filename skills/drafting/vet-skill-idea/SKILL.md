@@ -1,7 +1,8 @@
 ---
 name: vet-skill-idea
-description: Evaluates whether a concept should become an agent skill before one is written, gating it against worthiness criteria and routing it to build, split, redirect, or drop. Use before creating a skill, or when the user says "design a skill", "design a new skill", "should this be a skill", "is this skill-worthy", "do we need a skill for", "evaluate this skill idea".
+description: Evaluates whether an idea should become an agent skill, checking it against worthiness criteria and routing it to build, split, redirect, or drop. Run this before writing a new skill, to avoid adding one that is not worth the ongoing context cost.
 compatibility: Designed for Claude Code (or similar products with Agent Skills support)
+disable-model-invocation: true
 ---
 
 Every skill's description loads into context for every session in its scope. An unworthy skill is permanent tax that also dilutes activation for the skills that earn their place — so the default answer is no. The job here is to find the reason *not* to build a skill; only a concept that survives every gate below deserves one.

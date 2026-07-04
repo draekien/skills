@@ -1,7 +1,8 @@
 ---
 name: deep-research
-description: 'Conducts structured multi-source research on any topic: relentlessly interviews the user to pin scope and constraints, decomposes into research angles for confirmation, dispatches parallel researchers with adaptive source selection, then synthesizes a final report. Use when thorough, well-sourced answers are needed, or when the user says "deep research", "research this thoroughly", "deep dive into", "investigate", "I need a research report on".'
+description: Conducts structured, multi-source research on a topic — interviewing you to pin down scope and constraints, dispatching parallel researchers, and synthesizing a cited report. Use when you need a thorough, well-sourced answer to a complex question.
 compatibility: Agent teams mode requires Claude Code with agent teams enabled.
+disable-model-invocation: true
 ---
 
 Runs in two phases: interview to establish scope, then autonomous multi-agent research with a synthesizer report.

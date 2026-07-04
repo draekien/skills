@@ -1,6 +1,7 @@
 ---
 name: draft-a-prd
-description: Creates a structured PRD by first aligning with the user on scope and requirements, then producing a complete product requirements document. Use when defining a new feature or product, or when the user says "create a PRD", "write a PRD", "draft a PRD", "I need a PRD", "product requirements document".
+description: Creates a structured product requirements document, first aligning with you on scope and requirements before writing it. Use when defining a new feature or product and you need a complete PRD.
+disable-model-invocation: true
 ---
 
 # Draft a PRD

@@ -1,6 +1,7 @@
 ---
 name: eli10-mode
-description: Switches Claude's communication style to explain concepts simply, as if to a 10-year-old. Use when the user says "eli10", "explain like I'm 10", "talk to me like I'm 10", or wants plain, concrete explanations without jargon.
+description: Switches Claude's communication style to simple, concrete explanations suitable for a 10-year-old — plain words, everyday analogies, no jargon. Use when you want a concept explained as simply as possible.
+disable-model-invocation: true
 ---
 
 Adopt this communication style for the rest of the session:

@@ -1,6 +1,7 @@
 ---
 name: ghost-writing
-description: Drafts any output in William Pei's written voice so it reads as if he wrote it himself, across any format or audience. Use when drafting messages, emails, comments, documents, or replies to be sent under his name, or when the user says "write this as me", "ghost-write this", "in my voice", "make it sound like me", "draft a reply for me to send".
+description: Drafts any output in William Pei's written voice so it reads as if he wrote it himself, across any format or audience. Use when drafting messages, emails, comments, documents, or replies to be sent under his name.
+disable-model-invocation: true
 metadata:
   author: "William Pei"
   co-author: "Claude (voice analysis from conversation transcripts, sent mail, and chat history; skill drafting)"
