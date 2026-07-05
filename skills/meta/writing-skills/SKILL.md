@@ -141,33 +141,11 @@ Reusable shapes for body content — use the ones that fit the task:
 
 ## Quality gate
 
-After creating or revising a skill, hold it at six gates before declaring the work done. Each is a validation loop. Track progress with a checklist:
+After creating or revising a skill, clear every item below before declaring the work done — each is a validation loop: fix every confirmed violation, then re-run that item until it's clean. Every item but spec validation examines a disjoint surface, so dispatch them in parallel; a fix that changes the skill's branches or scope re-opens the others.
 
-- [ ] Spec validation
-- [ ] Prompt analysis
-- [ ] Tenet audit
-- [ ] Axes audit
-- [ ] Craft audit
-- [ ] Frontmatter audit
-
-Every gate but spec validation examines a disjoint surface, so run them in parallel where you can dispatch several at once; if a fix from one gate changes the skill's branches or scope, re-run the others against the updated body.
-
-**Spec validation.** Run the bundled validator against the finished skill, using any runner that supports PEP 723 inline dependencies (default: `uv`):
-
-```bash
-uv run scripts/validate.py <skill-dir>
-```
-
-The script path is relative to this skill's directory; `<skill-dir>` is the skill being validated. It enforces the invariant rules in [references/spec-rules.md](references/spec-rules.md) and exits non-zero on failure — fix failures before shipping. Warnings flag portability tradeoffs to weigh, not defects; read that reference when a result needs interpreting.
-
-The invariants are the stable subset of the [Agent Skills open standard](https://agentskills.io/specification). For anything beyond them — optional fields, packaging, evolving harness support — fetch the live specification.
-
-**Prompt analysis.** Review the skill as a prompt using [references/prompt-analysis.md](references/prompt-analysis.md). Read every linked file in full before judging — sampling a reference file with an offset or line limit hides the exact drift this gate exists to catch. Where you can dispatch work to a fresh context, have that fresh context run the review — the author rereading its own words tends to miss the ambiguities it just wrote; otherwise self-review under the reference's findings discipline. Fix every confirmed finding, then re-review until a pass reports none.
-
-**Tenet audit.** Audit the skill against the Tenets section above. Fix every confirmed violation, then re-audit until none remain.
-
-**Axes audit.** Audit the skill against the Axes section above — confirm the skill's actual writing matches the position it should hold on each axis. Fix every confirmed violation, then re-audit until none remain.
-
-**Craft audit.** Audit the skill against the Craft section above. The one-term-per-concept rule needs a targeted pass beyond a read-through: grep the skill's defined terms across the body and every reference file for synonyms standing in for them. Fix every confirmed violation, then re-audit until none remain.
-
-**Frontmatter audit.** No gate above covers frontmatter — spec validation checks only presence and length, and the other gates examine the body and linked files. Audit the description against "The description" section and the argument hint against "The argument hint" section. Fix every confirmed violation, then re-audit until none remain.
+- [ ] **Spec validation** — run the bundled validator, using any runner that supports PEP 723 inline dependencies (default `uv`): `uv run scripts/validate.py <skill-dir>` (path relative to this skill's directory). Fix failures against [references/spec-rules.md](references/spec-rules.md); warnings are portability tradeoffs to weigh, not defects. Beyond these invariants — optional fields, packaging, evolving harness support — fetch the live [Agent Skills open standard](https://agentskills.io/specification).
+- [ ] **Prompt analysis** — review against [references/prompt-analysis.md](references/prompt-analysis.md), reading every linked file in full rather than sampling with an offset or limit. Prefer dispatching to a fresh context — the author rereading its own words tends to miss the ambiguities it just wrote.
+- [ ] **Tenet audit** — check the skill against the Tenets section above.
+- [ ] **Axes audit** — check the skill's actual writing against the position it holds on each axis above.
+- [ ] **Craft audit** — check the skill against the Craft section above. One term per concept needs a targeted pass beyond reading: grep the skill's defined terms across the body and every reference file for synonyms standing in for them.
+- [ ] **Frontmatter audit** — the only item covering frontmatter. Check the description against "The description" section and the argument hint against "The argument hint" section.
