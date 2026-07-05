@@ -141,18 +141,11 @@ Reusable shapes for body content — use the ones that fit the task:
 
 ## Quality gate
 
-After creating or revising a skill, hold it at three gates before declaring the work done. Each is a validation loop. Gates 2 and 3 examine disjoint surfaces — the body and its linked files, and the description — so run them in parallel where you can dispatch both; if a gate-2 fix changes the skill's branches or scope, re-run gate 3 against the updated body.
+After creating or revising a skill, clear every item below before declaring the work done — each is a validation loop: fix every confirmed violation, then re-run that item until it's clean. Every item but spec validation examines a disjoint surface, so dispatch them in parallel; a fix that changes the skill's branches or scope re-opens the others.
 
-**1. Spec validation.** Run the bundled validator against the finished skill, using any runner that supports PEP 723 inline dependencies (default: `uv`):
-
-```bash
-uv run scripts/validate.py <skill-dir>
-```
-
-The script path is relative to this skill's directory; `<skill-dir>` is the skill being validated. It enforces the invariant rules in [references/spec-rules.md](references/spec-rules.md) and exits non-zero on failure — fix failures before shipping. Warnings flag portability tradeoffs to weigh, not defects; read that reference when a result needs interpreting.
-
-The invariants are the stable subset of the [Agent Skills open standard](https://agentskills.io/specification). For anything beyond them — optional fields, packaging, evolving harness support — fetch the live specification.
-
-**2. Prompt analysis.** Review the skill as a prompt using [references/prompt-analysis.md](references/prompt-analysis.md). Where you can dispatch work to a fresh context, have that fresh context run the review — the author rereading its own words tends to miss the ambiguities it just wrote; otherwise self-review under the reference's findings discipline. Fix every confirmed finding, then re-review until a pass reports none.
-
-**3. Description audit.** Neither gate above covers the description — spec validation checks only presence and length, and prompt analysis excludes frontmatter — yet it is the sole activation signal. Audit it against "The description" section: the form matching its trigger axis, the leading word front-loaded, one trigger per branch, no restatement of what the skill is.
+- [ ] **Spec validation** — run the bundled validator, using any runner that supports PEP 723 inline dependencies (default `uv`): `uv run scripts/validate.py <skill-dir>` (path relative to this skill's directory). Fix failures against [references/spec-rules.md](references/spec-rules.md); warnings are portability tradeoffs to weigh, not defects. Beyond these invariants — optional fields, packaging, evolving harness support — fetch the live [Agent Skills open standard](https://agentskills.io/specification).
+- [ ] **Prompt analysis** — review against [references/prompt-analysis.md](references/prompt-analysis.md), reading every linked file in full rather than sampling with an offset or limit. Prefer dispatching to a fresh context — the author rereading its own words tends to miss the ambiguities it just wrote.
+- [ ] **Tenet audit** — check the skill against the Tenets section above.
+- [ ] **Axes audit** — check the skill's actual writing against the position it holds on each axis above.
+- [ ] **Craft audit** — check the skill against the Craft section above. One term per concept needs a targeted pass beyond reading: grep the skill's defined terms across the body and every reference file for synonyms standing in for them.
+- [ ] **Frontmatter audit** — the only item covering frontmatter. Check the description against "The description" section and the argument hint against "The argument hint" section.

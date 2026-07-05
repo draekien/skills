@@ -10,7 +10,7 @@ Layout, color, typography, interactivity, accessibility, and loading-state rules
 - **Tile consistency.** Same content type gets identical styling everywhere: title top-left, filters top-right, legend bottom-center, one shared type scale. Inconsistent tiles damage scannability more than any individually bad chart. Keep tiles short — no internal scrolling.
 - **Tile sizing by density.** Small tiles for static content up to ~4 data items; medium for moderate data; large only for genuinely complex visualizations. Five workhorse tile archetypes: aggregate status, trend (sparkline), utilization, attribute-value details, event list.
 - **Group by proximity, not color.** Whitespace gaps and light bounding regions are the primary relatedness signal; section headers make the grouping's meaning explicit; color only reinforces. A good grouping survives the blur test — recognizable at thumbnail scale.
-- **Single screen.** The primary view renders without scrolling. Content that demands scrolling signals an uncut metric list, not a small canvas.
+- **Single screen for status.** Status KPIs render above the fold without scrolling; trends, comparisons, and detail may sit below and require scrolling to reach. Status itself demanding a scroll signals an uncut metric list, not a small canvas.
 
 ## Color
 

@@ -1,6 +1,7 @@
 ---
 name: design-dashboards
-description: Applies dashboard design principles to design, build, or review dashboards — classifying the dashboard type, selecting the right chart for each question, structuring KPIs and layout, and catching common anti-patterns. Use when designing or building a dashboard, choosing visualizations for data, or auditing an existing dashboard.
+description: Designs, builds, or audits dashboards — classifying the dashboard type, choosing the right chart for each question, and structuring KPIs and layout. For building a dashboard or choosing visualizations for data.
+argument-hint: "[design|build|audit] [target]"
 disable-model-invocation: true
 ---
 
@@ -14,7 +15,7 @@ These rules apply identically when designing from scratch and when auditing an e
 
 ## Establish the brief
 
-Before any visual decision, establish who reads this dashboard, what decision they make from it, and how fast they need the answer. These three answers drive every choice that follows, starting with classification below.
+Before any visual decision, establish who reads this dashboard, what decision they make from it, and how fast they need the answer. If the user hasn't stated these, ask rather than infer — every choice that follows, starting with classification below, depends on them.
 
 ## Classify the dashboard first
 

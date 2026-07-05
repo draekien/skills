@@ -18,15 +18,15 @@ Eighteen dashboard failures in four groups. Each entry: how to recognize it, why
 
 ## Structural failures
 
-**7. Data dump.** 20+ tiles, every available metric, tables so wide users export to spreadsheets. Working memory handles ~7 chunks; beyond that, attention dilutes into analysis paralysis. → Cap primary metrics per view; summarized top-N with drill-down for the rest.
+**7. Data dump.** 20+ tiles, every available metric, tables so wide users export to spreadsheets. Working memory handles ~7 chunks; beyond that, attention dilutes into analysis paralysis. → Cap primary metrics per dashboard; summarized top-N with drill-down for the rest.
 
 **8. No named audience or question.** Built from available data rather than a decision someone makes. Without an audience, nothing can be prioritized, so nothing is. → Define the audience and their decision first; every metric must map to it or go.
 
 **9. Vanity wall.** Huge hero numbers (total impressions, cumulative signups) with no target, delta, or action, while decision-relevant rates hide in a corner. A museum of big numbers supports no decision. → Frame each KPI as question + target + variance; demote or delete the rest.
 
-**10. Scrolling wall of charts.** Key tiles below the fold, long scroll to reach anything. Below the fold is effectively invisible for a monitoring surface. → Top KPIs above the fold; secondary content behind drill-down, lazy-loaded.
+**10. Scrolling wall of charts.** Key tiles below the fold, long scroll to reach anything. Below the fold is effectively invisible for a dashboard. → Top KPIs above the fold; secondary content behind drill-down, lazy-loaded.
 
-**11. Inconsistent time ranges and grains.** Tiles silently overriding the global range, mixed hourly/daily grains, hidden sticky filters from a prior session. Numbers that appear to disagree destroy trust in the whole surface. → One global range/filter set; visible per-tile scope line for any override.
+**11. Inconsistent time ranges and grains.** Tiles silently overriding the global range, mixed hourly/daily grains, hidden sticky filters from a prior session. Numbers that appear to disagree destroy trust in the whole dashboard. → One global range/filter set; visible per-tile scope line for any override.
 
 ## Cognitive failures
 
