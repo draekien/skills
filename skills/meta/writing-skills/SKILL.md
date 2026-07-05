@@ -141,7 +141,16 @@ Reusable shapes for body content — use the ones that fit the task:
 
 ## Quality gate
 
-After creating or revising a skill, hold it at four gates before declaring the work done. Each is a validation loop. Gates 2–4 examine disjoint surfaces — prompt-level defects, tenet/craft compliance, and frontmatter — so run them in parallel where you can dispatch all three; if a fix from one gate changes the skill's branches or scope, re-run the others against the updated body.
+After creating or revising a skill, hold it at six gates before declaring the work done. Each is a validation loop. Track progress with a checklist:
+
+- [ ] 1. Spec validation
+- [ ] 2. Prompt analysis
+- [ ] 3. Tenet audit
+- [ ] 4. Axes audit
+- [ ] 5. Craft audit
+- [ ] 6. Frontmatter audit
+
+Gates 2–6 examine disjoint surfaces, so run them in parallel where you can dispatch several at once; if a fix from one gate changes the skill's branches or scope, re-run the others against the updated body.
 
 **1. Spec validation.** Run the bundled validator against the finished skill, using any runner that supports PEP 723 inline dependencies (default: `uv`):
 
@@ -155,6 +164,10 @@ The invariants are the stable subset of the [Agent Skills open standard](https:/
 
 **2. Prompt analysis.** Review the skill as a prompt using [references/prompt-analysis.md](references/prompt-analysis.md). Read every linked file in full before judging — sampling a reference file with an offset or line limit hides the exact drift this gate exists to catch. Where you can dispatch work to a fresh context, have that fresh context run the review — the author rereading its own words tends to miss the ambiguities it just wrote; otherwise self-review under the reference's findings discipline. Fix every confirmed finding, then re-review until a pass reports none.
 
-**3. Tenet & craft audit.** Prompt analysis catches prompt-level defects; it does not check the skill against this document's own standard. Re-read the skill against the Tenets, Axes, and Craft sections above and confirm each holds: axis positioning matches how the skill is actually written, leading words are strong enough to beat the no-op test, no duplication/sediment/sprawl has settled, and **one term per concept holds across every file** — grep the skill's defined terms (e.g. a glossary pair set up in the body) across the body and every reference file for synonyms standing in for them; a single read-through misses drift that a targeted search catches. Fix every confirmed violation, then re-audit until none remain.
+**3. Tenet audit.** Audit the skill against the Tenets section above. Fix every confirmed violation, then re-audit until none remain.
 
-**4. Frontmatter audit.** No gate above covers frontmatter — spec validation checks only presence and length, and prompt analysis and the tenet/craft audit both examine the body and linked files, not the frontmatter itself. Audit the description against "The description" section: the form matching its trigger axis, the leading word front-loaded, one trigger per branch, no restatement of what the skill is. Audit the argument hint against "The argument hint" section: present and correctly shaped whenever the skill takes input, especially on a `disable-model-invocation` skill — with the model-triggered path closed, the argument hint is the only remaining cue for what to supply.
+**4. Axes audit.** Audit the skill against the Axes section above — confirm the skill's actual writing matches the position it should hold on each axis. Fix every confirmed violation, then re-audit until none remain.
+
+**5. Craft audit.** Audit the skill against the Craft section above. The one-term-per-concept rule needs a targeted pass beyond a read-through: grep the skill's defined terms across the body and every reference file for synonyms standing in for them. Fix every confirmed violation, then re-audit until none remain.
+
+**6. Frontmatter audit.** No gate above covers frontmatter — spec validation checks only presence and length, and the other gates examine the body and linked files. Audit the description against "The description" section and the argument hint against "The argument hint" section. Fix every confirmed violation, then re-audit until none remain.
