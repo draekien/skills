@@ -5,7 +5,7 @@ argument-hint: "[data, file, or text to visualise] [optional output name]"
 disable-model-invocation: true
 ---
 
-Pick the most informative visual form for the input, generate a self-contained output file (no non-CDN external requests — approved CDN libraries are permitted), validate it, then report the output path.
+Pick the most informative visual form for the input, generate a self-contained output file (no non-CDN external requests — CDN libraries are permitted only from the approved hosts in [references/design-thinking.md](references/design-thinking.md)), validate it, then report the output path.
 
 If the input has no clear visual form, default to a formatted document layout (readable typography, structured sections) rather than forcing a chart. Never ask the user to clarify — a visualisation only has value if it appears quickly, and a clarifying question stalls that; pick the most informative form and proceed.
 
