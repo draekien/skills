@@ -35,9 +35,10 @@
         "./skills/ui-ux/design-callouts",
         "./skills/ui-ux/design-dashboards",
         "./skills/output-styles/cte-mode",
-        "./skills/output-styles/eli10-mode"
+        "./skills/output-styles/eli10-mode",
+        "./skills/meta/writing-skills"
       ],
-      "version": "0.42.0"
+      "version": "0.43.0"
     },
     {
       "name": "drafting-skills",
@@ -94,6 +95,14 @@
       "strict": false,
       "skills": ["./skills/output-styles/cte-mode", "./skills/output-styles/eli10-mode"],
       "version": "0.3.2"
+    },
+    {
+      "name": "meta-skills",
+      "description": "Meta-skills: skills about authoring, vetting, and evaluating skills themselves.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/meta/writing-skills"],
+      "version": "0.1.0"
     },
     {
       "name": "personal-skills",
