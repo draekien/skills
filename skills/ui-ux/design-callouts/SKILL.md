@@ -1,6 +1,7 @@
 ---
 name: design-callouts
-description: Applies callout design principles to design, build, review, or write callouts — classifying whether the need is a status message, a documentation admonition, or an attention/onboarding overlay, selecting the least disruptive component that does the job, and enforcing accessibility requirements. Use when designing or reviewing notifications, toasts, banners, alerts, error messages, tooltips, onboarding tours, or admonitions in docs.
+description: Designs, builds, or audits callouts — status messages, docs admonitions, and attention/onboarding overlays — picking the least disruptive component and enforcing accessibility requirements. For notifications, toasts, banners, alerts, error messages, tooltips, and onboarding tours.
+argument-hint: "[design|build|review] [target]"
 disable-model-invocation: true
 ---
 
@@ -63,7 +64,7 @@ Prefer pull over push — help that appears when the user asks for it beats help
 
 1. **Labeling or describing a control** → tooltip, on hover *and* keyboard focus. Content must pass the tooltip test: not essential to the task, and not already visible. Nothing interactive inside — a tooltip needing a button is a toggletip/popover.
 2. **Richer or interactive help on demand** → toggletip / popover / contextual-help panel, click-triggered, focus-managed.
-3. **Teaching proactively** → coach mark or teaching tip, only for genuinely novel interactions the UI cannot make self-evident — the default answer to "should we add a tour?" is to make the UI clearer instead. One visible at a time, at most 3 steps, always skippable, never re-shown after dismissal. Teach at the moment of relevance — an empty state with one clear action outperforms an upfront tour, because instructions given before they are needed are forgotten in seconds.
+3. **Teaching proactively** → coach mark or teaching tip, only for genuinely novel interactions the UI cannot make self-evident — the default answer to "should we add a tour?" is to make the UI clearer instead. One visible at a time, at most 3 steps, always skippable, never re-shown after dismissal. Teach at the moment of relevance — an empty state with one clear action outperforms an upfront tour, because instructions given before they are needed are forgotten in about 20 seconds.
 4. **Flagging new features passively** → badge, reserved for workflow-affecting changes, cleared on first interaction.
 
 Component taxonomy, hover-timing numbers, tour evidence, and badge rules: [references/attention-onboarding.md](references/attention-onboarding.md).

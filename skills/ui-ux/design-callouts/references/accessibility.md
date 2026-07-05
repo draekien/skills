@@ -48,7 +48,7 @@ Screen-magnifier users may never see a corner toast; screen-reader announcements
 
 ## Hard requirements per component
 
-- **Banner (persistent)** — live-region role matching severity if injected dynamically (`alert` for error/warning, `status` otherwise); no role needed when server-rendered with the page. Severity = color + icon + text. Dismiss control keyboard-operable. No focus move on appearance.
+- **Banner (persistent)** — live-region role matching severity if injected dynamically (`alert` for error/warning, `status` otherwise); no role needed when server-rendered with the page. Severity = color + icon + text. Dismiss control keyboard-operable when dismissal is permitted; a banner gated on an unresolved system-wide condition (see main skill) has no dismiss control until the condition clears. No focus move on appearance.
 - **Toast** — `role="status"` (or `log` with a history); container primed empty in the DOM; never steals focus; no essential interactive content; duration floor + hover/focus pause.
 - **Tooltip** — appears on focus as well as hover; `role="tooltip"` + `aria-describedby`; Escape dismisses; hoverable and persistent per 1.4.13; never focusable; non-essential text only.
 - **Toggletip / popover / coach mark** — click- or sequence-driven disclosure, not a live region; Escape closes; focus enters if interactive and returns to the trigger on close; programmatically launched teaching surfaces announce their intent on launch.
