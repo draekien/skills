@@ -19,14 +19,14 @@ A skill MUST:
 - **Be grounded in real expertise** — extracted from hands-on task execution or synthesized from real project artefacts (runbooks, schemas, review comments, failure cases). A skill generated from generic training knowledge yields vague procedures ("handle errors appropriately") and adds no delta.
 - **Target the agent, not the user** — if the information is not necessary for the agent to perform its task, cut it.
 - **Carry activation entirely in the description** — the body is never read until after activation, so the description is the sole activation signal. Never write a "when to use this skill" section in the body.
-- **Encode timeless principles** — moderated by the Knowledge ↔ Procedure axis: principles are the default payload and a procedure skill may encode steps instead, but even steps must stay free of state-of-the-world.
+- **Encode timeless principles** — moderated by the Knowledge ↔ Procedure axis: principles are the default payload; a procedure skill may encode steps instead.
 - **Never encode the current state of the world** — corpus contents, file counts, "all existing X do Y". Such facts rot as the skill is used, most sharply when the skill exists to change that very state. Where current state is required, instruct the agent to explore.
 
 A skill SHOULD:
 
 - **Carry the why, not just the what** — an agent that understands the goal adapts when exact steps don't fit; an agent with only commands cannot.
 - **Omit what the agent already knows** — the highest-value content is the delta from the agent's defaults: what it would not do on its own, most sharply an instruction that countermands a strong reflex. Aim for moderate detail; most edge cases are better handled by the agent's own judgment than enumerated.
-- **Cover a coherent unit of work** — scoped like a well-designed function: too narrow forces many skills to load for one task; too broad cannot activate precisely.
+- **Cover a coherent unit of work** — single responsibility, scoped like a function: too narrow forces many skills to load for one task; too broad cannot activate precisely.
 - **Name tools at the right specificity** — for the agent's harness capabilities, describe the capability ("search the web", "read local files"), never name a harness tool: toolsets vary and belong to the current state of the world. For domain tools a task requires (a library, a runner, a CLI), provide a default, not a menu: name one tool, adding at most a clause that an equivalent may be substituted when the environment demands it. A skill's own bundled scripts are exempt — invoking them prescriptively is what they exist for.
 - **Be refined against real execution** — run the draft on real tasks and read the agent's traces, not just final outputs. Wasted steps expose vague instructions, inapplicable instructions, or a missing default; a correction the user had to make becomes a gotcha. Behavioural disputes (is this line a no-op? did the leading word take hold?) are settled by running the skill, not by debate.
 
@@ -90,14 +90,14 @@ Don't push it toward a structured, typed argument schema — that isn't broadly 
 
 ## Content placement
 
-Rank content by how immediately the agent needs it, and place it accordingly:
+**Progressive disclosure** governs placement: rank content by how immediately the agent needs it —
 
 | Level         | Location        | What belongs here                                                                       |
 | ------------- | --------------- | ---------------------------------------------------------------------------------------- |
 | Always loaded | `SKILL.md` body | Steps and judgment every activation needs — the primary tier                             |
 | On demand     | `references/`   | Material only some branches need — schemas, lookup tables, deep documentation            |
 | Template      | `assets/`       | Outputs the agent copies rather than invents; static config; example files               |
-| Executable    | `scripts/`      | Deterministic operations where variation is a bug — bundle one when execution traces show the agent reinventing the same logic each run |
+| Executable    | `scripts/`      | Deterministic operations where variation is a bug                                        |
 
 **Branching is the cleanest placement test**: each distinct way the skill gets used is a branch — inline what every branch needs, defer what only some branches reach. Push too little down and the body bloats, burying the steps; push too much down and material the agent actually needs hides behind a pointer. Keep the body under 500 lines; link supporting files with relative paths, one level deep only — never reference a reference.
 
@@ -105,11 +105,11 @@ Rank content by how immediately the agent needs it, and place it accordingly:
 
 **Co-locate what is read together**: a concept's definition, rules, and caveats under one heading, not scattered across the file. The test is that the skill reads like documentation written for the agent — grouped material reads that way, scattered material does not.
 
-When the skill puts execution in the agent's hands — one-off tool invocations or bundled scripts — apply [references/script-design.md](references/script-design.md).
+When deciding whether the skill should put execution in the agent's hands — one-off tool invocations or bundled scripts — and when designing either, apply [references/script-design.md](references/script-design.md).
 
 ## Craft
 
-- **Leading words** — compress an instruction into a domain term the agent's training already has strong priors about ("build a **vertical slice** first"), then reuse that exact term — as a token, never re-explained as a sentence — everywhere the skill touches the idea. A pretrained word recruits priors for free; a coined word pays in definition tokens what a pretrained word gives free. Grade a leading word with the no-op test: "be thorough" too weak to beat the default means a stronger word ("relentless"), not a different technique. Name phases and steps with concept words too — a generic sequence number ("Step 3") wastes a slot that could encode the mental model.
+- **Leading words** — compress an instruction into a domain term the agent's training already has strong priors about ("build a **vertical slice** first"), then reuse that exact term — as a token, never re-explained as a sentence — everywhere the skill touches the idea. A pretrained word recruits priors for free; a coined word pays in definition tokens what a pretrained word gives free. Grade a leading word with the no-op test: "be thorough" too weak to beat the default means a stronger word ("relentless"), not a different technique. Name phases and steps with leading words too — a generic sequence number ("Step 3") wastes a slot that could encode the mental model.
 - **Completion criteria** — end each unit of work on the condition that tells the agent it is done. Make it *checkable* (the agent can tell done from not-done) and *demanding* ("every modified model accounted for", not "produce a change list"). Demand drives legwork — the digging the agent does within the work — and binds flat knowledge content just as it binds steps: "every rule applied" is a completion criterion too.
 - **Prune relentlessly** — give each meaning a single source of truth and check every line for relevance. Hunt the named failure modes: **duplication** (same meaning in two places — inflates its prominence past its real rank), **sediment** (stale layers that settle because adding feels safe and removing feels risky — the default fate of any skill without a pruning discipline), **no-ops** (lines the agent already obeys by default — test per sentence, and delete the whole sentence rather than trim words), and **sprawl** (length itself, even when every line is live — cured by placement, not editing).
 - **One term per concept** — a synonym reads as a second concept; never vary terminology.
@@ -141,7 +141,7 @@ Reusable shapes for body content — use the ones that fit the task:
 
 ## Quality gate
 
-After creating or revising a skill, hold it at three gates before declaring the work done. Each is a validation loop: run the check, fix what it reports, re-run until it passes clean. Gates 2 and 3 examine disjoint surfaces — the loaded prose and the description — so run them in parallel where you can dispatch both; if a gate-2 fix changes the skill's branches or scope, re-run gate 3 against the updated body.
+After creating or revising a skill, hold it at three gates before declaring the work done. Each is a validation loop. Gates 2 and 3 examine disjoint surfaces — the body and its linked files, and the description — so run them in parallel where you can dispatch both; if a gate-2 fix changes the skill's branches or scope, re-run gate 3 against the updated body.
 
 **1. Spec validation.** Run the bundled validator against the finished skill, using any runner that supports PEP 723 inline dependencies (default: `uv`):
 
