@@ -83,4 +83,4 @@ Skills that shift Claude's communication tone and voice.
 
 Meta-skills: skills about authoring, vetting, and evaluating skills themselves.
 
-**0 skills →** [browse the meta bucket](skills/meta/README.md)
+**1 skill →** [browse the meta bucket](skills/meta/README.md)
