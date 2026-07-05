@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Best-in-class knowledge for writing agent skills — the tenets, design axes, and craft for authoring or reworking a SKILL.md, plus a spec validator. Reach for it before creating a new skill or revising an existing one.
+description: Knowledge for writing agent skills — the tenets, design axes, and craft of a SKILL.md, plus a spec validator. Reach for it before creating a new skill or revising an existing one.
 argument-hint: "[skill-name-or-path]"
 disable-model-invocation: true
 ---
