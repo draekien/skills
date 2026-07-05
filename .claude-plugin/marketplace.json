@@ -38,7 +38,7 @@
         "./skills/output-styles/eli10-mode",
         "./skills/meta/writing-skills"
       ],
-      "version": "0.43.0"
+      "version": "0.43.1"
     },
     {
       "name": "drafting-skills",
@@ -86,7 +86,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/ui-ux/design-callouts", "./skills/ui-ux/design-dashboards"],
-      "version": "0.2.1"
+      "version": "0.2.2"
     },
     {
       "name": "output-styles",
@@ -102,7 +102,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/meta/writing-skills"],
-      "version": "0.1.0"
+      "version": "0.1.1"
     },
     {
       "name": "personal-skills",
