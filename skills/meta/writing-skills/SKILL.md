@@ -109,7 +109,7 @@ When the skill puts execution in the agent's hands — one-off tool invocations 
 
 ## Craft
 
-- **Leading words** — compress an instruction into a domain term the agent's training already has strong priors about ("build a **vertical slice** first"), then reuse that exact term — as a token, never re-explained as a sentence — everywhere the skill touches the idea. A pretrained word recruits priors for free; a coined word pays in definition tokens what a pretrained word gives free. Grade a leading word with the no-op test: "be thorough" too weak to beat the default means a stronger word ("relentless"), not a different technique.
+- **Leading words** — compress an instruction into a domain term the agent's training already has strong priors about ("build a **vertical slice** first"), then reuse that exact term — as a token, never re-explained as a sentence — everywhere the skill touches the idea. A pretrained word recruits priors for free; a coined word pays in definition tokens what a pretrained word gives free. Grade a leading word with the no-op test: "be thorough" too weak to beat the default means a stronger word ("relentless"), not a different technique. Name phases and steps with concept words too — a generic sequence number ("Step 3") wastes a slot that could encode the mental model.
 - **Completion criteria** — end each unit of work on the condition that tells the agent it is done. Make it *checkable* (the agent can tell done from not-done) and *demanding* ("every modified model accounted for", not "produce a change list"). Demand drives legwork — the digging the agent does within the work — and binds flat knowledge content just as it binds steps: "every rule applied" is a completion criterion too.
 - **Prune relentlessly** — give each meaning a single source of truth and check every line for relevance. Hunt the named failure modes: **duplication** (same meaning in two places — inflates its prominence past its real rank), **sediment** (stale layers that settle because adding feels safe and removing feels risky — the default fate of any skill without a pruning discipline), **no-ops** (lines the agent already obeys by default — test per sentence, and delete the whole sentence rather than trim words), and **sprawl** (length itself, even when every line is live — cured by placement, not editing).
 - **One term per concept** — a synonym reads as a second concept; never vary terminology.
@@ -124,7 +124,7 @@ When the skill puts execution in the agent's hands — one-off tool invocations 
 Reusable shapes for body content — use the ones that fit the task:
 
 - **Gotchas section** — often the highest-value content: concrete corrections to mistakes the agent will otherwise make ("the health endpoint returns 200 even when the database is down — check the readiness endpoint instead"), not general advice. Keep gotchas in the body, where the agent reads them before encountering the situation — behind a pointer, it may not recognise the trigger. Every correction the user makes during real runs is a gotcha candidate.
-- **Output template** — when output must follow a format, provide a template to copy: agents pattern-match against concrete structure more reliably than against prose descriptions. Short templates inline; long or branch-specific ones in `assets/`.
+- **Output template** — when output must follow a format, provide a template to copy: agents pattern-match against concrete structure more reliably than against prose descriptions. Short templates inline; long or branch-specific ones in `assets/`. Templates are for artefacts the skill produces, never for the agent's own replies — describe conversational behaviour, don't script its words.
 - **Checklist** — for multi-step workflows with dependencies or validation gates; an explicit checklist lets the agent track progress and not skip steps.
 - **Validation loop** — do the work, run a validator (a script, a reference checklist, or a self-check), fix what it reports, and repeat until it passes. Only proceed on a pass.
 - **Plan-validate-execute** — for batch or destructive operations: produce an intermediate plan in a structured format, validate the plan against a source of truth — with errors informative enough for self-correction ("field X not found; available fields: ...") — and only then execute.
@@ -132,6 +132,7 @@ Reusable shapes for body content — use the ones that fit the task:
 ## Anti-patterns
 
 - **Workflow scripting** — encoding a fixed sequence when the task requires judgment about whether to follow a process at all. Encode the principles and the goal; let the agent determine the path. The tell: if removing every step header leaves nothing of substance, the steps were carrying the skill, not the intent.
+- **Structure–behaviour mismatch** — the body's shape contradicts the task's real shape: sequential numbered steps for behaviour that is concurrent or trigger-based, one-time setup interleaved with a recurring loop, or a sub-flow presented as a peer of its parent steps. Mirror the task: trigger-based behaviour as condition → response rules, setup separated from the loop it enables, sub-flows nested under their parent.
 - **Premature completion** — the agent ends a step before it is genuinely done because visible later steps pull its attention to *being done* (classically, "ask clarifying questions" collapses because "write the plan" sits right below it). Defend in order: **sharpen the completion criterion first** — it is local and cheap, and a checkable bar resists the pull no matter how many later steps are visible. Only when the criterion is irreducibly fuzzy *and* the rush is observed across real runs, hide the later steps by splitting the sequence — and only across a real context boundary (a separate skill or a sub-task dispatch); an inline call leaves the later steps in context and clears nothing.
 
 ## Available scripts
@@ -140,7 +141,7 @@ Reusable shapes for body content — use the ones that fit the task:
 
 ## Quality gate
 
-After creating or revising a skill, hold it at three gates before declaring the work done. Each is a validation loop: run the check, fix what it reports, re-run until it passes clean.
+After creating or revising a skill, hold it at three gates before declaring the work done. Each is a validation loop: run the check, fix what it reports, re-run until it passes clean. Gates 2 and 3 examine disjoint surfaces — the loaded prose and the description — so run them in parallel where you can dispatch both; if a gate-2 fix changes the skill's branches or scope, re-run gate 3 against the updated body.
 
 **1. Spec validation.** Run the bundled validator against the finished skill, using any runner that supports PEP 723 inline dependencies (default: `uv`):
 
