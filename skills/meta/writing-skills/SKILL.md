@@ -105,7 +105,7 @@ Rank content by how immediately the agent needs it, and place it accordingly:
 
 **Co-locate what is read together**: a concept's definition, rules, and caveats under one heading, not scattered across the file. The test is that the skill reads like documentation written for the agent — grouped material reads that way, scattered material does not.
 
-When bundling scripts, apply [references/script-design.md](references/script-design.md).
+When the skill puts execution in the agent's hands — one-off tool invocations or bundled scripts — apply [references/script-design.md](references/script-design.md).
 
 ## Craft
 
@@ -132,6 +132,10 @@ Reusable shapes for body content — use the ones that fit the task:
 
 - **Workflow scripting** — encoding a fixed sequence when the task requires judgment about whether to follow a process at all. Encode the principles and the goal; let the agent determine the path. The tell: if removing every step header leaves nothing of substance, the steps were carrying the skill, not the intent.
 - **Premature completion** — the agent ends a step before it is genuinely done because visible later steps pull its attention to *being done* (classically, "ask clarifying questions" collapses because "write the plan" sits right below it). Defend in order: **sharpen the completion criterion first** — it is local and cheap, and a checkable bar resists the pull no matter how many later steps are visible. Only when the criterion is irreducibly fuzzy *and* the rush is observed across real runs, hide the later steps by splitting the sequence — and only across a real context boundary (a separate skill or a sub-task dispatch); an inline call leaves the later steps in context and clears nothing.
+
+## Available scripts
+
+- **`scripts/validate.py`** — validates a skill against the invariant spec rules; supports `--json` for structured output
 
 ## Validation
 

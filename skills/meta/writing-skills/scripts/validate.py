@@ -486,6 +486,10 @@ def main():
     ):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
+    if any(a in ("-h", "--help") for a in sys.argv[1:]):
+        print(__doc__.strip())
+        sys.exit(0)
+
     args = [a for a in sys.argv[1:] if a != "--json"]
     as_json = "--json" in sys.argv[1:]
     if len(args) != 1:
