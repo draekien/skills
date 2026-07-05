@@ -143,16 +143,16 @@ Reusable shapes for body content — use the ones that fit the task:
 
 After creating or revising a skill, hold it at six gates before declaring the work done. Each is a validation loop. Track progress with a checklist:
 
-- [ ] 1. Spec validation
-- [ ] 2. Prompt analysis
-- [ ] 3. Tenet audit
-- [ ] 4. Axes audit
-- [ ] 5. Craft audit
-- [ ] 6. Frontmatter audit
+- [ ] Spec validation
+- [ ] Prompt analysis
+- [ ] Tenet audit
+- [ ] Axes audit
+- [ ] Craft audit
+- [ ] Frontmatter audit
 
-Gates 2–6 examine disjoint surfaces, so run them in parallel where you can dispatch several at once; if a fix from one gate changes the skill's branches or scope, re-run the others against the updated body.
+Every gate but spec validation examines a disjoint surface, so run them in parallel where you can dispatch several at once; if a fix from one gate changes the skill's branches or scope, re-run the others against the updated body.
 
-**1. Spec validation.** Run the bundled validator against the finished skill, using any runner that supports PEP 723 inline dependencies (default: `uv`):
+**Spec validation.** Run the bundled validator against the finished skill, using any runner that supports PEP 723 inline dependencies (default: `uv`):
 
 ```bash
 uv run scripts/validate.py <skill-dir>
@@ -162,12 +162,12 @@ The script path is relative to this skill's directory; `<skill-dir>` is the skil
 
 The invariants are the stable subset of the [Agent Skills open standard](https://agentskills.io/specification). For anything beyond them — optional fields, packaging, evolving harness support — fetch the live specification.
 
-**2. Prompt analysis.** Review the skill as a prompt using [references/prompt-analysis.md](references/prompt-analysis.md). Read every linked file in full before judging — sampling a reference file with an offset or line limit hides the exact drift this gate exists to catch. Where you can dispatch work to a fresh context, have that fresh context run the review — the author rereading its own words tends to miss the ambiguities it just wrote; otherwise self-review under the reference's findings discipline. Fix every confirmed finding, then re-review until a pass reports none.
+**Prompt analysis.** Review the skill as a prompt using [references/prompt-analysis.md](references/prompt-analysis.md). Read every linked file in full before judging — sampling a reference file with an offset or line limit hides the exact drift this gate exists to catch. Where you can dispatch work to a fresh context, have that fresh context run the review — the author rereading its own words tends to miss the ambiguities it just wrote; otherwise self-review under the reference's findings discipline. Fix every confirmed finding, then re-review until a pass reports none.
 
-**3. Tenet audit.** Audit the skill against the Tenets section above. Fix every confirmed violation, then re-audit until none remain.
+**Tenet audit.** Audit the skill against the Tenets section above. Fix every confirmed violation, then re-audit until none remain.
 
-**4. Axes audit.** Audit the skill against the Axes section above — confirm the skill's actual writing matches the position it should hold on each axis. Fix every confirmed violation, then re-audit until none remain.
+**Axes audit.** Audit the skill against the Axes section above — confirm the skill's actual writing matches the position it should hold on each axis. Fix every confirmed violation, then re-audit until none remain.
 
-**5. Craft audit.** Audit the skill against the Craft section above. The one-term-per-concept rule needs a targeted pass beyond a read-through: grep the skill's defined terms across the body and every reference file for synonyms standing in for them. Fix every confirmed violation, then re-audit until none remain.
+**Craft audit.** Audit the skill against the Craft section above. The one-term-per-concept rule needs a targeted pass beyond a read-through: grep the skill's defined terms across the body and every reference file for synonyms standing in for them. Fix every confirmed violation, then re-audit until none remain.
 
-**6. Frontmatter audit.** No gate above covers frontmatter — spec validation checks only presence and length, and the other gates examine the body and linked files. Audit the description against "The description" section and the argument hint against "The argument hint" section. Fix every confirmed violation, then re-audit until none remain.
+**Frontmatter audit.** No gate above covers frontmatter — spec validation checks only presence and length, and the other gates examine the body and linked files. Audit the description against "The description" section and the argument hint against "The argument hint" section. Fix every confirmed violation, then re-audit until none remain.
