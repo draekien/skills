@@ -43,7 +43,7 @@ Researchers pick sources adaptively based on their angle:
 
 ### Researcher mode — select before spawning
 
-If direct agent-to-agent messaging is available: Mode B. Otherwise: Mode A. If unsure, ask the user whether agents in their environment can message each other directly.
+If direct agent-to-agent messaging is available: Mode B. Otherwise: Mode A. If unsure, check whether a direct agent-messaging tool is available in your current toolset; default to Mode A if none is found.
 
 ### Mode A — Parallel subagents (default)
 
@@ -62,9 +62,9 @@ Each researcher receives:
 - Their assigned angle and scope
 - The names of all other researchers and the lead
 - The source menu
-- Instructions: research their angle adaptively, send cross-cutting findings to relevant peers via direct message, escalate blockers to the lead via direct message, and send the lead a direct message containing only the word DONE when their angle is exhausted, then stop
+- Instructions: research their angle adaptively, send cross-cutting findings to relevant peers via direct message, escalate blockers to the lead via direct message, and send the lead a direct message containing their full findings for the angle, followed by the word DONE, then stop
 
-Lead resolves blockers as they arrive: if the blocker is a missing source or access issue, instruct the researcher to skip that source and note it as unresolved; if the angle itself is unresolvable, mark it unresolved, instruct the researcher to send DONE and then stop, and include it in the synthesizer brief as an Open Question. Wait until all researchers have sent DONE, then collect all outputs.
+Lead resolves blockers as they arrive: if the blocker is a missing source or access issue, instruct the researcher to skip that source and note it as unresolved; if the angle itself is unresolvable, mark it unresolved, instruct the researcher to send their partial findings (if any) followed by DONE and then stop, and include it in the synthesizer brief as an Open Question. Wait until all researchers have sent their findings and DONE, then collect their findings as outputs.
 
 ## Phase 4 — Synthesize
 

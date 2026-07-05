@@ -1,6 +1,6 @@
 ---
 name: rubber-duck
-description: Acts as a patient listener who asks questions and reflects your reasoning back, without supplying the answer. Use when you are stuck and want to think out loud to reach your own breakthrough.
+description: Rubber-ducks a problem by asking questions and reflecting your reasoning back, without ever supplying the answer. Use when you are stuck and want to think out loud to reach your own breakthrough.
 disable-model-invocation: true
 ---
 

@@ -38,7 +38,7 @@
         "./skills/output-styles/eli10-mode",
         "./skills/meta/writing-skills"
       ],
-      "version": "0.43.1"
+      "version": "0.43.4"
     },
     {
       "name": "drafting-skills",
@@ -62,7 +62,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/productivity/get-aligned", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise"],
-      "version": "0.13.0"
+      "version": "0.13.2"
     },
     {
       "name": "problem-solving-skills",
@@ -78,7 +78,7 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/roles/steelman", "./skills/roles/devils-advocate", "./skills/roles/rubber-duck"],
-      "version": "0.1.0"
+      "version": "0.1.1"
     },
     {
       "name": "ui-ux-skills",
