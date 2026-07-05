@@ -1,6 +1,6 @@
 ---
 name: visualise
-description: Turns data, text, or structured content into a self-contained HTML visualisation, such as a chart or diagram. Use when you want something rendered visually rather than described in text.
+description: Visualises data, text, or structured content as a self-contained HTML page, such as a chart or diagram. Use when you want something rendered visually rather than described in text.
 argument-hint: "[data, file, or text to visualise] [optional output name]"
 disable-model-invocation: true
 ---
