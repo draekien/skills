@@ -27,7 +27,7 @@ A skill SHOULD:
 - **Carry the why, not just the what** — an agent that understands the goal adapts when exact steps don't fit; an agent with only commands cannot.
 - **Omit what the agent already knows** — the highest-value content is the delta from the agent's defaults: what it would not do on its own, most sharply an instruction that countermands a strong reflex. Aim for moderate detail; most edge cases are better handled by the agent's own judgment than enumerated.
 - **Cover a coherent unit of work** — scoped like a well-designed function: too narrow forces many skills to load for one task; too broad cannot activate precisely.
-- **Name tools at the right specificity** — for the agent's harness capabilities, describe the capability ("search the web", "read local files"), never name a harness tool: toolsets vary and belong to the current state of the world. For domain tools a task requires (a library, a runner, a CLI), provide a default, not a menu: name one and mention the escape hatch briefly. A skill's own bundled scripts are exempt — invoking them prescriptively is what they exist for.
+- **Name tools at the right specificity** — for the agent's harness capabilities, describe the capability ("search the web", "read local files"), never name a harness tool: toolsets vary and belong to the current state of the world. For domain tools a task requires (a library, a runner, a CLI), provide a default, not a menu: name one tool, adding at most a clause that an equivalent may be substituted when the environment demands it. A skill's own bundled scripts are exempt — invoking them prescriptively is what they exist for.
 - **Be refined against real execution** — run the draft on real tasks and read the agent's traces, not just final outputs. Wasted steps expose vague instructions, inapplicable instructions, or a missing default; a correction the user had to make becomes a gotcha. Behavioural disputes (is this line a no-op? did the leading word take hold?) are settled by running the skill, not by debate.
 
 ## Axes
@@ -76,7 +76,7 @@ The mechanics of the sole-activation-signal tenet. Which form to write follows f
 
 If both invocation paths are open, write the model-triggered form — it still reads fine to a human.
 
-Every description word pays context load, so prune it harder than the body: **front-load the leading word** (the description is where it does its invocation work), keep **one trigger per branch** (synonym triggers restating a single branch are duplication), and **cut identity the body already carries**.
+Every description word pays context load, so prune it harder than the body: **front-load the leading word** (the description is where it does its invocation work), keep **one trigger per branch** (synonym triggers restating a single branch are duplication), and **cut restatements of what the skill is** — the body already carries the skill's nature; the description's job is triggering.
 
 ## The argument hint
 
@@ -110,10 +110,11 @@ When the skill puts execution in the agent's hands — one-off tool invocations 
 ## Craft
 
 - **Leading words** — compress an instruction into a domain term the agent's training already has strong priors about ("build a **vertical slice** first"), then reuse that exact term — as a token, never re-explained as a sentence — everywhere the skill touches the idea. A pretrained word recruits priors for free; a coined word pays in definition tokens what a pretrained word gives free. Grade a leading word with the no-op test: "be thorough" too weak to beat the default means a stronger word ("relentless"), not a different technique.
-- **Completion criteria** — end each unit of work on the condition that tells the agent it is done. Make it *checkable* (the agent can tell done from not-done) and *demanding* ("every modified model accounted for", not "produce a change list"). Demand drives legwork — the digging the agent does within the work — and binds flat reference just as it binds steps: "every rule applied" is a completion criterion too.
+- **Completion criteria** — end each unit of work on the condition that tells the agent it is done. Make it *checkable* (the agent can tell done from not-done) and *demanding* ("every modified model accounted for", not "produce a change list"). Demand drives legwork — the digging the agent does within the work — and binds flat knowledge content just as it binds steps: "every rule applied" is a completion criterion too.
 - **Prune relentlessly** — give each meaning a single source of truth and check every line for relevance. Hunt the named failure modes: **duplication** (same meaning in two places — inflates its prominence past its real rank), **sediment** (stale layers that settle because adding feels safe and removing feels risky — the default fate of any skill without a pruning discipline), **no-ops** (lines the agent already obeys by default — test per sentence, and delete the whole sentence rather than trim words), and **sprawl** (length itself, even when every line is live — cured by placement, not editing).
 - **One term per concept** — a synonym reads as a second concept; never vary terminology.
 - **Third-person imperative** — "Extract the text...", not "I will..." or "You should...". The skill is documentation the agent executes, not a dialogue with it.
+- **The agent is "you"** — where prose must name the executing agent as an actor ("where you can dispatch work to a fresh context"), say *you*; never attribute the agent's actions to "the harness". Reserve *harness* for the runtime software itself ("harnesses that don't recognise the field ignore it").
 - **Generic examples only** — a good/poor pair illustrates a principle; a narrative or session-dated example encodes state-of-the-world.
 - **No authoring changelog** — never explain what was removed or changed; the reading agent needs the correct current instruction, not the history of how it got there.
 - **Never silently drop process logic** when revising an existing skill — the future agent will lack that judgment without knowing it is missing; confirm removals with the skill's owner.
@@ -137,9 +138,11 @@ Reusable shapes for body content — use the ones that fit the task:
 
 - **`scripts/validate.py`** — validates a skill against the invariant spec rules; supports `--json` for structured output
 
-## Validation
+## Quality gate
 
-Run the bundled validator against the finished skill, using any runner that supports PEP 723 inline dependencies (default: `uv`):
+After creating or revising a skill, hold it at three gates before declaring the work done. Each is a validation loop: run the check, fix what it reports, re-run until it passes clean.
+
+**1. Spec validation.** Run the bundled validator against the finished skill, using any runner that supports PEP 723 inline dependencies (default: `uv`):
 
 ```bash
 uv run scripts/validate.py <skill-dir>
@@ -148,3 +151,7 @@ uv run scripts/validate.py <skill-dir>
 The script path is relative to this skill's directory; `<skill-dir>` is the skill being validated. It enforces the invariant rules in [references/spec-rules.md](references/spec-rules.md) and exits non-zero on failure — fix failures before shipping. Warnings flag portability tradeoffs to weigh, not defects; read that reference when a result needs interpreting.
 
 The invariants are the stable subset of the [Agent Skills open standard](https://agentskills.io/specification). For anything beyond them — optional fields, packaging, evolving harness support — fetch the live specification.
+
+**2. Prompt analysis.** Review the skill as a prompt using [references/prompt-analysis.md](references/prompt-analysis.md). Where you can dispatch work to a fresh context, have that fresh context run the review — the author rereading its own words tends to miss the ambiguities it just wrote; otherwise self-review under the reference's findings discipline. Fix every confirmed finding, then re-review until a pass reports none.
+
+**3. Description audit.** Neither gate above covers the description — spec validation checks only presence and length, and prompt analysis excludes frontmatter — yet it is the sole activation signal. Audit it against "The description" section: the form matching its trigger axis, the leading word front-loaded, one trigger per branch, no restatement of what the skill is.
