@@ -47,7 +47,7 @@ Skills for writing and editing content: emails, documents, reports, and other wr
 
 Skills for software development tasks: code review, debugging, architecture, and technical workflows.
 
-**3 skills →** [browse the engineering bucket](skills/engineering/README.md)
+**6 skills →** [browse the engineering bucket](skills/engineering/README.md)
 
 ## Productivity
 
@@ -71,7 +71,7 @@ Skills that adopt a fixed persona or stance to sharpen thinking: an advocate, a 
 
 Skills for user interface and experience design: dashboards, visual design, and usability.
 
-**1 skill →** [browse the ui-ux bucket](skills/ui-ux/README.md)
+**2 skills →** [browse the ui-ux bucket](skills/ui-ux/README.md)
 
 ## Output Styles
 
