@@ -32,13 +32,14 @@
         "./skills/engineering/draft-a-prd",
         "./skills/engineering/break-down-prd",
         "./skills/engineering/with-testing-principles",
+        "./skills/engineering/extract-llms-txt",
         "./skills/ui-ux/design-callouts",
         "./skills/ui-ux/design-dashboards",
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode",
         "./skills/meta/writing-skills"
       ],
-      "version": "0.43.4"
+      "version": "0.44.0"
     },
     {
       "name": "drafting-skills",
@@ -53,8 +54,8 @@
       "description": "Skills for software development tasks: code review, debugging, architecture, and technical workflows.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/engineering/with-ubiquitous-language", "./skills/engineering/module-design", "./skills/engineering/draft-a-prd", "./skills/engineering/break-down-prd", "./skills/engineering/with-testing-principles"],
-      "version": "0.20.0"
+      "skills": ["./skills/engineering/with-ubiquitous-language", "./skills/engineering/module-design", "./skills/engineering/draft-a-prd", "./skills/engineering/break-down-prd", "./skills/engineering/with-testing-principles", "./skills/engineering/extract-llms-txt"],
+      "version": "0.21.0"
     },
     {
       "name": "productivity-skills",
