@@ -40,7 +40,12 @@
         "./skills/output-styles/plain-language",
         "./skills/meta/writing-skills"
       ],
-      "version": "0.45.0"
+      "outputStyles": [
+        "./skills/output-styles/cte-mode/cte-mode.md",
+        "./skills/output-styles/eli10-mode/eli10-mode.md",
+        "./skills/output-styles/plain-language/plain-language.md"
+      ],
+      "version": "0.46.0"
     },
     {
       "name": "drafting-skills",
@@ -96,7 +101,12 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/output-styles/cte-mode", "./skills/output-styles/eli10-mode", "./skills/output-styles/plain-language"],
-      "version": "0.4.0"
+      "outputStyles": [
+        "./skills/output-styles/cte-mode/cte-mode.md",
+        "./skills/output-styles/eli10-mode/eli10-mode.md",
+        "./skills/output-styles/plain-language/plain-language.md"
+      ],
+      "version": "0.5.0"
     },
     {
       "name": "meta-skills",

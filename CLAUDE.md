@@ -11,7 +11,7 @@ Repo stores agent skills in buckets under `skills/`. Each bucket groups skills b
 - **problem-solving** — Working through a hard problem or decision: reasoning from fundamentals, debating between options.
 - **roles** — Fixed-persona skills: advocate, listener, critic stances used to sharpen thinking.
 - **ui-ux** — User interface and experience design: dashboards, visual design, usability.
-- **output-styles** — Tone and voice modes: communication style presets for different audiences and needs.
+- **output-styles** — Tone and voice modes: communication style presets for different audiences and needs. Each one is a native Claude Code output style (`<skill-name>.md`) with a `SKILL.md` wrapper. See [Output styles](#output-styles).
 - **meta** — Meta-skills: skills about authoring, vetting, and evaluating skills themselves.
 - **archived** — Retired skills kept for reference. Must NOT be indexed or promoted in any README.md, and must NEVER be registered in `marketplace.json` (no bucket entry, no `everything` entry).
 
@@ -33,6 +33,21 @@ skills/
 - Each bucket `README.md` lists all its skills with one-line descriptions, skill names linked to `SKILL.md`. The bucket `README.md` is the single source of truth for a skill's one-liner — it is the only place that one-liner lives.
 - Skills in `personal/` must not appear in any public README.
 
+## Output styles
+
+Skills in `output-styles/` work both ways. `<skill-name>.md` holds the instructions as a [native output style](https://code.claude.com/docs/en/output-styles) selectable from `/config`; `SKILL.md` sits beside it as a thin wrapper so the same style is still invokable as a skill:
+
+```
+skills/output-styles/
+  cte-mode/
+    cte-mode.md        native output style — the instructions live here
+    SKILL.md           wrapper: reads cte-mode.md, adds session framing
+```
+
+- The instructions live in the native file only. `SKILL.md` tells the agent to read its sibling and adopt it, plus the session framing an output style cannot express — that the style holds until the user asks to stop.
+- Native frontmatter: `name` matching the directory, the same `description` as the skill, and `keep-coding-instructions: true`. Do not set `force-for-plugin`.
+- The files are never placed in a root `output-styles/` directory. Every plugin entry uses `source: "./"`, so that directory would auto-load into all bucket plugins.
+
 ## Plugin manifest
 
 `.claude-plugin/marketplace.json` contains:
@@ -47,6 +62,7 @@ Adding a new skill, update `marketplace.json`:
 - Also add the path to the `everything` entry — except `personal/` skills, which stay out of `everything`.
 - List individual skill paths (e.g. `"./skills/drafting/skill-writing"`), not whole bucket dirs.
 - When skills change, bump the affected bucket entry and (for public skills) the `everything` entry. Once per feature branch max.
+- Output style skills also need their native `.md` path in the `outputStyles` array on both the `output-styles` and `everything` entries. List explicit file paths, never a directory.
 
 ## Project Configuration Conventions
 
@@ -59,5 +75,6 @@ Skills that require per-project configuration use a shared dotfolder and config 
 
 - New skill in this repo: vet the concept with `vet-skill-idea`, then author it with `skill-writing`.
 - After adding a new skill: run `uv run tests/check-manifest.py` from repo root and fix any reported gaps before committing.
+- After touching anything in `output-styles/`: also run `uv run tests/check-output-styles.py` from repo root.
 - After editing any markdown: run `npx markdownlint-cli2 --fix "**/*.md"` from repo root (auto-discovers `.markdownlint-cli2.jsonc`), then review the autofixed diff and resolve any remaining reported errors before committing.
 - Match skill body complexity to task complexity — if the agent already knows how to execute the task, one sentence beats a structured checklist.
