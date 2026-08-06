@@ -38,14 +38,16 @@
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode",
         "./skills/output-styles/plain-language",
+        "./skills/output-styles/simplified-technical-english",
         "./skills/meta/writing-skills"
       ],
       "outputStyles": [
         "./skills/output-styles/cte-mode/cte-mode.md",
         "./skills/output-styles/eli10-mode/eli10-mode.md",
-        "./skills/output-styles/plain-language/plain-language.md"
+        "./skills/output-styles/plain-language/plain-language.md",
+        "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "version": "0.46.0"
+      "version": "0.47.0"
     },
     {
       "name": "drafting-skills",
@@ -100,13 +102,14 @@
       "description": "Skills that shift Claude's communication tone and voice.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/output-styles/cte-mode", "./skills/output-styles/eli10-mode", "./skills/output-styles/plain-language"],
+      "skills": ["./skills/output-styles/cte-mode", "./skills/output-styles/eli10-mode", "./skills/output-styles/plain-language", "./skills/output-styles/simplified-technical-english"],
       "outputStyles": [
         "./skills/output-styles/cte-mode/cte-mode.md",
         "./skills/output-styles/eli10-mode/eli10-mode.md",
-        "./skills/output-styles/plain-language/plain-language.md"
+        "./skills/output-styles/plain-language/plain-language.md",
+        "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "version": "0.5.0"
+      "version": "0.6.0"
     },
     {
       "name": "meta-skills",
