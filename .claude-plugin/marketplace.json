@@ -33,6 +33,7 @@
         "./skills/engineering/break-down-prd",
         "./skills/engineering/with-testing-principles",
         "./skills/engineering/extract-llms-txt",
+        "./skills/engineering/init-agent-docs",
         "./skills/ui-ux/design-callouts",
         "./skills/ui-ux/design-dashboards",
         "./skills/output-styles/cte-mode",
@@ -47,7 +48,7 @@
         "./skills/output-styles/plain-language/plain-language.md",
         "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "version": "0.47.0"
+      "version": "0.48.0"
     },
     {
       "name": "drafting-skills",
@@ -62,8 +63,8 @@
       "description": "Skills for software development tasks: code review, debugging, architecture, and technical workflows.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/engineering/with-ubiquitous-language", "./skills/engineering/module-design", "./skills/engineering/draft-a-prd", "./skills/engineering/break-down-prd", "./skills/engineering/with-testing-principles", "./skills/engineering/extract-llms-txt"],
-      "version": "0.21.0"
+      "skills": ["./skills/engineering/with-ubiquitous-language", "./skills/engineering/module-design", "./skills/engineering/draft-a-prd", "./skills/engineering/break-down-prd", "./skills/engineering/with-testing-principles", "./skills/engineering/extract-llms-txt", "./skills/engineering/init-agent-docs"],
+      "version": "0.22.0"
     },
     {
       "name": "productivity-skills",
