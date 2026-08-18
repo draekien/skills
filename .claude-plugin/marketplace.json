@@ -48,7 +48,8 @@
         "./skills/output-styles/plain-language/plain-language.md",
         "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "version": "0.48.0"
+      "hooks": ["./skills/output-styles/plain-language/hooks/hooks.json"],
+      "version": "0.49.0"
     },
     {
       "name": "drafting-skills",
@@ -110,7 +111,8 @@
         "./skills/output-styles/plain-language/plain-language.md",
         "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "version": "0.6.0"
+      "hooks": ["./skills/output-styles/plain-language/hooks/hooks.json"],
+      "version": "0.7.0"
     },
     {
       "name": "meta-skills",
