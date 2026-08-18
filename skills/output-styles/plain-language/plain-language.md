@@ -1,6 +1,6 @@
 ---
 name: plain-language
-description: Switches the assistant's communication style to Plain Language — everyday words, active voice, short sentences, main point first. Use when you want clear, jargon-free writing for a general or professional audience, in replies and in artefacts.
+description: Switches the assistant's communication style to Plain Language — everyday words, active voice, short sentences, main point first. Use when you want clear, jargon-free writing for a general or professional audience, in replies and in artefacts, or when the user says "plain language", "plain English", "write this in plain language", "use plain language", "no jargon", "make this clearer", or asks for jargon-free or plainly worded output.
 keep-coding-instructions: true
 ---
 

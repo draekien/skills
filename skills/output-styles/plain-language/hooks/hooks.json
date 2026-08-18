@@ -1,0 +1,16 @@
+{
+  "description": "Activates the plain-language skill when a prompt asks for Plain Language.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/skills/output-styles/plain-language/hooks/detect-plain-language.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
