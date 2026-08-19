@@ -84,3 +84,9 @@ Skills that use `.skillsrc` must register their keys here.
 | `break-down-prd` | `outputDir` | string | `.draekien/break-down-prd` | Directory (relative to repo root) where PRD breakdowns are written; the skill appends `/<prd-slug>/` per breakdown |
 | `skill-evals` | `outputDir` | string | `.draekien/skill-evals` | Directory (relative to repo root) where eval state is written; the skill appends `/<skill-name>/` per evaluated skill |
 | `transcribe-video` | `whisperModel` | string | `base` | Preferred Whisper model size (`tiny`, `base`, `small`, `medium`, `large`) |
+| `todo` | `backend` | string | none | Where todos are tracked: `markdown`, `github`, or `linear` |
+| `todo` | `markdownPath` | string | `docs/todos` | Markdown backend location — a directory under `file-per-todo`, a file path under `single-file` |
+| `todo` | `markdownLayout` | string | `file-per-todo` | Markdown backend layout: `file-per-todo` or `single-file` |
+| `todo` | `githubLabels` | string | `todo` | Comma-separated labels applied to every captured GitHub issue |
+| `todo` | `linearTeamId` | string | none | Linear team the captured issues belong to |
+| `todo` | `linearProjectId` | string | empty | Optional Linear project to file captured issues under |

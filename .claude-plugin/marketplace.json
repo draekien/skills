@@ -22,6 +22,7 @@
         "./skills/productivity/deep-research",
         "./skills/productivity/transcribe-video",
         "./skills/productivity/visualise",
+        "./skills/productivity/todo",
         "./skills/problem-solving/round-table",
         "./skills/problem-solving/from-first-principles",
         "./skills/roles/steelman",
@@ -48,15 +49,21 @@
         "./skills/output-styles/plain-language/plain-language.md",
         "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "hooks": ["./skills/output-styles/plain-language/hooks/hooks.json"],
-      "version": "0.49.0"
+      "hooks": [
+        "./skills/output-styles/plain-language/hooks/hooks.json"
+      ],
+      "version": "0.50.0"
     },
     {
       "name": "drafting-skills",
       "description": "Skills for writing and editing content: emails, documents, reports, and other written output.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/drafting/skill-evals", "./skills/drafting/skill-writing", "./skills/drafting/vet-skill-idea"],
+      "skills": [
+        "./skills/drafting/skill-evals",
+        "./skills/drafting/skill-writing",
+        "./skills/drafting/vet-skill-idea"
+      ],
       "version": "0.17.0"
     },
     {
@@ -64,7 +71,15 @@
       "description": "Skills for software development tasks: code review, debugging, architecture, and technical workflows.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/engineering/with-ubiquitous-language", "./skills/engineering/module-design", "./skills/engineering/draft-a-prd", "./skills/engineering/break-down-prd", "./skills/engineering/with-testing-principles", "./skills/engineering/extract-llms-txt", "./skills/engineering/init-agent-docs"],
+      "skills": [
+        "./skills/engineering/with-ubiquitous-language",
+        "./skills/engineering/module-design",
+        "./skills/engineering/draft-a-prd",
+        "./skills/engineering/break-down-prd",
+        "./skills/engineering/with-testing-principles",
+        "./skills/engineering/extract-llms-txt",
+        "./skills/engineering/init-agent-docs"
+      ],
       "version": "0.22.0"
     },
     {
@@ -72,15 +87,24 @@
       "description": "Skills for general workplace productivity: summarisation, research, meeting prep, and task management.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/productivity/get-aligned", "./skills/productivity/deep-research", "./skills/productivity/transcribe-video", "./skills/productivity/visualise"],
-      "version": "0.13.2"
+      "skills": [
+        "./skills/productivity/get-aligned",
+        "./skills/productivity/deep-research",
+        "./skills/productivity/transcribe-video",
+        "./skills/productivity/visualise",
+        "./skills/productivity/todo"
+      ],
+      "version": "0.14.0"
     },
     {
       "name": "problem-solving-skills",
       "description": "Skills for working through a hard problem or decision: reasoning from fundamentals, or debating between competing options.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/problem-solving/round-table", "./skills/problem-solving/from-first-principles"],
+      "skills": [
+        "./skills/problem-solving/round-table",
+        "./skills/problem-solving/from-first-principles"
+      ],
       "version": "0.1.0"
     },
     {
@@ -88,7 +112,11 @@
       "description": "Skills that adopt a fixed persona or stance to sharpen thinking: an advocate, a listener, a critic.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/roles/steelman", "./skills/roles/devils-advocate", "./skills/roles/rubber-duck"],
+      "skills": [
+        "./skills/roles/steelman",
+        "./skills/roles/devils-advocate",
+        "./skills/roles/rubber-duck"
+      ],
       "version": "0.1.1"
     },
     {
@@ -96,7 +124,10 @@
       "description": "Skills for user interface and experience design: dashboards, visual design, and usability.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/ui-ux/design-callouts", "./skills/ui-ux/design-dashboards"],
+      "skills": [
+        "./skills/ui-ux/design-callouts",
+        "./skills/ui-ux/design-dashboards"
+      ],
       "version": "0.2.2"
     },
     {
@@ -104,14 +135,21 @@
       "description": "Skills that shift Claude's communication tone and voice.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/output-styles/cte-mode", "./skills/output-styles/eli10-mode", "./skills/output-styles/plain-language", "./skills/output-styles/simplified-technical-english"],
+      "skills": [
+        "./skills/output-styles/cte-mode",
+        "./skills/output-styles/eli10-mode",
+        "./skills/output-styles/plain-language",
+        "./skills/output-styles/simplified-technical-english"
+      ],
       "outputStyles": [
         "./skills/output-styles/cte-mode/cte-mode.md",
         "./skills/output-styles/eli10-mode/eli10-mode.md",
         "./skills/output-styles/plain-language/plain-language.md",
         "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "hooks": ["./skills/output-styles/plain-language/hooks/hooks.json"],
+      "hooks": [
+        "./skills/output-styles/plain-language/hooks/hooks.json"
+      ],
       "version": "0.7.0"
     },
     {
@@ -119,7 +157,9 @@
       "description": "Meta-skills: skills about authoring, vetting, and evaluating skills themselves.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/meta/writing-skills"],
+      "skills": [
+        "./skills/meta/writing-skills"
+      ],
       "version": "0.1.1"
     },
     {
@@ -127,7 +167,9 @@
       "description": "Skills for personal productivity and life admin: scheduling, decision-making, and personal organisation.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/personal/ghost-writing"],
+      "skills": [
+        "./skills/personal/ghost-writing"
+      ],
       "version": "0.3.2"
     }
   ]
