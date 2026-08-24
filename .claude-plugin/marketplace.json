@@ -50,10 +50,20 @@
         "./skills/output-styles/plain-language/plain-language.md",
         "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "hooks": [
-        "./skills/output-styles/plain-language/hooks/hooks.json"
-      ],
-      "version": "0.51.0"
+      "hooks": {
+        "UserPromptSubmit": [
+          {
+            "hooks": [
+              {
+                "type": "command",
+                "command": "bash \"${CLAUDE_PLUGIN_ROOT}/skills/output-styles/plain-language/hooks/detect-plain-language.sh\"",
+                "timeout": 10
+              }
+            ]
+          }
+        ]
+      },
+      "version": "0.51.1"
     },
     {
       "name": "drafting-skills",
@@ -149,10 +159,20 @@
         "./skills/output-styles/plain-language/plain-language.md",
         "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "hooks": [
-        "./skills/output-styles/plain-language/hooks/hooks.json"
-      ],
-      "version": "0.7.0"
+      "hooks": {
+        "UserPromptSubmit": [
+          {
+            "hooks": [
+              {
+                "type": "command",
+                "command": "bash \"${CLAUDE_PLUGIN_ROOT}/skills/output-styles/plain-language/hooks/detect-plain-language.sh\"",
+                "timeout": 10
+              }
+            ]
+          }
+        ]
+      },
+      "version": "0.7.1"
     },
     {
       "name": "meta-skills",
