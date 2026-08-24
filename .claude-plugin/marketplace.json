@@ -39,7 +39,8 @@
         "./skills/output-styles/eli10-mode",
         "./skills/output-styles/plain-language",
         "./skills/output-styles/simplified-technical-english",
-        "./skills/meta/writing-skills"
+        "./skills/meta/writing-skills",
+        "./skills/productivity/picking-models"
       ],
       "outputStyles": [
         "./skills/output-styles/cte-mode/cte-mode.md",
@@ -60,7 +61,7 @@
           }
         ]
       },
-      "version": "0.52.0"
+      "version": "0.53.0"
     },
     {
       "name": "engineering-skills",
@@ -89,9 +90,10 @@
         "./skills/productivity/deep-research",
         "./skills/productivity/transcribe-video",
         "./skills/productivity/visualise",
-        "./skills/productivity/todo"
+        "./skills/productivity/todo",
+        "./skills/productivity/picking-models"
       ],
-      "version": "0.14.0"
+      "version": "0.15.0"
     },
     {
       "name": "problem-solving-skills",
