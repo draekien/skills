@@ -60,7 +60,7 @@ Adding a new skill, update `marketplace.json`:
 
 - Add the skill path to its bucket entry. If the bucket has no entry, add one: `name: "<bucket>-skills"`, `source: "./"`, `strict: false`, `version: "0.1.0"`, `skills` array with the path.
 - Also add the path to the `everything` entry — except `personal/` skills, which stay out of `everything`.
-- List individual skill paths (e.g. `"./skills/drafting/skill-writing"`), not whole bucket dirs.
+- List individual skill paths (e.g. `"./skills/meta/writing-skills"`), not whole bucket dirs.
 - When skills change, bump the affected bucket entry and (for public skills) the `everything` entry. Once per feature branch max.
 - Output style skills also need their native `.md` path in the `outputStyles` array on both the `output-styles` and `everything` entries. List explicit file paths, never a directory.
 - Skills that ship a hook keep the handler script inside the skill directory (`hooks/detect-*.sh`, with a `hooks/hooks.json` beside it as the source of truth) and inline that `hooks` object into both the bucket entry and `everything` in `marketplace.json`. A marketplace entry only accepts the inline object form (event name -> matcher array); a file path or array of paths fails to load. Never place `hooks/hooks.json` at the repo root — every plugin entry uses `source: "./"`, so a root hook would auto-load into all bucket plugins.

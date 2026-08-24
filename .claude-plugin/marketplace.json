@@ -15,9 +15,6 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/drafting/skill-evals",
-        "./skills/drafting/skill-writing",
-        "./skills/drafting/vet-skill-idea",
         "./skills/productivity/get-aligned",
         "./skills/productivity/deep-research",
         "./skills/productivity/transcribe-video",
@@ -63,19 +60,7 @@
           }
         ]
       },
-      "version": "0.51.1"
-    },
-    {
-      "name": "drafting-skills",
-      "description": "Skills for writing and editing content: emails, documents, reports, and other written output.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/drafting/skill-evals",
-        "./skills/drafting/skill-writing",
-        "./skills/drafting/vet-skill-idea"
-      ],
-      "version": "0.17.0"
+      "version": "0.52.0"
     },
     {
       "name": "engineering-skills",

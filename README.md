@@ -19,7 +19,7 @@ Then install everything at once:
 Or install individual bucket plugins:
 
 ```bash
-/plugin install drafting-skills@draekien-skills
+/plugin install engineering-skills@draekien-skills
 ```
 
 ### Cross-agent — npx skills
@@ -36,12 +36,6 @@ Copy skill directories into:
 
 - `~/.claude/skills/` — personal scope (all projects)
 - `.claude/skills/` — project scope (current project only)
-
-## Drafting
-
-Skills for writing and editing content: emails, documents, reports, and other written output.
-
-**3 skills →** [browse the drafting bucket](skills/drafting/README.md)
 
 ## Engineering
 
