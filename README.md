@@ -41,13 +41,13 @@ Copy skill directories into:
 
 Skills for software development tasks: code review, debugging, architecture, and technical workflows.
 
-**6 skills →** [browse the engineering bucket](skills/engineering/README.md)
+**8 skills →** [browse the engineering bucket](skills/engineering/README.md)
 
 ## Productivity
 
 Skills for general workplace productivity: summarisation, research, meeting prep, and task management.
 
-**4 skills →** [browse the productivity bucket](skills/productivity/README.md)
+**5 skills →** [browse the productivity bucket](skills/productivity/README.md)
 
 ## Problem Solving
 
@@ -71,7 +71,7 @@ Skills for user interface and experience design: dashboards, visual design, and 
 
 Skills that shift Claude's communication tone and voice.
 
-**2 skills →** [browse the output-styles bucket](skills/output-styles/README.md)
+**4 skills →** [browse the output-styles bucket](skills/output-styles/README.md)
 
 ## Meta
 
