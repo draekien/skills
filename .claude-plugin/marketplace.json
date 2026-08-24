@@ -35,6 +35,7 @@
         "./skills/engineering/with-testing-principles",
         "./skills/engineering/extract-llms-txt",
         "./skills/engineering/init-agent-docs",
+        "./skills/engineering/with-doc-comments",
         "./skills/ui-ux/design-callouts",
         "./skills/ui-ux/design-dashboards",
         "./skills/output-styles/cte-mode",
@@ -52,7 +53,7 @@
       "hooks": [
         "./skills/output-styles/plain-language/hooks/hooks.json"
       ],
-      "version": "0.50.0"
+      "version": "0.51.0"
     },
     {
       "name": "drafting-skills",
@@ -78,9 +79,10 @@
         "./skills/engineering/break-down-prd",
         "./skills/engineering/with-testing-principles",
         "./skills/engineering/extract-llms-txt",
-        "./skills/engineering/init-agent-docs"
+        "./skills/engineering/init-agent-docs",
+        "./skills/engineering/with-doc-comments"
       ],
-      "version": "0.22.0"
+      "version": "0.23.0"
     },
     {
       "name": "productivity-skills",
