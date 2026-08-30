@@ -11,3 +11,4 @@ Skills for software development tasks: code review, debugging, architecture, and
 - [init-agent-docs](init-agent-docs/SKILL.md) — Sets up a repository's agent documentation: AGENTS.md and CLAUDE.md at the root and under docs/, plus adr, references, explorations, and plans directories with the conventions agents need to use them.
 - [with-doc-comments](with-doc-comments/SKILL.md) — Writes and audits in-source API doc comments so each one carries the contract the signature cannot.
 - [prune-local-branches](prune-local-branches/SKILL.md) — Prunes local git branches whose work already reached the base branch, ranking evidence so squash-merged branches are not mistaken for unmerged work.
+- [harden](harden/SKILL.md) — Simulates six months of future use and misuse of a change, spec, or design, then reports the RICE-ranked changes worth making today.
