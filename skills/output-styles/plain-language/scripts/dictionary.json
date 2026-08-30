@@ -194,7 +194,6 @@
       "pivotal": "key",
       "meticulous": "careful",
       "intricate": "complex",
-      "underscore": "stress",
       "low-hanging fruit": "quick wins",
       "move the needle": "make a difference",
       "touch base": "check in",
@@ -390,12 +389,33 @@
       "crucial": [
         "important",
         "essential"
-      ]
+      ],
+      "underscores": {
+        "replacement": [
+          "stresses"
+        ],
+        "inflect": false
+      },
+      "underscored": {
+        "replacement": [
+          "stressed"
+        ],
+        "inflect": false
+      },
+      "underscoring": {
+        "replacement": [
+          "stressing"
+        ],
+        "inflect": false
+      }
     },
     "readerDistance": {
-      "the user": [
-        "you"
-      ],
+      "the user": {
+        "replacement": [
+          "you"
+        ],
+        "notFollowedBy": "\\b(?:exists?|existed|does\\s*n[o']t|do\\s*n[o']t|is\\s+not|was\\s+not|has\\s+no\\b|record|row|table|id\\b|entity)"
+      },
       "the reader": [
         "you"
       ],
@@ -413,10 +433,13 @@
       ]
     },
     "filler": {
-      "very": [
-        "delete",
-        "use a stronger word"
-      ],
+      "very": {
+        "replacement": [
+          "delete",
+          "use a stronger word"
+        ],
+        "notPrecededBy": "\\b(?:the|this|that|these|those|its|his|her|their|our|your|my)"
+      },
       "quite": [
         "delete",
         "give the actual degree"
@@ -505,7 +528,7 @@
     },
     {
       "id": "em-dash-pivot",
-      "pattern": "—[^—.!?]{1,120}—",
+      "pattern": "—[^—.!?\n]{1,120}—",
       "message": "Two em-dashes in one sentence. Use a full stop or a comma."
     },
     {
@@ -558,5 +581,27 @@
     "serialise",
     "transaction"
   ],
-  "disable": []
+  "disable": [],
+  "sentenceBoundaries": [
+    {
+      "id": "boundary-block-tag",
+      "pattern": "^\\s*\\{%.*%\\}\\s*$"
+    },
+    {
+      "id": "boundary-comment",
+      "pattern": "^\\s*<!--.*-->\\s*$"
+    },
+    {
+      "id": "boundary-jsx",
+      "pattern": "^\\s*</?[A-Za-z][^>]*/?>\\s*$"
+    },
+    {
+      "id": "boundary-list-item",
+      "pattern": "^\\s*(?:[-*+]|\\d+[.)])\\s+"
+    },
+    {
+      "id": "boundary-blockquote",
+      "pattern": "^\\s*>"
+    }
+  ]
 }

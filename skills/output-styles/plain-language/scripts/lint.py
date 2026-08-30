@@ -14,10 +14,11 @@ A PATH may be a file or a directory; directories are walked for prose files.
 
 Options:
   --fix               Apply the unambiguous swaps in place (stdin prints to stdout)
+  --dry-run           With --fix, list the swaps it would make and write nothing
   --json              Emit findings as JSON instead of text
   --strict            Report warnings as errors
   --errors-only       Hide warnings
-  --disable-rule IDS  Comma-separated rule ids to switch off
+  --disable-rule IDS  Comma-separated rule or boundary ids to switch off
   --overrides PATH    Extra dictionary merged over the built-in one
   --config PATH       .skillsrc to read overridesPath from (default .draekien/.skillsrc)
 
@@ -29,7 +30,7 @@ Exit codes:
   0  no findings
   1  findings reported
   2  usage error
-  3  dictionary or input unreadable
+  3  dictionary, overrides, or input unusable
 """
 
 import argparse
@@ -70,11 +71,27 @@ IRREGULAR = {
     "be": ("is", "was", "being"),
 }
 
-COPULAR_PARTICIPLES = {
+BE_COMPLEMENTS = {
     "interested", "involved", "related", "based", "located", "limited",
     "tired", "excited", "pleased", "concerned", "committed", "dedicated",
     "detailed", "mixed", "aged", "supposed", "used", "known", "given",
+    "open", "closed", "unchanged", "unaffected", "often", "golden",
+    "sudden", "wooden",
 }
+
+ADVERBS = (
+    r"\w+ly|often|always|never|sometimes|seldom|rarely|still|already|"
+    r"now|then|also|just|even|only|not|no longer|therefore|thus"
+)
+
+PASSIVE = re.compile(
+    rf"\b(?:am|is|are|was|were|be|been|being)\s+(?:(?:{ADVERBS})\s+)*(\w+(?:ed|en))\b",
+    re.IGNORECASE,
+)
+
+TABLE_PLACEHOLDER = re.compile(r"(?<=\|)\s*[—–]\s*(?=\||$)", re.MULTILINE)
+
+ENTRY_OPTIONS = {"replacement", "inflect", "notPrecededBy", "notFollowedBy"}
 
 NEGATORS = {"not", "n't", "never", "hardly", "scarcely", "barely", "no", "nor", "without"}
 
@@ -114,6 +131,7 @@ def merge_dictionary(base: dict, extra: dict) -> dict:
         for category, entries in extra.get(section, {}).items():
             merged.setdefault(section, {}).setdefault(category, {}).update(entries)
     merged.setdefault("structures", []).extend(extra.get("structures", []))
+    merged.setdefault("sentenceBoundaries", []).extend(extra.get("sentenceBoundaries", []))
     merged.setdefault("allow", []).extend(extra.get("allow", []))
     merged.setdefault("disable", []).extend(extra.get("disable", []))
     return merged
@@ -171,11 +189,32 @@ def inflect_phrase(phrase: str, form: str) -> str:
     return f"{inflected} {tail}".strip() if tail else inflected
 
 
-def parse_entry(value) -> tuple[object, bool]:
+def compile_guard(term: str, option: str, pattern: str | None, before: bool):
+    """A guard pattern anchored to the text immediately beside a match."""
+    if not pattern:
+        return None
+    if pattern.startswith("^") or pattern.endswith("$"):
+        die(f"{term}: {option} must be unanchored; the linter anchors it beside the match")
+    anchored = rf"(?:{pattern})\W*$" if before else rf"^\W*(?:{pattern})"
+    try:
+        return re.compile(anchored, re.IGNORECASE)
+    except re.error as e:
+        die(f"{term}: invalid {option} pattern {pattern!r}: {e}")
+    return None
+
+
+def parse_entry(term: str, value) -> tuple[object, bool, dict]:
     """An entry is a replacement string, a candidate list, or an object with options."""
-    if isinstance(value, dict):
-        return value.get("replacement", ""), value.get("inflect", True)
-    return value, True
+    if not isinstance(value, dict):
+        return value, True, {"not_preceded": None, "not_followed": None}
+    unknown = set(value) - ENTRY_OPTIONS
+    if unknown:
+        die(f"{term}: unknown entry option(s) {', '.join(sorted(unknown))}; expected {', '.join(sorted(ENTRY_OPTIONS))}")
+    guards = {
+        "not_preceded": compile_guard(term, "notPrecededBy", value.get("notPrecededBy"), before=True),
+        "not_followed": compile_guard(term, "notFollowedBy", value.get("notFollowedBy"), before=False),
+    }
+    return value.get("replacement", ""), value.get("inflect", True), guards
 
 
 def surface_forms(term: str, replacement, inflect_forms: bool = True) -> list[tuple[str, object]]:
@@ -208,7 +247,7 @@ class Matcher:
         for kind, section in (("swap", "swaps"), ("candidate", "candidates")):
             for category, terms in dictionary.get(section, {}).items():
                 for term, value in terms.items():
-                    replacement, inflect_forms = parse_entry(value)
+                    replacement, inflect_forms, guards = parse_entry(term, value)
                     for surface, resolved in surface_forms(term, replacement, inflect_forms):
                         key = surface.lower()
                         if key in self.entries:
@@ -218,6 +257,7 @@ class Matcher:
                             "category": category,
                             "term": term,
                             "replacement": resolved,
+                            **guards,
                         }
         ordered = sorted(self.entries, key=len, reverse=True)
         alternation = "|".join(re.escape(term).replace(r"\ ", r"\s+") for term in ordered)
@@ -226,6 +266,16 @@ class Matcher:
             (rule["id"], re.compile(rule["pattern"]), rule["message"])
             for rule in dictionary.get("structures", [])
         ]
+        self.boundaries = []
+        for boundary in dictionary.get("sentenceBoundaries", []):
+            if not isinstance(boundary, dict) or "id" not in boundary or "pattern" not in boundary:
+                die(f"sentenceBoundaries entries need an id and a pattern: {boundary!r}")
+            if boundary["id"].lower() in self.disabled:
+                continue
+            try:
+                self.boundaries.append(re.compile(boundary["pattern"]))
+            except re.error as e:
+                die(f"invalid sentenceBoundaries pattern {boundary['pattern']!r}: {e}")
 
     def terms(self, text: str, protected):
         if not self.regex:
@@ -236,6 +286,12 @@ class Matcher:
             key = re.sub(r"\s+", " ", match.group(0).lower())
             entry = self.entries.get(key)
             if entry is None or key in self.allow or entry["term"].lower() in self.allow:
+                continue
+            before = text[max(0, match.start() - 40) : match.start()]
+            after = text[match.end() : match.end() + 40]
+            if entry["not_preceded"] and entry["not_preceded"].search(before):
+                continue
+            if entry["not_followed"] and entry["not_followed"].search(after):
                 continue
             yield match, entry
 
@@ -321,6 +377,32 @@ def sentences(text: str):
         yield start, text[start:]
 
 
+def segments(text: str, boundaries) -> list[tuple[int, str]]:
+    """Prose split at block boundaries, so a sentence never spans two blocks."""
+    found: list[tuple[int, str]] = []
+    start = 0
+    lines: list[str] = []
+    offset = 0
+    for line in text.split("\n"):
+        hits = [match for match in (pattern.match(line) for pattern in boundaries) if match]
+        markup = any(match.end() >= len(line.rstrip()) for match in hits)
+        if hits or not line.strip():
+            if lines:
+                found.append((start, "\n".join(lines)))
+                lines = []
+            if hits and not markup:
+                start = offset
+                lines = [line]
+        else:
+            if not lines:
+                start = offset
+            lines.append(line)
+        offset += len(line) + 1
+    if lines:
+        found.append((start, "\n".join(lines)))
+    return found
+
+
 def paragraphs(text: str):
     pos = 0
     for separator in re.finditer(r"\n\s*\n", text):
@@ -369,32 +451,33 @@ def analyse(text: str, matcher: Matcher, path: str) -> list[dict]:
             describe(entry),
         )
 
+    structural = TABLE_PLACEHOLDER.sub(lambda m: " " * len(m.group(0)), text)
     for rule_id, regex, message in matcher.structures:
-        for match in regex.finditer(text):
+        for match in regex.finditer(structural):
             if is_protected(match.start(), match.end(), protected):
                 continue
             add(match.start(), match.group(0).strip(), rule_id, "warning", "structure", message, None)
 
-    for offset, sentence in sentences(prose):
-        stripped = sentence.strip()
-        if not stripped:
-            continue
-        offset += len(sentence) - len(sentence.lstrip())
-        words = re.findall(r"\b[\w'-]+\b", stripped)
-        if len(words) > LONG_SENTENCE_WORDS:
-            add(
-                offset, stripped[:60], "long-sentence", "warning", "readability",
-                f"{len(words)} words. Split it so each sentence carries one idea.", None,
-            )
-        for match in re.finditer(
-            r"\b(?:am|is|are|was|were|be|been|being)\s+(?:\w+ly\s+)?(\w+(?:ed|en))\b", stripped, re.IGNORECASE
-        ):
-            if match.group(1).lower() in COPULAR_PARTICIPLES:
+    for base, block in segments(prose, matcher.boundaries):
+        for offset, sentence in sentences(block):
+            offset += base
+            stripped = sentence.strip()
+            if not stripped:
                 continue
-            add(
-                offset + match.start(), match.group(0), "passive-voice", "warning", "voice",
-                "Likely passive. Name who acts.", None,
-            )
+            offset += len(sentence) - len(sentence.lstrip())
+            words = re.findall(r"\b[\w'-]+\b", stripped)
+            if len(words) > LONG_SENTENCE_WORDS:
+                add(
+                    offset, stripped[:60], "long-sentence", "warning", "readability",
+                    f"{len(words)} words. Split it so each sentence carries one idea.", None,
+                )
+            for match in PASSIVE.finditer(stripped):
+                if match.group(1).lower() in BE_COMPLEMENTS:
+                    continue
+                add(
+                    offset + match.start(), match.group(0), "passive-voice", "warning", "voice",
+                    "Likely passive. Name who acts.", None,
+                )
 
     for offset, block in paragraphs(prose):
         stripped = block.strip()
@@ -412,24 +495,37 @@ def analyse(text: str, matcher: Matcher, path: str) -> list[dict]:
     return findings
 
 
-def apply_fixes(text: str, matcher: Matcher) -> tuple[str, int]:
+def plan_fixes(text: str, matcher: Matcher, path: str) -> list[dict]:
+    """Every swap --fix would apply, in document order."""
     protected = protected_spans(text)
     skip_file, ignored_lines = suppressions(prose_view(text, protected))
     if skip_file:
-        return text, 0
-    edits = []
+        return []
+    planned = []
     for match, entry in matcher.terms(text, protected):
         if entry["kind"] != "swap":
             continue
         if not entry["replacement"] and negated(text, match.start()):
             continue
-        if line_col(text, match.start())[0] in ignored_lines:
+        line, col = line_col(text, match.start())
+        if line in ignored_lines:
             continue
-        edits.append((match.start(), match.end(), match.group(0), entry["replacement"]))
+        planned.append({
+            "file": path,
+            "line": line,
+            "column": col,
+            "start": match.start(),
+            "end": match.end(),
+            "text": match.group(0),
+            "replacement": entry["replacement"],
+        })
+    return planned
 
-    applied = 0
+
+def apply_fixes(text: str, planned: list[dict]) -> str:
     result = text
-    for start, end, original, replacement in sorted(edits, reverse=True):
+    for edit in sorted(planned, key=lambda e: e["start"], reverse=True):
+        start, end, original, replacement = edit["start"], edit["end"], edit["text"], edit["replacement"]
         if replacement:
             result = result[:start] + match_case(original, replacement) + result[end:]
         else:
@@ -439,8 +535,15 @@ def apply_fixes(text: str, matcher: Matcher) -> tuple[str, int]:
             if original[0].isupper() and tail[:1].isalpha():
                 tail = tail[0].upper() + tail[1:]
             result = result[:start] + tail
-        applied += 1
-    return result, applied
+    return result
+
+
+def report_fixes(planned: list[dict]) -> None:
+    for edit in planned:
+        replacement = match_case(edit["text"], edit["replacement"]) if edit["replacement"] else "(delete)"
+        print(f'{edit["file"]}:{edit["line"]}:{edit["column"]}  fix  "{edit["text"]}" → {replacement}')
+    files = len({edit["file"] for edit in planned})
+    print(f"\n{len(planned)} fix(es) would be applied across {files} file(s)")
 
 
 def report_text(findings: list[dict], strict: bool) -> None:
@@ -488,13 +591,17 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Plain Language linter")
     parser.add_argument("paths", nargs="*", help="Files or directories; omit or use - for stdin")
     parser.add_argument("--fix", action="store_true", help="Apply unambiguous swaps in place")
+    parser.add_argument("--dry-run", action="store_true", help="With --fix, list the swaps instead of writing them")
     parser.add_argument("--json", action="store_true", help="Emit findings as JSON")
     parser.add_argument("--strict", action="store_true", help="Report warnings as errors")
     parser.add_argument("--errors-only", action="store_true", help="Hide warnings")
-    parser.add_argument("--disable-rule", default="", help="Comma-separated rule ids to switch off")
+    parser.add_argument("--disable-rule", default="", help="Comma-separated rule or boundary ids to switch off")
     parser.add_argument("--overrides", help="Extra dictionary merged over the built-in one")
     parser.add_argument("--config", default=".draekien/.skillsrc", help="Path to .skillsrc")
     args = parser.parse_args()
+
+    if args.dry_run and not args.fix:
+        parser.error("--dry-run only means something with --fix")
 
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -515,25 +622,34 @@ def main() -> int:
     inputs = gather_inputs(args.paths)
 
     findings = []
+    planned = []
     for path, text, ending in inputs:
         if args.fix:
-            text, _ = apply_fixes(text, matcher)
-            if path == "<stdin>":
-                sys.stdout.write(text)
-            else:
-                with Path(path).open("w", encoding="utf-8", newline="") as handle:
-                    handle.write(text.replace("\n", ending))
+            edits = plan_fixes(text, matcher, path)
+            planned.extend(edits)
+            text = apply_fixes(text, edits)
+            if not args.dry_run:
+                if path == "<stdin>":
+                    sys.stdout.write(text)
+                else:
+                    with Path(path).open("w", encoding="utf-8", newline="") as handle:
+                        handle.write(text.replace("\n", ending))
         findings.extend(analyse(text, matcher, path))
 
     if args.errors_only:
         findings = [f for f in findings if f["severity"] == "error"]
 
-    if args.json:
+    if args.json and args.dry_run:
+        print(json.dumps({"fixes": planned, "findings": findings}, indent=2))
+    elif args.json:
         print(json.dumps(findings, indent=2))
-    elif not (args.fix and inputs[0][0] == "<stdin>"):
-        report_text(findings, args.strict)
+    else:
+        if args.dry_run:
+            report_fixes(planned)
+        if not (args.fix and not args.dry_run and inputs[0][0] == "<stdin>"):
+            report_text(findings, args.strict)
 
-    return 1 if findings else 0
+    return 1 if findings or (args.dry_run and planned) else 0
 
 
 if __name__ == "__main__":

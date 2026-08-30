@@ -77,5 +77,6 @@ Skills that require per-project configuration use a shared dotfolder and config 
 - New skill in this repo: author it with `writing-skills`.
 - After adding a new skill: run `uv run tests/check-manifest.py` from repo root and fix any reported gaps before committing.
 - After touching anything in `output-styles/`: also run `uv run tests/check-output-styles.py` from repo root.
+- After changing the plain-language linter or its dictionary: also run `uv run tests/check-linter.py` from repo root.
 - After editing any markdown: run `npx markdownlint-cli2 --fix "**/*.md"` from repo root (auto-discovers `.markdownlint-cli2.jsonc`), then review the autofixed diff and resolve any remaining reported errors before committing.
 - Match skill body complexity to task complexity — if the agent already knows how to execute the task, one sentence beats a structured checklist.

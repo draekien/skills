@@ -63,7 +63,7 @@
           }
         ]
       },
-      "version": "0.56.0"
+      "version": "0.56.1"
     },
     {
       "name": "engineering-skills",
@@ -163,7 +163,7 @@
           }
         ]
       },
-      "version": "0.8.0"
+      "version": "0.8.1"
     },
     {
       "name": "meta-skills",
