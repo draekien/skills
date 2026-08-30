@@ -7,16 +7,23 @@ Plain Language linter. Finds wordy, formal, and AI-flavoured writing and suggest
 plainer alternatives.
 
 Usage:
-  uv run scripts/lint.py [FILE ...] [options]
+  uv run scripts/lint.py [PATH ...] [options]
   cat draft.md | uv run scripts/lint.py
 
+A PATH may be a file or a directory; directories are walked for prose files.
+
 Options:
-  --fix             Apply the unambiguous swaps in place (stdin prints to stdout)
-  --json            Emit findings as JSON instead of text
-  --strict          Report warnings as errors
-  --errors-only     Hide warnings
-  --overrides PATH  Extra dictionary merged over the built-in one
-  --config PATH     .skillsrc to read overridesPath from (default .draekien/.skillsrc)
+  --fix               Apply the unambiguous swaps in place (stdin prints to stdout)
+  --json              Emit findings as JSON instead of text
+  --strict            Report warnings as errors
+  --errors-only       Hide warnings
+  --disable-rule IDS  Comma-separated rule ids to switch off
+  --overrides PATH    Extra dictionary merged over the built-in one
+  --config PATH       .skillsrc to read overridesPath from (default .draekien/.skillsrc)
+
+Suppression comments:
+  <!-- plain-language-ignore -->        skips the next non-blank line
+  <!-- plain-language-ignore-file -->   skips the whole file
 
 Exit codes:
   0  no findings
@@ -69,6 +76,14 @@ COPULAR_PARTICIPLES = {
     "detailed", "mixed", "aged", "supposed", "used", "known", "given",
 }
 
+NEGATORS = {"not", "n't", "never", "hardly", "scarcely", "barely", "no", "nor", "without"}
+
+PROSE_SUFFIXES = {".md", ".markdown", ".txt", ".mdx", ".rst"}
+SKIP_DIRS = {"node_modules", ".git", ".venv", "__pycache__", "dist", "build"}
+
+IGNORE_LINE = re.compile(r"<!--\s*plain-language-ignore\s*-->")
+IGNORE_FILE = re.compile(r"<!--\s*plain-language-ignore-file\s*-->")
+
 PROTECTED_PATTERNS = (
     re.compile(r"\A---\n.*?\n---\n", re.DOTALL),
     re.compile(r"^(```|~~~).*?^\1", re.DOTALL | re.MULTILINE),
@@ -100,6 +115,7 @@ def merge_dictionary(base: dict, extra: dict) -> dict:
             merged.setdefault(section, {}).setdefault(category, {}).update(entries)
     merged.setdefault("structures", []).extend(extra.get("structures", []))
     merged.setdefault("allow", []).extend(extra.get("allow", []))
+    merged.setdefault("disable", []).extend(extra.get("disable", []))
     return merged
 
 
@@ -155,13 +171,20 @@ def inflect_phrase(phrase: str, form: str) -> str:
     return f"{inflected} {tail}".strip() if tail else inflected
 
 
-def surface_forms(term: str, replacement) -> list[tuple[str, object]]:
+def parse_entry(value) -> tuple[object, bool]:
+    """An entry is a replacement string, a candidate list, or an object with options."""
+    if isinstance(value, dict):
+        return value.get("replacement", ""), value.get("inflect", True)
+    return value, True
+
+
+def surface_forms(term: str, replacement, inflect_forms: bool = True) -> list[tuple[str, object]]:
     """Every string that should match this entry, paired with its replacement."""
     spellings = [term] + us_variants(term)
     forms: list[tuple[str, object]] = []
     for spelling in spellings:
         forms.append((spelling, replacement))
-        if " " in spelling or "-" in spelling:
+        if not inflect_forms or " " in spelling or "-" in spelling:
             continue
         for form in ("s", "ed", "ing"):
             variant = inflect(spelling, form)
@@ -180,11 +203,13 @@ def surface_forms(term: str, replacement) -> list[tuple[str, object]]:
 class Matcher:
     def __init__(self, dictionary: dict):
         self.allow = {term.lower() for term in dictionary.get("allow", [])}
+        self.disabled = {rule.lower() for rule in dictionary.get("disable", [])}
         self.entries: dict[str, dict] = {}
         for kind, section in (("swap", "swaps"), ("candidate", "candidates")):
             for category, terms in dictionary.get(section, {}).items():
-                for term, replacement in terms.items():
-                    for surface, resolved in surface_forms(term, replacement):
+                for term, value in terms.items():
+                    replacement, inflect_forms = parse_entry(value)
+                    for surface, resolved in surface_forms(term, replacement, inflect_forms):
                         key = surface.lower()
                         if key in self.entries:
                             continue
@@ -241,6 +266,29 @@ def prose_view(text: str, protected) -> str:
     return "\n".join(lines)
 
 
+def negated(text: str, start: int) -> bool:
+    """True when a negator sits immediately before this offset, so deleting flips sense."""
+    preceding = text[max(0, start - 40) : start]
+    words = re.findall(r"[\w']+", preceding.lower())
+    return bool(words) and (words[-1] in NEGATORS or words[-1].endswith("n't"))
+
+
+def suppressions(text: str) -> tuple[bool, set[int]]:
+    """Whole-file skip flag, and the line numbers an ignore comment covers."""
+    if IGNORE_FILE.search(text):
+        return True, set()
+    lines = text.split("\n")
+    covered = set()
+    for index, line in enumerate(lines):
+        if not IGNORE_LINE.search(line):
+            continue
+        for offset in range(index + 1, len(lines)):
+            if lines[offset].strip():
+                covered.add(offset + 1)
+                break
+    return False, covered
+
+
 def line_col(text: str, offset: int) -> tuple[int, int]:
     line = text.count("\n", 0, offset) + 1
     col = offset - (text.rfind("\n", 0, offset) + 1) + 1
@@ -284,10 +332,18 @@ def paragraphs(text: str):
 
 def analyse(text: str, matcher: Matcher, path: str) -> list[dict]:
     protected = protected_spans(text)
+    prose = prose_view(text, protected)
+    skip_file, ignored_lines = suppressions(prose)
+    if skip_file:
+        return []
     findings = []
 
     def add(offset, span, rule, severity, category, message, suggestion):
+        if rule in matcher.disabled:
+            return
         line, col = line_col(text, offset)
+        if line in ignored_lines:
+            return
         findings.append({
             "file": path,
             "line": line,
@@ -301,6 +357,8 @@ def analyse(text: str, matcher: Matcher, path: str) -> list[dict]:
         })
 
     for match, entry in matcher.terms(text, protected):
+        if not entry["replacement"] and negated(text, match.start()):
+            continue
         add(
             match.start(),
             match.group(0),
@@ -316,8 +374,6 @@ def analyse(text: str, matcher: Matcher, path: str) -> list[dict]:
             if is_protected(match.start(), match.end(), protected):
                 continue
             add(match.start(), match.group(0).strip(), rule_id, "warning", "structure", message, None)
-
-    prose = prose_view(text, protected)
 
     for offset, sentence in sentences(prose):
         stripped = sentence.strip()
@@ -358,9 +414,16 @@ def analyse(text: str, matcher: Matcher, path: str) -> list[dict]:
 
 def apply_fixes(text: str, matcher: Matcher) -> tuple[str, int]:
     protected = protected_spans(text)
+    skip_file, ignored_lines = suppressions(prose_view(text, protected))
+    if skip_file:
+        return text, 0
     edits = []
     for match, entry in matcher.terms(text, protected):
         if entry["kind"] != "swap":
+            continue
+        if not entry["replacement"] and negated(text, match.start()):
+            continue
+        if line_col(text, match.start())[0] in ignored_lines:
             continue
         edits.append((match.start(), match.end(), match.group(0), entry["replacement"]))
 
@@ -400,22 +463,35 @@ def gather_inputs(paths: list[str]) -> list[tuple[str, str, str]]:
     inputs = []
     for raw in paths:
         path = Path(raw)
-        if not path.is_file():
-            die(f"not a file: {raw}")
-        with path.open("r", encoding="utf-8", newline="") as handle:
-            content = handle.read()
-        ending = "\r\n" if "\r\n" in content else "\n"
-        inputs.append((path.as_posix(), content.replace("\r\n", "\n"), ending))
+        if path.is_dir():
+            targets = sorted(
+                child
+                for child in path.rglob("*")
+                if child.suffix.lower() in PROSE_SUFFIXES
+                and child.is_file()
+                and not any(part in SKIP_DIRS or part.startswith(".") for part in child.parts)
+            )
+        elif path.is_file():
+            targets = [path]
+        else:
+            die(f"no such file or directory: {raw}")
+            targets = []
+        for target in targets:
+            with target.open("r", encoding="utf-8", newline="") as handle:
+                content = handle.read()
+            ending = "\r\n" if "\r\n" in content else "\n"
+            inputs.append((target.as_posix(), content.replace("\r\n", "\n"), ending))
     return inputs
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Plain Language linter")
-    parser.add_argument("paths", nargs="*", help="Files to lint; omit or use - for stdin")
+    parser.add_argument("paths", nargs="*", help="Files or directories; omit or use - for stdin")
     parser.add_argument("--fix", action="store_true", help="Apply unambiguous swaps in place")
     parser.add_argument("--json", action="store_true", help="Emit findings as JSON")
     parser.add_argument("--strict", action="store_true", help="Report warnings as errors")
     parser.add_argument("--errors-only", action="store_true", help="Hide warnings")
+    parser.add_argument("--disable-rule", default="", help="Comma-separated rule ids to switch off")
     parser.add_argument("--overrides", help="Extra dictionary merged over the built-in one")
     parser.add_argument("--config", default=".draekien/.skillsrc", help="Path to .skillsrc")
     args = parser.parse_args()
@@ -429,6 +505,11 @@ def main() -> int:
         if not extra.is_file():
             die(f"overrides not found: {extra}")
         dictionary = merge_dictionary(dictionary, read_json(extra))
+
+    if args.disable_rule:
+        dictionary.setdefault("disable", []).extend(
+            rule.strip() for rule in args.disable_rule.split(",") if rule.strip()
+        )
 
     matcher = Matcher(dictionary)
     inputs = gather_inputs(args.paths)

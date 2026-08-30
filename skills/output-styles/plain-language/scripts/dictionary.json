@@ -10,7 +10,6 @@
       "facilitate": "help",
       "demonstrate": "show",
       "sufficient": "enough",
-      "additional": "extra",
       "approximately": "about",
       "requirement": "need",
       "obtain": "get",
@@ -39,7 +38,6 @@
       "participate": "take part",
       "permit": "let",
       "portion": "part",
-      "possess": "have",
       "previously": "before",
       "proceed": "go",
       "reside": "live",
@@ -75,7 +73,47 @@
       "subsequent to": "after",
       "at this point in time": "now",
       "at the present time": "now",
-      "per annum": "a year"
+      "per annum": "a year",
+      "anticipate": "expect",
+      "apparent": "clear",
+      "aggregate": "total",
+      "component": "part",
+      "conceal": "hide",
+      "constitute": "make up",
+      "deem": "consider",
+      "elucidate": "explain",
+      "eliminate": "remove",
+      "exhibit": "show",
+      "expend": "spend",
+      "finalise": "finish",
+      "incorporate": "include",
+      "initial": "first",
+      "magnitude": "size",
+      "nevertheless": "but",
+      "personnel": "staff",
+      "predominantly": "mainly",
+      "preliminary": "first",
+      "principal": "main",
+      "reimburse": "repay",
+      "remainder": "rest",
+      "residence": "home",
+      "select": "choose",
+      "strategise": "plan",
+      "thereafter": "then",
+      "verify": "check",
+      "viable": "workable",
+      "notwithstanding": "despite",
+      "commensurate with": "in line with",
+      "in the absence of": "without",
+      "in view of the fact that": "because",
+      "on the grounds that": "because",
+      "provided that": "if",
+      "with a view to": "to",
+      "for the duration of": "during",
+      "in close proximity to": "near",
+      "at your earliest convenience": "soon",
+      "as per": "under",
+      "period of time": "period"
     },
     "hiddenVerbs": {
       "make a decision": "decide",
@@ -104,7 +142,20 @@
       "hold a meeting": "meet",
       "reach a conclusion": "conclude",
       "come to an agreement": "agree",
-      "place an order": "order"
+      "place an order": "order",
+      "make use of": "use",
+      "have an impact on": "affect",
+      "take action": "act",
+      "conduct an audit": "audit",
+      "conduct a survey": "survey",
+      "provide clarification": "clarify",
+      "provide a summary": "summarise",
+      "carry out a test": "test",
+      "perform a check": "check",
+      "make an enquiry": "ask",
+      "give notice": "tell",
+      "be in agreement": "agree",
+      "make a change": "change"
     },
     "filler": {
       "it should be noted that": "",
@@ -122,25 +173,26 @@
       "as previously mentioned": "",
       "basically": "",
       "essentially": "",
-      "literally": "",
-      "very": "",
-      "quite": "",
-      "somewhat": "",
-      "fairly": "",
       "of course": "",
-      "obviously": "",
       "arguably": "",
       "sort of": "",
       "kind of": "",
       "in terms of": "about",
       "a wide range of": "many",
-      "a variety of": "many"
+      "a variety of": "many",
+      "in my humble opinion": "",
+      "as you may know": "",
+      "it turns out": "",
+      "in essence": "",
+      "to put it simply": "",
+      "for what it's worth": "",
+      "to be honest": "",
+      "interestingly": "",
+      "notably": ""
     },
     "corporate": {
-      "crucial": "important",
       "pivotal": "key",
       "meticulous": "careful",
-      "comprehensive": "complete",
       "intricate": "complex",
       "underscore": "stress",
       "low-hanging fruit": "quick wins",
@@ -182,6 +234,38 @@
         "some",
         "several",
         "many"
+      ],
+      "possess": [
+        "have",
+        "own"
+      ],
+      "additional": [
+        "extra",
+        "more"
+      ],
+      "identify": [
+        "find",
+        "name"
+      ],
+      "operate": [
+        "run",
+        "work"
+      ],
+      "monitor": [
+        "check",
+        "watch"
+      ],
+      "maintain": [
+        "keep",
+        "look after"
+      ],
+      "minimal": [
+        "smallest",
+        "least"
+      ],
+      "impact": [
+        "affect",
+        "effect on"
       ]
     },
     "corporate": {
@@ -298,6 +382,14 @@
       "nuanced": [
         "detailed",
         "subtle"
+      ],
+      "comprehensive": [
+        "complete",
+        "full"
+      ],
+      "crucial": [
+        "important",
+        "essential"
       ]
     },
     "readerDistance": {
@@ -318,6 +410,30 @@
       ],
       "the customer must": [
         "you must"
+      ]
+    },
+    "filler": {
+      "very": [
+        "delete",
+        "use a stronger word"
+      ],
+      "quite": [
+        "delete",
+        "give the actual degree"
+      ],
+      "somewhat": [
+        "delete",
+        "give the actual degree"
+      ],
+      "fairly": [
+        "delete",
+        "give the actual degree"
+      ],
+      "literally": [
+        "delete"
+      ],
+      "obviously": [
+        "delete"
       ]
     }
   },
@@ -391,6 +507,36 @@
       "id": "em-dash-pivot",
       "pattern": "—[^—.!?]{1,120}—",
       "message": "Two em-dashes in one sentence. Use a full stop or a comma."
+    },
+    {
+      "id": "ai-phrase",
+      "pattern": "(?i)\\b(?:in today's fast-paced|when it comes to|it'?s worth noting|at its core|boils down to|simply put|the beauty of|double-edged sword|silver bullet|table stakes|north star|supercharge|gone are the days)\\b",
+      "message": "Stock AI phrasing. Name the specific thing instead."
+    },
+    {
+      "id": "ai-phrase",
+      "pattern": "(?i)\\b(?:elevate|transform|revolutionise|revolutionize) your\\b",
+      "message": "Marketing verb aimed at the reader. Say what actually changes."
+    },
+    {
+      "id": "not-only-but-also",
+      "pattern": "(?i)\\bnot only\\b[^.!?]{0,80}\\bbut also\\b",
+      "message": "Correlative build-up. Make one plain statement."
+    },
+    {
+      "id": "from-x-to-y",
+      "pattern": "(?im)(?:^|[.!?]\\s)From\\s+[\\w' -]{2,30}\\s+to\\s+[\\w' -]{2,30},\\s",
+      "message": "\"From X to Y\" opener. Start with the point, not the range."
+    },
+    {
+      "id": "whether-you",
+      "pattern": "(?i)\\bwhether you(?:'re| are)\\b[^.!?]{0,60}\\bor\\b",
+      "message": "\"Whether you're X or Y\" framing. Address the reader directly."
+    },
+    {
+      "id": "rhetorical-question",
+      "pattern": "(?:^|\\s)(?:Sound familiar|The result|The catch|The problem|The upshot)\\?",
+      "message": "Rhetorical question used as a pivot. State the answer."
     }
   ],
   "allow": [
@@ -411,5 +557,6 @@
     "endpoint",
     "serialise",
     "transaction"
-  ]
+  ],
+  "disable": []
 }

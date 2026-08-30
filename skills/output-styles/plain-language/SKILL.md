@@ -8,18 +8,30 @@ Read `plain-language.md` in this skill's directory and adopt the writing style i
 
 ## The linter
 
-`scripts/lint.py` catches the mechanical half of the style: formal words with plainer equivalents, hidden verbs, filler, corporate jargon, AI phrase structures, long sentences, dense paragraphs, and likely passive voice. Run it with any runner that supports PEP 723 inline dependencies (default `uv`). Run it from the project directory, not this skill's directory — target paths and project overrides both resolve from the working directory:
+`scripts/lint.py` catches the mechanical half of the style: formal words with plainer equivalents, hidden verbs, filler, corporate jargon, AI phrase structures, long sentences, dense paragraphs, and likely passive voice. Run it with any runner that supports PEP 723 inline dependencies (default `uv`). Run it from the project directory, not this skill's directory. Target paths and project overrides both resolve from the working directory.
 
 ```bash
-uv run scripts/lint.py [PATH ...] [--fix] [--json] [--strict] [--errors-only]
+uv run scripts/lint.py [PATH ...] [--fix] [--json] [--strict] [--errors-only] [--disable-rule IDS]
 ```
 
-With no path it reads stdin. Findings come in two tiers:
+A path is a file or a directory. The linter walks a directory for `.md`, `.markdown`, `.mdx`, `.txt`, and `.rst` files. With no path it reads stdin. Findings come in two tiers:
 
 - **Errors** — dictionary hits. Either a single replacement (`utilise → use`) or a set of candidates (`leverage → use | build on`). High confidence; resolve every one.
 - **Warnings** — pattern heuristics. Passive voice, sentence length, paragraph density, and the AI structures. These misfire on writing that is already good, so judge each one rather than obeying it.
 
-`--fix` applies the single-replacement swaps in place and leaves everything else alone. `--strict` reports warnings as errors, `--errors-only` hides them, `--json` emits findings as an array. Exit code 1 means the linter reported findings, not that the run failed.
+`--fix` applies the single-replacement swaps in place and leaves everything else alone. `--strict` reports warnings as errors, `--errors-only` hides them, `--disable-rule triad,em-dash-pivot` switches named rules off, and `--json` emits findings as an array. Exit code 1 means the linter reported findings, not that the run failed.
+
+## Suppressing a finding
+
+Three levers, narrowest first:
+
+| Lever | Effect |
+|---|---|
+| `<!-- plain-language-ignore -->` | Skips the next non-blank line |
+| `<!-- plain-language-ignore-file -->` | Skips the whole file |
+| `--disable-rule IDS` | Switches named rules off for the run |
+
+Reach for a suppression comment when a specific line is right as written. Reach for `--disable-rule` only when a rule is wrong for the whole document.
 
 ## Self-check
 
@@ -51,19 +63,27 @@ Patterns see words, not arguments. Judge these directly on every audit and self-
 - The triad and em-dash rules produce the most false positives. Dismiss them freely; never contort a sentence to satisfy a heuristic.
 - The linter skips fenced code, inline code, link targets, URLs, and YAML frontmatter, so linting a document full of examples is safe.
 - The dictionary uses Australian spelling, and the matcher also accepts the American forms and the common word endings. Adding `utilise` covers `utilises`, `utilised`, `utilising`, and `utilized`.
+- The matcher generates word endings by rule, so an irregular verb in a replacement produces a wrong form. Set `"inflect": false` on the entry and add the forms you need as separate entries.
+- Filler is never deleted after a negator, because `not very good` and `not good` mean different things. The linter stays silent there rather than reporting a fix it cannot safely make.
 
 ## Project overrides
 
-A project can extend the built-in dictionary with its own terms. The extra file uses the same schema as `scripts/dictionary.json` — `swaps`, `candidates`, and `allow`, where `allow` lists terms the linter must never flag:
+A project can extend the built-in dictionary with its own terms. The extra file uses the same schema as `scripts/dictionary.json`: `swaps`, `candidates`, `structures`, `allow`, and `disable`.
 
 ```json
 {
-  "swaps": { "house": { "conveyance": "transfer" } },
-  "allow": ["utilise"]
+  "swaps": {
+    "house": {
+      "conveyance": "transfer",
+      "seek": { "replacement": "look for", "inflect": false }
+    }
+  },
+  "allow": ["utilise"],
+  "disable": ["triad", "em-dash-pivot"]
 }
 ```
 
-`allow` suppresses dictionary entries only, whether built-in or project-added. It has no effect on the warning-tier rules.
+The two switches cover different things. `allow` takes terms and suppresses dictionary entries, built-in or project-added. `disable` takes rule ids — the warning-tier rules, such as `triad`, `passive-voice`, `long-sentence`, `dense-paragraph`, `ai-phrase`, and every structure id the `--json` output names. Re-using a built-in term as a key replaces its replacement rather than adding a second entry.
 
 The linter looks for `.draekien/plain-language.json` by default, and `--overrides PATH` points it elsewhere for one run. Either way, a path that does not exist stops the run with exit code 3 rather than falling back to the built-in dictionary. To move the file permanently, read or write the `overridesPath` key:
 
