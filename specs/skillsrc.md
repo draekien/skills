@@ -90,3 +90,4 @@ Skills that use `.skillsrc` must register their keys here.
 | `todo` | `githubLabels` | string | `todo` | Comma-separated labels applied to every captured GitHub issue |
 | `todo` | `linearTeamId` | string | none | Linear team the captured issues belong to |
 | `todo` | `linearProjectId` | string | empty | Optional Linear project to file captured issues under |
+| `plain-language` | `overridesPath` | string | `.draekien/plain-language.json` | Path (relative to repo root) to a JSON file of extra dictionary entries merged over the linter's built-in dictionary |

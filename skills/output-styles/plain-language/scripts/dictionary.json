@@ -1,0 +1,415 @@
+{
+  "swaps": {
+    "formal": {
+      "utilise": "use",
+      "utilisation": "use",
+      "commence": "start",
+      "commencement": "start",
+      "ascertain": "find out",
+      "endeavour": "try",
+      "facilitate": "help",
+      "demonstrate": "show",
+      "sufficient": "enough",
+      "additional": "extra",
+      "approximately": "about",
+      "requirement": "need",
+      "obtain": "get",
+      "purchase": "buy",
+      "procure": "buy",
+      "assist": "help",
+      "attempt": "try",
+      "cease": "stop",
+      "disseminate": "send",
+      "transmit": "send",
+      "furnish": "give",
+      "ensure": "make sure",
+      "equitable": "fair",
+      "expedite": "speed up",
+      "frequently": "often",
+      "initiate": "start",
+      "inquire": "ask",
+      "modify": "change",
+      "necessitate": "need",
+      "notify": "tell",
+      "numerous": "many",
+      "myriad": "many",
+      "plethora": "many",
+      "objective": "goal",
+      "optimum": "best",
+      "participate": "take part",
+      "permit": "let",
+      "portion": "part",
+      "possess": "have",
+      "previously": "before",
+      "proceed": "go",
+      "reside": "live",
+      "retain": "keep",
+      "substantial": "large",
+      "whilst": "while",
+      "amongst": "among",
+      "regarding": "about",
+      "concerning": "about",
+      "consequently": "so",
+      "currently": "now",
+      "in accordance with": "under",
+      "in addition": "also",
+      "in conjunction with": "with",
+      "in excess of": "more than",
+      "in lieu of": "instead of",
+      "in order to": "to",
+      "in relation to": "about",
+      "in the event that": "if",
+      "in the event of": "if",
+      "in the near future": "soon",
+      "with regard to": "about",
+      "with reference to": "about",
+      "with the exception of": "except",
+      "due to the fact that": "because",
+      "during the course of": "during",
+      "for the purpose of": "to",
+      "in the majority of cases": "usually",
+      "on a regular basis": "regularly",
+      "the majority of": "most",
+      "until such time as": "until",
+      "prior to": "before",
+      "subsequent to": "after",
+      "at this point in time": "now",
+      "at the present time": "now",
+      "per annum": "a year"
+    },
+    "hiddenVerbs": {
+      "make a decision": "decide",
+      "make an assessment": "assess",
+      "make an application": "apply",
+      "submit an application": "apply",
+      "make a payment": "pay",
+      "make a recommendation": "recommend",
+      "make a request": "request",
+      "make a comparison": "compare",
+      "make a contribution": "contribute",
+      "conduct a review": "review",
+      "conduct an investigation": "investigate",
+      "carry out an analysis": "analyse",
+      "carry out an inspection": "inspect",
+      "perform an evaluation": "evaluate",
+      "undertake a review": "review",
+      "undertake an assessment": "assess",
+      "provide assistance": "help",
+      "provide a response": "respond",
+      "provide an explanation": "explain",
+      "give consideration to": "consider",
+      "give approval": "approve",
+      "take into consideration": "consider",
+      "have a discussion": "discuss",
+      "hold a meeting": "meet",
+      "reach a conclusion": "conclude",
+      "come to an agreement": "agree",
+      "place an order": "order"
+    },
+    "filler": {
+      "it should be noted that": "",
+      "it is important to note that": "",
+      "it is worth noting that": "",
+      "it goes without saying that": "",
+      "please note that": "",
+      "needless to say": "",
+      "as a matter of fact": "",
+      "for all intents and purposes": "",
+      "at the end of the day": "",
+      "when all is said and done": "",
+      "the fact of the matter is that": "",
+      "in a very real sense": "",
+      "as previously mentioned": "",
+      "basically": "",
+      "essentially": "",
+      "literally": "",
+      "very": "",
+      "quite": "",
+      "somewhat": "",
+      "fairly": "",
+      "of course": "",
+      "obviously": "",
+      "arguably": "",
+      "sort of": "",
+      "kind of": "",
+      "in terms of": "about",
+      "a wide range of": "many",
+      "a variety of": "many"
+    },
+    "corporate": {
+      "crucial": "important",
+      "pivotal": "key",
+      "meticulous": "careful",
+      "comprehensive": "complete",
+      "intricate": "complex",
+      "underscore": "stress",
+      "low-hanging fruit": "quick wins",
+      "move the needle": "make a difference",
+      "touch base": "check in",
+      "value-add": "benefit",
+      "mission-critical": "essential",
+      "best-in-class": "the best available",
+      "game-changer": "a major change"
+    }
+  },
+  "candidates": {
+    "formal": {
+      "provide": [
+        "give",
+        "offer",
+        "supply"
+      ],
+      "implement": [
+        "build",
+        "carry out",
+        "roll out"
+      ],
+      "establish": [
+        "set up",
+        "show",
+        "agree"
+      ],
+      "indicate": [
+        "show",
+        "suggest",
+        "say"
+      ],
+      "solicit": [
+        "ask for",
+        "invite"
+      ],
+      "a number of": [
+        "some",
+        "several",
+        "many"
+      ]
+    },
+    "corporate": {
+      "leverage": [
+        "use",
+        "build on"
+      ],
+      "synergy": [
+        "fit",
+        "overlap"
+      ],
+      "stakeholder": [
+        "the people involved",
+        "the team",
+        "decision-makers"
+      ],
+      "circle back": [
+        "follow up",
+        "revisit"
+      ],
+      "deep dive": [
+        "review in detail",
+        "examine"
+      ],
+      "robust": [
+        "reliable",
+        "strong",
+        "well-tested"
+      ],
+      "seamless": [
+        "smooth",
+        "works without extra steps"
+      ],
+      "delve into": [
+        "examine",
+        "look at"
+      ],
+      "ecosystem": [
+        "set of tools",
+        "environment"
+      ],
+      "holistic": [
+        "whole",
+        "complete"
+      ],
+      "cutting-edge": [
+        "new",
+        "latest"
+      ],
+      "bandwidth": [
+        "time",
+        "capacity"
+      ],
+      "actionable": [
+        "practical",
+        "specific"
+      ],
+      "alignment": [
+        "agreement",
+        "a shared view"
+      ],
+      "paradigm": [
+        "model",
+        "approach"
+      ],
+      "streamline": [
+        "simplify",
+        "speed up"
+      ],
+      "scalable": [
+        "handles growth",
+        "works at a larger size"
+      ],
+      "empower": [
+        "let",
+        "enable"
+      ],
+      "unlock": [
+        "allow",
+        "make possible"
+      ],
+      "harness": [
+        "use",
+        "apply"
+      ],
+      "navigate": [
+        "handle",
+        "work through"
+      ],
+      "foster": [
+        "encourage",
+        "support"
+      ],
+      "landscape": [
+        "market",
+        "field"
+      ],
+      "journey": [
+        "process",
+        "path"
+      ],
+      "tapestry": [
+        "mix",
+        "range"
+      ],
+      "realm": [
+        "area",
+        "field"
+      ],
+      "testament to": [
+        "shows",
+        "proves"
+      ],
+      "nuanced": [
+        "detailed",
+        "subtle"
+      ]
+    },
+    "readerDistance": {
+      "the user": [
+        "you"
+      ],
+      "the reader": [
+        "you"
+      ],
+      "the applicant": [
+        "you"
+      ],
+      "users are advised to": [
+        "you should"
+      ],
+      "users are required to": [
+        "you must"
+      ],
+      "the customer must": [
+        "you must"
+      ]
+    }
+  },
+  "structures": [
+    {
+      "id": "negative-parallelism",
+      "pattern": "(?i)\\bnot just\\b[^.!?]{0,80}?(?:,\\s*(?:it|they|this|that)\\b|\\s*[—-]\\s)",
+      "message": "Manufactured contrast (\"not just X, it's Y\"). State the claim directly."
+    },
+    {
+      "id": "negative-parallelism",
+      "pattern": "(?i)\\b(?:isn'?t|aren'?t|wasn'?t|weren'?t|is not|are not)\\b[^.!?]{0,80}[.;]\\s*(?:It|They|That|This)'?s\\b",
+      "message": "Negative-then-positive pivot. Say what it is, without first saying what it is not."
+    },
+    {
+      "id": "negative-parallelism",
+      "pattern": "(?i)\\b(?:this|it|that)\\s+(?:isn'?t|is not)\\s+about\\b",
+      "message": "\"This isn't about X\" framing. Lead with what it is about."
+    },
+    {
+      "id": "rhetorical-scaffolding",
+      "pattern": "(?i)\\bhere(?:'?s| is) the thing\\b",
+      "message": "Throat-clearing. Delete it and state the point."
+    },
+    {
+      "id": "rhetorical-scaffolding",
+      "pattern": "(?i)\\bbut here(?:'?s| is) where it gets\\b",
+      "message": "Manufactured reveal. Make the point without the build-up."
+    },
+    {
+      "id": "rhetorical-scaffolding",
+      "pattern": "(?i)\\bhere(?:'?s| is) why (?:that|this|it) matters\\b",
+      "message": "Announcing significance instead of showing it. Delete and give the reason."
+    },
+    {
+      "id": "rhetorical-scaffolding",
+      "pattern": "(?i)\\bthe (?:kicker|best part|worst part)\\s*[?:]",
+      "message": "Rhetorical set-up. State the fact plainly."
+    },
+    {
+      "id": "rhetorical-scaffolding",
+      "pattern": "(?i)\\b(?:let that sink in|make no mistake|and that(?:'?s| is) the (?:whole )?point)\\b",
+      "message": "Dramatic filler. Trust the reader and cut it."
+    },
+    {
+      "id": "hedged-discovery",
+      "pattern": "(?i)\\byou have to go looking\\b",
+      "message": "Manufactured insight. Say what the thing is, not how hard it is to notice."
+    },
+    {
+      "id": "hedged-discovery",
+      "pattern": "(?i)\\b(?:if you know where to look|hiding in plain sight|on closer inspection|what'?s easy to miss)\\b",
+      "message": "Discovery framing. Lead with the finding itself."
+    },
+    {
+      "id": "hedged-discovery",
+      "pattern": "(?i)\\bburied in the (?:details?|fine print)\\b",
+      "message": "Discovery framing. Name the detail instead."
+    },
+    {
+      "id": "hedged-discovery",
+      "pattern": "(?i)\\bat first glance\\b[^.!?]{0,120}\\bbut\\b",
+      "message": "\"At first glance ... but\" reveal. Give the accurate reading first."
+    },
+    {
+      "id": "triad",
+      "pattern": "(?i)\\b[a-z]+(?:er|est|ful|ive|ous|able|ible|ly|ed)\\b,\\s+[a-z]+(?:er|est|ful|ive|ous|able|ible|ly|ed)\\b,?\\s+and\\s+[a-z]+(?:er|est|ful|ive|ous|able|ible|ly|ed)\\b",
+      "message": "Rule-of-three list. Keep the items that carry information; cut the rest."
+    },
+    {
+      "id": "em-dash-pivot",
+      "pattern": "—[^—.!?]{1,120}—",
+      "message": "Two em-dashes in one sentence. Use a full stop or a comma."
+    }
+  ],
+  "allow": [
+    "execute",
+    "instance",
+    "instantiate",
+    "commit",
+    "terminate",
+    "validate",
+    "deprecate",
+    "provision",
+    "migrate",
+    "index",
+    "query",
+    "parse",
+    "render",
+    "cache",
+    "endpoint",
+    "serialise",
+    "transaction"
+  ]
+}

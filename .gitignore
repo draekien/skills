@@ -1,2 +1,6 @@
 .claude/settings.local.json
 .claude/skills/skill-writing/
+__pycache__/
+*.py[cod]
+.venv/
+.ruff_cache/
