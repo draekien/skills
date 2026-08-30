@@ -43,7 +43,7 @@ It needs the GitHub CLI (`gh`), authenticated, for the pull request evidence. Wi
 git branch -D <branch> [<branch> ...]
 ```
 
-Use `-D`, not `-d`: `-d` refuses squash-merged branches. That force flag is safe here only because the evidence is already settled — never reach for it first.
+Use `-D`, not `-d`: `-d` refuses squash-merged branches. That force flag is safe here only because the evidence is already settled — never use it first.
 
 **Report** — name every branch left behind and why: open pull request, closed without merging, or no evidence found.
 

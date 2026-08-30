@@ -102,6 +102,48 @@ CASES = [
         [("candidate", "error")],
     ),
     (
+        "code cast as a speaker reports",
+        "The name tells you nothing. The signature says the contract out loud.\n"
+        "Only one of them tells you what it is doing.\n",
+        [("anthropomorphism", "warning"), ("anthropomorphism", "warning"),
+         ("anthropomorphism", "warning")],
+    ),
+    (
+        "a plain report of what something says does not report",
+        "The log tells you which branch ran.\n",
+        [],
+    ),
+    (
+        "nothing as a clause subject does not report",
+        "The dashboard tells you nothing is wrong.\n",
+        [],
+    ),
+    (
+        "code described as growing reports",
+        "You will meet it in code that grew one method at a time.\n",
+        [("candidate", "error"), ("anthropomorphism", "warning")],
+    ),
+    (
+        "a thing that really grows does not report",
+        "The town grew one house at a time.\n",
+        [],
+    ),
+    (
+        "gives plus a type name reports",
+        "The parser gives Option<string> when the key is missing.\n",
+        [("gives-type", "warning")],
+    ),
+    (
+        "gives plus an ordinary noun does not report",
+        "The report gives Australia as the jurisdiction.\n",
+        [],
+    ),
+    (
+        "gives plus a possessive brand does not report",
+        "The service gives McDonald's a discount.\n",
+        [],
+    ),
+    (
         "notFollowedBy skips the user as a data record",
         "If the user does not exist, return an error.\n",
         [],
@@ -115,6 +157,9 @@ CASES = [
 
 FIX_CASES = [
     ("underscores is never applied by --fix", "Use underscores between words.\n"),
+    ("reach for is never applied by --fix", "Do not reach for the top shelf.\n"),
+    ("you will meet is never applied by --fix",
+     "The survey asks how many people you will meet each week.\n"),
 ]
 
 DRY_RUN_BODY = "We will utilise the process and commence work.\n"

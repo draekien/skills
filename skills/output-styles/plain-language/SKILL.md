@@ -31,7 +31,7 @@ Three levers, narrowest first:
 | `<!-- plain-language-ignore-file -->` | Skips the whole file |
 | `--disable-rule IDS` | Switches named rules off for the run |
 
-Reach for a suppression comment when a specific line is right as written. Reach for `--disable-rule` only when a rule is wrong for the whole document.
+Use a suppression comment when a specific line is right as written. Use `--disable-rule` only when a rule is wrong for the whole document.
 
 ## Self-check
 
@@ -60,11 +60,12 @@ Patterns see words, not arguments. Judge these directly on every audit and self-
 
 - `--fix` rewrites files in place with no backup. Run it only on a file the user has asked to change, and only when that file is committed or otherwise recoverable, so the rewrite stays reviewable. On a file that is not recoverable, run `--fix --dry-run` first and read the list.
 - `--fix` reading stdin prints the rewritten text to stdout and reports nothing. Pass a file path to get findings as well.
-- The triad and em-dash rules produce the most false positives. Dismiss them freely; never contort a sentence to satisfy a heuristic.
+- The `triad`, `em-dash-pivot`, `anthropomorphism`, and `gives-type` rules produce the most false positives. `anthropomorphism` fires on a person as the subject ("one of them tells you the timeline"), and `gives-type` on a name that looks like a type. Dismiss them freely; never contort a sentence to satisfy a heuristic.
 - The linter skips fenced code, inline code, link targets, URLs, and YAML frontmatter, so linting a document full of examples is safe.
 - The dictionary uses Australian spelling, and the matcher also accepts the American forms and the common word endings. Adding `utilise` covers `utilises`, `utilised`, `utilising`, and `utilized`.
 - The matcher generates word endings by rule, so an irregular verb in a replacement produces a wrong form. Set `"inflect": false` on the entry and add the forms you need as separate entries.
 - A few dictionary terms carry a second, technical sense the matcher cannot see: `implement` (an interface or trait), `component` (a tuple or UI component), and `additional` (`AdditionalFiles` and similar identifiers). In a software docs repo, start the project overrides with `"allow": ["implement", "component", "additional"]` rather than dismissing each hit by hand.
+- A banned phrase with a fixed wording belongs in `swaps` or `candidates`; one with a slot that varies belongs in `structures`, as a regex. A `swaps` or `candidates` key is matched literally, so a placeholder written into the key matches nothing and fails silently.
 - A term whose two senses are spelled the same belongs in `candidates`, not `swaps`, however confident the replacement looks. `underscores` sits there because `--fix` would otherwise turn "use underscores between words" into "use stresses between words".
 - Filler is never deleted after a negator, because `not very good` and `not good` mean different things. The linter stays silent there rather than reporting a fix it cannot safely make.
 

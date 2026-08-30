@@ -200,7 +200,8 @@
       "value-add": "benefit",
       "mission-critical": "essential",
       "best-in-class": "the best available",
-      "game-changer": "a major change"
+      "game-changer": "a major change",
+      "already sitting there": "already available"
     }
   },
   "candidates": {
@@ -407,7 +408,23 @@
           "stressing"
         ],
         "inflect": false
-      }
+      },
+      "reach for": [
+        "use",
+        "choose"
+      ],
+      "reaches for": [
+        "uses",
+        "chooses"
+      ],
+      "reaching for": [
+        "using",
+        "choosing"
+      ],
+      "reached for": [
+        "used",
+        "chose"
+      ]
     },
     "readerDistance": {
       "the user": {
@@ -430,6 +447,14 @@
       ],
       "the customer must": [
         "you must"
+      ],
+      "you will meet": [
+        "you will find",
+        "you will see"
+      ],
+      "you'll meet": [
+        "you'll find",
+        "you'll see"
       ]
     },
     "filler": {
@@ -502,6 +527,11 @@
       "message": "Dramatic filler. Trust the reader and cut it."
     },
     {
+      "id": "rhetorical-scaffolding",
+      "pattern": "(?i)\\bmatters more than it sounds\\b",
+      "message": "Announcing significance instead of showing it. Give the reason."
+    },
+    {
       "id": "hedged-discovery",
       "pattern": "(?i)\\byou have to go looking\\b",
       "message": "Manufactured insight. Say what the thing is, not how hard it is to notice."
@@ -542,6 +572,11 @@
       "message": "Marketing verb aimed at the reader. Say what actually changes."
     },
     {
+      "id": "ai-phrase",
+      "pattern": "(?i)\\blets?\\s+the\\s+[\\w' -]{2,40}?\\s+take care of itself\\b",
+      "message": "Idiom for behaviour. Say what happens in that case."
+    },
+    {
       "id": "not-only-but-also",
       "pattern": "(?i)\\bnot only\\b[^.!?]{0,80}\\bbut also\\b",
       "message": "Correlative build-up. Make one plain statement."
@@ -560,6 +595,36 @@
       "id": "rhetorical-question",
       "pattern": "(?:^|\\s)(?:Sound familiar|The result|The catch|The problem|The upshot)\\?",
       "message": "Rhetorical question used as a pivot. State the answer."
+    },
+    {
+      "id": "anthropomorphism",
+      "pattern": "(?i)\\b(?:is|are)\\s+the\\s+honest\\s+one\\b",
+      "message": "Praise by metaphor. Say what the thing does that the others do not."
+    },
+    {
+      "id": "anthropomorphism",
+      "pattern": "(?i)\\b(?:tells?|told)\\s+you\\s+nothing\\b(?!\\s+(?:is|was|are|were|has|had|but))",
+      "message": "The thing does not speak. Say what it leaves out."
+    },
+    {
+      "id": "anthropomorphism",
+      "pattern": "(?i)\\bsay(?:s|ing)?\\s+the\\s+[\\w' -]{2,40}?\\s+out loud\\b",
+      "message": "The thing does not speak. Say what it states, and where."
+    },
+    {
+      "id": "anthropomorphism",
+      "pattern": "(?i)\\bone of them tells you\\b",
+      "message": "The thing does not speak. Name the one, and say what it shows."
+    },
+    {
+      "id": "anthropomorphism",
+      "pattern": "(?i)\\b(?:grew|grows|growing)\\s+(?:one|a)\\s+(?:method|function|class|file|feature|endpoint|test|module|case|branch|line|field|column|flag|rule|check|handler|hack|patch|commit)s?\\s+at a time\\b",
+      "message": "Code does not grow by itself. Say it was written that way."
+    },
+    {
+      "id": "gives-type",
+      "pattern": "\\bgives?\\s+(?:back\\s+)?(?:an?|the)?\\s*`?(?:[A-Z]\\w*<[^>\\n]{1,60}>|[A-Z][a-z0-9_]+[A-Z]\\w*\\b(?!['’]s\\b))",
+      "message": "A member returns a type. Use \"returns\", not \"gives\"."
     }
   ],
   "allow": [

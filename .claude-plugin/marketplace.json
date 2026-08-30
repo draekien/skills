@@ -63,7 +63,7 @@
           }
         ]
       },
-      "version": "0.56.1"
+      "version": "0.57.0"
     },
     {
       "name": "engineering-skills",
@@ -82,7 +82,7 @@
         "./skills/engineering/prune-local-branches",
         "./skills/engineering/harden"
       ],
-      "version": "0.25.0"
+      "version": "0.25.1"
     },
     {
       "name": "productivity-skills",
@@ -97,7 +97,7 @@
         "./skills/productivity/todo",
         "./skills/productivity/picking-models"
       ],
-      "version": "0.15.0"
+      "version": "0.15.1"
     },
     {
       "name": "problem-solving-skills",
@@ -108,7 +108,7 @@
         "./skills/problem-solving/round-table",
         "./skills/problem-solving/from-first-principles"
       ],
-      "version": "0.1.0"
+      "version": "0.1.1"
     },
     {
       "name": "roles-skills",
@@ -163,7 +163,7 @@
           }
         ]
       },
-      "version": "0.8.1"
+      "version": "0.9.0"
     },
     {
       "name": "meta-skills",
@@ -173,7 +173,7 @@
       "skills": [
         "./skills/meta/writing-skills"
       ],
-      "version": "0.1.1"
+      "version": "0.1.2"
     },
     {
       "name": "personal-skills",
@@ -183,7 +183,7 @@
       "skills": [
         "./skills/personal/ghost-writing"
       ],
-      "version": "0.3.2"
+      "version": "0.3.3"
     }
   ]
 }

@@ -1,6 +1,6 @@
 ---
 name: todo
-description: Parks an idea as a todo in this project's tracker — markdown files, GitHub issues, or Linear — or lists what is already parked. Reach for it when an idea surfaces mid-task and you do not want to act on it yet.
+description: Parks an idea as a todo in this project's tracker — markdown files, GitHub issues, or Linear — or lists what is already parked. Use it when an idea surfaces mid-task and you do not want to act on it yet.
 argument-hint: "[idea]"
 disable-model-invocation: true
 ---

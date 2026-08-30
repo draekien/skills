@@ -6,7 +6,7 @@ The recurring faults he hunts when drafting or revising public prose - articles,
 - **Claim-colon shape** - the colon as default sentence shape, a claim followed by its restatement or elaboration. Vary the structure.
 - **Restatement and circling** - saying the same thing again in new words, or circling back to a point already made. Say it once.
 - **Compounds that crowd ideas** - distinct ideas crammed into one overloaded sentence. Carve-out: a cause and its immediate consequence about one subject may stay joined with "and".
-- **Performed prose / word-of-the-day** - reaching for the showy word where the plain one carries the meaning ("presupposes" -> "assumes").
+- **Performed prose / word-of-the-day** - choosing the showy word where the plain one carries the meaning ("presupposes" -> "assumes").
 - **Incomplete metaphor** - use metaphor only for emphasis, and once its frame is opened, complete it ("sidelines... out of the game", never "... out of it").
 - **Awkward progressive, undercutting tail, stranded locational frame** - the -ing construction where a plain verb reads cleaner; a trailing clause that weakens the sentence it closes; a locational frame left without its anchor.
 - **Asyndeton in serial lists** - serial lists keep the final conjunction; do not drop the "and" before the last item.

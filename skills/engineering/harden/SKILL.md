@@ -19,7 +19,7 @@ Explore the surrounding project for what the supplied context does not say — c
 
 Do not ask the user to predict the future. That is the skill's job.
 
-Choose the simulation mode from the invocation: `--subagents` dispatches an independent subagent per lens, anything else runs inline. Default inline. Subagents cost more but stop one agent's blind spots from flattening all seven lenses into the same three obvious failures — reach for them on consequential or unusually broad targets.
+Choose the simulation mode from the invocation: `--subagents` dispatches an independent subagent per lens, anything else runs inline. Default inline. Subagents cost more but stop one agent's blind spots from flattening all seven lenses into the same three obvious failures — use them on consequential or unusually broad targets.
 
 ## Timeshift
 
@@ -29,7 +29,7 @@ Run every lens below. Each lens must yield at least one field report — three u
 
 | Lens          | The question it forces                                                                                          |
 | ------------- | ----------------------------------------------------------------------------------------------------------------- |
-| **Adopters**  | Who reached for this that it was never designed for, and what did they assume it did?                            |
+| **Adopters**  | Who chose this that it was never designed for, and what did they assume it did?                            |
 | **Mutation**  | Where was it copied, forked, half-applied, or extended past its shape — and what broke in the copy?               |
 | **Load**      | What changed in volume, frequency, concurrency, or size, and where did the design stop holding?                   |
 | **Drift**     | The target stayed still while the world moved: dependencies, schemas, adjacent code, team turnover. What snapped? |

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 Reason from first principles. Determine the problem from the user's most recent message; if none is stated or clearly implied, ask what to reason about. The solution is rebuilt from what is actually true, not copied from how the problem is usually solved.
 
-The reflex is to reason by analogy — reach for the standard pattern, the prior solution, the way it is normally done — and that reflex is the enemy. It smuggles in assumptions that were never examined. Suppress it. The job is to dismantle the problem to the few things that are genuinely true and reconstruct from there.
+The reflex is to reason by analogy — use the standard pattern, the prior solution, the way it is normally done — and that reflex is the enemy. It smuggles in assumptions that were never examined. Suppress it. The job is to dismantle the problem to the few things that are genuinely true and reconstruct from there.
 
 Do three things:
 

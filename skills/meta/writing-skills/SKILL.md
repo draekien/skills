@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Knowledge for writing agent skills — the tenets, design axes, and craft of a SKILL.md, plus a spec validator. Reach for it before creating a new skill or revising an existing one.
+description: Knowledge for writing agent skills — the tenets, design axes, and craft of a SKILL.md, plus a spec validator. Use it before creating a new skill or revising an existing one.
 argument-hint: "[skill-name-or-path]"
 disable-model-invocation: true
 ---
@@ -58,7 +58,7 @@ A sub-axis of the Procedure end — knowledge skills are inherently flexible. Ca
 Two ways a skill is reached, trading different costs:
 
 - **Model-triggered** — the skill surfaces by relevance when the agent matches the description against the task. Knowledge skills lean this way: the agent should benefit without being told. Pays **context load** — the description sits in the agent's window every turn.
-- **User-triggered** — the human turns the skill on deliberately. Procedure skills lean this way: a process should not auto-fire onto unrelated tasks. Pays **cognitive load** — the human is the index that must remember the skill exists. Not a cost to minimise: it is the price of human agency; spend it where human judgement matters. When user-triggered skills multiply past memory, a **router skill** — one user-triggered skill naming the others and when to reach for each — cures the pile-up.
+- **User-triggered** — the human turns the skill on deliberately. Procedure skills lean this way: a process should not auto-fire onto unrelated tasks. Pays **cognitive load** — the human is the index that must remember the skill exists. Not a cost to minimise: it is the price of human agency; spend it where human judgement matters. When user-triggered skills multiply past memory, a **router skill** — one user-triggered skill naming the others and when to use each — cures the pile-up.
 
 Where a harness supports invocation controls in frontmatter, set them to match; they are extensions, not part of the open standard.
 
@@ -72,7 +72,7 @@ The mechanics of the sole-activation-signal tenet. Which form to write follows f
   <verb> <what it does>. Use when <conditions>, or when the user says "<phrase 1>", "<phrase 2>".
   ```
 
-- **User-triggered** — a menu line for a human scanning a command list: say what it produces and when someone would reach for it, the way a CLI help one-liner does. Trigger-phrase density makes a poor menu label.
+- **User-triggered** — a menu line for a human scanning a command list: say what it produces and when someone would use it, the way a CLI help one-liner does. Trigger-phrase density makes a poor menu label.
 
 If both invocation paths are open, write the model-triggered form — it still reads fine to a human.
 
