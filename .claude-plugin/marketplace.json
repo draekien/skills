@@ -40,7 +40,8 @@
         "./skills/output-styles/plain-language",
         "./skills/output-styles/simplified-technical-english",
         "./skills/meta/writing-skills",
-        "./skills/productivity/picking-models"
+        "./skills/productivity/picking-models",
+        "./skills/engineering/prune-local-branches"
       ],
       "outputStyles": [
         "./skills/output-styles/cte-mode/cte-mode.md",
@@ -61,7 +62,7 @@
           }
         ]
       },
-      "version": "0.54.0"
+      "version": "0.55.0"
     },
     {
       "name": "engineering-skills",
@@ -76,9 +77,10 @@
         "./skills/engineering/with-testing-principles",
         "./skills/engineering/extract-llms-txt",
         "./skills/engineering/init-agent-docs",
-        "./skills/engineering/with-doc-comments"
+        "./skills/engineering/with-doc-comments",
+        "./skills/engineering/prune-local-branches"
       ],
-      "version": "0.23.0"
+      "version": "0.24.0"
     },
     {
       "name": "productivity-skills",
