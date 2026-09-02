@@ -1,7 +1,7 @@
 ---
 name: prune-local-branches
 description: Prunes local git branches whose work already reached the base branch, ranking evidence so squash-merged branches are not mistaken for unmerged work. Use when local branches have piled up, after merging a run of pull requests, or when the user says "delete merged branches", "clean up branches", "prune local branches", or asks about stale or orphaned branches.
-argument-hint: "[base-branch]"
+argument-hint: "[--base branch]"
 ---
 
 Delete a branch only when its work is provably in the base branch, and record enough to restore anything deleted in error. A branch you cannot prove is merged stays.

@@ -1,7 +1,7 @@
 ---
 name: design-dashboards
 description: Designs, builds, or audits dashboards — classifying the dashboard type, choosing the right chart for each question, and structuring KPIs and layout. For building a dashboard or choosing visualizations for data.
-argument-hint: "[design|build|audit] [target]"
+argument-hint: "[--mode design|build|audit] [target]"
 disable-model-invocation: true
 ---
 

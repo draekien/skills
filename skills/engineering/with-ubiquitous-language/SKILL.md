@@ -1,7 +1,7 @@
 ---
 name: with-ubiquitous-language
 description: Builds and enforces a shared project vocabulary (a DDD ubiquitous language). Discovers bounded contexts by exploring the codebase, interviews you to surface domain terms, and tracks definitions in a project dictionary, flagging conflicts as they arise. Use when terminology feels ambiguous, or before implementing a feature that needs a shared vocabulary.
-argument-hint: "[migrate|term-or-context]"
+argument-hint: "[--mode migrate] [term-or-context]"
 ---
 
 # With Ubiquitous Language
@@ -38,7 +38,7 @@ Runs once on first invocation.
 
 If invoked with a term or context name as the argument, skip straight to a lookup: resolve `dictionaryPath` (step 1 above), then run `scripts/query.py lookup <term>` to find a term across all contexts, or `scripts/query.py list <context>` to list every term in a bounded context. Present the result and stop — do not enter the Interview or Conflict Detection behaviors below.
 
-If invoked with `migrate`, run step 2's migration path directly via `scripts/migrate.py`, then stop.
+If invoked with `--mode migrate`, run step 2's migration path directly via `scripts/migrate.py`, then stop.
 
 ## Active Behaviors
 

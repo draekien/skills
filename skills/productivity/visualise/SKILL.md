@@ -1,7 +1,7 @@
 ---
 name: visualise
 description: Visualises data, text, or structured content as a self-contained HTML page, such as a chart or diagram. Use when you want something rendered visually rather than described in text.
-argument-hint: "[data, file, or text to visualise] [optional output name]"
+argument-hint: "[--output name] [data, file, or text to visualise]"
 disable-model-invocation: true
 ---
 
@@ -9,7 +9,7 @@ Pick the most informative visual form for the input, generate a self-contained o
 
 If the input has no clear visual form, default to a formatted document layout (readable typography, structured sections) rather than forcing a chart. Never ask the user to clarify — a visualisation only has value if it appears quickly, and a clarifying question stalls that; pick the most informative form and proceed.
 
-Write the output file to the directory containing the input data (or the project root if there is no input file), named `visualisation.html` by default. Use a descriptive slug (e.g. `sales-2025.html`) only when the user's input has an obvious subject or time period that would make the filename meaningfully more identifiable.
+Write the output file to the directory containing the input data (or the project root if there is no input file), named by `--output` when given and `visualisation.html` otherwise. Use a descriptive slug (e.g. `sales-2025.html`) only when the user's input has an obvious subject or time period that would make the filename meaningfully more identifiable.
 
 Apply the aesthetic and design thinking guidance in [references/design-thinking.md](references/design-thinking.md).
 

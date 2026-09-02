@@ -1,7 +1,7 @@
 ---
 name: harden
 description: Simulates six months of a change, spec, design, or skill being used and misused, then reports the RICE-ranked changes worth making before it ships.
-argument-hint: "[--inline|--subagents] [diff|spec|prompt|target]"
+argument-hint: "[--mode inline|subagents] [target]"
 disable-model-invocation: true
 ---
 
@@ -19,13 +19,13 @@ Explore the surrounding project for what the supplied context does not say — c
 
 Do not ask the user to predict the future. That is the skill's job.
 
-Choose the simulation mode from the invocation: `--subagents` dispatches an independent subagent per lens, anything else runs inline. Default inline. Subagents cost more but stop one agent's blind spots from flattening all seven lenses into the same three obvious failures — use them on consequential or unusually broad targets.
+Choose the simulation mode from the invocation: `--mode subagents` dispatches an independent subagent per lens, anything else runs inline. Default inline. Subagents cost more but stop one agent's blind spots from flattening all seven lenses into the same three obvious failures — use them on consequential or unusually broad targets.
 
 ## Timeshift
 
 Move to six months from today and write **field reports** — incidents and successes recorded as they happened, in the past tense, dated by month offset.
 
-Run every lens below. Each lens must yield at least one field report — three under `--subagents`, where an independent context has room to dig — or an explicit statement that it produced nothing, with the reason. A lens skipped in silence is a hole in the simulation.
+Run every lens below. Each lens must yield at least one field report — three under `--mode subagents`, where an independent context has room to dig — or an explicit statement that it produced nothing, with the reason. A lens skipped in silence is a hole in the simulation.
 
 | Lens          | The question it forces                                                                                          |
 | ------------- | ----------------------------------------------------------------------------------------------------------------- |
@@ -37,7 +37,7 @@ Run every lens below. Each lens must yield at least one field report — three u
 | **Handoff**   | A stranger owned it after the author left. What did they misread, and what did they break fixing something else? |
 | **Success**   | What worked so well that people built on it, and what property made that possible?                               |
 
-Under `--subagents`, dispatch one subagent per lens using [references/subagent-brief.md](references/subagent-brief.md), then merge their field reports as that brief directs.
+Under `--mode subagents`, dispatch one subagent per lens using [references/subagent-brief.md](references/subagent-brief.md), then merge their field reports as that brief directs.
 
 Write each incident with: the month it happened, what triggered it, what broke, how far the damage spread, and the **root cause traced back to a specific property of the target as it exists today**. Write each success with the property that caused it.
 

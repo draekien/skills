@@ -1,7 +1,7 @@
 ---
 name: customize-skill
 description: Records standing customizations for an installed skill, injected automatically every time that skill runs, and reviews or removes them. Use when a skill needs to behave differently without editing the skill itself, or when the user says "customise the X skill so that", "remember this for next time I use X", "what customisations do I have", "remove my customisations for X".
-argument-hint: "--mode [record|review|remove|setup] [skill-name]"
+argument-hint: "--mode record|review|remove|setup [skill-name]"
 ---
 
 Turns a one-off correction into a standing instruction. A customization is a markdown file the user owns; a `PostToolUse` hook on the `Skill` tool reads the files for whichever skill was just invoked and injects them, so the customization applies without anyone remembering it exists. Installed skills stay untouched — an upgrade or reinstall never clobbers a customization.

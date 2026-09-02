@@ -1,7 +1,7 @@
 ---
 name: with-doc-comments
 description: Writes and audits in-source API doc comments — JSDoc, TSDoc, XML docs, docstrings, rustdoc, godoc, KDoc — so each one carries the contract the signature cannot. Use when documenting a public member, backfilling doc comments across a codebase, or reviewing existing ones, or when the user says "document this API", "add JSDoc", "add XML docs", "write docstrings", "review these doc comments".
-argument-hint: "[write|audit] [target]"
+argument-hint: "[--mode write|audit] [target]"
 ---
 
 A doc comment earns its place only if it says something the signature does not. The reflex to fill every slot produces the dominant failure: `@param userId The user ID.` — a line that costs a read, satisfies the linter, blocks the "undocumented" warning that would have flagged the gap, and tells the caller nothing. The signature already carries names, types, arity, and nullability. The comment's job is the contract around them.

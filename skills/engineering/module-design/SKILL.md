@@ -1,7 +1,7 @@
 ---
 name: module-design
 description: Applies software design principles to modules — from a single method to an entire architectural layer. Use when designing new code, auditing existing code for design problems, or when the user says "design this", "help me design", "audit this", "find design problems in", "what's wrong with this", "let's design", "plan this component".
-argument-hint: "[design|audit] [module-or-file]"
+argument-hint: "[--mode design|audit] [module-or-file]"
 ---
 
 # Module Design

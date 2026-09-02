@@ -82,8 +82,10 @@ Every description word pays context load, so prune it harder than the body: **fr
 
 A quoted, free-text usage cue in frontmatter — the only place that signals which capabilities a skill exposes and what to supply. A progressive enhancement: harnesses that don't recognise the field ignore it, so it costs nothing to include.
 
-- **Single input** — `"[issue-number]"` or `"[filename] [format]"`.
-- **Fixed modes** — name them pipe-separated, even for two: `"[write|audit] [target]"`, not a descriptive phrase.
+- **Single input** — the thing the skill acts on stays positional: `"[issue-number]"`, `"[skill-name-or-path]"`.
+- **Modes and named parameters are flags** — `"[--mode write|audit] [target]"`, never a second bare positional or a descriptive phrase. Pipe-separate the values, even for two, and name the flag after what it chooses: `--mode`, `--effort`, `--scope`, `--target`, `--output`.
+- **Fixed flag order** — behaviour selectors first (`--mode`, `--effort`, `--scope`), then bounding flags (`--target`, `--base`), then output and side-effect flags (`--output`, `--fix`), then the free-text positional last, where a multi-word value cannot swallow a following flag.
+- **Brackets mean optional** — drop them from a flag the skill cannot run without: `"--mode record|review|remove|setup [skill-name]"`.
 - **Always quote** — an unquoted `[issue-number]` parses as a YAML list, not the string every harness expects.
 
 Don't push it toward a structured, typed argument schema — that isn't broadly supported or worth designing around.

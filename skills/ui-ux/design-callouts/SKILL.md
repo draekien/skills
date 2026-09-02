@@ -1,7 +1,7 @@
 ---
 name: design-callouts
 description: Designs, builds, or audits callouts — status messages, docs admonitions, and attention/onboarding overlays — picking the least disruptive component and enforcing accessibility requirements. For notifications, toasts, banners, alerts, error messages, tooltips, and onboarding tours.
-argument-hint: "[design|build|review] [target]"
+argument-hint: "[--mode design|build|review] [target]"
 disable-model-invocation: true
 ---
 

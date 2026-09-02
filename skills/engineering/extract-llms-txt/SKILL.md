@@ -1,7 +1,7 @@
 ---
 name: extract-llms-txt
 description: Produces an llms.txt-format index of a library, framework, SDK, or documentation site, for the agent to consult before touching that area of the codebase. Searches for an official llms.txt or llms-full.txt first and adapts it if found; otherwise crawls the docs site and compiles an index from scratch. Use when the user says "extract llms.txt", "index the docs for X", "make an llms.txt for X", "create a docs index for X", or asks to summarise a documentation site into a reference file.
-argument-hint: "[docs-url-or-topic] [output-path]"
+argument-hint: "[--output path] [docs-url-or-topic]"
 ---
 
 # Extract an llms.txt index
@@ -14,7 +14,7 @@ Pin down three things:
 
 - **The docs root** — a URL the user gave, or the official docs site for the named library/framework/SDK.
 - **The boundary** — the whole site, or one section of it (e.g. "just the Agent SDK pages," not the entire product's docs). A narrower boundary produces a tighter, more useful index; when the user names a subsection, hold to it even if a wider official index exists.
-- **The output path** — where the project keeps these indexes. Check for an existing convention first: a `docs/llms/` directory, a reference doc pointing at prior indexes, or a mention in the project's standing agent-instructions file. Match that convention (directory, filename style) rather than inventing a new one; if none exists, `docs/llms/<slug>.txt` is a reasonable default.
+- **The output path** — `--output` when given. Otherwise, where the project keeps these indexes; check for an existing convention first: a `docs/llms/` directory, a reference doc pointing at prior indexes, or a mention in the project's standing agent-instructions file. Match that convention (directory, filename style) rather than inventing a new one; if none exists, `docs/llms/<slug>.txt` is a reasonable default.
 
 Call this combination of docs root + boundary the **resolved boundary** for the rest of this skill — every later step (searching, crawling, writing) operates against it.
 
