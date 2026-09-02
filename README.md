@@ -43,6 +43,12 @@ Skills for software development tasks: code review, debugging, architecture, and
 
 **8 skills →** [browse the engineering bucket](skills/engineering/README.md)
 
+## Context Management
+
+Skills for building and managing agent context: the documentation and reference indexes an agent reads before it touches the code.
+
+**3 skills →** [browse the context-management bucket](skills/context-management/README.md)
+
 ## Productivity
 
 Skills for general workplace productivity: summarisation, research, meeting prep, and task management.

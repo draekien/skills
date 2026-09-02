@@ -25,6 +25,9 @@
         "./skills/roles/steelman",
         "./skills/roles/devils-advocate",
         "./skills/roles/rubber-duck",
+        "./skills/context-management/extract-llms-txt",
+        "./skills/context-management/init-agent-docs",
+        "./skills/context-management/maintain-agent-docs",
         "./skills/engineering/with-ubiquitous-language",
         "./skills/engineering/module-design",
         "./skills/engineering/draft-a-prd",
@@ -66,7 +69,7 @@
           }
         ]
       },
-      "version": "0.61.0"
+      "version": "0.62.0"
     },
     {
       "name": "engineering-skills",
@@ -86,7 +89,19 @@
         "./skills/engineering/prune-local-branches",
         "./skills/engineering/harden"
       ],
-      "version": "0.27.0"
+      "version": "0.28.0"
+    },
+    {
+      "name": "context-management-skills",
+      "description": "Skills for building and managing agent context: the documentation and reference indexes an agent reads before it touches the code.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/context-management/extract-llms-txt",
+        "./skills/context-management/init-agent-docs",
+        "./skills/context-management/maintain-agent-docs"
+      ],
+      "version": "0.1.0"
     },
     {
       "name": "productivity-skills",
