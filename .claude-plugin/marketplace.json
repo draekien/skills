@@ -32,6 +32,7 @@
         "./skills/engineering/with-testing-principles",
         "./skills/engineering/extract-llms-txt",
         "./skills/engineering/init-agent-docs",
+        "./skills/engineering/maintain-agent-docs",
         "./skills/engineering/with-doc-comments",
         "./skills/ui-ux/design-callouts",
         "./skills/ui-ux/design-dashboards",
@@ -76,7 +77,7 @@
           }
         ]
       },
-      "version": "0.58.0"
+      "version": "0.59.0"
     },
     {
       "name": "engineering-skills",
@@ -91,11 +92,12 @@
         "./skills/engineering/with-testing-principles",
         "./skills/engineering/extract-llms-txt",
         "./skills/engineering/init-agent-docs",
+        "./skills/engineering/maintain-agent-docs",
         "./skills/engineering/with-doc-comments",
         "./skills/engineering/prune-local-branches",
         "./skills/engineering/harden"
       ],
-      "version": "0.25.1"
+      "version": "0.26.0"
     },
     {
       "name": "productivity-skills",
