@@ -57,7 +57,24 @@ Deleting is the user's data. List exactly what will be deleted — paths and des
 
 The hook ships with this skill and loads automatically when the skill came from the plugin marketplace — no setup needed. Run setup only for a standalone install (`npx skills`), or when injection demonstrably never fires.
 
-Read [hooks/hooks.json](hooks/hooks.json) — the source of truth for the hook entry — and merge that `PostToolUse` entry into `~/.claude/settings.json`, substituting this skill's absolute directory for `${CLAUDE_PLUGIN_ROOT}/skills/meta/customize-skill`; that variable is defined only for plugin-provided hooks and expands to nothing in a settings file. Merge into any existing `PostToolUse` array rather than replacing it, and skip the write entirely if an entry pointing at `inject-customizations.sh` is already there — two registrations inject everything twice.
+Merge this `PostToolUse` entry into `~/.claude/settings.json`, substituting this skill's absolute directory for `${CLAUDE_PLUGIN_ROOT}/skills/meta/customize-skill`; that variable is defined only for plugin-provided hooks and expands to nothing in a settings file. Merge into any existing `PostToolUse` array rather than replacing it, and skip the write entirely if an entry pointing at `inject-customizations.sh` is already there — two registrations inject everything twice.
+
+```json
+{
+  "PostToolUse": [
+    {
+      "matcher": "Skill",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash \"${CLAUDE_PLUGIN_ROOT}/skills/meta/customize-skill/hooks/inject-customizations.sh\"",
+          "timeout": 10
+        }
+      ]
+    }
+  ]
+}
+```
 
 Verify by piping a payload through the handler directly, from this skill's directory:
 
