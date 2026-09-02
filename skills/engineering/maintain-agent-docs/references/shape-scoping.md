@@ -29,3 +29,5 @@ Every proposal names the exact lines, the destination path, the blast radius tha
 ## Reading order within a document
 
 Shape problems also appear inside a single document, where no move is needed: the constraint that governs everything stated last, the gotcha that prevents the common failure buried under prose an agent already knows. Where the fix is ordering rather than relocation, propose the reordering as its own finding and keep it separate from moves.
+
+A reordering resolves by approval, exactly as a move does. Changing nothing but sequence still changes what an agent reads first, and a constraint placed last for emphasis loses that emphasis when it is lifted into the middle — so the absence of a destination path makes a reordering no more mechanical than a move.

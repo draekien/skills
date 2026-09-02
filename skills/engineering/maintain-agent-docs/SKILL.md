@@ -1,7 +1,7 @@
 ---
 name: maintain-agent-docs
 description: Audits a repository's existing agent docs and reports what would mislead an agent — guidance gone stale against the code, or placed where the wrong agents read it. Repairs findings with --fix.
-argument-hint: "[--effort low|mid|high|xhigh|max] [--scope drift|shape] [--target path] [--fix safe|unsafe]"
+argument-hint: "[--effort low|mid|high|xhigh|max] [--scope drift|shape] [--target path] [--fix safe|unsafe] [--interview one|batch]"
 disable-model-invocation: true
 ---
 
@@ -13,7 +13,9 @@ Agent docs fail two ways, and the two need separating all the way through to the
 
 **Shape** — every line is true, but the document is built so an agent reads the wrong thing first: guidance for one directory sitting in the always-loaded root file, this quarter's migration written as a permanent rule, a convention stated as prose that a linter would enforce for free.
 
-The bar for both is **the contract** — the conventions this repository committed to, recorded in its own convention docs, typically `docs/AGENTS.md` and `docs/adr/AGENTS.md` or wherever this repository keeps them. Not the conventions a well-run repository usually has. That distinction carries the whole skill; see [Anti-patterns](#anti-patterns).
+The bar for both is **the contract** — the conventions this repository committed to, recorded in its own convention docs. Not the conventions a well-run repository usually has. That distinction carries the whole skill; see [Anti-patterns](#anti-patterns).
+
+This audit needs a user. Interview findings resolve only by asking, so a run with nobody to answer reports them unresolved and writes nothing for them — no mode presumes an answer, and no flag makes this an unattended tool. Where the invocation is automated, say so in the report and treat every interview finding as open.
 
 ## Establish the contract
 
@@ -21,10 +23,11 @@ First identify **the root document** — the file at the repository root that an
 
 - **One file holds the guidance** — that file is the root document, whichever name it carries. Audit it in place. Do not propose renaming it or migrating to a different convention; a repository that keeps its guidance in `CLAUDE.md` has made a choice, and reshaping the doc set to a preferred layout is scaffolding, not maintenance.
 - **One holds guidance, another imports it** — the imported file is the root document, and the import-only file is checked against the import discipline.
-- **Two or more hold guidance independently** — every one is a root document, and the split is itself a finding: an agent reads whichever it finds first, so the two will diverge. Report it as a cross-document finding and let the user say which should own the guidance.
-- **None exist** — stop. Report that there is nothing to maintain and point at `init-agent-docs`. This skill corrects existing docs; it never scaffolds.
+- **Two or more hold guidance independently** — every one is a root document. Audit against all of them and say in the report that the guidance is split; never pick one and proceed, because the rules in the file not chosen then go unread with nothing recording it. Where they disagree, the disagreement is a cross-document finding and the user says which should own the guidance. Where they agree, report the duplication as a divergence risk and leave the arrangement alone: a repository hand-syncing two root files has an unusual convention, not a contradiction.
+- **A root file exists but holds nothing** — an empty file, or one whose content carries no guidance, is itself a finding. Every session loads it and learns nothing, and its emptiness reads as an audited pass unless the report names it. Report it and continue with whatever else holds guidance.
+- **None exist** — stop. Report that there is nothing to maintain and point at `init-agent-docs`. This skill corrects existing docs; it never scaffolds. This is a normal outcome, not a failure of the run.
 
-Then read the repository's own convention docs, before forming any finding. They define the frontmatter form, the status discipline, the ADR bar, and the directory purposes this audit measures against — including where this repository deliberately diverged from convention.
+Then find and read the repository's own convention docs, before forming any finding. They define the frontmatter form, the status discipline, the ADR bar, and the directory purposes this audit measures against — including where this repository deliberately diverged from convention. Locate them by searching the doc set for the documents that govern the doc set, not by expecting a fixed path: a repository that keeps them one directory name from convention still has a contract, and treating it as contractless discards the very rules the audit measures against.
 
 Where a root document exists but the convention docs do not, audit against what the docs claim about themselves and about the code, and state in the report that the contract was unavailable, so the user can see the findings rest on a narrower basis. With no contract, structural-invariant checks reduce to internal consistency and link integrity: raise no finding about frontmatter form or status vocabulary, and apply nothing mechanically. General convention is not a substitute for the contract.
 
@@ -36,7 +39,9 @@ The root document and the convention docs are read whatever `--target` says, bec
 
 Where `--target` selects no documents, report that: name the target and the documents that exist outside it. Never widen the scope unasked — a silent widening produces findings about documents the user excluded on purpose.
 
-Read each document in scope in full; they are few and short. Open code only to verify a specific claim a document makes, so cost scales with the doc set rather than with the repository.
+The doc set stops at what this repository owns. A submodule, a vendored tree, or an installed dependency carries its own agent docs governed by someone else's contract: exclude them. Editing them writes into a tree the parent repository does not track, so the change is invisible to review and disappears on the next update, and the same finding returns on every run.
+
+Read each document in scope in full, and open code only to verify a specific claim a document makes. Agent docs are usually few and short, which is what keeps cost proportional to the doc set rather than the repository — but that is an observation, not a guarantee. Where the doc set is too large to read in full, or a single document is, say so and ask for a narrower `--target` rather than proceeding on a premise the pass has already broken. A document reported as unaudited is honest; a document skimmed and reported as checked is not.
 
 ## Route by effort
 
@@ -61,6 +66,7 @@ Two rules hold across the routing:
 
 - **A probable finding is never applied**, in any `--fix` mode. Marking it probable and then writing it anyway defeats the mark.
 - **A class that hands a finding to a class this run has not activated still reports it**, as an unresolved finding of the receiving class, named as out of level or out of scope. Never resolve it under the sending class's resolution — that is how a line gets deleted mechanically on the strength of a check the pass never ran.
+- **A finding belonging to no listed class resolves as interview**, never as mechanical. A class the routing table names but the resolution table does not is an unfinished class, and inheriting the resolution of whichever row sits nearest is how a finding meant to be a question becomes an unattended write.
 
 ## Resolve by class
 
@@ -73,7 +79,14 @@ Each class resolves one of four ways. The class decides, not the finding's sever
 | **Interview** | Claim verification, cross-document contradictions, history rot | The audit knows two things disagree, not which is the mistake. Ask. |
 | **Recommendation** | Guardrail candidates | Name the mechanism and what the prose becomes. Never build it. |
 
-An interview finding is never resolved by presuming the code is right. A document line can be a real rule the code violates — that is a code defect, and rewriting the document to match deletes the rule that exposes it. Surface both sides with the evidence for each, one finding at a time, and let the user say which is true.
+An interview finding is never resolved by presuming the code is right. A document line can be a real rule the code violates — that is a code defect, and rewriting the document to match deletes the rule that exposes it. Surface both sides with the evidence for each and let the user say which is true.
+
+`--interview` sets how those questions arrive. Absent, the mode is `one`.
+
+- **`one`** — one finding at a time, each answer informing what to ask next. The right default: a user deciding whether a rule or the code is wrong needs room to think about that pair alone.
+- **`batch`** — findings sharing a root cause are grouped and answered together. Worth reaching for on a wide doc set, where the same underlying divergence surfaces across a dozen documents and answering it a dozen times teaches nobody anything.
+
+Batching groups by root cause, never by document or by count. Each finding in a group still carries its own two sides and its own evidence, and a finding that shares no root cause with another is asked alone whatever the mode — a group assembled to shorten the queue asks the user to answer a question nobody posed.
 
 ## Write only when asked
 
@@ -83,7 +96,7 @@ An interview finding is never resolved by presuming the code is right. A documen
 | `--fix`, `--fix safe` | Mechanical classes, during the pass. Approval and recommendation classes still go to the disposition. |
 | `--fix unsafe` | Mechanical classes, plus approval-class moves without asking. Guardrail findings are filed as plans. |
 
-Interview findings are asked in every mode, `--fix unsafe` included. An interview answer authorises the write for that finding alone.
+Interview findings are asked in every mode, `--fix unsafe` included. An interview answer authorises the write for that finding alone — and authorises nothing at all for a finding marked probable. A probable finding is asked so the user learns what the pass suspects, not so an answer can convert a guess into an edit; the answer is recorded in the report and the document is left alone.
 
 `--fix unsafe` does not apply a move whose blast radius rests on judgement rather than on paths verified in the code. Report those as proposals instead: a rule moved too far down goes quiet rather than visibly wrong, so it is the one approval-class finding an unattended run must not guess at.
 
@@ -91,11 +104,15 @@ Repairs follow the audited repository's own status discipline, so nothing is del
 
 ## Report
 
+**Open the report with what this run covered**: the classes that ran, the classes that did not, and the documents in scope. A reader forms a verdict from the first thing they see, so coverage stated only at the end arrives after they have already read few findings as a healthy doc set. Say plainly that a narrow pass is not a clean one — the most expensive failure this skill can produce is a partial audit mistaken for a clean bill of health.
+
 Rank findings by one test: **would an agent reading this document today do the wrong thing?** A rule that contradicts working code outranks a stale date. Keep drift and shape in separate sections — a reader deciding what to accept needs to know whether a document is wrong or merely badly placed.
 
 For each finding: the document and lines, the class, the evidence, and the resolution taken or proposed. Findings already applied under `--fix` are listed as done, not as pending.
 
-Close with what was left and why — interview findings the user deferred, guardrail recommendations not taken, and the classes this run did not cover, naming whether each was out of level or out of scope. A scoped run reports one axis and says the other went unexamined; a reader must never mistake a narrow pass for a clean one.
+Report each class as it finishes rather than holding everything to the end. A pass can run out of room or be interrupted, and findings established but never stated are worth nothing — a run that ends early must still have said what it found. Where a pass cannot complete, name the classes that finished, the classes that did not, and anything already written.
+
+Close with what was left and why — interview findings the user deferred, guardrail recommendations not taken, and the classes this run did not cover, naming whether each was out of level or out of scope.
 
 ## Disposition
 

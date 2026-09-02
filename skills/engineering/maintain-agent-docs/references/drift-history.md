@@ -16,7 +16,7 @@ Where history is absent, shallow, or squashed flat, this class is uncheckable. R
 
 ## Unrecorded decisions
 
-History also holds decisions that were made and never written down: a dependency swapped out, a boundary redrawn, an approach abandoned after being tried. Surface only those clearing the contract's own bar for a decision record — hard to reverse, surprising without context, and the result of a real trade-off. Most changes clear none of the three.
+History also holds decisions that were made and never written down: a dependency swapped out, a boundary redrawn, an approach abandoned after being tried. Surface only those clearing the contract's own bar for a decision record — read that bar from the repository's convention docs rather than assuming what it says, since a repository that raised or widened its bar has done so deliberately. Most changes clear it on no count at all.
 
 Offer these as candidates and let the user choose. Never write the rationale: history shows what changed, not why the alternative was rejected, and a decision record with invented reasoning is worse than none. Where the user cannot say why, there is no record to write. Zero is a correct outcome.
 
