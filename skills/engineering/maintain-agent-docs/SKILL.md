@@ -17,14 +17,20 @@ The bar for both is **the contract** — the conventions this repository committ
 
 ## Establish the contract
 
-Read the repository's own convention docs before forming any finding. They define the frontmatter form, the status discipline, the ADR bar, and the directory purposes this audit measures against — including where this repository deliberately diverged from convention.
+First identify **the root document** — the file at the repository root that an agent actually reads for standing guidance. It may be `AGENTS.md`, `CLAUDE.md`, or an equivalent another tool reads. What decides is content, not filename: a file holding nothing but an import line is a pointer, and the file it points at is the root document.
 
-- **No root `AGENTS.md`** — stop. Report that there is nothing to maintain and point at `init-agent-docs`. This skill corrects existing docs; it never scaffolds.
-- **Root `AGENTS.md` present, convention docs absent** — audit against what the docs claim about themselves and about the code, and state in the report that the contract was unavailable, so the user can see the findings rest on a narrower basis. With no contract, structural-invariant checks reduce to internal consistency and link integrity: raise no finding about frontmatter form or status vocabulary, and apply nothing mechanically. General convention is not a substitute for the contract.
+- **One file holds the guidance** — that file is the root document, whichever name it carries. Audit it in place. Do not propose renaming it or migrating to a different convention; a repository that keeps its guidance in `CLAUDE.md` has made a choice, and reshaping the doc set to a preferred layout is scaffolding, not maintenance.
+- **One holds guidance, another imports it** — the imported file is the root document, and the import-only file is checked against the import discipline.
+- **Two or more hold guidance independently** — every one is a root document, and the split is itself a finding: an agent reads whichever it finds first, so the two will diverge. Report it as a cross-document finding and let the user say which should own the guidance.
+- **None exist** — stop. Report that there is nothing to maintain and point at `init-agent-docs`. This skill corrects existing docs; it never scaffolds.
+
+Then read the repository's own convention docs, before forming any finding. They define the frontmatter form, the status discipline, the ADR bar, and the directory purposes this audit measures against — including where this repository deliberately diverged from convention.
+
+Where a root document exists but the convention docs do not, audit against what the docs claim about themselves and about the code, and state in the report that the contract was unavailable, so the user can see the findings rest on a narrower basis. With no contract, structural-invariant checks reduce to internal consistency and link integrity: raise no finding about frontmatter form or status vocabulary, and apply nothing mechanically. General convention is not a substitute for the contract.
 
 ## Scope the pass
 
-`--target` bounds the doc set: a directory, or a single document. Absent, the doc set is every agent-facing document — root `AGENTS.md`, every nested `AGENTS.md`, every `CLAUDE.md`, and everything under `docs/`.
+`--target` bounds the doc set: a directory, or a single document. Absent, the doc set is every agent-facing document — the root document, every nested `AGENTS.md` or `CLAUDE.md`, the import-only files that point at them, and everything under `docs/`. A nested document is resolved the same way as the root one: content decides which file governs that subtree.
 
 The root document and the convention docs are read whatever `--target` says, because a nested document cannot be judged without the rules it inherits. The bound governs which documents can carry a finding, not which are read.
 
@@ -109,7 +115,7 @@ Where findings remain open, offer three routes. They compose, and where the user
 
 ## Gotchas
 
-- **`@AGENTS.md` resolves relative to the importing file.** A nested `AGENTS.md` created by a scoping move needs a sibling `CLAUDE.md` holding exactly that line and nothing else. Never write a rooted path.
-- **A nested `AGENTS.md` does not replace the root one** — both apply, so a nested document is judged against the root rules it inherits rather than on its own.
+- **An import line resolves relative to the file that holds it.** Where the repository uses pointer files, a nested document created by a scoping move needs its own sibling pointer, holding that relative line and nothing else. Never write a rooted path. Where the repository does not use pointer files, a scoping move creates the nested document alone — inventing a pointer imposes a convention the repository never adopted.
+- **A nested document does not replace the root one** — both apply, so a nested document is judged against the root rules it inherits rather than on its own.
 - **A stale document marked active is worse than a missing one**, because an agent will act on it. Status drift outranks most prose problems even though it looks like housekeeping.
 - **Drift marks the moment a document stopped tracking the code.** Look for what changed at that moment. Finding the change explains the divergence; it does not settle which side is now correct, and the document is as likely to be a rule the code broke as a description the code outgrew.
