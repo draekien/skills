@@ -39,6 +39,7 @@
         "./skills/output-styles/eli10-mode",
         "./skills/output-styles/plain-language",
         "./skills/output-styles/simplified-technical-english",
+        "./skills/meta/customize-skill",
         "./skills/meta/writing-skills",
         "./skills/productivity/picking-models",
         "./skills/engineering/prune-local-branches",
@@ -61,9 +62,21 @@
               }
             ]
           }
+        ],
+        "PostToolUse": [
+          {
+            "matcher": "Skill",
+            "hooks": [
+              {
+                "type": "command",
+                "command": "bash \"${CLAUDE_PLUGIN_ROOT}/skills/meta/customize-skill/hooks/inject-customizations.sh\"",
+                "timeout": 10
+              }
+            ]
+          }
         ]
       },
-      "version": "0.57.1"
+      "version": "0.58.0"
     },
     {
       "name": "engineering-skills",
@@ -171,9 +184,24 @@
       "source": "./",
       "strict": false,
       "skills": [
+        "./skills/meta/customize-skill",
         "./skills/meta/writing-skills"
       ],
-      "version": "0.1.2"
+      "hooks": {
+        "PostToolUse": [
+          {
+            "matcher": "Skill",
+            "hooks": [
+              {
+                "type": "command",
+                "command": "bash \"${CLAUDE_PLUGIN_ROOT}/skills/meta/customize-skill/hooks/inject-customizations.sh\"",
+                "timeout": 10
+              }
+            ]
+          }
+        ]
+      },
+      "version": "0.2.0"
     },
     {
       "name": "personal-skills",

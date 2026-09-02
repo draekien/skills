@@ -1,0 +1,14 @@
+{
+  "PostToolUse": [
+    {
+      "matcher": "Skill",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash \"${CLAUDE_PLUGIN_ROOT}/skills/meta/customize-skill/hooks/inject-customizations.sh\"",
+          "timeout": 10
+        }
+      ]
+    }
+  ]
+}
