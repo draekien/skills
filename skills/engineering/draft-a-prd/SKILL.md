@@ -11,7 +11,7 @@ disable-model-invocation: true
 
 If the opening message or prior conversation supplies — without guessing — enough information to populate every required section of the template (Problem Statement, Goals, User Stories, Out of Scope, Testing Decisions; Additional Notes is optional and does not affect this check), skip directly to Phase 2.
 
-Otherwise, tell the user that scope isn't resolved yet and ask them to run `/get-aligned` to work through the open decisions — it is not model-invocable, so it must be invoked directly. Once they confirm alignment, or ask to proceed early, record every remaining unresolved decision and stated assumption in the Open Questions section and continue to Phase 2.
+Otherwise, tell the user that scope isn't resolved yet and use the `get-aligned` skill to work through the open decisions. If that skill is not installed, ask the user to add it — `/plugin install productivity-skills@draekien-skills` in a harness with plugin support, or `npx skills add draekien/skills --skill "get-aligned"` anywhere else. Once they confirm alignment, or ask to proceed early, record every remaining unresolved decision and stated assumption in the Open Questions section and continue to Phase 2.
 
 ## Phase 2 — Draft
 
