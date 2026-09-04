@@ -41,6 +41,7 @@
         "./skills/ui-ux/design-dashboards",
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode",
+        "./skills/output-styles/example-driven",
         "./skills/output-styles/plain-language",
         "./skills/output-styles/simplified-technical-english",
         "./skills/meta/customize-skill",
@@ -53,6 +54,7 @@
       "outputStyles": [
         "./skills/output-styles/cte-mode/cte-mode.md",
         "./skills/output-styles/eli10-mode/eli10-mode.md",
+        "./skills/output-styles/example-driven/example-driven.md",
         "./skills/output-styles/plain-language/plain-language.md",
         "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
@@ -70,7 +72,7 @@
           }
         ]
       },
-      "version": "0.63.0"
+      "version": "0.64.0"
     },
     {
       "name": "engineering-skills",
@@ -102,7 +104,7 @@
         "./skills/context-management/init-agent-docs",
         "./skills/context-management/maintain-agent-docs"
       ],
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "productivity-skills",
@@ -118,7 +120,7 @@
         "./skills/productivity/picking-models",
         "./skills/productivity/using-subagents"
       ],
-      "version": "0.17.0"
+      "version": "0.18.0"
     },
     {
       "name": "problem-solving-skills",
@@ -162,16 +164,18 @@
       "skills": [
         "./skills/output-styles/cte-mode",
         "./skills/output-styles/eli10-mode",
+        "./skills/output-styles/example-driven",
         "./skills/output-styles/plain-language",
         "./skills/output-styles/simplified-technical-english"
       ],
       "outputStyles": [
         "./skills/output-styles/cte-mode/cte-mode.md",
         "./skills/output-styles/eli10-mode/eli10-mode.md",
+        "./skills/output-styles/example-driven/example-driven.md",
         "./skills/output-styles/plain-language/plain-language.md",
         "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "version": "0.11.0"
+      "version": "0.12.0"
     },
     {
       "name": "meta-skills",
@@ -196,7 +200,7 @@
           }
         ]
       },
-      "version": "0.3.0"
+      "version": "0.4.0"
     },
     {
       "name": "personal-skills",
