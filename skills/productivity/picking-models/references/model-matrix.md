@@ -15,6 +15,18 @@ Dispatch takes an alias, not a version. These four are the candidate set:
 
 An alias resolves to whichever generation the harness currently ships. Score the alias, pass the alias.
 
+## Bar to alias
+
+What the three bars resolve to against the current lineup, once `fable` is dropped as gated:
+
+| Bar | Intelligence-led | Taste-led |
+| --- | --- | --- |
+| 9 | `opus` | `opus` |
+| 7 | `sonnet` | `sonnet` |
+| 2 | `haiku` | `haiku` |
+
+This table is a convenience, not the rule. Resolve from the scores whenever the lineup changes — a new alias landing between `sonnet` and `opus` would change what bar 9 buys without changing the bar.
+
 ## Escalation ladder
 
 Ordered by Intelligence, which is the axis escalation climbs:
@@ -40,4 +52,4 @@ Confirm the exact ID string before using one — IDs are versioned and change pe
 
 ## Scoring an unlisted model
 
-A model absent from both tables is not a fallback to a listed one. Score it on the four dimensions first, using the listed models as anchors: `haiku` sets the floor for Intelligence and the ceiling for Speed and Cost; `fable` sets the ceiling for Taste and Intelligence. Then resolve normally. A model that cannot be scored — no published benchmarks, no session experience with it — is not a candidate.
+A model absent from both tables is not a fallback to a listed one. Score it on the four dimensions first, using the listed models as anchors: `haiku` sets the floor for Intelligence and the ceiling for Speed and Cost; `fable` sets the ceiling for Taste and Intelligence. Then resolve against the bars normally. A model that cannot be scored — no published benchmarks, no session experience with it — is not a candidate.
