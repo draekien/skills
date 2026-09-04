@@ -46,6 +46,7 @@
         "./skills/meta/customize-skill",
         "./skills/meta/writing-skills",
         "./skills/productivity/picking-models",
+        "./skills/productivity/using-subagents",
         "./skills/engineering/prune-local-branches",
         "./skills/engineering/harden"
       ],
@@ -69,7 +70,7 @@
           }
         ]
       },
-      "version": "0.62.0"
+      "version": "0.63.0"
     },
     {
       "name": "engineering-skills",
@@ -114,9 +115,10 @@
         "./skills/productivity/transcribe-video",
         "./skills/productivity/visualise",
         "./skills/productivity/todo",
-        "./skills/productivity/picking-models"
+        "./skills/productivity/picking-models",
+        "./skills/productivity/using-subagents"
       ],
-      "version": "0.16.0"
+      "version": "0.17.0"
     },
     {
       "name": "problem-solving-skills",
