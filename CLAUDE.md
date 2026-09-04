@@ -10,6 +10,7 @@ Repo stores agent skills in buckets under `skills/`. Each bucket groups skills b
 - **personal** — Personal productivity: scheduling, decisions, organisation.
 - **productivity** — Workplace productivity: summarisation, research, meeting prep, task management.
 - **problem-solving** — Working through a hard problem or decision: reasoning from fundamentals, debating between options.
+- **teaching** — Explanation and comprehension: making an idea land, and repairing it when it does not.
 - **roles** — Fixed-persona skills: advocate, listener, critic stances used to sharpen thinking.
 - **ui-ux** — User interface and experience design: dashboards, visual design, usability.
 - **output-styles** — Tone and voice modes: communication style presets for different audiences and needs. Each one is a native Claude Code output style (`<skill-name>.md`) with a `SKILL.md` wrapper. See [Output styles](#output-styles).
@@ -30,7 +31,7 @@ skills/
       assets/            optional: templates, icons, other output files
 ```
 
-- The top-level `README.md` has one section per public bucket (`drafting/`, `engineering/`, `context-management/`, `productivity/`, `problem-solving/`, `roles/`, `ui-ux/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
+- The top-level `README.md` has one section per public bucket (`drafting/`, `engineering/`, `context-management/`, `productivity/`, `problem-solving/`, `teaching/`, `roles/`, `ui-ux/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
 - Each bucket `README.md` lists all its skills with one-line descriptions, skill names linked to `SKILL.md`. The bucket `README.md` is the single source of truth for a skill's one-liner — it is the only place that one-liner lives.
 - Skills in `personal/` must not appear in any public README.
 

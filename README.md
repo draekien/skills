@@ -79,6 +79,12 @@ Skills that shift Claude's communication tone and voice.
 
 **4 skills →** [browse the output-styles bucket](skills/output-styles/README.md)
 
+## Teaching
+
+Skills for explanation and comprehension: making an idea land, and repairing it when it does not.
+
+**1 skill →** [browse the teaching bucket](skills/teaching/README.md)
+
 ## Meta
 
 Meta-skills: skills about authoring, vetting, and evaluating skills themselves.

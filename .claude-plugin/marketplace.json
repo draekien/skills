@@ -49,7 +49,8 @@
         "./skills/productivity/picking-models",
         "./skills/productivity/using-subagents",
         "./skills/engineering/prune-local-branches",
-        "./skills/engineering/harden"
+        "./skills/engineering/harden",
+        "./skills/teaching/wut"
       ],
       "outputStyles": [
         "./skills/output-styles/cte-mode/cte-mode.md",
@@ -72,7 +73,7 @@
           }
         ]
       },
-      "version": "0.64.0"
+      "version": "0.65.0"
     },
     {
       "name": "engineering-skills",
@@ -201,6 +202,16 @@
         ]
       },
       "version": "0.4.0"
+    },
+    {
+      "name": "teaching-skills",
+      "description": "Skills for explanation and comprehension: making an idea land, and repairing it when it does not.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/teaching/wut"
+      ],
+      "version": "0.1.0"
     },
     {
       "name": "personal-skills",
