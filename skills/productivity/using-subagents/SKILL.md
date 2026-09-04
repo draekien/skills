@@ -8,7 +8,7 @@ Every delegation failure traces to one root cause: **a subagent starts from zero
 
 The message half is where fan-outs die. Agents do the work, write the findings into their own output, end their turn, and the findings go nowhere. **A report format tells an agent what to write. Only a delivery instruction tells it where to put it.** Every brief needs both.
 
-Choose each agent's model with the `picking-models` skill. Never leave the model unset.
+Choose each agent's model with the `picking-models` skill. Never leave the model unset. If that skill is not installed, ask the user to add it — `/plugin install productivity-skills@draekien-skills` in a harness with plugin support, or `npx skills add draekien/skills --skill "picking-models"` anywhere else.
 
 ## Seams
 

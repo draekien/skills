@@ -80,4 +80,5 @@ Skills that require per-project configuration use a shared dotfolder and config 
 - After touching anything in `output-styles/`: also run `uv run tests/check-output-styles.py` from repo root.
 - After changing the plain-language linter or its dictionary: also run `uv run tests/check-linter.py` from repo root.
 - After editing any markdown: run `npx markdownlint-cli2 --fix "**/*.md"` from repo root (auto-discovers `.markdownlint-cli2.jsonc`), then review the autofixed diff and resolve any remaining reported errors before committing.
+- A skill that references another skill by name must say how to install it: the plugin that ships it and the `npx skills add` route. Never reimplement the referenced skill as a fallback. Authoring rule lives in `writing-skills` under Craft.
 - Match skill body complexity to task complexity — if the agent already knows how to execute the task, one sentence beats a structured checklist.

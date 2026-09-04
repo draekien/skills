@@ -119,6 +119,7 @@ When deciding whether the skill should put execution in the agent's hands — on
 - **The agent is "you"** — where prose must name the executing agent as an actor ("where you can dispatch work to a fresh context"), say *you*; never attribute the agent's actions to "the harness". Reserve *harness* for the runtime software itself ("harnesses that don't recognise the field ignore it").
 - **Generic examples only** — a good/poor pair illustrates a principle; a narrative or session-dated example encodes state-of-the-world.
 - **No authoring changelog** — never explain what was removed or changed; the reading agent needs the correct current instruction, not the history of how it got there.
+- **Cross-skill references carry install routes** — naming another skill creates a dependency the reader may not have installed, and a bare name is a dead end. Every reference states where to get it: the plugin that ships it (`/plugin install <bucket>-skills@draekien-skills`) and the cross-agent route (`npx skills add draekien/skills --skill "<skill-name>"`). Ask the user to install it; never carry on by reimplementing what the referenced skill does, which forks its logic into a second copy that drifts. Keep vendor and harness names inside inline code, or out — prose naming them trips the LLM-agnostic check.
 - **Never silently drop process logic** when revising an existing skill — the future agent will lack that judgment without knowing it is missing; confirm removals with the skill's owner.
 
 ### Structural patterns
