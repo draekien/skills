@@ -1,14 +1,26 @@
 ---
 name: doc-comments
 description: Writes and audits in-source API doc comments — JSDoc, TSDoc, XML docs, docstrings, rustdoc, godoc, KDoc — so each one carries the contract the signature cannot. Use when documenting a public member, backfilling doc comments across a codebase, or reviewing existing ones, or when the user says "document this API", "add JSDoc", "add XML docs", "write docstrings", "review these doc comments".
-argument-hint: "[--mode write|audit] [target]"
+argument-hint: "[--mode write|audit] [--effort low|mid|high] [target]"
 ---
 
 A doc comment earns its place only if it says something the signature does not. The reflex to fill every slot produces the dominant failure: `@param userId The user ID.` — a line that costs a read, satisfies the linter, blocks the "undocumented" warning that would have flagged the gap, and tells the caller nothing. The signature already carries names, types, arity, and nullability. The comment's job is the contract around them.
 
 This holds identically when writing new comments and when auditing existing ones. Auditing is the same rules applied to text already on the page.
 
-Before writing, read neighbouring files in the same module and match their dialect — tag vocabulary, tag ordering, whether the codebase links members by reference or inherits docs from a base type. House convention outranks the wording and formatting rules below; it does not override the coverage rules, which decide what gets documented at all.
+Match the codebase's dialect — tag vocabulary, tag ordering, whether it links members by reference or inherits docs from a base type. House convention outranks the wording and formatting rules below; it does not override the coverage rules, which decide what gets documented at all. At `low` and `mid`, take the dialect from the comments already in the target file; at `high`, read neighbouring files in the same module.
+
+## Route by effort
+
+`--effort` sets how far out from the member to read. Levels are cumulative — each includes every level below it. Absent, the level is `mid`.
+
+| Level | Reading radius |
+| --- | --- |
+| `low` | The member: its signature and its own body |
+| `mid` | Adds its dependencies: the helpers it calls, the types it constructs or mutates |
+| `high` | Adds its neighbourhood: sibling members, base types, call sites, neighbouring files |
+
+Effort never narrows coverage: the whole public surface of the target is documented at every level. What changes is which contract items are knowable — each is tagged *mid* or *high* below where it needs a radius wider than the member itself — and how deeply an audit verifies a claim before passing it. A claim an audit could not check within its radius is reported as unverified, never as clean.
 
 ## Coverage
 
@@ -47,24 +59,24 @@ Each tagged slot has a fixed shape. Capitalise the first word and end with a per
 - **Boolean parameter describing a state** — `True if the account is locked; false otherwise.`
 - **Return value** — begin with "The" for non-booleans; use `True if…; false otherwise.` for booleans. Keep it short and push the detail up to the type's own comment.
 - **Defaults** — state them explicitly as `Default: 30 seconds.` A default that lives only in the code is invisible to the caller reading generated docs.
-- **Thrown errors** — begin with "If" where the generator inserts the word "Throws" itself; begin with "Thrown when" where it does not. Check which by looking at how the codebase's existing comments render.
+- **Thrown errors** — begin with "If" where the generator inserts the word "Throws" itself; begin with "Thrown when" where it does not. Check which by looking at how the codebase's existing comments render. Errors the member raises itself are in play at `low`; errors it only propagates from what it calls are *mid*.
 
 Never put `true` or `false` in code font or quotation marks in these slots.
 
 ## What the signature cannot say
 
-This is the payload. A comment that covers the slots and stops has documented the shape and skipped the contract. Work through what the type system leaves unsaid and state whatever applies:
+This is the payload. A comment that covers the slots and stops has documented the shape and skipped the contract. Work through what the type system leaves unsaid and state whatever applies within the current radius.
 
-- **Why a caller picks this member** over the similarly-named one beside it.
-- **Preconditions and call order** — what must already be true, what must be called first.
-- **Side effects** — mutated arguments, written files, emitted events, cleared caches.
-- **Ownership and lifetime** — who disposes the result; whether a returned collection is a live view or a copy.
-- **Failure behaviour** — which errors surface, and whether a failed operation leaves partial work behind.
-- **Concurrency** — thread safety, reentrancy, whether the call blocks.
-- **Cost** — complexity or network round trips, where a caller would be surprised.
 - **Units, ranges, and formats the type does not encode** — milliseconds against seconds, inclusive against exclusive bounds, the accepted shape of a string.
+- **Side effects** — mutated arguments, written files, emitted events, cleared caches. Those the member performs directly are in play at `low`; those reached through what it calls are *mid*.
+- **Failure behaviour** *(mid)* — which errors surface, and whether a failed operation leaves partial work behind. Whether partial work survives a failure is a property of the whole call chain, not of the member's own body.
+- **Why a caller picks this member** *(high)* over the similarly-named one beside it.
+- **Preconditions and call order** *(high)* — what must already be true, what must be called first.
+- **Ownership and lifetime** *(high)* — who disposes the result; whether a returned collection is a live view or a copy.
+- **Concurrency** *(high)* — thread safety, reentrancy, whether the call blocks.
+- **Cost** *(high)* — complexity or network round trips, where a caller would be surprised.
 
-Add a short usage example on a type or on a member whose correct use is not obvious from its signature.
+At `high`, add a short usage example on a type or on a member whose correct use is not obvious from its signature.
 
 ## Register
 
@@ -78,7 +90,7 @@ Write the prose in plain language. The reader is a developer under time pressure
 
 ## Audit failure modes
 
-Name these on sight and replace each with a corrected comment rather than deleting it, unless the member is internal.
+Name these on sight and replace each with a corrected comment rather than deleting it, unless the member is internal. Every mode is detectable from the member alone, so all are in play at every level; what widens with effort is how far a claim is traced before it passes.
 
 - **Stale** — describes behaviour the code no longer has, documents a parameter that is gone, or promises an error the code stopped raising. The most damaging mode, because it is trusted. Verify every claim against the implementation, not against the comment's plausibility.
 - **Restated signature** — the comment paraphrases names and types and adds nothing.
@@ -90,4 +102,4 @@ Name these on sight and replace each with a corrected comment rather than deleti
 
 ## Done
 
-Every public member in the target is accounted for: documented against the rules above, or explicitly judged outside the public surface. Every documented member's contract claims — errors, side effects, defaults, units — are checked against the implementation. In an audit, every finding is named with its failure mode and carries the replacement text.
+Every public member in the target is accounted for: documented against the rules in play, or explicitly judged outside the public surface. Every documented member's contract claims — errors, side effects, defaults, units — are checked against the implementation as far as the current radius reaches, and any claim that could not be checked within it is reported as unverified. In an audit, every finding is named with its failure mode and carries the replacement text.
