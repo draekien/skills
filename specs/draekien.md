@@ -29,7 +29,7 @@ Once created in a session, treat it as present for the remainder — do not re-c
 | File | Purpose | Spec |
 |------|---------|------|
 | `.skillsrc` | Per-skill configuration keyed by skill name | [specs/skillsrc.md](skillsrc.md) |
-| `ubiquitous-language.yaml` | DDD ubiquitous language dictionary (bounded contexts + terms) | managed by `with-ubiquitous-language` skill |
+| `ubiquitous-language.yaml` | DDD ubiquitous language dictionary (bounded contexts + terms) | managed by `ubiquitous-language` skill |
 | `skill-customizations/` | Per-skill customization files, one directory per customized skill | managed by the `customize-skill` skill — see [skills/meta/customize-skill/SKILL.md](../skills/meta/customize-skill/SKILL.md) |
 | `skill-evals/` | Per-evaluated-skill eval state (frozen suites, run history, report) | managed by the archived `skill-evals` skill — see [skills/archived/skill-evals/SKILL.md](../skills/archived/skill-evals/SKILL.md) |
 

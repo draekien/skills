@@ -1,32 +1,20 @@
 ---
 name: draft-a-prd
-description: Creates a structured product requirements document, first aligning with you on scope and requirements before writing it. Use when defining a new feature or product and you need a complete PRD.
+description: DEPRECATED — this skill moved to the planning bucket as planning/draft-a-prd. Install the planning-skills plugin and use that skill instead.
 argument-hint: "[feature or product description]"
 disable-model-invocation: true
 ---
 
-# Draft a PRD
+# Deprecated — moved to the planning bucket
 
-## Phase 1 — Alignment
+This skill now lives at `skills/planning/draft-a-prd`, in the `planning` bucket. Its `assets/` templates moved with it.
 
-If the opening message or prior conversation supplies — without guessing — enough information to populate every required section of the template (Problem Statement, Goals, User Stories, Out of Scope, Testing Decisions; Additional Notes is optional and does not affect this check), skip directly to Phase 2.
+Tell the user:
 
-Otherwise, tell the user that scope isn't resolved yet and use the `get-aligned` skill to work through the open decisions. If that skill is not installed, ask the user to add it — `/plugin install productivity-skills@draekien-skills` in a harness with plugin support, or `npx skills add draekien/skills --skill "get-aligned"` anywhere else. Once they confirm alignment, or ask to proceed early, record every remaining unresolved decision and stated assumption in the Open Questions section and continue to Phase 2.
+1. This skill has moved and the copy here does nothing.
+2. Install the new bucket, either route:
+   - Claude Code plugin: `/plugin install planning-skills@draekien-skills`
+   - Cross-agent: `npx skills add draekien/skills/skills/planning/draft-a-prd`
+3. Re-run the request; the moved skill picks it up.
 
-## Phase 2 — Draft
-
-Write the PRD following the template in [assets/prd-template.md](assets/prd-template.md).
-
-Enforce these rules without exception:
-
-- **Goals** — each must be measurable and verifiable (a number, threshold, or observable outcome); reject vague goals like "improve the experience"
-- **User stories** — numbered sequentially, format: "As a [role], I want [action] so that [outcome]"
-- **Out of scope** — list specific exclusions, not general deferrals; "future work" is not a valid exclusion
-- **No implementation details** — no file paths, architecture decisions, or library and framework names; describe *what*, not *how*
-- **Testing decisions** — state the testing methodology (e.g. automated, manual, exploratory) and any constraints (e.g. no production data, specific environments); do not enumerate individual test cases or assign ownership
-- **Problem statement** — state who experiences the problem and why it matters; no solution language
-- **Open questions** — omit the section entirely if none
-
-## Phase 3 — Review
-
-Present the draft and invite feedback. Revise until the user explicitly confirms the PRD is complete. On confirmation, output the final PRD in full as the closing response.
+Then stop. Do not attempt the work from this file.

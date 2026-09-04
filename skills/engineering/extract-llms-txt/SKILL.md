@@ -1,6 +1,7 @@
 ---
 name: extract-llms-txt
 description: DEPRECATED — this skill moved to the context-management bucket as context-management/extract-llms-txt. Install the context-management-skills plugin and use that skill instead.
+disable-model-invocation: true
 ---
 
 # Deprecated — moved to the context-management bucket
@@ -10,7 +11,9 @@ This skill now lives at `skills/context-management/extract-llms-txt`, in the `co
 Tell the user:
 
 1. This skill has moved and the copy here does nothing.
-2. Install the new bucket: `/plugin install context-management-skills@draekien-skills`.
+2. Install the new bucket, either route:
+   - Claude Code plugin: `/plugin install context-management-skills@draekien-skills`
+   - Cross-agent: `npx skills add draekien/skills/skills/context-management/extract-llms-txt`
 3. Re-run the request; the moved skill picks it up.
 
 Then stop. Do not attempt the work from this file.

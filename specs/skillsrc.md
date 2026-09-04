@@ -58,7 +58,7 @@ uv run scripts/skillsrc.py --config <path-to-.skillsrc> --skill <skill-name> set
 2. Requires `core.symlinks=true` in the git config (`git config core.symlinks true` — needed once per clone on Windows, otherwise git checks the symlink out as a plain text file containing the path).
 3. Invoke with `--skill <skill-name>` and the key documented in [Registered Keys](#registered-keys) below.
 
-See `skills/engineering/module-design/scripts/skillsrc.py` and `skills/engineering/with-ubiquitous-language/scripts/skillsrc.py` as reference symlinks.
+See `skills/software-design/module-design/scripts/skillsrc.py` and `skills/software-design/ubiquitous-language/scripts/skillsrc.py` as reference symlinks.
 
 ## Example
 
@@ -80,7 +80,7 @@ Skills that use `.skillsrc` must register their keys here.
 | Skill | Key | Type | Default | Description |
 |-------|-----|------|---------|-------------|
 | `module-design` | `specsDir` | string | `docs/designs` | Directory (relative to repo root) where design specs are written |
-| `with-ubiquitous-language` | `dictionaryPath` | string | `.draekien/ubiquitous-language.yaml` | Path (relative to repo root) to the ubiquitous language YAML dictionary |
+| `ubiquitous-language` | `dictionaryPath` | string | `.draekien/ubiquitous-language.yaml` | Path (relative to repo root) to the ubiquitous language YAML dictionary |
 | `break-down-prd` | `outputDir` | string | `.draekien/break-down-prd` | Directory (relative to repo root) where PRD breakdowns are written; the skill appends `/<prd-slug>/` per breakdown |
 | `skill-evals` | `outputDir` | string | `.draekien/skill-evals` | Directory (relative to repo root) where eval state is written; the skill appends `/<skill-name>/` per evaluated skill |
 | `transcribe-video` | `whisperModel` | string | `base` | Preferred Whisper model size (`tiny`, `base`, `small`, `medium`, `large`) |
@@ -91,3 +91,9 @@ Skills that use `.skillsrc` must register their keys here.
 | `todo` | `linearTeamId` | string | none | Linear team the captured issues belong to |
 | `todo` | `linearProjectId` | string | empty | Optional Linear project to file captured issues under |
 | `plain-language` | `overridesPath` | string | `.draekien/plain-language.json` | Path (relative to repo root) to a JSON file of extra dictionary entries merged over the linter's built-in dictionary |
+
+## Deprecated Keys
+
+| Old key | Replaced by | Migration |
+|---------|-------------|-----------|
+| `with-ubiquitous-language` | `ubiquitous-language` | The skill was renamed when it moved to the `software-design` bucket. `ubiquitous-language` detects the old block on its next run and offers to migrate it; see that skill's `references/skillsrc-migration.md`. |

@@ -50,7 +50,15 @@
         "./skills/productivity/using-subagents",
         "./skills/engineering/prune-local-branches",
         "./skills/engineering/harden",
-        "./skills/teaching/wut"
+        "./skills/teaching/wut",
+        "./skills/planning/draft-a-prd",
+        "./skills/planning/break-down-prd",
+        "./skills/software-design/module-design",
+        "./skills/software-design/ubiquitous-language",
+        "./skills/quality/harden",
+        "./skills/quality/testing-principles",
+        "./skills/technical-writing/doc-comments",
+        "./skills/version-control/prune-local-branches"
       ],
       "outputStyles": [
         "./skills/output-styles/cte-mode/cte-mode.md",
@@ -73,11 +81,11 @@
           }
         ]
       },
-      "version": "0.66.0"
+      "version": "0.67.0"
     },
     {
       "name": "engineering-skills",
-      "description": "Skills for software development tasks: code review, debugging, architecture, and technical workflows.",
+      "description": "Retired — split into the planning, software-design, quality, technical-writing, version-control, and context-management buckets. Ships redirect stubs only.",
       "source": "./",
       "strict": false,
       "skills": [
@@ -93,7 +101,60 @@
         "./skills/engineering/prune-local-branches",
         "./skills/engineering/harden"
       ],
-      "version": "0.29.0"
+      "version": "0.30.0"
+    },
+    {
+      "name": "planning-skills",
+      "description": "Skills for turning an idea into a spec, and a spec into work an agent or a person can pick up.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/planning/draft-a-prd",
+        "./skills/planning/break-down-prd"
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "name": "software-design-skills",
+      "description": "Skills for designing code and the vocabulary it is built on, from a single method to an entire architectural layer.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/software-design/module-design",
+        "./skills/software-design/ubiquitous-language"
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "name": "quality-skills",
+      "description": "Skills for making work hold up: stress-testing a change before it ships, and testing it so the tests would actually fail.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/quality/harden",
+        "./skills/quality/testing-principles"
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "name": "technical-writing-skills",
+      "description": "Skills for developer-facing writing: the documentation that ships alongside the code.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/technical-writing/doc-comments"
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "name": "version-control-skills",
+      "description": "Skills for git hygiene and repository workflow.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/version-control/prune-local-branches"
+      ],
+      "version": "0.1.0"
     },
     {
       "name": "context-management-skills",
