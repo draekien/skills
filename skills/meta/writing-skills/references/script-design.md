@@ -1,17 +1,10 @@
 # Script Design Rules
 
-Design rules, dependency approaches, and referencing patterns for commands and scripts bundled with skills.
-
-## When a script earns its place
-
-Script the deterministic floor of a task, never its decisions:
-
-- **Script when variation is a bug** — the operation has one right answer (parsing, validation, conversion, scaffolding) and reliability demands every run take it. The signals surface in real execution traces: the agent re-derives the same logic each run, fumbles a long incantation, or produces inconsistent results across runs.
-- **Keep judgment in prose** — where multiple approaches are valid, reasoning-carrying prose beats frozen code: a script cannot adapt when its assumptions don't hold, and the agent cannot see inside it to know why it did what it did. Encoding a whole workflow's sequence as a script is the workflow-scripting anti-pattern wearing an executable coat.
+Design rules, dependency approaches, and referencing patterns for commands and scripts bundled with skills. Applies once execution is warranted.
 
 ## Command or script
 
-Execution warranted, there are two ways a skill puts it in the agent's hands:
+There are two ways a skill puts execution in the agent's hands:
 
 - **One-off command** — an existing package already does the job: invoke it directly from the body via a runner that resolves dependencies at invocation time (`uvx`, `npx`, or the ecosystem's equivalent). Right for a tool plus a few flags.
 - **Bundled script** — the logic is reusable, or the command is complex enough to be hard to get right on the first attempt: ship it tested in `scripts/`. The author debugs it once so no run pays that cost again.
