@@ -1,13 +1,25 @@
 ---
 name: writing-skills
-description: Knowledge for writing agent skills — the tenets, design axes, and craft of a SKILL.md, plus a spec validator. Use it before creating a new skill or revising an existing one.
-argument-hint: "[skill-name-or-path]"
+description: Creates, revises, and reviews agent skills — the tenets, design axes, and craft of a SKILL.md, plus a worthiness gate and a spec validator. Use it to author a new skill, change an existing one, or audit one.
+argument-hint: "[--mode create|update|review] [--gate on|off] [--fix] [prompt]"
 disable-model-invocation: true
 ---
 
 A skill is a teaching document for a future agent: it transfers intent and judgment so that agent can achieve a goal without the author present. A skill exists to wrangle determinism out of a stochastic system — **predictability**, the agent taking the same *process* every run (not producing the same output; a brainstorming skill predictably diverges), is the root virtue. Every tenet, axis, and craft rule below is a lever on it.
 
 Everything here governs the whole skill, not just its body: a reference is body content deferred, not a different kind of document, and `assets/` prose and script docs are held to the same bar.
+
+## Route
+
+Settle the mode before anything else. An explicit `--mode` wins outright — honour it even when the surrounding prose reads like another branch. With no flag, infer from the request: an idea with no skill behind it yet is **create**; a named skill plus a change to make is **update**; a request to check, audit, or grade an existing skill is **review**.
+
+`--gate on|off` controls the **worthiness gate** — whether the work belongs in a skill at all, or in a deterministic mechanism that never deviates. It defaults on for create and review, off for update. With the gate on, apply [references/worthiness-gates.md](references/worthiness-gates.md) before anything else, and stop outright when its verdict routes the work elsewhere.
+
+- **create** — gate, then author against everything below.
+- **update** — apply [references/revision-rules.md](references/revision-rules.md), then make the change.
+- **review** — gate, then the quality gate as a report rather than a fix list.
+
+Every mode ends on the quality gate below: it is review's whole payload, and create's and update's exit condition.
 
 ## Tenets
 
@@ -60,7 +72,7 @@ Two ways a skill is reached, trading different costs:
 - **Model-triggered** — the skill surfaces by relevance when the agent matches the description against the task. Knowledge skills lean this way: the agent should benefit without being told. Pays **context load** — the description sits in the agent's window every turn.
 - **User-triggered** — the human turns the skill on deliberately. Procedure skills lean this way: a process should not auto-fire onto unrelated tasks. Pays **cognitive load** — the human is the index that must remember the skill exists. Not a cost to minimise: it is the price of human agency; spend it where human judgement matters. When user-triggered skills multiply past memory, a **router skill** — one user-triggered skill naming the others and when to use each — cures the pile-up.
 
-Where a harness supports invocation controls in frontmatter, set them to match; they are extensions, not part of the open standard.
+Where a harness supports invocation controls in frontmatter, set them to match; they are extensions, not part of the open standard. Closing the model path closes it completely: naming a skill partway through a prompt reaches it by model invocation, not user invocation, so a leading `/<name>` becomes the only way in — and the skill also stops being reachable from a delegated sub-task or a scheduled run. Whenever you write or revise a skill that closes that path, say so in your reply, because the loss is silent: a mid-prompt mention raises no error, it simply does nothing.
 
 ## The description
 
@@ -77,6 +89,8 @@ The mechanics of the sole-activation-signal tenet. Which form to write follows f
 If both invocation paths are open, write the model-triggered form — it still reads fine to a human.
 
 Every description word pays context load, so prune it harder than the body: **front-load the leading word** (the description is where it does its invocation work), keep **one trigger per branch** (synonym triggers restating a single branch are duplication), and **cut restatements of what the skill is** — the body already carries the skill's nature; the description's job is triggering.
+
+Whenever a model-triggered description is being written or revised, work it against [references/description-triggering.md](references/description-triggering.md) — the failure modes that keep a well-formed description from firing, and the loop that settles whether it fires at all.
 
 ## The argument hint
 
@@ -107,7 +121,7 @@ Don't push it toward a structured, typed argument schema — that isn't broadly 
 
 **Co-locate what is read together**: a concept's definition, rules, and caveats under one heading, not scattered across the file. The test is that the skill reads like documentation written for the agent — grouped material reads that way, scattered material does not.
 
-When deciding whether the skill should put execution in the agent's hands — one-off tool invocations or bundled scripts — and when designing either, apply [references/script-design.md](references/script-design.md).
+Which steps belong to a script rather than prose is the part gate in [references/worthiness-gates.md](references/worthiness-gates.md). Once execution is warranted — a one-off tool invocation or a bundled script — design it against [references/script-design.md](references/script-design.md).
 
 ## Craft
 
@@ -120,7 +134,6 @@ When deciding whether the skill should put execution in the agent's hands — on
 - **Generic examples only** — a good/poor pair illustrates a principle; a narrative or session-dated example encodes state-of-the-world.
 - **No authoring changelog** — never explain what was removed or changed; the reading agent needs the correct current instruction, not the history of how it got there.
 - **Cross-skill references carry install routes** — naming another skill creates a dependency the reader may not have installed, and a bare name is a dead end. Every reference states where to get it: the plugin that ships it (`/plugin install <bucket>-skills@draekien-skills`) and the cross-agent route (`npx skills add draekien/skills --skill "<skill-name>"`). Ask the user to install it; never carry on by reimplementing what the referenced skill does, which forks its logic into a second copy that drifts. Keep vendor and harness names inside inline code, or out — prose naming them trips the LLM-agnostic check.
-- **Never silently drop process logic** when revising an existing skill — the future agent will lack that judgment without knowing it is missing; confirm removals with the skill's owner.
 
 ### Structural patterns
 
@@ -144,7 +157,7 @@ Reusable shapes for body content — use the ones that fit the task:
 
 ## Quality gate
 
-After creating or revising a skill, clear every item below before declaring the work done — each is a validation loop: fix every confirmed violation, then re-run that item until it's clean. Every item but spec validation examines a disjoint surface, so dispatch them in parallel; a fix that changes the skill's branches or scope re-opens the others.
+On create and update, clear every item below before declaring the work done — each is a validation loop: fix every confirmed violation, then re-run that item until it's clean. On review, run the same items and report what they find; the report stands either way, and only `--fix` licenses changing the skill. Every item but spec validation examines a disjoint surface, so dispatch them in parallel; a fix that changes the skill's branches or scope re-opens the others.
 
 - [ ] **Spec validation** — run the bundled validator, using any runner that supports PEP 723 inline dependencies (default `uv`): `uv run scripts/validate.py <skill-dir>` (path relative to this skill's directory). Fix failures against [references/spec-rules.md](references/spec-rules.md); warnings are portability tradeoffs to weigh, not defects. Beyond these invariants — optional fields, packaging, evolving harness support — fetch the live [Agent Skills open standard](https://agentskills.io/specification).
 - [ ] **Prompt analysis** — review against [references/prompt-analysis.md](references/prompt-analysis.md), reading every linked file in full rather than sampling with an offset or limit. Prefer dispatching to a fresh context — the author rereading its own words tends to miss the ambiguities it just wrote.
