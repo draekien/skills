@@ -72,7 +72,7 @@ One axis: distance from the reader weighted by stakes.
 - Close peer, low stakes -> fragments, lowercase, playful, one thought per message.
 - Working exchange -> full sentences, still informal, greeting optional, links and evidence inline.
 - Considered or broadcast -> greeting token, one-sentence frame, dash bullets, closes with an offer to engage; bracketed subject tags for broadcast email ("[Service] Topic").
-- Public prose -> short declarative sentences that accumulate; concrete examples over abstraction; credentials stated flatly when relevant; motive disclosed plainly. Strip aphoristic two-beat cadence, jargon-flavoured phrases, accusatory framing, and sweeping claims. See [references/public-prose-faults.md](references/public-prose-faults.md) for the recurring faults to hunt when drafting or revising in this register.
+- Public prose -> someone with opinions, talking to the reader, naming things instead of gesturing at them. Concrete examples over abstraction; credentials stated flatly when relevant; motive disclosed plainly. Read [references/public-prose.md](references/public-prose.md) before drafting or revising in this register; it carries the habits that produce it and the faults to hunt.
 
 When register is uncertain, err terser and more direct. Over-formality reads less like him than over-bluntness.
 
