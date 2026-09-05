@@ -20,6 +20,7 @@ A minimal ground-truth set, one or two samples per register, distilled June 2026
 ## Public prose
 
 - "The pressure everywhere is to point AI at output metrics and call it productivity. The numbers go up. Nobody questions the measure because the dashboard is green. [paragraph break] The work we're most eager to automate - the boilerplate, the first broken implementation, the bug you stare at for an hour - is the exact work that turns a junior into a senior over time. Automate it away and the cost surfaces years later, in the gap where your next seniors should have been."
+- The sample above demonstrates sentence-joining and subject continuity. It carries no second-person address, which is a gap in the sample rather than evidence that direct address is optional in this register.
 
 ## No observed evidence
 
