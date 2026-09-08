@@ -36,6 +36,7 @@
         "./skills/output-styles/plain-language",
         "./skills/output-styles/simplified-technical-english",
         "./skills/meta/customize-skill",
+        "./skills/meta/prefer-skills",
         "./skills/meta/writing-skills",
         "./skills/productivity/picking-models",
         "./skills/productivity/using-subagents",
@@ -70,7 +71,7 @@
           }
         ]
       },
-      "version": "0.70.0"
+      "version": "0.71.0"
     },
     {
       "name": "planning-skills",
@@ -215,6 +216,7 @@
       "strict": false,
       "skills": [
         "./skills/meta/customize-skill",
+        "./skills/meta/prefer-skills",
         "./skills/meta/writing-skills"
       ],
       "hooks": {
@@ -231,7 +233,7 @@
           }
         ]
       },
-      "version": "0.5.0"
+      "version": "0.6.0"
     },
     {
       "name": "teaching-skills",
