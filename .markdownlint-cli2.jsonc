@@ -14,7 +14,9 @@
     // Bold labels (e.g. **Token waste**) are a deliberate authoring convention, not headings.
     "MD036": false,
     // Compact pipe tables are fine.
-    "MD060": false
+    "MD060": false,
+    // A frontmatter `title` is not the document's h1 — asset templates carry both.
+    "MD025": { "front_matter_title": "" }
   },
   "globs": ["**/*.md"],
   "ignores": ["node_modules"]

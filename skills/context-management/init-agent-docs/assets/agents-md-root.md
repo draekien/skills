@@ -16,6 +16,10 @@
 
 {Concrete corrections to mistakes agents actually make here — the failing test that needs a running service, the endpoint that lies about health, the script that must run from the repo root, the command that looks right but is not the one this repo uses. Omit the section if there are none.}
 
+## Writing
+
+Agent docs are read on every turn — every line is context each agent pays for whether or not the task touches it. One rule per line, stated as the rule. No preamble, no restating the heading. Cut anything two source files would teach.
+
 ## Documentation
 
 Agent-facing documentation lives in `docs/`. Read [docs/AGENTS.md](docs/AGENTS.md) before reading or writing anything there.

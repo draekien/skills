@@ -4,7 +4,7 @@ Two documents in the set that cannot both be followed. These outrank most single
 
 ## Where they concentrate
 
-- **Root against nested.** Both apply to any file in the nested directory, so a nested rule that reverses a root rule leaves the precedence undefined. A nested document that merely restates a root rule is a lesser finding of the same kind — the copy will diverge.
+- **Root against nested.** Both apply to any file in the nested directory, so a nested rule that reverses a root rule leaves the precedence undefined. A nested document that merely restates a root rule without contradicting it is not this class — it is duplication, and it belongs to the distill axis.
 - **Decision records against conventions.** An accepted decision is a constraint. A conventions document that guides an agent past that constraint is the sharper half of the pair, because decisions are read on demand and conventions are read every turn.
 - **Decision records against each other.** Two accepted records covering the same ground where one should have superseded the other. The linkage is a structural invariant; the substantive clash is this class.
 - **Plans and explorations against current conventions.** An active plan proposing what conventions now forbid, or an exploration whose recommendation was overtaken. These are often the residue of a decision that was made and never written down.

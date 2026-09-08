@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 Produce documentation a future agent can act on. Two things make it worthless: placeholders, which look authoritative and say nothing, and **restated discoverables** — stack, commands, and directory layout that any agent finds in thirty seconds by reading the package manifest and listing the tree. Restated discoverables cost context on every turn, and they rot the moment the repo moves. `AGENTS.md` carries only what exploration cannot reach: intent, enforced convention, external constraint, and the specific traps of this repo.
 
+It carries each of those in the fewest tokens that still teach it. Every line is read on every turn, on every task, including the ones the line has nothing to do with — so a rule padded to a paragraph is charged to work it will never touch.
+
 ## Phase 1 — Survey
 
 Read the repository before writing a word about it — not to transcribe it, but to know what to leave out and what to ask.
@@ -50,6 +52,7 @@ docs/
   CLAUDE.md
   adr/
     AGENTS.md
+    TEMPLATE.md
   references/
   explorations/
   plans/
@@ -63,6 +66,7 @@ Templates, and how each is used:
 | `CLAUDE.md`, `docs/CLAUDE.md` | [assets/import-agents-md.md](assets/import-agents-md.md) | Copy verbatim to both locations |
 | `docs/AGENTS.md` | [assets/agents-md-docs.md](assets/agents-md-docs.md) | Copy verbatim; change only paths that differ in this repo |
 | `docs/adr/AGENTS.md` | [assets/agents-md-adr.md](assets/agents-md-adr.md) | Copy verbatim; change only paths that differ in this repo |
+| `docs/adr/TEMPLATE.md` | [assets/adr-template.md](assets/adr-template.md) | Copy verbatim |
 
 Each copied template carries the format for the documents in its directory, so the repo needs no separate template files.
 
@@ -70,7 +74,9 @@ Each copied template carries the format for the documents in its directory, so t
 
 Braced text in `agents-md-root.md` is instruction to you, not content — some braces mark a slot to fill, others tell you what to include or drop. No `{` survives into the written file.
 
-For `AGENTS.md`, cut every section the interview did not fill; an empty heading invites a future agent to invent content for it. **Documentation** is the exception: it is a convention, not a finding, and always stays. Before writing the file, check each remaining line against the discoverable test — if an agent could learn it by reading the package manifest, listing the tree, or opening two source files, delete it.
+For `AGENTS.md`, cut every section the interview did not fill; an empty heading invites a future agent to invent content for it. **Writing** and **Documentation** are the exceptions: both are conventions rather than findings, and always stay. Before writing the file, check each remaining line against the discoverable test — if an agent could learn it by reading the package manifest, listing the tree, or opening two source files, delete it.
+
+Then write each surviving line to the **Writing** convention the document itself installs: one rule per line, stated as the rule, no preamble and no restating the heading. A rule that takes three sentences either contains three rules or two sentences of padding. Keep the reason only where it lets an agent handle a case the rule did not name — a reason that only re-argues the rule is padding too.
 
 Git ignores empty directories, so give `docs/references`, `docs/explorations`, and `docs/plans` a `.gitkeep` unless they already hold files.
 
@@ -80,7 +86,7 @@ For each colliding file, do not touch it. Show the user the exact additions you 
 
 The survey often surfaces decisions already made and nowhere recorded. Offer to capture them, applying the bar in [assets/agents-md-adr.md](assets/agents-md-adr.md) without softening it: all three of hard to reverse, surprising without context, and the result of a real trade-off.
 
-Offer a short list and let the user choose, then write each chosen record from the `## Template` section of that same file, without its code fence. Do not write an ADR they did not pick, and do not invent the rationale — if the user cannot say why the alternative was rejected, there is no ADR to write. Zero seeded ADRs is a correct outcome.
+Offer a short list and let the user choose, then write each chosen record from [assets/adr-template.md](assets/adr-template.md). Do not write an ADR they did not pick, and do not invent the rationale — if the user cannot say why the alternative was rejected, there is no ADR to write. Zero seeded ADRs is a correct outcome.
 
 ## Phase 5 — Report
 
