@@ -10,7 +10,6 @@ Repo stores agent skills in buckets under `skills/`. Each bucket groups skills b
 - **quality** — Making work hold up: stress-testing a change, and testing it so the tests can fail.
 - **technical-writing** — Developer-facing writing: the documentation that ships with the code.
 - **version-control** — Git hygiene and repository workflow.
-- **engineering** — Retired. Redirect stubs only; do NOT add new skills here. Its README maps each stub to its new bucket.
 - **context-management** — Building and managing agent context: the docs and reference indexes an agent reads before touching code.
 - **personal** — Personal productivity: scheduling, decisions, organisation.
 - **productivity** — Workplace productivity: summarisation, research, meeting prep, task management.
@@ -20,7 +19,6 @@ Repo stores agent skills in buckets under `skills/`. Each bucket groups skills b
 - **ui-ux** — User interface and experience design: dashboards, visual design, usability.
 - **output-styles** — Tone and voice modes: communication style presets for different audiences and needs. Each one is a native Claude Code output style (`<skill-name>.md`) with a `SKILL.md` wrapper. See [Output styles](#output-styles).
 - **meta** — Meta-skills: skills about authoring, vetting, and evaluating skills themselves.
-- **archived** — Retired skills kept for reference. Must NOT be indexed or promoted in any README.md, and must NEVER be registered in `marketplace.json` (no bucket entry, no `everything` entry).
 
 ## Structure
 
@@ -36,7 +34,7 @@ skills/
       assets/            optional: templates, icons, other output files
 ```
 
-- The top-level `README.md` has one section per public bucket (`drafting/`, `planning/`, `software-design/`, `quality/`, `technical-writing/`, `version-control/`, `context-management/`, `productivity/`, `problem-solving/`, `teaching/`, `roles/`, `ui-ux/`, `output-styles/`, plus the retired `engineering/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
+- The top-level `README.md` has one section per public bucket (`drafting/`, `planning/`, `software-design/`, `quality/`, `technical-writing/`, `version-control/`, `context-management/`, `productivity/`, `problem-solving/`, `teaching/`, `roles/`, `ui-ux/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
 - Each bucket `README.md` lists all its skills with one-line descriptions, skill names linked to `SKILL.md`. The bucket `README.md` is the single source of truth for a skill's one-liner — it is the only place that one-liner lives.
 - Skills in `personal/` must not appear in any public README.
 

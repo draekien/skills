@@ -19,7 +19,7 @@ Then install everything at once:
 Or install individual bucket plugins:
 
 ```bash
-/plugin install engineering-skills@draekien-skills
+/plugin install planning-skills@draekien-skills
 ```
 
 ### Cross-agent — npx skills
@@ -114,9 +114,3 @@ Skills for explanation and comprehension: making an idea land, and repairing it 
 Meta-skills: skills about authoring, vetting, and evaluating skills themselves.
 
 **2 skills →** [browse the meta bucket](skills/meta/README.md)
-
-## Engineering (retired)
-
-Split into the planning, software-design, quality, technical-writing, version-control, and context-management buckets. The bucket ships redirect stubs only, so an existing `engineering-skills` install keeps pointing at the right place.
-
-**0 skills →** [see where each one went](skills/engineering/README.md)

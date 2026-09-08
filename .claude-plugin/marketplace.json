@@ -28,15 +28,6 @@
         "./skills/context-management/extract-llms-txt",
         "./skills/context-management/init-agent-docs",
         "./skills/context-management/maintain-agent-docs",
-        "./skills/engineering/with-ubiquitous-language",
-        "./skills/engineering/module-design",
-        "./skills/engineering/draft-a-prd",
-        "./skills/engineering/break-down-prd",
-        "./skills/engineering/with-testing-principles",
-        "./skills/engineering/extract-llms-txt",
-        "./skills/engineering/init-agent-docs",
-        "./skills/engineering/maintain-agent-docs",
-        "./skills/engineering/with-doc-comments",
         "./skills/ui-ux/design-callouts",
         "./skills/ui-ux/design-dashboards",
         "./skills/output-styles/cte-mode",
@@ -48,8 +39,6 @@
         "./skills/meta/writing-skills",
         "./skills/productivity/picking-models",
         "./skills/productivity/using-subagents",
-        "./skills/engineering/prune-local-branches",
-        "./skills/engineering/harden",
         "./skills/teaching/wut",
         "./skills/planning/draft-a-prd",
         "./skills/planning/break-down-prd",
@@ -81,27 +70,7 @@
           }
         ]
       },
-      "version": "0.69.0"
-    },
-    {
-      "name": "engineering-skills",
-      "description": "Retired — split into the planning, software-design, quality, technical-writing, version-control, and context-management buckets. Ships redirect stubs only.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/engineering/with-ubiquitous-language",
-        "./skills/engineering/module-design",
-        "./skills/engineering/draft-a-prd",
-        "./skills/engineering/break-down-prd",
-        "./skills/engineering/with-testing-principles",
-        "./skills/engineering/extract-llms-txt",
-        "./skills/engineering/init-agent-docs",
-        "./skills/engineering/maintain-agent-docs",
-        "./skills/engineering/with-doc-comments",
-        "./skills/engineering/prune-local-branches",
-        "./skills/engineering/harden"
-      ],
-      "version": "0.30.0"
+      "version": "0.70.0"
     },
     {
       "name": "planning-skills",
