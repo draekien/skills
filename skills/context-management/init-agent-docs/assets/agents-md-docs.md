@@ -4,7 +4,7 @@ Four directories, four purposes. Put a document where its purpose says it goes; 
 
 | Directory | Holds | Lifetime |
 | --- | --- | --- |
-| `adr/` | Architectural decision records | Permanent — an ADR is superseded, never edited into a new decision |
+| `adr/` | Architectural decision records | Permanent — amended in place for updates, superseded only for a reversal |
 | `references/` | Material pulled in from outside: API docs, `llms.txt` indexes, specs, vendor guides | Refreshed when the source changes |
 | `explorations/` | Investigations into options — the evidence gathered and what it favours, not a commitment to act | Kept as a record of what was already looked at |
 | `plans/` | Proposed work, written before it is done | Marked `done` once executed |

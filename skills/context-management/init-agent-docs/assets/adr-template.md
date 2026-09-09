@@ -26,3 +26,9 @@ What becomes easier, what becomes harder, and what the team accepts as a cost. I
 ## Alternatives considered
 
 For each real alternative: what it was, and the specific reason it was rejected. "Not a good fit" is not a reason. If an alternative was never seriously on the table, leave it out.
+
+## Amendments
+
+Dated entries recording later updates that refined this decision without reversing it. Empty until the first amendment.
+
+- YYYY-MM-DD: What changed and why.

@@ -35,4 +35,4 @@ Fields are line-anchored, so search them directly: `rg -l '^status: accepted' do
 
 ## Changing a decision
 
-Never edit a decision into an existing ADR. Write a new one, set the old one's `status` to `superseded` and its `superseded-by` to the new filename, and the new one's `supersedes` to the old filename. The history is the point.
+Amend the existing ADR when new information updates or refines the decision without reversing it: edit the body in place and add a dated entry to its Amendments section recording what changed and why. Write a new ADR only when the decision is reversed or replaced outright — set the old one's `status` to `superseded` and its `superseded-by` to the new filename, and the new one's `supersedes` to the old filename.

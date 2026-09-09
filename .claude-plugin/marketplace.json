@@ -71,7 +71,7 @@
           }
         ]
       },
-      "version": "0.72.0"
+      "version": "0.73.0"
     },
     {
       "name": "planning-skills",
@@ -136,7 +136,7 @@
         "./skills/context-management/init-agent-docs",
         "./skills/context-management/maintain-agent-docs"
       ],
-      "version": "0.3.0"
+      "version": "0.4.0"
     },
     {
       "name": "productivity-skills",
