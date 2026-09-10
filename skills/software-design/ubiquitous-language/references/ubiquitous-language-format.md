@@ -13,7 +13,7 @@ contexts:
       Order:
         aliases:
           - PurchaseOrder
-        definition: "Intent from a customer to acquire one or more products. Exists before payment is confirmed. Mutable until submitted."
+        definition: "Intent from a customer to acquire one or more products."
         usage: "When a customer adds items to their cart and clicks 'Buy', that creates an Order."
         related:
           - term: OrderLine
@@ -33,7 +33,7 @@ contexts:
 |-------|------|----------|-------|
 | `contexts` | map | yes | Top-level key. Each entry is a bounded context. |
 | `contexts.<Name>.terms` | map | yes | Term definitions keyed by PascalCase name. |
-| `contexts.<Name>.terms.<Term>.definition` | string | yes | 50 words max. What it IS. No impl detail. |
+| `contexts.<Name>.terms.<Term>.definition` | string | yes | 50 words max. What it IS. No impl detail. No business rules. |
 | `contexts.<Name>.terms.<Term>.aliases` | list\<string\> | no | Alternative names to actively avoid. |
 | `contexts.<Name>.terms.<Term>.usage` | string | yes | One sentence using the term in a domain conversation. |
 | `contexts.<Name>.terms.<Term>.related` | list\<{term, relationship}\> | no | Only terms already defined. |
@@ -82,6 +82,13 @@ uv run scripts/migrate.py --project-root <root> --dict <dict> [--dry-run]
 
 - **PascalCase** term names to distinguish from prose.
 - **50 words max per definition.** Define what it IS. No impl detail. Aliases, usage, and related live outside this budget.
+- **No business rules.** A definition states what a term is, never what the system does with it. The `usage` sentence may show the term in action, but states no rule either.
+
+  ✗ `"Intent from a customer to acquire one or more products. Mutable until submitted, and cannot be cancelled once dispatched."`
+
+  ✓ `"Intent from a customer to acquire one or more products."`
+
+  Rules change while the definition holds, so a rule captured here turns every policy change into a dictionary edit, and gives the rule a second home that drifts from the code enforcing it.
 - **Be opinionated.** When multiple words exist for the same concept, pick one canonical term; list alternatives as `aliases` to actively avoid.
 - **Project-specific only.** Before adding a term, ask: unique to this domain, or a general programming concept? General concepts don't belong.
 - **Related terms required when applicable.** List only already-defined terms. Use a relationship label.
