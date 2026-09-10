@@ -51,16 +51,16 @@ Ask one DDD-framed question at a time — domain events, aggregates, bounded con
 
 ### Term Capture
 
+Read [references/ubiquitous-language-format.md](references/ubiquitous-language-format.md) before proposing a definition — it carries the term rules a definition must satisfy, the dictionary schema, and the full script invocation reference.
+
 A candidate term is a word or phrase surfaced during the Interview that has not yet been captured in the dictionary. When a candidate term is judged domain-specific — unique to this domain, not a general programming concept — and not yet defined in any loaded context:
 
-1. Propose a definition to the user. When proposing a definition, also propose a one-sentence usage example (the `--usage` argument). Confirm both before writing. If no other terms are yet defined in the dictionary, the usage note may not reference other domain terms — write with whatever context is available. Once any other term is defined, the usage note must reference at least one defined term where the relationship is meaningful.
+1. Propose a definition to the user. When proposing a definition, also propose a one-sentence usage example (the `--usage` argument). Confirm both before writing. If the user's wording carries a business rule, restate the definition without it and confirm the trimmed version. If no other terms are yet defined in the dictionary, the usage note may not reference other domain terms — write with whatever context is available. Once any other term is defined, the usage note must reference at least one defined term where the relationship is meaningful.
 2. Search codebase for the term. Read surrounding context.
 3. If semantic contradiction found: hard interrupt, surface the conflict, wait for resolution. If the user updates the definition, replace the proposed definition with the new one and proceed to step 4 (do not repeat step 2). If the user confirms the definition is correct, note the code divergence and proceed to step 4.
 4. No contradiction: determine bounded context from the confirmed map. If ambiguous, ask.
 5. Before first write to any context, confirm the bounded context assignment. If the bounded context the agent would now assign to a term differs from the bounded context it proposed during definition confirmation, re-confirm the bounded context assignment before writing.
 6. Write immediately using `scripts/write.py add-term` — no batching.
-
-See [references/ubiquitous-language-format.md](references/ubiquitous-language-format.md) for schema and full script invocation reference.
 
 ### Conflict Detection
 
