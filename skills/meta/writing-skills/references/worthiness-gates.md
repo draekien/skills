@@ -16,7 +16,7 @@ Read top down and take the first row that fits — the cheaper mechanisms come f
 - **A durable fact about the user, the project, or a past decision** → memory. Test: does it need teaching each session, or only recalling? A fact restated as an instruction is a fact with extra steps.
 - **An always-on convention for one repository** → that project's instructions file. Test: should it govern work in this codebase whether or not anyone invokes it? A convention that must never be optional cannot depend on activation.
 - **A keystroke whose only variable is when the human wants it** → a user-invoked skill: `disable-model-invocation: true`, an `argument-hint` for whatever it takes, and the behaviour fixed in the body. Test: does the human always know when they want it, so the agent never has to notice? Recognising the moment is the unreliable half of activation — handing it to the human drops it, and drops the description's competition with every other installed skill.
-- **Judgment that varies by case, applied when the case arises** → a model-invoked skill. This is the residue: work where the right move depends on context the author cannot enumerate, and where the agent left alone would pick a worse one.
+- **Judgment that varies by case, applied when the case arises** → a model-invoked skill. No earlier row fits: the right move depends on context the author cannot enumerate, and the agent left alone would pick a worse one.
 
 ### Verdict
 

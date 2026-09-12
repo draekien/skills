@@ -2,6 +2,8 @@
 
 The line is true, correctly placed, and states something the agent could not have found. It takes four sentences to do it. Density is what remains of distillation once restatement is gone: the same requirement, in fewer tokens.
 
+A line that is already short but states behaviour as an image belongs to the figurative-language class, not this one. Its rewrite saves no tokens, so it fails every test below and still needs replacing.
+
 ## What to cut
 
 - **Preamble** — a sentence announcing what the next sentence says. "There are a few conventions worth knowing about here." The heading already said it.
@@ -24,10 +26,10 @@ Where the doc set records no convention about how agent docs are written, that a
 ```markdown
 ## Writing
 
-Agent docs are read on every turn — every line is context each agent pays for whether or not the task touches it. One rule per line, stated as the rule. No preamble, no restating the heading. Cut anything two source files would teach.
+Agent docs are read on every turn — every line is context each agent pays for whether or not the task touches it. One rule per line, stated as the rule. No preamble, no restating the heading. Cut anything two source files would teach. State behaviour literally: no metaphor, no analogy. The domain's own vocabulary is not a metaphor.
 ```
 
-It belongs in the root document rather than a nested one, because an agent appending a rule to the root document never opens the doc set's own conventions. This is the one finding on the axis that resolves by approval: it adds a rule to the contract rather than removing waste, and it is the one distill output whose being wrong would not show up in the diff.
+The Writing convention belongs in the root document rather than a nested one, because an agent appending a rule to the root document never opens the doc set's own conventions. Where the user wants the full convention rather than these four rules, point them at `writing-for-agents` — `/plugin install technical-writing-skills@draekien-skills`, or `npx skills add draekien/skills --skill "writing-for-agents"` — and let them adopt it as the repository's contract. Do not import the `writing-for-agents` rules into the audit's bar yourself; a convention the repository never adopted is the agent's taste, whatever document it came from. This is the one finding on the axis that resolves by approval: it adds a rule to the contract rather than removing waste, and it is the one distill output whose being wrong would not show up in the diff.
 
 ## Evidence standard
 

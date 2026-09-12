@@ -13,7 +13,7 @@ Agent docs fail three ways, and the three need separating all the way through to
 
 **Shape** — every line is true, but the document is built so an agent reads the wrong thing first: guidance for one directory sitting in the always-loaded root file, this quarter's migration written as a permanent rule, a convention stated as prose that a linter would enforce for free.
 
-**Distill** — every line is true and correctly placed, and the document still costs more than it teaches: a line the package manifest already states, a rule wrapped in two sentences of preamble. Context spent here is spent on every turn, on every task, including the ones the line has nothing to do with.
+**Distill** — every line is true and correctly placed, and the document still costs more than it teaches: a line the package manifest already states, a rule wrapped in two sentences of preamble, a behaviour written as an image the agent must translate before it can act. Context spent here is spent on every turn, on every task, including the ones the line has nothing to do with. Most of that cost is tokens; the figurative-language class is the exception, where the cost is the interpretation the line forces and the two readings it allows.
 
 The bar for all three is **the contract** — the conventions this repository committed to, recorded in its own convention docs. Not the conventions a well-run repository usually has. That distinction carries the whole skill; see [Anti-patterns](#anti-patterns).
 
@@ -62,6 +62,7 @@ Read a class's reference before hunting for that class, and read no others. A sc
 | `low` | Structural invariants | [references/drift-invariants.md](references/drift-invariants.md) |
 | | Transient state | [references/shape-transient.md](references/shape-transient.md) |
 | | Restated discoverables | [references/distill-discoverables.md](references/distill-discoverables.md) |
+| | Figurative language | [references/distill-literal.md](references/distill-literal.md) |
 | `mid` | Claim verification | [references/drift-claims.md](references/drift-claims.md) |
 | `high` | Cross-document contradictions | [references/drift-cross-doc.md](references/drift-cross-doc.md) |
 | | Scoping and progressive disclosure | [references/shape-scoping.md](references/shape-scoping.md) |
@@ -82,7 +83,7 @@ Each class resolves one of four ways. The class decides, not the finding's sever
 
 | Resolution | Classes | Behaviour |
 | --- | --- | --- |
-| **Mechanical** | Structural invariants, transient state, restated discoverables, prose density | Apply it. One correct answer exists for the first two; the distill classes hold their licence differently, below. |
+| **Mechanical** | Structural invariants, transient state, restated discoverables, figurative language, prose density | Apply it. One correct answer exists for the first two; the distill classes hold their licence differently, below. |
 | **Approval** | Scoping and progressive disclosure, the missing writing convention | Propose it in full — for a move, the lines, the destination, and the evidence for that scope; for the convention, the exact text. Apply only what the user accepts. |
 | **Interview** | Claim verification, cross-document contradictions, history rot | The audit knows two things disagree, not which is the mistake. Ask. |
 | **Recommendation** | Guardrail candidates | Name the mechanism and what the prose becomes. Never build it. |
@@ -124,7 +125,7 @@ Rank findings by one test: **would an agent reading this document today do the w
 
 For each finding: the document and lines, the class, the evidence, and the resolution taken or proposed. Findings already applied under `--fix` are listed as done, not as pending.
 
-Where a distill class ran, quote the doc set's cost before and after, per document and in total. The saving is that axis's whole justification, so a distill report without it asks the user to accept a rewrite on the audit's word.
+Where a distill class ran, quote the doc set's cost before and after, per document and in total. The saving is that axis's whole justification, so a distill report without it asks the user to accept a rewrite on the audit's word. Figurative-language findings are excluded from that arithmetic and reported without a token figure — their saving is usually zero, and quoting it invites the user to reject a correct finding on the wrong measure.
 
 Report each class as it finishes rather than holding everything to the end. A pass can run out of room or be interrupted, and findings established but never stated are worth nothing — a run that ends early must still have said what it found. Where a pass cannot complete, name the classes that finished, the classes that did not, and anything already written.
 
@@ -142,7 +143,7 @@ Where findings remain open, offer three routes. They compose, and where the user
 
 **Auditing against the agent's own taste.** This one is dangerous because the output looks like good work: a convention gets flagged because a different repository would do it differently, and the user accepts a rewrite that erases a deliberate local decision. A rule the audit would not have chosen is still the rule. The only grounds for a finding are that a document contradicts the code, contradicts another document, has rotted, is shaped so an agent reads the wrong thing first, or spends tokens on nothing — never that a convention is unusual.
 
-The distill axis rewrites prose, so it stands closest to that line and carries the bar that keeps it clear: **every distill finding names the specific waste it removes** — the artifact the line restates, the document it duplicates, the padding wrapped around the rule — and **no distill finding changes what a line requires**. Wording the audit would have chosen differently is not waste, and a shorter rule that demands something narrower is not a distillation.
+The distill axis rewrites prose, so it stands closest to that line and carries the bar that keeps it clear: **every distill finding names the specific waste it removes** — the artifact the line restates, the document it duplicates, the padding wrapped around the rule, the device standing in for a statement of behaviour — and **no distill finding changes what a line requires**. Wording the audit would have chosen differently is not waste, and a shorter rule that demands something narrower is not a distillation.
 
 **Splitting by size.** Length is not the trigger for a split; blast radius is. A long document of genuinely repository-wide rules stays whole, and a short one holding directory-specific rules gets scoped.
 
