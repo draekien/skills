@@ -36,7 +36,7 @@ JSON object. Top-level keys are skill names (matching each skill's `name` frontm
 
 ## Script Convention
 
-`scripts/skillsrc.py` is implemented once, at [specs/skillsrc.py](skillsrc.py), and every skill that reads or writes `.skillsrc` bundles it as a symlink at `scripts/skillsrc.py` inside its own skill directory — not a copy. The script is generic: it takes the skill name and key as arguments rather than hardcoding them, so one file serves every skill.
+`scripts/skillsrc.py` is authored once, at [specs/skillsrc.py](skillsrc.py), and every skill that reads or writes `.skillsrc` bundles a real byte-identical copy at `scripts/skillsrc.py` inside its own skill directory — never a symlink. Git does not materialize symlinks on Windows without Developer Mode, so a symlinked script ships to the client as a short text file holding its own target path and every skill that runs it fails. A copy also survives installation by any harness, including `npx skills add`, which pulls the skill directory alone. The script is generic: it takes the skill name and key as arguments rather than hardcoding them, so one file serves every skill.
 
 **Interface:**
 
@@ -54,11 +54,11 @@ uv run scripts/skillsrc.py --config <path-to-.skillsrc> --skill <skill-name> set
 
 **Adding a new skill:**
 
-1. Symlink the script: from the skill's `scripts/` directory, create `skillsrc.py` as a relative symlink to `specs/skillsrc.py`.
-2. Requires `core.symlinks=true` in the git config (`git config core.symlinks true` — needed once per clone on Windows, otherwise git checks the symlink out as a plain text file containing the path).
+1. Copy the script into the skill's `scripts/` directory: `cp specs/skillsrc.py skills/<bucket>/<skill>/scripts/skillsrc.py`.
+2. Run `uv run tests/check-shared-scripts.py` to confirm the copy matches. Any later edit to `specs/skillsrc.py` is propagated with `uv run tests/check-shared-scripts.py --fix`.
 3. Invoke with `--skill <skill-name>` and the key documented in [Registered Keys](#registered-keys) below.
 
-See `skills/software-design/module-design/scripts/skillsrc.py` and `skills/software-design/ubiquitous-language/scripts/skillsrc.py` as reference symlinks.
+See `skills/software-design/module-design/scripts/skillsrc.py` and `skills/software-design/ubiquitous-language/scripts/skillsrc.py` as reference copies.
 
 ## Example
 

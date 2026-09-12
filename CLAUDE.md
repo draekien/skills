@@ -77,12 +77,26 @@ Skills that require per-project configuration use a shared dotfolder and config 
 - **`.draekien/` directory** — vendor-namespaced folder at the project root. See [specs/draekien.md](specs/draekien.md).
 - **`.draekien/.skillsrc`** — JSON config file keyed by skill name. See [specs/skillsrc.md](specs/skillsrc.md). When writing a new skill that needs per-project config, register its keys in the Registered Keys table in that spec.
 
+## Python scripts
+
+Scripts run on every platform, so they normalise their own text I/O rather than trusting the console codepage. Python otherwise decodes with the locale encoding — cp1252 on Windows — which cannot encode characters these scripts print routinely, and `print(f"{src} → {dst}")` dies with `UnicodeEncodeError`.
+
+Every tracked `*.py` file therefore:
+
+- reconfigures `sys.stdout` and `sys.stderr` to UTF-8 at import time, straight after the imports;
+- passes `encoding="utf-8"` to every `open()`, `read_text()` and `write_text()`;
+- passes `encoding="utf-8"` to every `subprocess` call that sets `text=True`.
+
+`uv run tests/check-encoding.py` enforces all three. Running a script by hand on Windows, `PYTHONUTF8=1` additionally forces UTF-8 for any file opened without an explicit encoding.
+
 ## Workflow
 
 - New skill in this repo: author it with `writing-skills`.
 - After adding a new skill: run `uv run tests/check-manifest.py` from repo root and fix any reported gaps before committing.
 - After touching anything in `output-styles/`: also run `uv run tests/check-output-styles.py` from repo root.
 - After changing the plain-language linter or its dictionary: also run `uv run tests/check-linter.py` from repo root.
+- After changing a shared script in `specs/` or copying one into a skill: run `uv run tests/check-shared-scripts.py` from repo root, and `--fix` to propagate an edit to every copy. Never symlink a shared script into a skill — symlinks do not survive checkout on Windows without Developer Mode; ship a real copy.
+- After adding or editing any Python script: run `uv run tests/check-encoding.py` from repo root. See [Python scripts](#python-scripts).
 - After editing any markdown: run `npx markdownlint-cli2 --fix "**/*.md"` from repo root (auto-discovers `.markdownlint-cli2.jsonc`), then review the autofixed diff and resolve any remaining reported errors before committing.
 - A skill that references another skill by name must say how to install it: the plugin that ships it and the `npx skills add` route. Never reimplement the referenced skill as a fallback. Authoring rule lives in `writing-skills` under Craft.
 - Match skill body complexity to task complexity — if the agent already knows how to execute the task, one sentence beats a structured checklist.

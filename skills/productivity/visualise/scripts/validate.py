@@ -18,13 +18,16 @@ Exit codes:
     2  usage or file error
 """
 
-import io
 import json
 import re
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 ALLOWED_CDN_HOSTS = {
     "cdn.tailwindcss.com",
@@ -167,9 +170,6 @@ def validate(html_path: Path) -> Results:
 
 
 def main() -> int:
-    if isinstance(sys.stdout, io.TextIOWrapper) and sys.stdout.encoding.lower() != "utf-8":
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-
     args = [a for a in sys.argv[1:] if a != "--json"]
     as_json = "--json" in sys.argv[1:]
 

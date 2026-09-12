@@ -5,8 +5,9 @@
 """
 Generic reader/writer for a single skill's section of .draekien/.skillsrc.
 
-Symlinked into each consuming skill's scripts/ directory as skillsrc.py —
-see specs/skillsrc.md for the convention this implements.
+Copied verbatim into each consuming skill's scripts/ directory as skillsrc.py —
+see specs/skillsrc.md for the convention this implements. Keep the copies in sync
+with `uv run tests/check-shared-scripts.py --fix`.
 
 Usage:
   uv run scripts/skillsrc.py --config <path> --skill <skill-name> get <key> [--default <value>]
@@ -25,6 +26,10 @@ import argparse
 import json
 import sys
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 
 def load(config_path: Path) -> dict:

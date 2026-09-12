@@ -39,6 +39,10 @@ import re
 import sys
 from pathlib import Path
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 SCRIPT_DIR = Path(__file__).parent
 BUILTIN_DICTIONARY = SCRIPT_DIR / "dictionary.json"
 SKILL_NAME = "plain-language"
@@ -602,9 +606,6 @@ def main() -> int:
 
     if args.dry_run and not args.fix:
         parser.error("--dry-run only means something with --fix")
-
-    if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
     dictionary = read_json(BUILTIN_DICTIONARY)
     extra = Path(args.overrides) if args.overrides else overrides_path(Path(args.config))

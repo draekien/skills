@@ -30,9 +30,16 @@ import json
 import subprocess
 import sys
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 
 def git(*args: str) -> subprocess.CompletedProcess:
-    return subprocess.run(["git", *args], capture_output=True, text=True)
+    return subprocess.run(
+        ["git", *args], capture_output=True, text=True,
+        encoding="utf-8", errors="replace",
+    )
 
 
 def require_repo() -> None:
@@ -71,6 +78,7 @@ def pull_requests() -> dict[str, list[dict]]:
             ["gh", "pr", "list", "--state", "all", "--limit", "500",
              "--json", "headRefName,state,number"],
             capture_output=True, text=True,
+            encoding="utf-8", errors="replace",
         )
     except FileNotFoundError:
         print("warning: gh not found — squash-merged branches will read as unresolved", file=sys.stderr)

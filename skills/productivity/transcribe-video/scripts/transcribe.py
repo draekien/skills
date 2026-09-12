@@ -28,6 +28,10 @@ import subprocess
 import sys
 from pathlib import Path
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 
 def venv_bin(venv: Path, name: str) -> str:
     win = venv / "Scripts" / name
@@ -45,6 +49,8 @@ def download(source: str, yt_dlp: str) -> Path:
         [yt_dlp, source, "-o", "yt_tmp.%(ext)s", "--no-playlist"],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
     )
     if result.returncode != 0:
         print(result.stderr, file=sys.stderr)
@@ -67,6 +73,8 @@ def transcribe(source_file: Path, whisper: str, model: str) -> Path:
         [whisper, str(source_file), "--model", model, "--output_format", "txt"],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
     )
     if result.returncode != 0:
         print(result.stderr, file=sys.stderr)

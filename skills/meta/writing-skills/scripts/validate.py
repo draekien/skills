@@ -19,11 +19,14 @@ Exit codes:
     2  usage or parse error
 """
 
-import io
 import json
 import re
 import sys
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 try:
     import yaml
@@ -479,13 +482,6 @@ def validate(skill_path: Path) -> Results:
 
 
 def main():
-    # Force UTF-8 output on Windows (avoids cp1252 encoding errors)
-    if (
-        isinstance(sys.stdout, io.TextIOWrapper)
-        and sys.stdout.encoding.lower() != "utf-8"
-    ):
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-
     if any(a in ("-h", "--help") for a in sys.argv[1:]):
         print(__doc__.strip())
         sys.exit(0)

@@ -14,6 +14,10 @@ import re
 import sys
 import yaml
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 
 def find_scoped_files(project_root):
     root_index = os.path.join(project_root, "UBIQUITOUS_LANGUAGE.md")
