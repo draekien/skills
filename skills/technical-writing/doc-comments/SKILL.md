@@ -8,7 +8,7 @@ A doc comment earns its place only if it says something the signature does not. 
 
 This holds identically when writing new comments and when auditing existing ones. Auditing is the same rules applied to text already on the page.
 
-Match the codebase's dialect — tag vocabulary, tag ordering, whether it links members by reference or inherits docs from a base type. House convention outranks the wording and formatting rules below; it does not override the coverage rules, which decide what gets documented at all. At `low` and `mid`, take the dialect from the comments already in the target file; at `high`, read neighbouring files in the same module.
+Match the codebase's dialect — tag vocabulary, tag ordering, whether it links members by reference or inherits docs from a base type. House convention outranks the wording and formatting rules below; it does not override the coverage rules, which decide what gets documented at all. Dialects also differ in what they enforce — one warns on a missing tag, another accepts any well-formed comment — so the bar for a finished comment is the rules below, not what the linter lets through. At `low` and `mid`, take the dialect from the comments already in the target file; at `high`, read neighbouring files in the same module.
 
 ## Route by effort
 
@@ -48,13 +48,15 @@ Open with a verb in present tense, third person, and do not repeat the member's 
 
 Keep the sentence free of anything that renders as a mid-sentence period — write "for example", not "e.g." — because generators truncate the summary at the first period. Put API names, members, and constants in code font; put string literals in code font with double quotation marks. Pluralise the noun, not the type name: "`Intent` objects", not "`Intents`".
 
+Keep the summary to that one sentence and push the rest below it — into the dialect's dedicated slot for extended detail where one exists, such as `<remarks>`, and into following paragraphs or a usage example where it does not.
+
 Deprecations name the replacement in the first sentence. Reasons and migration steps follow in later sentences.
 
 ## Slots
 
 Each tagged slot has a fixed shape. Capitalise the first word and end with a period.
 
-- **Non-boolean parameter** — begin with "The" or "A": `The maximum number of retries before the call fails.`
+- **Non-boolean parameter** — begin with "The" or "A", and say what the value does to the result rather than what it is: `The maximum number of retries before the call fails.`, never `The retry count.` The name and type already carry its identity; the description is the only slot its effect fits in.
 - **Boolean parameter driving an action** — `If true, retries the request. If false, fails immediately.`
 - **Boolean parameter describing a state** — `True if the account is locked; false otherwise.`
 - **Return value** — begin with "The" for non-booleans; use `True if…; false otherwise.` for booleans. Keep it short and push the detail up to the type's own comment.
@@ -62,6 +64,12 @@ Each tagged slot has a fixed shape. Capitalise the first word and end with a per
 - **Thrown errors** — begin with "If" where the generator inserts the word "Throws" itself; begin with "Thrown when" where it does not. Check which by looking at how the codebase's existing comments render. Errors the member raises itself are in play at `low`; errors it only propagates from what it calls are *mid*.
 
 Never put `true` or `false` in code font or quotation marks in these slots.
+
+## Cross-references
+
+Point at another member through the dialect's reference form — `<see cref>`, `{@link}`, a rustdoc intra-doc link — rather than naming it in plain prose. The reference form renders as a working link and gives a later rename some chance of being caught.
+
+Only some chance. A few linters fail the build on a reference that no longer resolves; the rest render the stale name as text and stay silent. Confirm every target resolves as you write it, and in an audit treat a cross-reference as a claim to check against the code like any other — never as something the linter already proved.
 
 ## What the signature cannot say
 
@@ -86,6 +94,8 @@ Write the prose in plain language. The reader is a developer under time pressure
 - Short sentences, one idea each.
 - Address the caller directly — "Call this after the connection opens", not "the user should call this".
 - Cut throat-clearing. "This function is a helper that validates…" becomes "Validates…".
+- **Literal, never figurative.** No metaphor, no simile, no personification, no hyperbole, no wordplay. A cache that "forgets" and a client that "waits patiently" both make the reader translate an image back into behaviour before they can act, and the image lands differently in every reader's first language. State the behaviour: the cache evicts the entry after 30 seconds; the call blocks until the response arrives.
+- A dead metaphor that is the domain's own vocabulary is literal, not figurative — a stream drains, a handler listens, a node has a parent, a lock is held. These are the precise technical terms and have no plainer equivalent. The test is whether you reached for the image or the field did.
 - Define a domain term once, on the type that owns it, and use it unchanged everywhere else. Keep the precise technical term; do not trade accuracy for a simpler word.
 
 ## Audit failure modes
@@ -98,6 +108,8 @@ Name these on sight and replace each with a corrected comment rather than deleti
 - **Undocumented failure** — the member throws, returns null, or partially succeeds, and the comment is silent.
 - **Copy-paste drift** — cloned from a sibling member and still naming the sibling's arguments or behaviour.
 - **Throat-clearing** — "This method is used to…" ahead of the actual verb.
+- **Figurative** — metaphor, personification, or flourish standing where a literal statement of behaviour belongs.
+- **Dangling reference** — points at a member that has been renamed or removed, and nothing flagged it.
 - **Documented internals** — doc comments on private members, diluting the real surface.
 
 ## Done
