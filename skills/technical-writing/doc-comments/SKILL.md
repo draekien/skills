@@ -88,15 +88,14 @@ At `high`, add a short usage example on a type or on a member whose correct use 
 
 ## Register
 
-Write the prose in plain language. The reader is a developer under time pressure, often reading in a second language, inside a tooltip.
+`writing-for-humans` carries the register these comments are written in — literal never figurative, plain language outside exact identifiers, the dead-metaphor test, no throat-clearing. Apply it in full. It ships in the same plugin as this skill — `/plugin install technical-writing-skills@draekien-skills`, or `npx skills add draekien/skills --skill "writing-for-humans"`.
 
-- Everyday words, active voice, present tense. Name the actor.
-- Short sentences, one idea each.
-- Address the caller directly — "Call this after the connection opens", not "the user should call this".
-- Cut throat-clearing. "This function is a helper that validates…" becomes "Validates…".
-- **Literal, never figurative.** No metaphor, no simile, no personification, no hyperbole, no wordplay. A cache that "forgets" and a client that "waits patiently" both make the reader translate an image back into behaviour before they can act, and the image lands differently in every reader's first language. State the behaviour: the cache evicts the entry after 30 seconds; the call blocks until the response arrives.
-- A dead metaphor that is the domain's own vocabulary is literal, not figurative — a stream drains, a handler listens, a node has a parent, a lock is held. These are the precise technical terms and have no plainer equivalent. The test is whether you reached for the image or the field did.
-- Define a domain term once, on the type that owns it, and use it unchanged everywhere else. Keep the precise technical term; do not trade accuracy for a simpler word.
+Four things are specific to a doc comment and are not in that skill:
+
+- **The reader is inside a tooltip**, often in a second language, mid-keystroke. Sentences run shorter here than in a guide, and a paragraph that would be fine in a README is already too long.
+- **Address the caller directly** — "Call this after the connection opens", not "the user should call this".
+- **Define a domain term once, on the type that owns it**, and use it unchanged on every member that touches it. A term redefined on each member drifts into two meanings.
+- **Cut throat-clearing to reach the verb.** "This function is a helper that validates…" becomes "Validates…", because the generator indexes the first sentence and the verb has to be in it.
 
 ## Audit failure modes
 

@@ -76,7 +76,9 @@ Braced text in `agents-md-root.md` is instruction to you, not content — some b
 
 For `AGENTS.md`, cut every section the interview did not fill; an empty heading invites a future agent to invent content for it. **Writing** and **Documentation** are the exceptions: both are conventions rather than findings, and always stay. Before writing the file, check each remaining line against the discoverable test — if an agent could learn it by reading the package manifest, listing the tree, or opening two source files, delete it.
 
-Then write each surviving line to the **Writing** convention the document itself installs: one rule per line, stated as the rule, no preamble and no restating the heading. A rule that takes three sentences either contains three rules or two sentences of padding. Keep the reason only where it lets an agent handle a case the rule did not name — a reason that only re-argues the rule is padding too.
+Then write each surviving line to the **Writing** convention the document itself installs: one rule per line, stated as the rule, no preamble and no restating the heading, behaviour stated literally rather than as an image. A rule that takes three sentences either contains three rules or two sentences of padding. Keep the reason only where it lets an agent handle a case the rule did not name — a reason that only re-argues the rule is padding too.
+
+`writing-for-agents` carries the full convention these four lines compress — self-containment, verification marking, leading words, redaction. Reach for it where the repository wants more than the installed rule, and offer to record it as the contract: `/plugin install technical-writing-skills@draekien-skills`, or `npx skills add draekien/skills --skill "writing-for-agents"`.
 
 Git ignores empty directories, so give `docs/references`, `docs/explorations`, and `docs/plans` a `.gitkeep` unless they already hold files.
 

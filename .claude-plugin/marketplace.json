@@ -48,6 +48,8 @@
         "./skills/quality/harden",
         "./skills/quality/testing-principles",
         "./skills/technical-writing/doc-comments",
+        "./skills/technical-writing/writing-for-agents",
+        "./skills/technical-writing/writing-for-humans",
         "./skills/version-control/prune-local-branches"
       ],
       "outputStyles": [
@@ -71,7 +73,7 @@
           }
         ]
       },
-      "version": "0.75.0"
+      "version": "0.76.0"
     },
     {
       "name": "planning-skills",
@@ -112,9 +114,11 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/technical-writing/doc-comments"
+        "./skills/technical-writing/doc-comments",
+        "./skills/technical-writing/writing-for-agents",
+        "./skills/technical-writing/writing-for-humans"
       ],
-      "version": "0.3.0"
+      "version": "0.4.0"
     },
     {
       "name": "version-control-skills",
@@ -136,7 +140,7 @@
         "./skills/context-management/init-agent-docs",
         "./skills/context-management/maintain-agent-docs"
       ],
-      "version": "0.4.1"
+      "version": "0.5.0"
     },
     {
       "name": "productivity-skills",

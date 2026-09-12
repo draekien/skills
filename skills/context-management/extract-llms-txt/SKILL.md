@@ -38,8 +38,9 @@ When no official index is available:
 
 1. Fetch the root/overview page of the resolved boundary. Read it for two things: an overall one-paragraph description of what the product/library/section *is*, and any on-page navigation, sidebar, or "next steps" links into the rest of the boundary.
 2. If the boundary's page count is not obvious from the overview page's links alone, fetch a sitemap or table-of-contents page if the site has one, to get the full page list. If neither exists, proceed with only the links reachable by following on-page navigation from the overview page, and flag in the review that coverage may be partial.
-3. For every page inside the boundary, capture: its title, its canonical URL, and a one-line description. Prefer the description already given by the site (a subtitle, a meta description, a card blurb) over writing a new one — it's the source's own framing, not a paraphrase that can drift from it.
-4. Prefer the plain-markdown form of each URL when the site serves one (many docs platforms serve raw markdown at the same path with a `.md` suffix) — it's cheaper for a future agent to fetch than the rendered HTML page.
+3. For every page inside the boundary, capture: its title, its canonical URL, and a one-line description. Prefer the description already given by the site (a subtitle, a meta description, a card blurb) over writing a new one — it's the source's own framing, not a paraphrase that can drift from it. Where the page publishes no description of its own, write one from its first paragraph rather than from what a page with that title usually covers.
+4. Where a page inside the boundary cannot be fetched at all, list it with the description you can derive from its link text and mark it unverified. Do not invent a description to complete the index — an entry that reads as confidently as the checked ones sends a future agent to a page that may not hold what the line promises.
+5. Prefer the plain-markdown form of each URL when the site serves one (many docs platforms serve raw markdown at the same path with a `.md` suffix) — it's cheaper for a future agent to fetch than the rendered HTML page.
 
 ## Write the index
 
@@ -62,6 +63,16 @@ Follow the llms.txt structure exactly:
 - Group entries under `##` section headings that mirror the source site's own grouping (by topic, by lifecycle stage) rather than an arbitrary alphabetical or crawl-order list — a reader scanning headings should recognise the site's own shape. If a section would otherwise become one long flat list, split it into finer subheadings that mirror the site's own deeper navigation rather than leaving it unbroken.
 - Reserve an `## Optional` section, per the llms.txt convention, for pages that are unlikely to matter for the resolved boundary's purpose (deprecated/removed features, edge-case references) — pages worth listing for completeness but safe to skip on a normal read.
 - One entry per page, each as `- [title](url): description` — no nested bullets, no additional prose between entries.
+- **Every description states what the page covers, literally.** Docs sites write their own blurbs as marketing prose, so preferring the source's framing imports the source's metaphors and superlatives. Keep the facts, drop the device:
+
+  ```markdown
+  ✗ - [Turbopack](url): Blazingly fast — like strapping a rocket to your build.
+  ✓ - [Turbopack](url): Incremental bundler. Replaces webpack in `next dev`.
+  ```
+
+  The reading agent uses the description to decide whether to spend a fetch on the page. A superlative supports no such decision, and a metaphor has to be translated before it can.
+
+`writing-for-agents` carries these rules in full for any agent-facing document, index or not: `/plugin install technical-writing-skills@draekien-skills`, or `npx skills add draekien/skills --skill "writing-for-agents"`.
 
 ## Wire it into the project
 
@@ -69,4 +80,4 @@ If the project has an existing convention for referencing these indexes (commonl
 
 ## Completion criteria
 
-Every page inside the resolved boundary appears exactly once, with a title and description sourced from the docs (not invented), and every link resolves to a real page. The file passes as a drop-in replacement for crawling the site cold: a future agent reading only this index, with no further fetches, can tell which single page to open for a given sub-task.
+Every page inside the resolved boundary appears exactly once, with a title and a literal description sourced from the docs (not invented), and every link resolves to a real page. Every page that could not be fetched is present and marked unverified rather than absent or described from assumption. The file passes as a drop-in replacement for crawling the site cold: a future agent reading only this index, with no further fetches, can tell which single page to open for a given sub-task.
