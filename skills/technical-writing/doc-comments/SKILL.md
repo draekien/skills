@@ -94,6 +94,8 @@ Write the prose in plain language. The reader is a developer under time pressure
 - Short sentences, one idea each.
 - Address the caller directly — "Call this after the connection opens", not "the user should call this".
 - Cut throat-clearing. "This function is a helper that validates…" becomes "Validates…".
+- **Literal, never figurative.** No metaphor, no simile, no personification, no hyperbole, no wordplay. A cache that "forgets" and a client that "waits patiently" both make the reader translate an image back into behaviour before they can act, and the image lands differently in every reader's first language. State the behaviour: the cache evicts the entry after 30 seconds; the call blocks until the response arrives.
+- A dead metaphor that is the domain's own vocabulary is literal, not figurative — a stream drains, a handler listens, a node has a parent, a lock is held. These are the precise technical terms and have no plainer equivalent. The test is whether you reached for the image or the field did.
 - Define a domain term once, on the type that owns it, and use it unchanged everywhere else. Keep the precise technical term; do not trade accuracy for a simpler word.
 
 ## Audit failure modes
@@ -106,6 +108,7 @@ Name these on sight and replace each with a corrected comment rather than deleti
 - **Undocumented failure** — the member throws, returns null, or partially succeeds, and the comment is silent.
 - **Copy-paste drift** — cloned from a sibling member and still naming the sibling's arguments or behaviour.
 - **Throat-clearing** — "This method is used to…" ahead of the actual verb.
+- **Figurative** — metaphor, personification, or flourish standing where a literal statement of behaviour belongs.
 - **Dangling reference** — points at a member that has been renamed or removed, and nothing flagged it.
 - **Documented internals** — doc comments on private members, diluting the real surface.
 
