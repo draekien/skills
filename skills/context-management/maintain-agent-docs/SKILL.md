@@ -1,7 +1,7 @@
 ---
 name: maintain-agent-docs
-description: Audits a repository's existing agent docs and reports what would mislead an agent or waste its context — guidance gone stale against the code, placed where the wrong agents read it, or padded past what it needs to teach. Repairs findings with --fix. Scoped to prune, it reports only what should come out — content the repository has outgrown, and snapshots of moving state rewritten as the instruction that finds the current answer.
-argument-hint: "[--effort low|mid|high|xhigh|max] [--scope drift|shape|distill|prune] [--target path] [--fix safe|unsafe] [--interview one|batch]"
+description: Audits a repository's existing agent docs and reports what would mislead an agent or waste its context — guidance gone stale against the code, placed where the wrong agents read it, or padded past what it needs to teach. Repairs findings with --fix. Narrow it with --scope — prune for what should come out, contexts for where each rule should live.
+argument-hint: "[--effort low|mid|high|xhigh|max] [--scope drift|shape|distill|prune|contexts] [--target path] [--fix safe|unsafe] [--interview one|batch]"
 disable-model-invocation: true
 ---
 
@@ -53,7 +53,7 @@ Read each document in scope in full, and open code only to verify a specific cla
 
 `--effort` selects which finding classes are in play. Levels are cumulative — each includes every class below it. Absent, the level is `mid`.
 
-`--scope` restricts which of those classes can then fire. `drift`, `shape`, and `distill` each restrict the pass to one axis; `prune` cuts across them instead, restricting it to the classes whose repair takes content out of a document — see [Prune](#prune). Absent, the three axes run and prune does not.
+`--scope` restricts which of those classes can then fire. `drift`, `shape`, and `distill` each restrict the pass to one axis. `prune` and `contexts` cut across the axes instead, each selecting by what a repair does — see [Prune](#prune) and [Contexts](#contexts). Absent, the three axes run and neither selector applies.
 
 The two flags compose: a class is active only when its level is reached and the scope admits it, so `--effort xhigh --scope shape` runs transient state, scoping, and guardrails, and no drift or distill class at all.
 
@@ -66,11 +66,12 @@ Read a class's reference before hunting for that class, and read no others. A cl
 | | Restated discoverables | [references/distill-discoverables.md](references/distill-discoverables.md) |
 | | Figurative language | [references/distill-literal.md](references/distill-literal.md) |
 | `mid` | Claim verification | [references/drift-claims.md](references/drift-claims.md) |
-| `high` | Cross-document contradictions | [references/drift-cross-doc.md](references/drift-cross-doc.md) |
-| | Scoping and progressive disclosure | [references/shape-scoping.md](references/shape-scoping.md) |
-| | Prose density | [references/distill-density.md](references/distill-density.md) |
-| `xhigh` | History rot and unrecorded decisions | [references/drift-history.md](references/drift-history.md) |
+| | Load-on-demand extraction | [references/shape-contexts.md](references/shape-contexts.md) |
 | | Guardrail candidates | [references/shape-guardrails.md](references/shape-guardrails.md) |
+| `high` | Scoping and progressive disclosure | [references/shape-scoping.md](references/shape-scoping.md) |
+| | Prose density | [references/distill-density.md](references/distill-density.md) |
+| `xhigh` | Cross-document contradictions | [references/drift-cross-doc.md](references/drift-cross-doc.md) |
+| | History rot and unrecorded decisions | [references/drift-history.md](references/drift-history.md) |
 | `max` | No new classes. The confidence bar drops, so findings that are probable rather than proven surface, alongside claims that resist falsification — each marked as such | |
 
 Three rules hold across the routing:
@@ -95,18 +96,35 @@ Content the repository has outgrown is mostly a history-rot finding, so a prune 
 
 **Every prune finding names what made the content irrelevant**: the artifact that states it instead, the state that has passed, the change that removed its subject. Age is not evidence. A document nobody has touched in a year can be entirely correct, and deleting on the strength of how old a line looks is the audit's own taste in the one form that cannot be argued back from the diff.
 
+## Contexts
+
+`--scope contexts` selects the two classes that decide where a rule should live rather than whether it is true: the descent from a rule that cannot be broken quietly to a line an agent is only asked to remember. Both sit at `mid`, so the scope reaches each of them without an effort flag.
+
+| Class | Reference | What contexts takes from it |
+| --- | --- | --- |
+| Guardrail candidates | [references/shape-guardrails.md](references/shape-guardrails.md) | Every tier above prose — the rules that should fail mechanically rather than be written down |
+| Load-on-demand extraction | [references/shape-contexts.md](references/shape-contexts.md) | The two prose tiers — whether a rule that needs judgement loads on every turn or only on the tasks that name it |
+
+Run them in that order on the same block. A rule that should be a check needs no destination, and extracting one to a context document relocates prose the repository should not be keeping in either place.
+
+**Neither class changes its resolution under this scope.** Guardrails still recommends and never builds; extraction still resolves by approval. The [Write only when asked](#write-only-when-asked) rule that withholds a move resting on judgement rather than on verified paths withholds every extraction too, since the tasks a block serves are a judgement in every case.
+
+Scoping is not one of the two. A block whose real home is a directory subtree surfaces as an unresolved scoping finding — out of scope under `--scope contexts`, out of level on any pass below `high` — and nothing is extracted for it.
+
 ## Resolve by class
 
 Each class resolves one of four ways. The class decides, not the finding's severity.
 
 | Resolution | Classes | Behaviour |
 | --- | --- | --- |
-| **Mechanical** | Structural invariants, transient state, restated discoverables, figurative language, prose density | Apply it. One correct answer exists for the first two; the distill classes hold their licence differently, below. |
-| **Approval** | Scoping and progressive disclosure, the missing writing convention | Propose it in full — for a move, the lines, the destination, and the evidence for that scope; for the convention, the exact text. Apply only what the user accepts. |
+| **Mechanical** | Structural invariants, transient state, pointer wording, restated discoverables, figurative language, prose density | Apply it. One correct answer exists for the first three; the distill classes hold their licence differently, below. |
+| **Approval** | Scoping and progressive disclosure, load-on-demand extraction, a missing writing or contexts convention | Propose it in full — for a move, the lines, the destination, and the evidence for that scope; for an extraction, the lines, the destination, the tasks that trigger it, and the pointer verbatim; for a convention, the exact text. Apply only what the user accepts. |
 | **Interview** | Claim verification, cross-document contradictions, history rot | The audit knows two things disagree, not which is the mistake. Ask. |
 | **Recommendation** | Guardrail candidates | Name the mechanism and what the prose becomes. Never build it. |
 
-The distill classes resolve mechanically on a different licence from the other two. No single correct rewrite of a padded rule exists, so what makes the edit safe unattended is not certainty but reversibility: no writing pass runs without a clean tree, which leaves the whole pass as one reviewable diff that `git checkout -- .` undoes. That licence buys nothing without the evidence bar in [Anti-patterns](#anti-patterns) — reversible is not the same as harmless, and a rewrite that quietly drops an exception reads clean in the diff.
+Load-on-demand extraction is the one class in two rows. An extraction resolves by approval because it decides where guidance lives; rewriting a pointer already in place resolves mechanically, because the tasks it must name are written in the document it points at.
+
+The distill classes resolve mechanically on a different licence from the other three. No single correct rewrite of a padded rule exists, so what makes the edit safe unattended is not certainty but reversibility: no writing pass runs without a clean tree, which leaves the whole pass as one reviewable diff that `git checkout -- .` undoes. That licence buys nothing without the evidence bar in [Anti-patterns](#anti-patterns) — reversible is not the same as harmless, and a rewrite that quietly drops an exception reads clean in the diff.
 
 An interview finding is never resolved by presuming the code is right. A document line can be a real rule the code violates — that is a code defect, and rewriting the document to match deletes the rule that exposes it. Surface both sides with the evidence for each and let the user say which is true.
 
@@ -127,11 +145,11 @@ Leave the edits uncommitted. The gate has already made the working tree a clean 
 | --- | --- |
 | no `--fix` | Nothing during the pass. Every finding goes to the disposition, and what the user accepts there is written. |
 | `--fix`, `--fix safe` | Mechanical classes, during the pass. Approval and recommendation classes still go to the disposition. |
-| `--fix unsafe` | Mechanical classes, plus approval-class findings without asking — moves, reorderings, and the writing convention. Guardrail findings are filed as plans. |
+| `--fix unsafe` | Mechanical classes, plus approval-class findings without asking — moves, reorderings, and the missing conventions. Guardrail findings are filed as plans. |
 
 Interview findings are asked in every mode, `--fix unsafe` included. An interview answer authorises the write for that finding alone — and authorises nothing at all for a finding marked probable. A probable finding is asked so the user learns what the pass suspects, not so an answer can convert a guess into an edit; the answer is recorded in the report and the document is left alone.
 
-`--fix unsafe` does not apply a move whose blast radius rests on judgement rather than on paths verified in the code. Report those as proposals instead: a rule moved too far down goes quiet rather than visibly wrong, so it is the one approval-class finding an unattended run must not guess at.
+`--fix unsafe` does not apply a move whose blast radius rests on judgement rather than on paths verified in the code, and never applies a load-on-demand extraction, whose trigger is a judgement about tasks in every case. Report both as proposals instead: guidance moved or deferred too far goes quiet rather than visibly wrong, which is the one failure an unattended run cannot see in its own diff.
 
 Repairs follow the audited repository's own status discipline, so no document is deleted: a shipped plan is marked done, a replaced decision is superseded, a document that has outlived its purpose is reported rather than removed. Lines within a document are a different matter — the distill classes delete them, and that is the axis's whole point.
 

@@ -1,6 +1,6 @@
 ---
 name: init-agent-docs
-description: Sets up a repository's agent documentation — AGENTS.md and CLAUDE.md at the root and under docs/, plus adr, references, explorations, and plans directories with the conventions agents need to use them. Use on a repo with no agent docs, or one whose docs have drifted.
+description: Sets up a repository's agent documentation — AGENTS.md and CLAUDE.md at the root and under docs/, plus adr, contexts, references, explorations, and plans directories with the conventions agents need to use them. Places every convention on the guidance tiers first, so rules that should fail mechanically become recommended checks rather than doc lines. Use on a repo with no agent docs, or one whose docs have drifted.
 disable-model-invocation: true
 ---
 
@@ -53,6 +53,7 @@ docs/
   adr/
     AGENTS.md
     TEMPLATE.md
+  contexts/
   references/
   explorations/
   plans/
@@ -74,13 +75,15 @@ Each copied template carries the format for the documents in its directory, so t
 
 Braced text in `agents-md-root.md` is instruction to you, not content — some braces mark a slot to fill, others tell you what to include or drop. No `{` survives into the written file.
 
-For `AGENTS.md`, cut every section the interview did not fill; an empty heading invites a future agent to invent content for it. **Writing** and **Documentation** are the exceptions: both are conventions rather than findings, and always stay. Before writing the file, check each remaining line against the discoverable test — if an agent could learn it by reading the package manifest, listing the tree, or opening two source files, delete it.
+For `AGENTS.md`, cut every section the interview did not fill; an empty heading invites a future agent to invent content for it. **Writing** and **Documentation** are the exceptions: both are conventions rather than findings, and always stay. **Contexts** is filled by the descent below rather than by the interview, so decide it after. Before writing the file, check each remaining line against the discoverable test — if an agent could learn it by reading the package manifest, listing the tree, or opening two source files, delete it.
 
-Then write each surviving line to the **Writing** convention the document itself installs: one rule per line, stated as the rule, no preamble and no restating the heading, behaviour stated literally rather than as an image. A rule that takes three sentences either contains three rules or two sentences of padding. Keep the reason only where it lets an agent handle a case the rule did not name — a reason that only re-argues the rule is padding too.
+Then place each surviving line on the descent in [references/guidance-tiers.md](references/guidance-tiers.md). A rule that can fail mechanically is recommended as a check and written into no document. A rule that needs judgement on tasks that can be named becomes a document under `docs/contexts/`, with a pointer in `AGENTS.md` naming those tasks. Only what every task needs stays in `AGENTS.md`. Run the descent before the writing convention below — there is no point wording a line that should not be a line.
+
+Write each line that stays to the **Writing** convention the document itself installs: one rule per line, stated as the rule, no preamble and no restating the heading, behaviour stated literally rather than as an image. A rule that takes three sentences either contains three rules or two sentences of padding. Keep the reason only where it lets an agent handle a case the rule did not name — a reason that only re-argues the rule is padding too.
 
 `writing-for-agents` carries the full convention these four lines compress — self-containment, verification marking, leading words, redaction. Reach for it where the repository wants more than the installed rule, and offer to record it as the contract: `/plugin install technical-writing-skills@draekien-skills`, or `npx skills add draekien/skills --skill "writing-for-agents"`.
 
-Git ignores empty directories, so give `docs/references`, `docs/explorations`, and `docs/plans` a `.gitkeep` unless they already hold files.
+Git ignores empty directories, so give `docs/contexts`, `docs/references`, `docs/explorations`, and `docs/plans` a `.gitkeep` unless they already hold files.
 
 For each colliding file, do not touch it. Show the user the exact additions you propose — as a diff against the current file — and apply only what they approve.
 
@@ -92,11 +95,12 @@ Offer a short list and let the user choose, then write each chosen record from [
 
 ## Phase 5 — Report
 
-Close with a table of every path: created, amended (additions the user approved), skipped (already present, left untouched), or proposed-and-declined. Then name what remains unknown — contradictions left unresolved, conventions the user deferred on — so the gaps are visible rather than silently absent from the docs.
+Close with a table of every path: created, amended (additions the user approved), skipped (already present, left untouched), or proposed-and-declined. List separately every convention the descent placed above prose — the tier it reached and what the check would decide — so a recommendation that produced no file is still visible. Then name what remains unknown — contradictions left unresolved, conventions the user deferred on — so the gaps are visible rather than silently absent from the docs.
 
 ## Gotchas
 
 - **`@AGENTS.md` resolves relative to the importing file**, so `docs/CLAUDE.md` imports `docs/AGENTS.md` with that exact line. Do not write a rooted path.
 - **A nested `AGENTS.md` does not replace the root one**; both apply. Keep `docs/AGENTS.md` scoped to working with documentation and never restate root conventions in it.
 - **A command table in `AGENTS.md` is the most common form of restated discoverable, and the fastest to rot.** If a command genuinely cannot be found — an undocumented flag, a step with no script behind it — that is a gotcha, not a reference table.
+- **A pointer naming the directory instead of the task does not get followed.** `See docs/contexts/ for release guidance` produces a directory no agent opens; `Read docs/contexts/releasing.md before cutting a release or hotfixing a shipped version` does. The descent already named the tasks — the pointer is where they get written down.
 - **Existing agent docs are usually stale, not wrong.** Treat them as interview material rather than as a source to copy forward.
