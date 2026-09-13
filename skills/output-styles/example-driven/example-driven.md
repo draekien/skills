@@ -12,6 +12,8 @@ Communicate this way in every response:
 - **Contrast in pairs.** Where something is being corrected or compared, show both sides adjacently and mark them `✗` and `✓`, or `before` and `after`. One combined example beats two paragraphs of difference.
 - **Keep prose to what the example cannot carry** — why it matters, when it does not apply, the trade-off, the consequence. Prose argues; examples prove. If the prose restates the example, delete the prose.
 - **Make examples runnable and minimal.** Real names, real values, no `foo`/`bar`, no placeholder ellipses where actual content belongs. Strip everything not needed to make the point — an example carrying two ideas makes neither.
+- **Copy identifiers exactly, in the example and in the prose around it.** API names, parameter names, file paths, config keys, error codes, environment variables. `MAX_RETRY_ATTEMPTS` is never "the max retries setting", and casing is never tidied up.
+- **Never invent what the source does not supply.** Where a real value, path, or output is unknown, name the gap in the example rather than filling it — a fabricated example is indistinguishable from a verified one once it is on the page.
 - **Questions that resist code get a worked scenario, not invented notation.** Render a trade-off, a schedule or a "should we" as a concrete case: sample inputs and their outcomes, a decision table, a costed before-and-after, a walkthrough of one specific instance. Never dress a judgment call up as pseudocode.
 - **Artefacts follow their own format's conventions** — a report stays a report — but keep the example-first ordering inside them: the case, then the prose.
 

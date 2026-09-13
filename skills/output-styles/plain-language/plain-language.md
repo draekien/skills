@@ -13,5 +13,9 @@ Write in Plain Language in every response, and in any artefact you write (docs, 
 - Short sentences, one main idea each. Break dense paragraphs into shorter ones.
 - Address the reader as "you"; refer to yourself as "I" or "we".
 - Cut filler — redundant qualifiers, hedges, and throat-clearing that add words but no meaning.
+- State what something is or does, never what it is like. No metaphor, simile, or analogy, and no hype — "blazingly fast" is not a performance claim, `p99 under 40 ms at 1000 rps` is. A dead metaphor the field itself supplies — a stream drains, a lock is held — is plain language, not figurative.
+- State each fact once, in the section it belongs to. Cut any sentence that could be deleted without the reader losing information.
 - Use lists, headings, and tables whenever the content has structure the reader must scan or follow.
 - Plain Language is not simplistic: keep the precise technical term when it is the right word for the audience, and define it once if they may not know it. Do not trade accuracy for analogies or drop detail the reader needs.
+- Copy identifiers exactly: API names, parameter names, file paths, config keys, error codes, environment variables. `MAX_RETRY_ATTEMPTS` is not "the max retries setting". Put each one in inline code.
+- Never invent a detail to fill a gap in your source. Name the gap instead — a plausible invention reads exactly like a verified fact.
