@@ -1,6 +1,6 @@
 # Documentation
 
-Four directories, four purposes. Put a document where its purpose says it goes; do not create new top-level directories here.
+Five directories, five purposes. Put a document where its purpose says it goes; do not create new top-level directories here.
 
 | Directory | Holds | Lifetime |
 | --- | --- | --- |
@@ -8,6 +8,7 @@ Four directories, four purposes. Put a document where its purpose says it goes; 
 | `references/` | Material pulled in from outside: API docs, `llms.txt` indexes, specs, vendor guides | Refreshed when the source changes |
 | `explorations/` | Investigations into options — the evidence gathered and what it favours, not a commitment to act | Kept as a record of what was already looked at |
 | `plans/` | Proposed work, written before it is done | Marked `done` once executed |
+| `contexts/` | Guidance only some tasks need, reached through a pointer in the root document | Updated when the convention it states changes |
 
 Search `explorations/` and `plans/` for the topic before starting work, and `adr/` for a decision that constrains the approach. Read [adr/AGENTS.md](adr/AGENTS.md) before reading or writing an ADR — the bar is high, and most decisions do not clear it.
 
@@ -31,6 +32,14 @@ A plan records the goal, the steps, and how to tell the work is finished, linked
 ## References
 
 Filename describes the source: `stripe-api.md`, `react-router-llms.txt`. Record where the material came from and when it was captured at the top of the file, so a reader can tell how stale it is.
+
+## Contexts
+
+Filename names the topic: `releasing.md`, `migrations.md`. Open the document with the tasks that need it, so an agent following a pointer can tell immediately whether it arrived somewhere useful.
+
+A document here is reached only through its pointer in the root document, and that pointer names the task that triggers the read, never the directory it points at. A context document nothing points at is unreachable.
+
+Guidance whose tasks cannot be named is not a context. It belongs in the root document, where every turn reads it.
 
 ## Status discipline
 

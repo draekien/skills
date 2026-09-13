@@ -16,9 +16,13 @@
 
 {Concrete corrections to mistakes agents actually make here — the failing test that needs a running service, the endpoint that lies about health, the script that must run from the repo root, the command that looks right but is not the one this repo uses. Omit the section if there are none.}
 
+## Contexts
+
+{One line per document written under docs/contexts/, each naming the tasks that trigger reading it — "Read docs/contexts/releasing.md before cutting a release or hotfixing a shipped version." Omit the section if the descent produced no context documents.}
+
 ## Writing
 
-Agent docs are read on every turn — every line is context each agent pays for whether or not the task touches it. One rule per line, stated as the rule. No preamble, no restating the heading. Cut anything two source files would teach. State behaviour literally: no metaphor, no analogy. The domain's own vocabulary is not a metaphor.
+Agent docs are read on every turn — every line is context each agent pays for whether or not the task touches it. One rule per line, stated as the rule. No preamble, no restating the heading. Cut anything two source files would teach. State behaviour literally: no metaphor, no analogy. The domain's own vocabulary is not a metaphor. A pointer to another document names the task that triggers the read, never the directory it points at.
 
 ## Documentation
 

@@ -16,14 +16,29 @@ Rules that fail the first test are the majority, and they are exactly what prose
 
 | Mechanism | Fits when | Cost |
 | --- | --- | --- |
-| **Formatter or linter rule** | The rule is a property of source text or syntax — naming, imports, forbidden constructs, required annotations | Lowest. Runs locally and in review, output points at the line |
 | **Type or schema constraint** | The rule can be made unrepresentable rather than checked — a required field, a closed set of values, an illegal state | Highest leverage where it fits, since violation stops being possible |
-| **Test** | The rule is about behaviour or structure at runtime — a boundary not crossed, a contract upheld, a migration applied | Runs with the suite, and expresses rules no linter can |
+| **Formatter or linter rule** | The rule is a property of source text or syntax — naming, imports, forbidden constructs, required annotations | Lowest. Runs locally and in review, output points at the line |
 | **Static analysis or architecture check** | The rule is about dependency direction or reach across module boundaries | Needs configuration and a place in the pipeline |
+| **Test** | The rule is about behaviour or structure at runtime — a boundary not crossed, a contract upheld, a migration applied | Runs with the suite, and expresses rules no linter can |
 | **Pipeline or hook check** | The rule concerns artefacts rather than code — commit format, generated files not hand-edited, a file that must accompany a change | Cheap, but only fires where it is installed |
 | **A skill** | The rule needs judgement applied consistently rather than a pass or fail verdict | Not enforcement. The right answer when the rule is a process, not a property |
 
-Prefer the mechanism closest to the moment the rule is broken. A rule caught by a type is better than one caught by a test, which is better than one caught in a pipeline, because the feedback reaches whoever broke it while they are still holding the context.
+Prefer the mechanism closest to the moment the rule is broken — the rows run in that order, and it is the order to try them in. A rule caught by a type is better than one caught by a test, which is better than one caught in a pipeline, because the feedback reaches whoever broke it while they are still holding the context.
+
+Name the mechanism by what it decides rather than by a product: which linter, which runner, which pipeline is this repository's own decision, and a recommendation that names one is guessing at a stack.
+
+## Below enforcement
+
+The table stops where enforcement stops. Two tiers sit beneath it, and neither fails when the rule is broken — both ask an agent to remember.
+
+| Tier | Choose when |
+| --- | --- |
+| **Prose, loaded on demand** | The rule needs judgement, and the tasks that need it can be named |
+| **Prose, always loaded** | The rule needs judgement, and every task needs it |
+
+A rule reaches prose by failing every test above it, not by being written down first. The descent runs one way only: a rule that could fail mechanically is misplaced in prose however well the prose is written, and a rule that genuinely needs judgement is not improved by being forced into a check.
+
+Where a rule fails every test above, this class is finished with it. Which of the two prose tiers it then belongs on is the load-on-demand extraction class's question, answered on its own evidence — and a rule that should have been a check needs no destination at all, so this class never reaches for one.
 
 ## What the prose becomes
 
