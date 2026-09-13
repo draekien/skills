@@ -73,7 +73,7 @@
           }
         ]
       },
-      "version": "0.76.0"
+      "version": "0.77.0"
     },
     {
       "name": "planning-skills",
@@ -237,7 +237,7 @@
           }
         ]
       },
-      "version": "0.6.2"
+      "version": "0.7.0"
     },
     {
       "name": "teaching-skills",

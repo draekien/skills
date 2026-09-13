@@ -59,7 +59,7 @@ Skills for making work hold up: stress-testing a change before it ships, and tes
 
 Skills for developer-facing writing: the documentation that ships alongside the code.
 
-**1 skill →** [browse the technical-writing bucket](skills/technical-writing/README.md)
+**3 skills →** [browse the technical-writing bucket](skills/technical-writing/README.md)
 
 ## Version Control
 
@@ -113,4 +113,4 @@ Skills for explanation and comprehension: making an idea land, and repairing it 
 
 Meta-skills: skills about authoring, vetting, and evaluating skills themselves.
 
-**2 skills →** [browse the meta bucket](skills/meta/README.md)
+**3 skills →** [browse the meta bucket](skills/meta/README.md)
