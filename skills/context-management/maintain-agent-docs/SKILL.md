@@ -1,7 +1,7 @@
 ---
 name: maintain-agent-docs
-description: Audits a repository's existing agent docs and reports what would mislead an agent or waste its context — guidance gone stale against the code, placed where the wrong agents read it, or padded past what it needs to teach. Repairs findings with --fix.
-argument-hint: "[--effort low|mid|high|xhigh|max] [--scope drift|shape|distill] [--target path] [--fix safe|unsafe] [--interview one|batch]"
+description: Audits a repository's existing agent docs and reports what would mislead an agent or waste its context — guidance gone stale against the code, placed where the wrong agents read it, or padded past what it needs to teach. Repairs findings with --fix. Scoped to prune, it reports only what should come out — content the repository has outgrown, and snapshots of moving state rewritten as the instruction that finds the current answer.
+argument-hint: "[--effort low|mid|high|xhigh|max] [--scope drift|shape|distill|prune] [--target path] [--fix safe|unsafe] [--interview one|batch]"
 disable-model-invocation: true
 ---
 
@@ -53,9 +53,11 @@ Read each document in scope in full, and open code only to verify a specific cla
 
 `--effort` selects which finding classes are in play. Levels are cumulative — each includes every class below it. Absent, the level is `mid`.
 
-`--scope` restricts the pass to one axis — `drift`, `shape`, or `distill`. Absent, all three run. The two flags compose: a class is active only when its level is reached and its axis is in scope, so `--effort xhigh --scope shape` runs transient state, scoping, and guardrails, and no drift or distill class at all.
+`--scope` restricts which of those classes can then fire. `drift`, `shape`, and `distill` each restrict the pass to one axis; `prune` cuts across them instead, restricting it to the classes whose repair takes content out of a document — see [Prune](#prune). Absent, the three axes run and prune does not.
 
-Read a class's reference before hunting for that class, and read no others. A scoped-out axis loads none of its references.
+The two flags compose: a class is active only when its level is reached and the scope admits it, so `--effort xhigh --scope shape` runs transient state, scoping, and guardrails, and no drift or distill class at all.
+
+Read a class's reference before hunting for that class, and read no others. A class the scope excludes loads none of its references.
 
 | Level | Adds | Reference |
 | --- | --- | --- |
@@ -76,6 +78,22 @@ Three rules hold across the routing:
 - **A probable finding is never applied**, in any `--fix` mode. Marking it probable and then writing it anyway defeats the mark.
 - **A class that hands a finding to a class this run has not activated still reports it**, as an unresolved finding of the receiving class, named as out of level or out of scope. Never resolve it under the sending class's resolution — that is how a line gets deleted mechanically on the strength of a check the pass never ran.
 - **A finding belonging to no listed class resolves as interview**, never as mechanical. A class the routing table names but the resolution table does not is an unfinished class, and inheriting the resolution of whichever row sits nearest is how a finding meant to be a question becomes an unattended write.
+
+## Prune
+
+`--scope prune` selects by what a repair does rather than by which axis a class sits on: the classes that take content out of a document, plus the one rewrite that trades a fact for the instruction that finds it. Three classes qualify, and `--effort` gates them as it gates every other class.
+
+| Class | Level | Reference | What prune takes from it |
+| --- | --- | --- | --- |
+| Transient state | `low` | [references/shape-transient.md](references/shape-transient.md) | Both halves: the state that has passed and gets deleted, and the state still moving that becomes a lookup |
+| Restated discoverables | `low` | [references/distill-discoverables.md](references/distill-discoverables.md) | Lines the repository's own artifacts already state, and rules a nested document copies from the root |
+| History rot | `xhigh` | [references/drift-history.md](references/drift-history.md) | Guidance whose subject the repository has removed or renamed, and plans whose work has shipped. Its unrecorded-decisions half adds a document rather than removing one, so it stays out of scope |
+
+Content the repository has outgrown is mostly a history-rot finding, so a prune below `xhigh` finds what is stale and what is restated but not what has departed. Name the level that ran, or a shallow prune reads as a doc set with nothing left to remove.
+
+**Prune is a selector, not a licence.** Its classes keep the resolutions [Resolve by class](#resolve-by-class) gives them — the first two mechanical, history rot interview — and the writing gate is the one every invocation runs under, so `--scope prune` on its own still writes nothing.
+
+**Every prune finding names what made the content irrelevant**: the artifact that states it instead, the state that has passed, the change that removed its subject. Age is not evidence. A document nobody has touched in a year can be entirely correct, and deleting on the strength of how old a line looks is the audit's own taste in the one form that cannot be argued back from the diff.
 
 ## Resolve by class
 
