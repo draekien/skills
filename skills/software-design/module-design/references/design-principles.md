@@ -84,7 +84,7 @@ Budget roughly 10–20% of implementation time on design quality: naming, module
 
 ## Recommended Rules
 
-Applied by the audit subagent after the spec is complete. Findings are suggestions — the user decides which to apply.
+Checked in the critique step of every round. Findings are proposals — adjudicate each one, applying or rejecting it with a reason.
 
 ### Minimize Complexity
 

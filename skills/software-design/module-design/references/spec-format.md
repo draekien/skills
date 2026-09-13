@@ -48,6 +48,21 @@ One paragraph per major decision. Each paragraph names the decision and explains
 **Single `authorise` entry point** — rather than separate methods per payment provider, the gateway hides the provider selection internally (Information Hiding). Adding a provider does not change the interface.
 ```
 
+### Refinement Record
+
+Every finding raised across the rounds, applied or rejected, with a reason on each rejection. Stops a later round — or a later session — re-raising a point already settled.
+
+```
+## Refinement Record
+
+**Applied**
+- *Deep Modules* — `authorise` returned the raw provider response; now returns `AuthorisationToken`, keeping the provider payload inside.
+- *Names as Documentation* — `doRefund` renamed `refund`.
+
+**Rejected**
+- *Command-Query Separation* — `authorise` both charges and returns a token. Rejected: atomicity is the point here, the same exception the rule grants `pop`.
+```
+
 ## Extended Sections (class scope and above)
 
 ### Key Data Structures
