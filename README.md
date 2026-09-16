@@ -109,8 +109,14 @@ Skills for explanation and comprehension: making an idea land, and repairing it 
 
 **1 skill →** [browse the teaching bucket](skills/teaching/README.md)
 
+## Agent Config
+
+Configuring the agent itself: standing rules and hooks that apply before any task begins.
+
+**2 skills →** [browse the agent-config bucket](skills/agent-config/README.md)
+
 ## Meta
 
 Meta-skills: skills about authoring, vetting, and evaluating skills themselves.
 
-**3 skills →** [browse the meta bucket](skills/meta/README.md)
+**2 skills →** [browse the meta bucket](skills/meta/README.md)
