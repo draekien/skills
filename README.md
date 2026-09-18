@@ -47,7 +47,7 @@ Skills for turning an idea into a spec, and a spec into work an agent or a perso
 
 Skills for designing code and the vocabulary it is built on, from a single method to an entire architectural layer.
 
-**2 skills →** [browse the software-design bucket](skills/software-design/README.md)
+**3 skills →** [browse the software-design bucket](skills/software-design/README.md)
 
 ## Quality
 
