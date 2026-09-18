@@ -44,6 +44,7 @@
         "./skills/teaching/wut",
         "./skills/planning/draft-a-prd",
         "./skills/planning/break-down-prd",
+        "./skills/software-design/ddd-modular-monolith",
         "./skills/software-design/module-design",
         "./skills/software-design/ubiquitous-language",
         "./skills/quality/harden",
@@ -74,7 +75,7 @@
           }
         ]
       },
-      "version": "0.81.0"
+      "version": "0.82.0"
     },
     {
       "name": "planning-skills",
@@ -93,10 +94,11 @@
       "source": "./",
       "strict": false,
       "skills": [
+        "./skills/software-design/ddd-modular-monolith",
         "./skills/software-design/module-design",
         "./skills/software-design/ubiquitous-language"
       ],
-      "version": "0.3.0"
+      "version": "0.4.0"
     },
     {
       "name": "quality-skills",

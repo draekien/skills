@@ -80,6 +80,7 @@ Skills that use `.skillsrc` must register their keys here.
 | Skill | Key | Type | Default | Description |
 |-------|-----|------|---------|-------------|
 | `module-design` | `specsDir` | string | `docs/designs` | Directory (relative to repo root) where design specs are written |
+| `ddd-modular-monolith` | `architectureDir` | string | `docs/architecture` | Directory (relative to repo root) where the module map and per-module architecture specs are written |
 | `ubiquitous-language` | `dictionaryPath` | string | `.draekien/ubiquitous-language.yaml` | Path (relative to repo root) to the ubiquitous language YAML dictionary |
 | `break-down-prd` | `outputDir` | string | `.draekien/break-down-prd` | Directory (relative to repo root) where PRD breakdowns are written; the skill appends `/<prd-slug>/` per breakdown |
 | `skill-evals` | `outputDir` | string | `.draekien/skill-evals` | Directory (relative to repo root) where eval state is written; the skill appends `/<skill-name>/` per evaluated skill |
