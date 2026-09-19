@@ -1,0 +1,12 @@
+{
+  "name": "version-control-skills",
+  "version": "0.2.0",
+  "description": "Skills for git hygiene and repository workflow.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

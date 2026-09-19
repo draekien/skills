@@ -1,0 +1,26 @@
+{
+  "name": "meta-skills",
+  "version": "0.9.0",
+  "description": "Meta-skills: skills about authoring, vetting, and evaluating skills themselves.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/customize-skill/hooks/inject-customizations.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

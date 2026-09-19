@@ -1,0 +1,12 @@
+{
+  "name": "agent-config-skills",
+  "version": "0.2.0",
+  "description": "Standing rules and hooks that configure how the agent behaves before any task begins.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

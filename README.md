@@ -10,13 +10,7 @@ Agent skills organised into buckets by domain.
 /plugin marketplace add draekien/skills
 ```
 
-Then install everything at once:
-
-```bash
-/plugin install everything@draekien-skills
-```
-
-Or install individual bucket plugins:
+Then install the buckets you want:
 
 ```bash
 /plugin install planning-skills@draekien-skills

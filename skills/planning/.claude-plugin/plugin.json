@@ -1,0 +1,12 @@
+{
+  "name": "planning-skills",
+  "version": "0.2.0",
+  "description": "Skills for turning an idea into a spec, and a spec into work an agent or a person can pick up.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

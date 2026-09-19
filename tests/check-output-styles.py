@@ -19,8 +19,8 @@ Checks:
   2. SKILL.md references that sibling by filename
   3. The native file's frontmatter has name matching the directory, keep-coding-instructions
      set, and a description matching the skill's
-  4. Every native file is listed in marketplace.json "outputStyles" for both the
-     "output-styles" and "everything" entries, and every listed path resolves
+  4. Every native file is listed in the bucket plugin.json "outputStyles", and
+     every listed path resolves
 
 Exit codes:
   0  all consistent
@@ -39,9 +39,8 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 REPO_ROOT = Path(__file__).parent.parent
-MANIFEST_PATH = REPO_ROOT / ".claude-plugin" / "marketplace.json"
 STYLES_ROOT = REPO_ROOT / "skills" / "output-styles"
-MANIFEST_ENTRIES = ("output-styles", "everything")
+MANIFEST_PATH = STYLES_ROOT / ".claude-plugin" / "plugin.json"
 
 
 def split_frontmatter(md: Path) -> tuple[dict, str]:
@@ -56,16 +55,19 @@ def path_entry(md: Path) -> str:
     return "./" + md.relative_to(REPO_ROOT).as_posix()
 
 
+def style_entry(md: Path) -> str:
+    return "./" + md.relative_to(STYLES_ROOT).as_posix()
+
+
 def main() -> int:
     if not STYLES_ROOT.is_dir():
         print(f"Output styles bucket not found: {STYLES_ROOT}", file=sys.stderr)
         return 2
     if not MANIFEST_PATH.exists():
-        print(f"Manifest not found: {MANIFEST_PATH}", file=sys.stderr)
+        print(f"Plugin manifest not found: {MANIFEST_PATH}", file=sys.stderr)
         return 2
 
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
-    plugins = {p["name"]: p for p in manifest.get("plugins", [])}
 
     issues: list[str] = []
     expected_entries: set[str] = set()
@@ -84,7 +86,7 @@ def main() -> int:
             issues.append(f"MISSING native output style: {path_entry(native)}")
             continue
 
-        expected_entries.add(path_entry(native))
+        expected_entries.add(style_entry(native))
 
         skill_fm, skill_body = split_frontmatter(skill_md)
         if native.name not in skill_body:
@@ -110,22 +112,12 @@ def main() -> int:
                 f"MISSING frontmatter keep-coding-instructions in {path_entry(native)}"
             )
 
-    for entry_name in MANIFEST_ENTRIES:
-        plugin = plugins.get(entry_name)
-        if plugin is None:
-            issues.append(f'MISSING marketplace.json entry: "{entry_name}"')
-            continue
-
-        listed = set(plugin.get("outputStyles", []))
-        for missing in sorted(expected_entries - listed):
-            issues.append(
-                f"MISSING from marketplace.json {entry_name}.outputStyles: {missing}"
-            )
-        for stale in sorted(listed):
-            if not (REPO_ROOT / stale.lstrip("./")).exists():
-                issues.append(
-                    f"STALE entry in marketplace.json {entry_name}.outputStyles: {stale}"
-                )
+    listed = set(manifest.get("outputStyles", []))
+    for missing in sorted(expected_entries - listed):
+        issues.append(f"MISSING from plugin.json outputStyles: {missing}")
+    for stale in sorted(listed):
+        if not (STYLES_ROOT / stale.lstrip("./")).exists():
+            issues.append(f"STALE entry in plugin.json outputStyles: {stale}")
 
     if issues:
         print("Output style consistency issues found:\n")

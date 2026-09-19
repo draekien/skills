@@ -1,0 +1,12 @@
+{
+  "name": "software-design-skills",
+  "version": "0.5.0",
+  "description": "Skills for designing code and the vocabulary it is built on, from a single method to an entire architectural layer.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

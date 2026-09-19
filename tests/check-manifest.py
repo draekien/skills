@@ -3,17 +3,25 @@
 # dependencies = ["pyyaml>=6.0"]
 # ///
 """
-Validates that marketplace.json and bucket READMEs are consistent with actual skill directories.
+Validates that marketplace.json, bucket plugin manifests and bucket READMEs are
+consistent with actual skill directories.
 
 Usage:
   uv run tests/check-manifest.py
 
 Run from the repo root. No arguments.
 
-Checks (personal and archived buckets are excluded):
-  1. Every non-personal, non-archived SKILL.md has a path entry in marketplace.json "everything.skills"
-  2. Every non-personal, non-archived SKILL.md has an entry in its bucket README.md
-  3. Every path in marketplace.json "everything.skills" resolves to a real SKILL.md
+Each bucket under skills/ is its own plugin: skills/<bucket>/.claude-plugin/plugin.json
+is the plugin manifest, and marketplace.json points an entry at ./skills/<bucket>.
+
+Checks:
+  1. Every bucket holding at least one skill has a plugin.json declaring
+     "skills": ["./"], and a name, version and description (empty buckets are
+     skipped, and archived/ is never a plugin)
+  2. Every bucket has a marketplace.json entry whose source is ./skills/<bucket> and
+     whose name matches the plugin.json name
+  3. Every marketplace.json entry resolves to a bucket that exists
+  4. Every non-personal, non-archived SKILL.md has an entry in its bucket README.md
 
 Exit codes:
   0  all consistent
@@ -24,8 +32,6 @@ Exit codes:
 import json
 import sys
 from pathlib import Path
-
-import yaml
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -38,79 +44,87 @@ PERSONAL_BUCKET = "personal"
 ARCHIVED_BUCKET = "archived"
 
 
-def parse_frontmatter(skill_md: Path) -> dict:
-    text = skill_md.read_text(encoding="utf-8")
-    if not text.startswith("---"):
-        return {}
-    end = text.index("---", 3)
-    return yaml.safe_load(text[3:end]) or {}
-
-
-def skill_path_entry(skill_dir: Path) -> str:
-    rel = skill_dir.relative_to(REPO_ROOT)
-    return "./" + rel.as_posix()
-
-
 def main() -> int:
     if not MANIFEST_PATH.exists():
         print(f"Manifest not found: {MANIFEST_PATH}", file=sys.stderr)
         return 2
 
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
-    everything_plugin = next(
-        (p for p in manifest.get("plugins", []) if p["name"] == "everything"), None
+    entries_by_source = {p.get("source"): p for p in manifest.get("plugins", [])}
+
+    buckets = sorted(
+        d
+        for d in SKILLS_ROOT.iterdir()
+        if d.is_dir() and d.name != ARCHIVED_BUCKET and any(d.rglob("SKILL.md"))
     )
-    if not everything_plugin:
-        print('No "everything" plugin entry found in marketplace.json', file=sys.stderr)
-        return 2
 
-    everything_skills = set(everything_plugin.get("skills", []))
+    archived = SKILLS_ROOT / ARCHIVED_BUCKET
+    if (archived / ".claude-plugin" / "plugin.json").exists():
+        issues_archived = f"ARCHIVED bucket must not be a plugin: {archived}/.claude-plugin"
+    else:
+        issues_archived = None
+    issues: list[str] = []
 
-    # Collect all SKILL.md files, excluding personal and archived buckets
+    for bucket in buckets:
+        source = f"./skills/{bucket.name}"
+        plugin_json = bucket / ".claude-plugin" / "plugin.json"
+
+        if not plugin_json.exists():
+            issues.append(f"MISSING plugin manifest: {source}/.claude-plugin/plugin.json")
+            plugin = {}
+        else:
+            plugin = json.loads(plugin_json.read_text(encoding="utf-8"))
+            if plugin.get("skills") != ["./"]:
+                issues.append(
+                    f'BAD skills field in {source}/.claude-plugin/plugin.json: '
+                    f'expected ["./"], got {plugin.get("skills")!r}'
+                )
+            for field in ("name", "version", "description"):
+                if not plugin.get(field):
+                    issues.append(
+                        f"MISSING {field} in {source}/.claude-plugin/plugin.json"
+                    )
+
+        entry = entries_by_source.pop(source, None)
+        if entry is None:
+            issues.append(f"MISSING from marketplace.json: an entry with source {source}")
+        elif plugin.get("name") and entry.get("name") != plugin["name"]:
+            issues.append(
+                f"NAME MISMATCH for {source}: marketplace.json says "
+                f"{entry.get('name')!r}, plugin.json says {plugin['name']!r}"
+            )
+
+    for source, entry in entries_by_source.items():
+        issues.append(
+            f"STALE entry in marketplace.json (no such bucket): "
+            f"{entry.get('name')!r} → {source}"
+        )
+
+    if issues_archived:
+        issues.append(issues_archived)
+
     skill_mds = [
         p
         for p in SKILLS_ROOT.rglob("SKILL.md")
         if PERSONAL_BUCKET not in p.parts and ARCHIVED_BUCKET not in p.parts
     ]
 
-    issues: list[str] = []
-
-    # Check 1 & 2: each skill is in manifest and README
     for skill_md in skill_mds:
         skill_dir = skill_md.parent
-        bucket = skill_dir.parent.name
-        entry = skill_path_entry(skill_dir)
-
-        if entry not in everything_skills:
-            fm = parse_frontmatter(skill_md)
-            name = fm.get("name", skill_dir.name)
-            issues.append(
-                f"MISSING from marketplace.json everything.skills: {entry}  (name: {name})"
-            )
-
-        bucket_readme = SKILLS_ROOT / bucket / "README.md"
-        if bucket_readme.exists():
-            readme_text = bucket_readme.read_text(encoding="utf-8")
-            skill_name = skill_dir.name
-            if skill_name not in readme_text:
-                issues.append(f"MISSING from {bucket}/README.md: {skill_name}")
-        else:
-            issues.append(f"MISSING bucket README: skills/{bucket}/README.md")
-
-    # Check 3: every manifest entry resolves to a real SKILL.md
-    for entry in everything_skills:
-        skill_md = REPO_ROOT / entry.lstrip("./") / "SKILL.md"
-        if not skill_md.exists():
-            issues.append(f"STALE entry in marketplace.json (no SKILL.md): {entry}")
+        bucket_readme = SKILLS_ROOT / skill_dir.parent.name / "README.md"
+        if not bucket_readme.exists():
+            issues.append(f"MISSING bucket README: skills/{skill_dir.parent.name}/README.md")
+        elif skill_dir.name not in bucket_readme.read_text(encoding="utf-8"):
+            issues.append(f"MISSING from {skill_dir.parent.name}/README.md: {skill_dir.name}")
 
     if issues:
         print("Manifest consistency issues found:\n")
-        for issue in issues:
+        for issue in sorted(set(issues)):
             print(f"  {issue}")
-        print(f"\n{len(issues)} issue(s) found.")
+        print(f"\n{len(set(issues))} issue(s) found.")
         return 1
 
-    print(f"OK — {len(skill_mds)} skills, all consistent.")
+    print(f"OK — {len(buckets)} plugins, {len(skill_mds)} public skills, all consistent.")
     return 0
 
 

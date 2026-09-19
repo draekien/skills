@@ -1,0 +1,12 @@
+{
+  "name": "quality-skills",
+  "version": "0.2.0",
+  "description": "Skills for making work hold up: stress-testing a change before it ships, and testing it so the tests would actually fail.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

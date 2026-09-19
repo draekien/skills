@@ -1,6 +1,6 @@
 ---
 name: bump-versions
-description: Use when needing to update version numbers in marketplace.json
+description: Use when needing to update version numbers in a bucket plugin.json
 ---
 
-Bump the relevant versions inside @.claude-plugin/marketplace.json based on what has changed in this session based on semver rules.
+Bump the `version` in `skills/<bucket>/.claude-plugin/plugin.json` for every bucket whose skills changed in this session, following semver. `marketplace.json` holds no versions.

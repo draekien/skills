@@ -1,0 +1,12 @@
+{
+  "name": "roles-skills",
+  "version": "0.2.0",
+  "description": "Skills that adopt a fixed persona or stance to sharpen thinking: an advocate, a listener, a critic.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

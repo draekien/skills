@@ -10,267 +10,64 @@
   },
   "plugins": [
     {
-      "name": "everything",
-      "description": "All public-facing skills in this repository across every domain bucket.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/agent-config/prefer-direct-statements",
-        "./skills/agent-config/prefer-skills",
-        "./skills/productivity/get-aligned",
-        "./skills/productivity/deep-research",
-        "./skills/productivity/transcribe-video",
-        "./skills/productivity/visualise",
-        "./skills/productivity/todo",
-        "./skills/problem-solving/round-table",
-        "./skills/problem-solving/from-first-principles",
-        "./skills/roles/steelman",
-        "./skills/roles/devils-advocate",
-        "./skills/roles/rubber-duck",
-        "./skills/context-management/extract-llms-txt",
-        "./skills/context-management/init-agent-docs",
-        "./skills/context-management/maintain-agent-docs",
-        "./skills/ui-ux/design-callouts",
-        "./skills/ui-ux/design-dashboards",
-        "./skills/output-styles/cte-mode",
-        "./skills/output-styles/eli10-mode",
-        "./skills/output-styles/example-driven",
-        "./skills/output-styles/plain-language",
-        "./skills/output-styles/simplified-technical-english",
-        "./skills/meta/customize-skill",
-        "./skills/meta/writing-skills",
-        "./skills/productivity/picking-models",
-        "./skills/productivity/using-subagents",
-        "./skills/teaching/wut",
-        "./skills/planning/draft-a-prd",
-        "./skills/planning/break-down-prd",
-        "./skills/software-design/ddd-modular-monolith",
-        "./skills/software-design/module-design",
-        "./skills/software-design/ubiquitous-language",
-        "./skills/quality/harden",
-        "./skills/quality/testing-principles",
-        "./skills/technical-writing/doc-comments",
-        "./skills/technical-writing/writing-for-agents",
-        "./skills/technical-writing/writing-for-humans",
-        "./skills/version-control/prune-local-branches"
-      ],
-      "outputStyles": [
-        "./skills/output-styles/cte-mode/cte-mode.md",
-        "./skills/output-styles/eli10-mode/eli10-mode.md",
-        "./skills/output-styles/example-driven/example-driven.md",
-        "./skills/output-styles/plain-language/plain-language.md",
-        "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
-      ],
-      "hooks": {
-        "PostToolUse": [
-          {
-            "matcher": "Skill",
-            "hooks": [
-              {
-                "type": "command",
-                "command": "bash \"${CLAUDE_PLUGIN_ROOT}/skills/meta/customize-skill/hooks/inject-customizations.sh\"",
-                "timeout": 10
-              }
-            ]
-          }
-        ]
-      },
-      "version": "0.83.0"
-    },
-    {
-      "name": "planning-skills",
-      "description": "Skills for turning an idea into a spec, and a spec into work an agent or a person can pick up.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/planning/draft-a-prd",
-        "./skills/planning/break-down-prd"
-      ],
-      "version": "0.1.1"
-    },
-    {
-      "name": "software-design-skills",
-      "description": "Skills for designing code and the vocabulary it is built on, from a single method to an entire architectural layer.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/software-design/ddd-modular-monolith",
-        "./skills/software-design/module-design",
-        "./skills/software-design/ubiquitous-language"
-      ],
-      "version": "0.4.0"
-    },
-    {
-      "name": "quality-skills",
-      "description": "Skills for making work hold up: stress-testing a change before it ships, and testing it so the tests would actually fail.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/quality/harden",
-        "./skills/quality/testing-principles"
-      ],
-      "version": "0.1.0"
-    },
-    {
-      "name": "technical-writing-skills",
-      "description": "Skills for developer-facing writing: the documentation that ships alongside the code.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/technical-writing/doc-comments",
-        "./skills/technical-writing/writing-for-agents",
-        "./skills/technical-writing/writing-for-humans"
-      ],
-      "version": "0.4.0"
-    },
-    {
-      "name": "version-control-skills",
-      "description": "Skills for git hygiene and repository workflow.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/version-control/prune-local-branches"
-      ],
-      "version": "0.1.1"
+      "name": "agent-config-skills",
+      "source": "./skills/agent-config"
     },
     {
       "name": "context-management-skills",
-      "description": "Skills for building and managing agent context: the documentation and reference indexes an agent reads before it touches the code.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/context-management/extract-llms-txt",
-        "./skills/context-management/init-agent-docs",
-        "./skills/context-management/maintain-agent-docs"
-      ],
-      "version": "0.6.0"
-    },
-    {
-      "name": "productivity-skills",
-      "description": "Skills for general workplace productivity: summarisation, research, meeting prep, and task management.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/productivity/get-aligned",
-        "./skills/productivity/deep-research",
-        "./skills/productivity/transcribe-video",
-        "./skills/productivity/visualise",
-        "./skills/productivity/todo",
-        "./skills/productivity/picking-models",
-        "./skills/productivity/using-subagents"
-      ],
-      "version": "0.19.1"
-    },
-    {
-      "name": "problem-solving-skills",
-      "description": "Skills for working through a hard problem or decision: reasoning from fundamentals, or debating between competing options.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/problem-solving/round-table",
-        "./skills/problem-solving/from-first-principles"
-      ],
-      "version": "0.1.1"
-    },
-    {
-      "name": "roles-skills",
-      "description": "Skills that adopt a fixed persona or stance to sharpen thinking: an advocate, a listener, a critic.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/roles/steelman",
-        "./skills/roles/devils-advocate",
-        "./skills/roles/rubber-duck"
-      ],
-      "version": "0.1.1"
-    },
-    {
-      "name": "ui-ux-skills",
-      "description": "Skills for user interface and experience design: dashboards, visual design, and usability.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/ui-ux/design-callouts",
-        "./skills/ui-ux/design-dashboards"
-      ],
-      "version": "0.3.0"
-    },
-    {
-      "name": "output-styles",
-      "description": "Skills that shift Claude's communication tone and voice.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/output-styles/cte-mode",
-        "./skills/output-styles/eli10-mode",
-        "./skills/output-styles/example-driven",
-        "./skills/output-styles/plain-language",
-        "./skills/output-styles/simplified-technical-english"
-      ],
-      "outputStyles": [
-        "./skills/output-styles/cte-mode/cte-mode.md",
-        "./skills/output-styles/eli10-mode/eli10-mode.md",
-        "./skills/output-styles/example-driven/example-driven.md",
-        "./skills/output-styles/plain-language/plain-language.md",
-        "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
-      ],
-      "version": "0.14.0"
-    },
-    {
-      "name": "agent-config-skills",
-      "description": "Standing rules and hooks that configure how the agent behaves before any task begins.",
-      "source": "./",
-      "strict": false,
-      "version": "0.1.0",
-      "skills": [
-        "./skills/agent-config/prefer-direct-statements",
-        "./skills/agent-config/prefer-skills"
-      ]
+      "source": "./skills/context-management"
     },
     {
       "name": "meta-skills",
-      "description": "Meta-skills: skills about authoring, vetting, and evaluating skills themselves.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/meta/customize-skill",
-        "./skills/meta/writing-skills"
-      ],
-      "hooks": {
-        "PostToolUse": [
-          {
-            "matcher": "Skill",
-            "hooks": [
-              {
-                "type": "command",
-                "command": "bash \"${CLAUDE_PLUGIN_ROOT}/skills/meta/customize-skill/hooks/inject-customizations.sh\"",
-                "timeout": 10
-              }
-            ]
-          }
-        ]
-      },
-      "version": "0.8.0"
+      "source": "./skills/meta"
     },
     {
-      "name": "teaching-skills",
-      "description": "Skills for explanation and comprehension: making an idea land, and repairing it when it does not.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/teaching/wut"
-      ],
-      "version": "0.1.0"
+      "name": "output-styles",
+      "source": "./skills/output-styles"
     },
     {
       "name": "personal-skills",
-      "description": "Skills for personal productivity and life admin: scheduling, decision-making, and personal organisation.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/personal/ghost-writing"
-      ],
-      "version": "0.5.0"
+      "source": "./skills/personal"
+    },
+    {
+      "name": "planning-skills",
+      "source": "./skills/planning"
+    },
+    {
+      "name": "problem-solving-skills",
+      "source": "./skills/problem-solving"
+    },
+    {
+      "name": "productivity-skills",
+      "source": "./skills/productivity"
+    },
+    {
+      "name": "quality-skills",
+      "source": "./skills/quality"
+    },
+    {
+      "name": "roles-skills",
+      "source": "./skills/roles"
+    },
+    {
+      "name": "software-design-skills",
+      "source": "./skills/software-design"
+    },
+    {
+      "name": "teaching-skills",
+      "source": "./skills/teaching"
+    },
+    {
+      "name": "technical-writing-skills",
+      "source": "./skills/technical-writing"
+    },
+    {
+      "name": "ui-ux-skills",
+      "source": "./skills/ui-ux"
+    },
+    {
+      "name": "version-control-skills",
+      "source": "./skills/version-control"
     }
   ]
 }
