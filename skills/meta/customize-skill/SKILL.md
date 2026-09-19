@@ -4,7 +4,7 @@ description: Records standing customizations for an installed skill, injected au
 argument-hint: "--mode record|review|remove|setup [skill-name]"
 ---
 
-Turns a one-off correction into a standing instruction. A customization is a markdown file the user owns; a `PostToolUse` hook on the `Skill` tool reads the files for whichever skill was just invoked and injects them, so the customization applies without anyone remembering it exists. Installed skills stay untouched — an upgrade or reinstall never clobbers a customization.
+Turns a one-off correction into a standing instruction. A customization is a markdown file the user owns; a hook that fires when a skill is invoked reads the files for that skill and injects them, so the customization applies without anyone remembering it exists. Installed skills stay untouched — an upgrade or reinstall never clobbers a customization.
 
 ## Route
 
@@ -14,7 +14,7 @@ Where two readings are genuinely live — "change my customisation for X" could 
 
 ## Storage
 
-One directory per customized skill, one file per concern:
+One directory per customized skill, one file per concern. The handler reads exactly these two locations:
 
 ```
 ~/.claude/skill-customizations/<skill-name>/<slug>.md          user scope — every project
@@ -55,28 +55,17 @@ Deleting is the user's data. List exactly what will be deleted — paths and des
 
 ## Setup
 
-The hook ships with this skill and loads automatically when the skill came from the plugin marketplace — no setup needed. Run setup only for a standalone install (`npx skills`), or when injection demonstrably never fires.
+The hook ships with this skill and registers itself wherever the harness loads hooks declared by an installed plugin — no setup needed there. Run setup only for a standalone install (`npx skills`), or when injection demonstrably never fires.
 
-Merge this `PostToolUse` entry into `~/.claude/settings.json`, substituting this skill's absolute directory for `${CLAUDE_PLUGIN_ROOT}/customize-skill`; that variable is defined only for plugin-provided hooks and expands to nothing in a settings file. Merge into any existing `PostToolUse` array rather than replacing it, and skip the write entirely if an entry pointing at `inject-customizations.sh` is already there — two registrations inject everything twice.
+1. **Establish the hook point from the harness itself.** Read the harness's own hook documentation and its existing configuration to find the event that fires once a skill has been invoked and whose output is added to that session's context. Never assume a config shape, a file location, or an event name. Where the harness has no such event, say so plainly and stop — customizations can still be recorded and read back, but nothing will inject them, and a hook bolted onto a different event fires at the wrong time.
+2. **Check what is already registered before proposing anything.** An entry pointing at `inject-customizations.sh` means the hook is installed; a second registration injects every customization twice. Merge into whatever collection the harness keeps rather than replacing it.
+3. **Resolve the handler's absolute path and write it out.** The command is `bash "<this skill's directory>/hooks/inject-customizations.sh"`. A path variable the harness defines only for hooks a plugin declared expands to nothing in a hand-written configuration, so the literal path is the only safe form here.
+4. **Narrow the trigger as far as the harness allows.** The handler exits 0 silently when the payload is not a skill invocation or the skill has no customizations, so a broad trigger is harmless but spends a process on every tool call.
+5. **Confirm the payload shape matches the handler.** It reads JSON on stdin and takes the skill name from `tool_input.skill`. Where the harness sends something else, the fix is a shim that rewrites the payload — never an edit to the handler, which the next update overwrites.
+6. **Propose, then wait.** Show the configuration path, the exact addition, and the command the hook will run. Apply nothing until the user approves.
+7. **Prove it fires.** A clean write is not evidence: a misregistered hook fails silently. Invoke a skill that has a customization on file and confirm the text actually reached the context.
 
-```json
-{
-  "PostToolUse": [
-    {
-      "matcher": "Skill",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash \"${CLAUDE_PLUGIN_ROOT}/customize-skill/hooks/inject-customizations.sh\"",
-          "timeout": 10
-        }
-      ]
-    }
-  ]
-}
-```
-
-Verify by piping a payload through the handler directly, from this skill's directory:
+Verify the handler on its own at any point, by piping a payload through it from this skill's directory:
 
 ```bash
 echo '{"tool_name":"Skill","tool_input":{"skill":"<skill-name>"}}' | bash hooks/inject-customizations.sh
@@ -86,6 +75,6 @@ A skill with customizations on file prints one JSON object; a skill without prin
 
 ## Gotchas
 
-- The hook fires **after** the `Skill` tool returns, so a customization steers what the agent does with a skill it has already loaded. It cannot stop a skill from activating, change its description, or gate its invocation — an instruction of that shape belongs in `CLAUDE.md`, not here.
+- The hook fires **after** the skill has been invoked, so a customization steers what the agent does with a skill it has already loaded. It cannot stop a skill from activating, change its description, or gate its invocation — an instruction of that shape belongs in the agent instructions file, not here.
 - Customizations are injected verbatim, so they compete with the skill's own instructions on equal footing. Keep each one narrow and about behaviour the skill actually reaches; a file that restates half the skill destabilises it.
 - The hook resolves project scope from the current git repository root, so a customization written in a worktree applies in that worktree only. Prefer user scope for anything that should follow the user across checkouts.
