@@ -6,7 +6,7 @@
     "email": "draekien@users.noreply.github.com"
   },
   "metadata": {
-    "description": "Agent skills organised into buckets by domain."
+    "description": "Agent skills for planning, software design, quality, technical writing, version control, and more — one plugin per domain."
   },
   "plugins": [
     {
