@@ -23,7 +23,7 @@ Infer the terminal state from the request; ask only when the request fits both r
 1. `git mv` the whole directory to `skills/archived/<name>/`, body and bundled resources intact. Archived skills are reference material — strip nothing.
 2. Apply the **Archived** column of the registration table below.
 3. Leave its frontmatter untouched. An archived skill is never registered, so its description never loads and never competes for activation.
-4. If the bucket is now empty, also drop its `marketplace.json` entry, its root README section, and its bucket line in `CLAUDE.md`.
+4. If the bucket is now empty, also drop its `marketplace.json` entry, its `.claude-plugin/plugin.json`, its root README section, and its bucket line in `CLAUDE.md`.
 
 ## Stub
 
@@ -36,14 +36,13 @@ Infer the terminal state from the request; ask only when the request fits both r
 
 ## Where each one is registered
 
-This table is the single source of truth for what each terminal state owes each index. Both `outputStyles` and `hooks` appear twice in `marketplace.json` — once on the bucket entry, once on `everything` — so each needs editing in both places.
+This table is the single source of truth for what each terminal state owes each index. No index lists skill paths: a bucket plugin loads every `<skill-name>/SKILL.md` under `skills/<bucket>/`, so moving the directory is the registration. Only `outputStyles` and `hooks` name individual files, each once, in the bucket `plugin.json`.
 
 | Index | Archived | Stub at old path | Copy at new path |
 | --- | --- | --- | --- |
-| `marketplace.json` bucket entry | removed | stays | added |
-| `marketplace.json` `everything` | removed | stays | added |
-| `marketplace.json` `outputStyles`, if an output style | removed | stays | added |
-| `marketplace.json` `hooks`, if it ships a hook | removed | stays | added |
+| Bucket `plugin.json` `outputStyles`, if an output style | removed | stays | added |
+| Bucket `plugin.json` `hooks`, if it ships a hook | removed | stays | added |
+| Bucket `plugin.json` version | bumped | bumped | bumped |
 | Bucket README line | removed | rewritten as `**Deprecated** — moved to [<bucket>/<skill>](...)` | added |
 | `skills/archived/README.md` | added, plus `Superseded by [<skill>](...)` where another skill took the job | — | — |
 | Root README bucket count | old bucket decremented | not counted | new bucket incremented |
@@ -60,12 +59,12 @@ Every hit either repoints at the new target or goes away. Widen the pattern to t
 
 ## Gotchas
 
-- **A stub must stay registered; an archived skill must not.** `tests/check-manifest.py` requires every `SKILL.md` outside `personal/` and `archived/` to appear in both its bucket README and `everything.skills` — deregistering a stub fails that. It separately fails on any manifest path with no `SKILL.md` behind it — archiving without removing the paths fails that. The two mistakes are mirror images, and each one passes the check the other fails.
-- **Three indexes have no automated check at all.** `check-manifest.py` reads only `everything.skills` and the bucket READMEs, so a stale root README count, an orphaned `outputStyles` path, and an orphaned `hooks` object all survive a clean test run. Verify those three by eye against the table.
+- **Archiving is a move, not a deregistration.** `skills/archived/` is never a plugin, so a directory moved there stops loading on its own. `tests/check-manifest.py` fails if `skills/archived/.claude-plugin/plugin.json` ever appears, and it requires every `SKILL.md` outside `personal/` and `archived/` to appear in its bucket README — so a stub still owes its README line.
+- **Three indexes have no automated check at all.** `check-manifest.py` reads the bucket manifests and READMEs, so a stale root README count, an orphaned `outputStyles` path, and an orphaned `hooks` object all survive a clean test run. Verify those three by eye against the table.
 - **A copy made in the working tree carries CRLF, but git stores LF.** The fresh copy then differs on every single line, which reads like a corrupted copy rather than a whitespace artefact. The verification script reports this as `crlf` and gives the normalising command.
 - **The root README counts live skills.** A stub still occupies a directory in its bucket, so the bucket's file count and its README count diverge by the number of stubs. Count what a user can actually use.
 - **A one-liner lives in exactly one bucket README.** `CLAUDE.md` makes the bucket README the single source of truth for it. After a stub, the old bucket's line describes the deprecation and the new bucket's line describes the skill — never the same sentence in both.
-- **Internal skills under `.claude/skills/` are outside all of this.** They are not in `marketplace.json` and not scanned by the manifest test, so retiring one is just deleting the directory.
+- **Internal skills under `.claude/skills/` are outside all of this.** They are in no plugin and not scanned by the manifest test, so retiring one is just deleting the directory.
 
 ## Finish
 

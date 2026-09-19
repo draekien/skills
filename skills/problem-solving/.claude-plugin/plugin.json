@@ -1,0 +1,12 @@
+{
+  "name": "problem-solving-skills",
+  "version": "0.2.0",
+  "description": "Skills for working through a hard problem or decision: reasoning from fundamentals, or debating between competing options.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

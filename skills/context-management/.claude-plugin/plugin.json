@@ -1,0 +1,12 @@
+{
+  "name": "context-management-skills",
+  "version": "0.7.0",
+  "description": "Skills for building and managing agent context: the documentation and reference indexes an agent reads before it touches the code.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

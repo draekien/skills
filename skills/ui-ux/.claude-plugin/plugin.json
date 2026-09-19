@@ -1,0 +1,12 @@
+{
+  "name": "ui-ux-skills",
+  "version": "0.4.0",
+  "description": "Skills for user interface and experience design: dashboards, visual design, and usability.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

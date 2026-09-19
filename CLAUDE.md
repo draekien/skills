@@ -28,12 +28,16 @@ Each skill = directory with `SKILL.md` + optional bundled resources:
 ```
 skills/
   <bucket>/
+    .claude-plugin/
+      plugin.json        required: the bucket's plugin manifest
     <skill-name>/
       SKILL.md           required: YAML frontmatter + instructions
       scripts/           optional: executable scripts
       references/        optional: docs loaded into context as needed
       assets/            optional: templates, icons, other output files
 ```
+
+Each bucket is a plugin, and the bucket directory is its plugin root. See [Plugin manifest](#plugin-manifest).
 
 - The top-level `README.md` has one section per public bucket (`agent-config/`, `drafting/`, `planning/`, `software-design/`, `quality/`, `technical-writing/`, `version-control/`, `context-management/`, `productivity/`, `problem-solving/`, `teaching/`, `roles/`, `ui-ux/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
 - Each bucket `README.md` lists all its skills with one-line descriptions, skill names linked to `SKILL.md`. The bucket `README.md` is the single source of truth for a skill's one-liner — it is the only place that one-liner lives.
@@ -52,24 +56,23 @@ skills/output-styles/
 
 - The instructions live in the native file only. `SKILL.md` tells the agent to read its sibling and adopt it, plus the session framing an output style cannot express — that the style holds until the user asks to stop.
 - Native frontmatter: `name` matching the directory, the same `description` as the skill, and `keep-coding-instructions: true`. Do not set `force-for-plugin`.
-- The files are never placed in a root `output-styles/` directory. Every plugin entry uses `source: "./"`, so that directory would auto-load into all bucket plugins.
+- The files are never placed in a root `output-styles/` directory. Plugin roots are the bucket directories, so anything outside `skills/<bucket>/` is unreachable by every plugin.
 
 ## Plugin manifest
 
-`.claude-plugin/marketplace.json` contains:
+Every bucket holding at least one skill is a separate plugin, rooted at `skills/<bucket>/`. Two files declare it, and neither repeats the other:
 
-- One `everything` entry listing every public-facing skill path across all buckets.
-- One bucket entry per bucket with at least one skill; empty buckets omitted.
-- `personal/` skills live only in the `personal-skills` entry, never in `everything`.
+- `.claude-plugin/marketplace.json` — one entry per bucket, two fields: `name` matching the `plugin.json` name, and `source` set to `./skills/<bucket>`. Nothing else. Claude Code reads the rest from `plugin.json` because the source is a relative path inside the marketplace. Empty buckets get no entry.
+- `skills/<bucket>/.claude-plugin/plugin.json` — `name`, `version`, `description`, `author`, and `"skills": ["./"]`.
 
-Adding a new skill, update `marketplace.json`:
+`"skills": ["./"]` is what loads the bucket's `<skill-name>/SKILL.md` children: the plugin root is the bucket, which has no nested `skills/` directory to auto-discover, and without the field the plugin loads zero skills. Write `"./"`, not `"."` — both mean the plugin root to Claude Code, but `npx skills` drops any path that does not start with `./`.
 
-- Add the skill path to its bucket entry. If the bucket has no entry, add one: `name: "<bucket>-skills"`, `source: "./"`, `strict: false`, `version: "0.1.0"`, `skills` array with the path.
-- Also add the path to the `everything` entry — except `personal/` skills, which stay out of `everything`.
-- List individual skill paths (e.g. `"./skills/meta/writing-skills"`), not whole bucket dirs.
-- When skills change, bump the affected bucket entry and (for public skills) the `everything` entry. Once per feature branch max.
-- Output style skills also need their native `.md` path in the `outputStyles` array on both the `output-styles` and `everything` entries. List explicit file paths, never a directory.
-- Skills that ship a hook keep only the handler script inside the skill directory (`hooks/<handler>.sh`) and declare the `hooks` object in `marketplace.json` — in both the bucket entry and `everything`. `marketplace.json` is the single source of truth for hook registration. A marketplace entry only accepts the inline object form (event name -> matcher array); a file path or array of paths fails to load. Never add a `hooks/hooks.json` anywhere in the repo: every entry sets `strict: false`, which makes the marketplace entry the plugin's entire definition, so any auto-discovered `hooks.json` is a conflicting manifest and the plugin fails to load.
+- Adding a skill to an existing bucket needs no manifest edit at all.
+- Adding a bucket needs one marketplace entry and one `plugin.json` at `version: "0.1.0"`.
+- Bump the bucket's `plugin.json` version when its skills change. Once per feature branch max.
+- Output style skills also need their native `.md` path in the bucket `plugin.json` `outputStyles` array, relative to the bucket root (`./<skill-name>/<skill-name>.md`). List explicit file paths, never a directory.
+- Skills that ship a hook keep only the handler script inside the skill directory (`hooks/<handler>.sh`) and declare the `hooks` object in the bucket `plugin.json`, where `${CLAUDE_PLUGIN_ROOT}` is the bucket directory. Inline object form only (event name -> matcher array); a file path or array of paths fails to load. Never add a `hooks/hooks.json` anywhere in the repo — an auto-discovered second manifest conflicts with `plugin.json` and the plugin fails to load.
+- `personal/` is a plugin like any other. It is kept out of the public READMEs, not out of the manifest.
 
 ## Project Configuration Conventions
 

@@ -1,0 +1,12 @@
+{
+  "name": "teaching-skills",
+  "version": "0.2.0",
+  "description": "Skills for explanation and comprehension: making an idea land, and repairing it when it does not.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

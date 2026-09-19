@@ -1,0 +1,12 @@
+{
+  "name": "productivity-skills",
+  "version": "0.20.0",
+  "description": "Skills for general workplace productivity: summarisation, research, meeting prep, and task management.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

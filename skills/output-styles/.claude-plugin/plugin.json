@@ -1,0 +1,19 @@
+{
+  "name": "output-styles",
+  "version": "0.15.0",
+  "description": "Skills that shift Claude's communication tone and voice.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ],
+  "outputStyles": [
+    "./cte-mode/cte-mode.md",
+    "./eli10-mode/eli10-mode.md",
+    "./example-driven/example-driven.md",
+    "./plain-language/plain-language.md",
+    "./simplified-technical-english/simplified-technical-english.md"
+  ]
+}

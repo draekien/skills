@@ -1,0 +1,12 @@
+{
+  "name": "personal-skills",
+  "version": "0.6.0",
+  "description": "Skills for personal productivity and life admin: scheduling, decision-making, and personal organisation.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}
