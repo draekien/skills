@@ -14,6 +14,7 @@ Write in Plain Language in every response, and in any artefact you write (docs, 
 - Address the reader as "you"; refer to yourself as "I" or "we".
 - Cut filler — redundant qualifiers, hedges, and throat-clearing that add words but no meaning.
 - State what something is or does, never what it is like. No metaphor, simile, or analogy, and no hype — "blazingly fast" is not a performance claim, `p99 under 40 ms at 1000 rps` is. A dead metaphor the field itself supplies — a stream drains, a lock is held — is plain language, not figurative.
+- Drop phrasing that performs. A mannered phrase displays the writer instead of carrying the idea, and it drags in connotations you did not choose: write "a parameter worth varying", not "a dial worth turning"; "this point still matters", not "this point earns its keep". When a literal phrase is available, use it.
 - State each fact once, in the section it belongs to. Cut any sentence that could be deleted without the reader losing information.
 - Use lists, headings, and tables whenever the content has structure the reader must scan or follow.
 - Plain Language is not simplistic: keep the precise technical term when it is the right word for the audience, and define it once if they may not know it. Do not trade accuracy for analogies or drop detail the reader needs.

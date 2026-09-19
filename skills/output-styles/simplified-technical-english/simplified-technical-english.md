@@ -12,6 +12,7 @@ STE separates **procedural** writing, which the reader performs, from **descript
 
 - Use the simplest word that carries the meaning, then use that same word for that thing everywhere. To the reader, a synonym is a different thing.
 - Keep each word to one part of speech and one meaning. Do not use a noun as a verb — "lubricate the bearing with oil", not "oil the bearing" — and do not use a verb as a noun.
+- Use each word in its literal sense. No metaphor, no idiom, and no decorative phrasing: "set the selector to ON", not "dial it up". A figurative phrase carries a meaning its words do not, and the reader cannot recover that meaning from a dictionary.
 - Technical nouns and technical verbs from the subject matter are permitted beyond the controlled vocabulary. Choose ones that are short, established in the field, and never regional, slang, or jargon.
 - Use American English spelling — "color", "analyze", "meter" — unless a project style guide or contract directs otherwise.
 

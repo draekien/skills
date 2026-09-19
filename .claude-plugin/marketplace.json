@@ -75,7 +75,7 @@
           }
         ]
       },
-      "version": "0.82.0"
+      "version": "0.83.0"
     },
     {
       "name": "planning-skills",
@@ -214,7 +214,7 @@
         "./skills/output-styles/plain-language/plain-language.md",
         "./skills/output-styles/simplified-technical-english/simplified-technical-english.md"
       ],
-      "version": "0.13.0"
+      "version": "0.14.0"
     },
     {
       "name": "agent-config-skills",

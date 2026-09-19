@@ -52,7 +52,7 @@ When the user hands over text and asks what is wrong with it, run the linter wit
 Patterns see words, not arguments. Judge these directly on every audit and self-check:
 
 - **Main point first** — whether the answer, decision, or recommendation leads, or sits buried under background.
-- **Figurative language** — a metaphor reads as ordinary English to a pattern matcher. Check that every sentence states what something is or does, not what it is like.
+- **Figurative language** — a metaphor reads as ordinary English to a pattern matcher. Check that every sentence states what something is or does, not what it is like, and that no phrase is there to perform rather than to carry the idea.
 - **Invented detail** — a claim with no source behind it lints clean. Check each one back to the source material.
 - **The right technical term** — the style keeps precise terms and defines them once. A word the linter flags may be exactly right for the audience.
 - **Structure** — whether content with real structure is set out as a list, heading, or table rather than as prose.
