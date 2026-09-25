@@ -9,8 +9,8 @@ Dispatch takes an alias, not a version. These four are the candidate set:
 | Alias | Speed | Taste | Intelligence | Cost |
 | --- | --- | --- | --- | --- |
 | `fable` | 2 | 10 | 10 | 2 |
-| `opus` | 4 | 9 | 9 | 4 |
-| `sonnet` | 5 | 7 | 8 | 7 |
+| `opus` | 5 | 9 | 9 | 5 |
+| `sonnet` | 5 | 7 | 7 | 7 |
 | `haiku` | 10 | 2 | 2 | 10 |
 
 An alias resolves to whichever generation the harness currently ships. Score the alias, pass the alias.
@@ -42,9 +42,10 @@ Some places take a full model ID instead of an alias: agent-definition frontmatt
 | Model | Speed | Taste | Intelligence | Cost |
 | --- | --- | --- | --- | --- |
 | Fable 5 | 2 | 10 | 10 | 2 |
-| Opus 5 | 4 | 9 | 9 | 4 |
-| Opus 4.8 | 4 | 9 | 9 | 5 |
-| Sonnet 5 | 5 | 7 | 8 | 7 |
+| Opus 5.5 | 5 | 9 | 9 | 5 |
+| Opus 5 | 4 | 9 | 8 | 4 |
+| Opus 4.8 | 4 | 9 | 8 | 5 |
+| Sonnet 5 | 5 | 7 | 7 | 7 |
 | Sonnet 4.6 | 6 | 6 | 6 | 7 |
 | Haiku 4.5 | 10 | 2 | 2 | 10 |
 
