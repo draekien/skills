@@ -16,7 +16,7 @@ Apply software design principles to whatever the user brings. A first pass is ra
 
 Run once on first invocation in this order:
 
-1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design get specsDir --default docs/designs` to read the spec output directory. If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `module-design.specsDir`; default to `docs/designs` if absent.
+1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design get specsDir --default docs/designs` to read the spec output directory, then `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design get subagentModel` to read the default model for subagent rounds. If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `module-design.specsDir` and `module-design.subagentModel`; default to `docs/designs` and no model if absent.
 2. **Settle the run** — take mode, effort, and runner from the flags. Unflagged, infer the mode: an existing spec to improve is `refine`, existing code to assess is `review`, anything else is `design`. Effort defaults to `medium`, runner to `subagent`.
 3. **Open question** — if the module, spec, or code in scope isn't already clear from the conversation, ask what to look at before proceeding.
 
@@ -68,7 +68,7 @@ Each round is critique-and-refine over the current draft:
 2. **Refine** — write the concrete replacement text for each finding. Nothing lands in the draft at this step.
 3. **Adjudicate** — take each finding on its merits: apply it, or reject it with a reason. Apply the accepted changes before the next round starts.
 
-Under `--runner subagent`, steps 1 and 2 belong to the subagent and step 3 is always yours — the subagent proposes, it never commits. Dispatch brief: [references/critique-brief.md](references/critique-brief.md). Under `--runner inline`, do all three yourself.
+Under `--runner subagent`, steps 1 and 2 belong to the subagent and step 3 is always yours — the subagent proposes, it never commits. Dispatch brief: [references/critique-brief.md](references/critique-brief.md). Dispatch every round to `subagentModel` when it is set; when it is empty, choose the model as the brief directs. If the user names a model to use by default from now on, confirm it, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design set subagentModel <model>`. Under `--runner inline`, do all three yourself.
 
 A finding that names a strict rule is applied, never rejected.
 

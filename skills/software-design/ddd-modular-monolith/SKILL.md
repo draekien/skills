@@ -18,7 +18,7 @@ Explore the project before asking. The codebase already answers most questions a
 
 Run once on first invocation, in this order:
 
-1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill ddd-modular-monolith get architectureDir --default docs/architecture` to read the architecture directory. If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `ddd-modular-monolith.architectureDir`; default to `docs/architecture` if absent.
+1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill ddd-modular-monolith get architectureDir --default docs/architecture` to read the architecture directory, then `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill ddd-modular-monolith get subagentModel` to read the default model for subagent rounds. If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `ddd-modular-monolith.architectureDir` and `ddd-modular-monolith.subagentModel`; default to `docs/architecture` and no model if absent.
 2. **Load the module map** — read `<architectureDir>/module-map.md` if it exists. It is the shared state every mode reads: the module list, dependency rules, data ownership and contracts. Where it is absent and the mode needs it, derive what is needed from the codebase and offer to write it.
 3. **Settle the run** — take mode, effort and runner from the flags. Effort defaults to `medium`, runner to `subagent`. Unflagged, infer the mode from the request against the table below.
 4. **Open question** — if the module, domain or code in scope is not already clear from the conversation, ask before proceeding.
@@ -74,7 +74,7 @@ Each round is critique-and-refine over the current draft:
 2. **Refine** — write the concrete replacement text for each finding. Nothing lands in the draft at this step.
 3. **Adjudicate** — take each finding on its merits: apply it, or reject it with a reason. Apply the accepted changes before the next round starts.
 
-Under `--runner subagent`, steps 1 and 2 belong to the subagent and step 3 is always yours — the subagent proposes, it never commits. Dispatch brief: [references/critique-brief.md](references/critique-brief.md). Under `--runner inline`, do all three yourself.
+Under `--runner subagent`, steps 1 and 2 belong to the subagent and step 3 is always yours — the subagent proposes, it never commits. Dispatch brief: [references/critique-brief.md](references/critique-brief.md). Dispatch every round to `subagentModel` when it is set; when it is empty, choose the model as the brief directs. If the user names a model to use by default from now on, confirm it, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill ddd-modular-monolith set subagentModel <model>`. Under `--runner inline`, do all three yourself.
 
 A finding that names a strict rule is applied, never rejected.
 
