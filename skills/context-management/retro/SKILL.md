@@ -13,19 +13,19 @@ Every finding is **evidence-led**: it cites the moment in the transcript that sh
 
 ## Available scripts
 
-- **`scripts/condense-session.py`** — condenses a JSONL transcript from `~/.claude/projects` into a summary (tool-call counts, errors, token usage, largest results, repeated calls, subagent rollups) and a timeline. `--list` prints recent sessions for the current directory.
+- **`scripts/condense-session.py`** — condenses a JSONL transcript in the `~/.claude/projects` format into a summary (tool-call counts, errors, token usage, largest results, repeated calls, subagent rollups) and a timeline. `--list` prints recent sessions for the current directory from that location. Exits `3` on a transcript in any other format.
 
 ## Read the session
 
-- **No argument** — the session is the current one, already in context. If the context has been summarised, the early turns are gone from it: run `--list` and condense the entry whose `first_prompt` matches this conversation's opening. If none matches, or more than one does, ask the user for the id.
-- **A session id or a `.jsonl` path** — condense it:
+The session is the current one unless the user names another. While its early turns are still in context, read it from context and skip the transcript. Once the context has been summarised, those turns are gone: find the session's transcript where your harness stores it, and condense it:
 
-  ```bash
-  uv run scripts/condense-session.py <session-id-or-path> --output <tmp-file>
-  ```
+```bash
+uv run scripts/condense-session.py <session-id-or-path> --output <tmp-file>
+```
 
-  Always pass `--output`; a long timeline overflows a tool result. Read the `summary` object first, then the `timeline` in ranges of at most 200 lines, never the whole file at once. A summary with zero tool calls and an empty timeline means the file is not in the format the script parses.
-- **Any other transcript** — read it directly in ranges of at most 200 lines, and say in the report that no summary was computed.
+Always pass `--output`; a long timeline overflows a tool result. Read the `summary` object first, then the `timeline` in ranges of at most 200 lines, never the whole file at once.
+
+When the script cannot be used — `--list` finds no sessions, the script exits non-zero, or no script runner is available — fall back to reading the transcript directly, in ranges of at most 200 lines, and say in the report that no summary was computed. The fallback is normal for any harness whose transcripts are not in the format the script parses.
 
 The script records each result's size, not its content. Judge a large result from its call and its size; re-run the call only when the size alone cannot settle whether it was wasted.
 

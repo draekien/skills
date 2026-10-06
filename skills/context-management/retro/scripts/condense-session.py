@@ -26,6 +26,7 @@ Exit codes:
     0  condensed or listed
     1  session not found, or the transcript could not be read
     2  usage error
+    3  the transcript holds no records in the format this script parses
 """
 
 import json
@@ -210,9 +211,12 @@ def main(argv):
         for sub in sorted((path.parent / path.stem / "subagents").glob("agent-*.jsonl")):
             sub_summary, _ = condense(sub, limit)
             subagents.append(sub_summary)
-    except OSError as error:
+    except (OSError, UnicodeDecodeError) as error:
         print(f"could not read {path}: {error}", file=sys.stderr)
         return 1
+    if not timeline:
+        print(f"no recognised records in {path}: read the transcript directly instead", file=sys.stderr)
+        return 3
     summary["subagents"] = subagents
     document = json.dumps({"summary": summary, "timeline": timeline}, indent=2, ensure_ascii=False)
     if output:
