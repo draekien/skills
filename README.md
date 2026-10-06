@@ -67,6 +67,12 @@ Skills for building and managing agent context: the documentation and reference 
 
 **3 skills →** [browse the context-management bucket](skills/context-management/README.md)
 
+## Prompting
+
+Skills for prompting Claude models: drafting and revising prompts against the guidance for the model that runs them.
+
+**1 skill →** [browse the prompting bucket](skills/prompting/README.md)
+
 ## Productivity
 
 Skills for general workplace productivity: summarisation, research, meeting prep, and task management.

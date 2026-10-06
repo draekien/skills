@@ -11,6 +11,7 @@ Repo stores agent skills in buckets under `skills/`. Each bucket groups skills b
 - **technical-writing** — Developer-facing writing: the documentation that ships with the code.
 - **version-control** — Git hygiene and repository workflow.
 - **context-management** — Building and managing agent context: the docs and reference indexes an agent reads before touching code.
+- **prompting** — Prompting Claude models: drafting and revising prompts against the guidance for the model that runs them.
 - **personal** — Personal productivity: scheduling, decisions, organisation.
 - **productivity** — Workplace productivity: summarisation, research, meeting prep, task management.
 - **problem-solving** — Working through a hard problem or decision: reasoning from fundamentals, debating between options.
@@ -39,7 +40,7 @@ skills/
 
 Each bucket is a plugin, and the bucket directory is its plugin root. See [Plugin manifest](#plugin-manifest).
 
-- The top-level `README.md` has one section per public bucket (`agent-config/`, `drafting/`, `planning/`, `software-design/`, `quality/`, `technical-writing/`, `version-control/`, `context-management/`, `productivity/`, `problem-solving/`, `teaching/`, `roles/`, `ui-ux/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
+- The top-level `README.md` has one section per public bucket (`agent-config/`, `drafting/`, `planning/`, `software-design/`, `quality/`, `technical-writing/`, `version-control/`, `context-management/`, `prompting/`, `productivity/`, `problem-solving/`, `teaching/`, `roles/`, `ui-ux/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
 - Each bucket `README.md` lists all its skills with one-line descriptions, skill names linked to `SKILL.md`. The bucket `README.md` is the single source of truth for a skill's one-liner — it is the only place that one-liner lives.
 - Skills in `personal/` must not appear in any public README.
 

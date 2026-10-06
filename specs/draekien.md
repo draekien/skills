@@ -30,6 +30,7 @@ Once created in a session, treat it as present for the remainder — do not re-c
 |------|---------|------|
 | `.skillsrc` | Per-skill configuration keyed by skill name | [specs/skillsrc.md](skillsrc.md) |
 | `ubiquitous-language.yaml` | DDD ubiquitous language dictionary (bounded contexts + terms) | managed by `ubiquitous-language` skill |
+| `prompting/` | Saved prompts, one `<prompt-slug>/` directory per prompt: `prompt.md` holds the raw prompt, `record.md` its target model, assumptions, and sources | managed by `prompting` skill; location set by its `outputDir` key |
 | `skill-customizations/` | Per-skill customization files, one directory per customized skill | managed by the `customize-skill` skill — see [skills/meta/customize-skill/SKILL.md](../skills/meta/customize-skill/SKILL.md) |
 
 Future files added by new skills must be documented here and in their own spec.
