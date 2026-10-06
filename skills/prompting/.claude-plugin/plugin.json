@@ -1,0 +1,12 @@
+{
+  "name": "prompting-skills",
+  "version": "0.1.0",
+  "description": "Skills for prompting Claude models: drafting and revising prompts against the guidance for the model that runs them.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

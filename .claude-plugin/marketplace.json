@@ -42,6 +42,10 @@
       "source": "./skills/productivity"
     },
     {
+      "name": "prompting-skills",
+      "source": "./skills/prompting"
+    },
+    {
       "name": "quality-skills",
       "source": "./skills/quality"
     },
