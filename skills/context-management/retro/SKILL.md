@@ -1,7 +1,7 @@
 ---
 name: retro
 description: Reviews a coding session's transcript and recommends changes to the agent's environment — navigation pointers, automated checks, review rules, tool economy, information access — so the next session avoids the same mistakes. Applies them with --fix.
-argument-hint: "[--fix safe|unsafe] [session-id|transcript-path]"
+argument-hint: "[--fix safe|unsafe]"
 disable-model-invocation: true
 ---
 
