@@ -16,8 +16,8 @@ Apply software design principles to whatever the user brings. A first pass is ra
 
 Run once on first invocation in this order:
 
-1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design get specsDir --default docs/designs` to read the spec output directory, then `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design get subagentModel` to read the default model for subagent rounds. If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `module-design.specsDir` and `module-design.subagentModel`; default to `docs/designs` and no model if absent.
-2. **Settle the run** — take mode, effort, and runner from the flags. Unflagged, infer the mode: an existing spec to improve is `refine`, existing code to assess is `review`, anything else is `design`. Effort defaults to `medium`, runner to `subagent`.
+1. **Load config** — read the `module-design` block of `.draekien/.skillsrc` as JSON: `specsDir` (default `docs/designs`) and `subagentModel` (default empty). If the file, block, or key is absent, use the defaults.
+2. **Settle the run** — take mode, effort, and runner from the flags. Unflagged, infer the mode: an existing spec to improve is `refine`, existing code to assess is `review`, anything else is `design`. Unflagged effort comes from a project rule that sets one, otherwise `medium`; runner defaults to `subagent`.
 3. **Open question** — if the module, spec, or code in scope isn't already clear from the conversation, ask what to look at before proceeding.
 
 ## Modes
@@ -34,9 +34,11 @@ Run once on first invocation in this order:
 
 After the user answers the opening question from Session Start, explore the project, then ask further targeted questions. What matters is understanding scope, responsibility, callers, data contract, side effects, and boundaries — whether by reading existing code or by interviewing the user. If the module exists, the codebase already answers most of these.
 
+Put each open decision to the user one at a time, with its options, their trade-offs, any precedent behind them, and your recommendation — a batch of bare questions gets rejected. Use the `get-aligned` skill for this. If it is not installed, ask the user to add it: `/plugin install productivity-skills@draekien-skills`, or `npx skills add draekien/skills --skill "get-aligned"`.
+
 ## Strict Constraint Enforcement
 
-These five rules are non-negotiable. Check each design decision against them as it is made. If a decision violates a strict rule, **block immediately**: name the rule, explain the specific violation, and ask the user to revise before continuing.
+These five rules are non-negotiable. Check each design decision against them as it is made during the interview. If a decision violates a strict rule, **block immediately**: name the rule, explain the specific violation, and ask the user to revise before continuing. A strict-rule finding raised in a round follows the Rounds rule instead.
 
 | Rule                               | Hard constraint                                                                                                                                                                       |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -50,7 +52,7 @@ Full rule definitions: [references/design-principles.md](references/design-princ
 
 ## Rounds
 
-Every mode produces an initial draft, then loops over it before anything reaches the user or the disk.
+Every mode writes an initial draft to a temp file outside the repo — under `refine`, a copy of the existing spec — then loops over it. Nothing is written to the repo, and no implementation starts, until the rounds are done and the user has replied at the gate in Output.
 
 `--effort` sets the round budget:
 
@@ -64,23 +66,23 @@ Every mode produces an initial draft, then loops over it before anything reaches
 
 Each round is critique-and-refine over the current draft:
 
-1. **Critique** — check the draft against every recommended rule in [references/design-principles.md](references/design-principles.md). For each violation, quote the offending text and name the rule.
+1. **Critique** — check the draft through the three lenses in [references/critique-brief.md](references/critique-brief.md): correctness, the project's rules, and every strict and recommended rule in [references/design-principles.md](references/design-principles.md). For each finding, quote the offending text, name the lens or rule, and tag it `blocker`, `major`, or `minor`. Under `--runner inline`, apply the lenses and tags exactly as the brief defines them.
 2. **Refine** — write the concrete replacement text for each finding. Nothing lands in the draft at this step.
-3. **Adjudicate** — take each finding on its merits: apply it, or reject it with a reason. Apply the accepted changes before the next round starts.
+3. **Adjudicate** — check each finding's claim against the code or docs before deciding, then apply it or reject it with a reason. Apply the accepted changes before the next round starts.
 
-Under `--runner subagent`, steps 1 and 2 belong to the subagent and step 3 is always yours — the subagent proposes, it never commits. Dispatch brief: [references/critique-brief.md](references/critique-brief.md). Dispatch every round to `subagentModel` when it is set; when it is empty, choose the model as the brief directs. If the user names a model to use by default from now on, confirm it, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design set subagentModel <model>`. Under `--runner inline`, do all three yourself.
+Under `--runner subagent`, steps 1 and 2 belong to the subagent and step 3 is always yours — the subagent proposes, it never commits. Dispatch brief: [references/critique-brief.md](references/critique-brief.md). Dispatch every round to `subagentModel` when it is set; when it is empty, choose the model as the brief directs. If the user names a model to use by default from now on, confirm it, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design set subagentModel <model>`. Under `--runner inline`, do all three yourself and write every finding in your reply — a round held only in your reasoning leaves no record.
 
-A finding that names a strict rule is applied, never rejected.
+A finding that names a strict rule is applied, unless a constraint outside the draft's control forbids it — a stated requirement of the module, a rule in the project's rules files, or a limit of the language or toolchain. Cite that constraint and record the finding as escalated, for the user to settle at the gate.
 
-Rounds run without stopping for the user — the user's gate is the finished draft, not each round. Record every finding as it is adjudicated; the record ships with the draft.
+Rounds run without stopping for the user — the user's gate is the finished draft, not each round. Record every finding as it is adjudicated; the record ships with the draft. If the user tells you to stop, discard any round still running and go to the gate.
 
-Stop early when a round returns no findings, or when every finding in a round is rejected: the budget is a ceiling, not a quota.
+Stop early when a round leaves no `blocker` or `major` finding standing — none raised, or every one rejected or escalated. Apply that round's accepted `minor` findings and end: the budget is a ceiling, not a quota.
 
-Rounds are done when the budget is spent or a round stops it early, and every finding from every round sits in the record as applied, or rejected with its reason.
+Rounds are done when the budget is spent or a round stops it early, and every finding from every round sits in the record as applied, rejected with its reason, or escalated with its constraint.
 
 ## Output
 
-**`design` and `refine`** — the spec. Adapt depth to scope; see [references/spec-format.md](references/spec-format.md) for section rules by scope. Present the refined draft, including its refinement record, to the user and apply any corrections before writing to disk.
+**`design` and `refine`** — the spec. Adapt depth to scope; see [references/spec-format.md](references/spec-format.md) for section rules by scope. At the gate — the point where the finished draft is shown to the user — present the refined draft in chat with its Refinement Record and every escalated finding, and apply the user's corrections before writing to the repo. At method or class scope the spec stays in chat and no file is written, unless the user asks for one.
 
 **`review`** — a violations report, ending in the same refinement record. For each violation that survives the rounds, quote the offending code, name the rule, and suggest a concrete fix. If none survive, state that explicitly. Offer to write a redesign spec either way.
 
@@ -88,8 +90,8 @@ Spec output path:
 
 - Use `module-design.specsDir` from `.skillsrc` if set, otherwise `docs/designs`.
 - Filename: `<module-name>.md` (kebab-case).
-- **Exists** — write directly, no confirmation needed. (Config writes still require confirmation per [references/skillsrc-format.md](references/skillsrc-format.md).)
-- **Does not exist** — confirm the full path with the user before creating it.
+- **Exists** — write after the gate with no path confirmation. (Config writes still require confirmation per [references/skillsrc-format.md](references/skillsrc-format.md).)
+- **Does not exist** — create it only after the user's reply at the gate confirms the full path.
 
 If the user provides a custom path that differs from the default, confirm with the user, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design set specsDir <path>` to persist it. The script merges only the `module-design` block and preserves all other skills' config.
 

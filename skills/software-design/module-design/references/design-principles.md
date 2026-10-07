@@ -2,7 +2,7 @@
 
 ## Strict Rules
 
-Enforced as hard constraints during the interview. A design decision that violates a strict rule must be blocked and revised before proceeding.
+Enforced as hard constraints during the interview. A design decision that violates a strict rule must be blocked and revised before proceeding. Rounds check them too.
 
 ### Information Hiding
 
