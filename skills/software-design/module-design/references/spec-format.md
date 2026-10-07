@@ -50,7 +50,7 @@ One paragraph per major decision. Each paragraph names the decision and explains
 
 ### Refinement Record
 
-Every finding raised across the rounds, applied or rejected, with a reason on each rejection. Stops a later round — or a later session — re-raising a point already settled.
+Every finding raised across the rounds, applied, rejected, or escalated, with a reason on each rejection and the overriding constraint on each escalation. Stops a later round — or a later session — re-raising a point already settled.
 
 ```
 ## Refinement Record
@@ -61,6 +61,9 @@ Every finding raised across the rounds, applied or rejected, with a reason on ea
 
 **Rejected**
 - *Command-Query Separation* — `authorise` both charges and returns a token. Rejected: atomicity is the point here, the same exception the rule grants `pop`.
+
+**Escalated**
+- *Define Errors Out of Existence* — `PaymentRequest.card` admits an expired token. Constraint: the provider contract exposes no expiry field to check against. The user accepted the provider's charge-time check at the gate.
 ```
 
 ## Extended Sections (class scope and above)
