@@ -10,19 +10,20 @@ Dispatch takes an alias, not a version. These four are the candidate set:
 | --- | --- | --- | --- | --- |
 | `fable` | 2 | 10 | 10 | 2 |
 | `opus` | 5 | 9 | 9 | 5 |
-| `sonnet` | 5 | 7 | 7 | 7 |
+| `sonnet` | 6 | 7 | 8 | 8 |
 | `haiku` | 10 | 3 | 4 | 10 |
 
 An alias resolves to whichever generation the harness currently ships. Score the alias, pass the alias.
 
 ## Bar to alias
 
-What the three bars resolve to against the current lineup, once `fable` is dropped as gated:
+What the four bars resolve to against the current lineup, once `fable` is dropped as gated:
 
 | Bar | Intelligence-led | Taste-led |
 | --- | --- | --- |
 | 9 | `opus` | `opus` |
 | 7 | `sonnet` | `sonnet` |
+| 3 | `haiku` | `haiku` |
 | 2 | `haiku` | `haiku` |
 
 This table is a convenience, not the rule. Resolve from the scores whenever the lineup changes — a new alias landing between `sonnet` and `opus` would change what bar 9 buys without changing the bar.
@@ -37,14 +38,16 @@ Ordered by Intelligence, which is the axis escalation climbs:
 
 ## Full model IDs
 
-Some places take a full model ID instead of an alias: agent-definition frontmatter, the API, and SDK calls. There, name the generation explicitly.
+Some places take a full model ID instead of an alias: agent-definition frontmatter, the API, and SDK calls. There, name the newest generation of the resolved alias; an older generation only when the user names it, and only if its row still clears the bar.
 
 | Model | Speed | Taste | Intelligence | Cost |
 | --- | --- | --- | --- | --- |
+| Fable 5.1 | 2 | 10 | 10 | 2 |
 | Fable 5 | 2 | 10 | 10 | 2 |
 | Opus 5.5 | 5 | 9 | 9 | 5 |
 | Opus 5 | 4 | 9 | 8 | 4 |
 | Opus 4.8 | 4 | 9 | 8 | 5 |
+| Sonnet 5.5 | 6 | 7 | 8 | 8 |
 | Sonnet 5 | 5 | 7 | 7 | 7 |
 | Sonnet 4.6 | 6 | 6 | 6 | 7 |
 | Haiku 5.5 | 10 | 3 | 4 | 10 |
@@ -54,4 +57,4 @@ Confirm the exact ID string before using one — IDs are versioned and change pe
 
 ## Scoring an unlisted model
 
-A model absent from both tables is not a fallback to a listed one. Score it on the four dimensions first, using the listed models as anchors: `haiku` sets the floor for Intelligence and the ceiling for Speed and Cost; `fable` sets the ceiling for Taste and Intelligence. Then resolve against the bars normally. A model that cannot be scored — no published benchmarks, no session experience with it — is not a candidate.
+A model absent from both tables is not a fallback to a listed one. Score it on the four dimensions first, using the listed models as anchors: the lowest-scoring listed model sets the floor for Intelligence, `haiku` the ceiling for Speed and Cost; `fable` sets the ceiling for Taste and Intelligence. Then resolve against the bars normally. A model that cannot be scored — no published benchmarks, no session experience with it — is not a candidate.

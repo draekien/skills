@@ -31,23 +31,24 @@ Two lookups, not one. **What the work is** fixes the leading dimension. **How mu
 
 ### How much judgment it takes
 
-One test decides it: **can the acceptance criteria be written before the agent starts?**
+One test separates Open from the rest: **can the acceptance criteria be written before the agent starts?** Where they can, the reach of the judgment separates the other three.
 
 | Judgment | Test | Bar |
 | --- | --- | --- |
 | Mechanical | Yes, and the steps are independent — output is checkable against a source | 2 |
-| Bounded | Yes, but it needs one bounded pass of judgment against a known pattern or a supplied rubric | 7 |
+| Routine | Yes, and each input is judged alone: one short pass over one self-contained input — a document, a record, a request — against a supplied label set, schema, or format | 3 |
+| Bounded | Yes, but the judgment spans the task: it weighs inputs against each other, or interprets a known pattern or a supplied rubric | 7 |
 | Open | No — the agent builds its own criteria, and the output has to be read to be judged | 9 |
 
 Worked examples across the grid:
 
-| Work | Mechanical | Bounded | Open |
-| --- | --- | --- | --- |
-| Orchestrate | run a written dispatch list | fan out an existing plan, collate results | plan from scratch, decompose something unscoped |
-| Build | renames, codemods, mechanical edits | bounded implementation on known patterns | complex implementation, deep analysis, long-horizon work |
-| Review | presence checks, lint-style rules | a diff against a stated convention | security, correctness, unfamiliar code |
-| Write | fill a template, mechanical copy | first drafts, docs from a spec | final pass, voice, anything shipping to an audience |
-| Search | "every file importing X" | "where does the auth logic live" | open-ended research and synthesis |
+| Work | Mechanical | Routine | Bounded | Open |
+| --- | --- | --- | --- | --- |
+| Orchestrate | run a written dispatch list | route each request to one of a fixed set of handlers | fan out an existing plan, collate results | plan from scratch, decompose something unscoped |
+| Build | renames, codemods, mechanical edits | a database query against a known schema | bounded implementation on known patterns | complex implementation, deep analysis, long-horizon work |
+| Review | presence checks, lint-style rules | label each item against a supplied label set | a diff against a stated convention | security, correctness, unfamiliar code |
+| Write | fill a template, mechanical copy | summarise a document or compact a conversation into a stated format | first drafts, docs from a spec | final pass, voice, anything shipping to an audience |
+| Search | "every file importing X" | classify records, extract fields into a schema | "where does the auth logic live" | open-ended research and synthesis |
 
 Two floors override the test:
 
@@ -73,6 +74,8 @@ Resolution is mechanical once both lookups are fixed. Do not override the result
 
 The trigger is two failures of the same task — wrong, incomplete, or looping. One failure is noise; re-running after a single miss spends more than it saves.
 
+A classifier refusal is not a failure. Any alias can run safety classifiers that decline a task partway through, and re-sending the task usually returns another refusal. A refusal does not count toward the trigger: do not retry or escalate it, and surface it to the human.
+
 On the second failure, re-run on the next model up the **Intelligence** ladder, whatever the leading dimension was. Repeat failure means the task exceeded the model's reasoning, not its taste or speed.
 
 Escalation is sticky within the session: once a class of task has escalated, start similar tasks on the escalated model rather than paying the two failures again.
@@ -85,13 +88,11 @@ Escalation is sticky within the session: once a class of task has escalated, sta
 
 The flag applies per dispatch, not per session. On a plan of several dispatches, apply it to the one the human was pointing at and resolve the rest normally — a whole fan-out on `fable` is almost never what the flag was for. If the plan has more than one plausible target, ask which.
 
-It carries safety classifiers and can refuse partway through a task. A classifier refusal is not a capability failure — stop escalating, do not retry, and surface it to the human. There is nothing above `fable` to escalate to, and a retry buys another refusal.
-
 ## Gotchas
 
-- **Work that arrives scoped is Bounded.** Once an orchestrator has written the plan, the dispatches it fans out already have criteria — they are Bounded, not Open. Running them on the planner's own model pays a second time for thinking already done.
+- **Work that arrives scoped is not Open.** Once an orchestrator has written the plan, the dispatches it fans out already have criteria — they are Routine or Bounded, by the test above. Running them on the planner's own model pays a second time for thinking already done.
 - **A fork inherits the parent model.** Dispatching a fork to save spend does nothing; a model override on a fork is ignored. Use a fresh subagent when the point is to run cheaper.
-- **Cheap-but-looping is not cheap.** Cost scores efficiency of total spend to finish, not price per token. A Mechanical dispatch that needs three passes and a correction was Bounded all along.
+- **Cheap-but-looping is not cheap.** Cost scores efficiency of total spend to finish, not price per token. A Mechanical dispatch that needs three passes and a correction was never Mechanical — reclassify it.
 - **The bar is a floor, not a target.** Clearing it by a wide margin is overspend, not safety. Take the cheapest alias above the line, not the strongest.
 - **Search with judgment is not Mechanical.** "Find every file importing X" is checkable against the repo. "Find where the auth logic lives" is Bounded, because the agent decides what counts as auth logic.
 - **The matrix scores models, not agent definitions.** A named agent type may pin its own model; when it does, that pin wins and this skill has nothing to decide.
