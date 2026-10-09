@@ -1,14 +1,14 @@
 ---
 name: writing-for-agents
 description: Writes documentation whose reader is another agent — AGENTS.md, llms.txt indexes, ADRs, reference docs, runbooks an agent executes — literal, self-contained per section, and marked wherever a claim could not be verified. Use when drafting or revising agent-facing docs, when a doc must survive being loaded one section at a time, or when the user says "write the agent docs", "make this self-contained", "document this for agents".
-argument-hint: "[--mode write|audit] [target]"
+argument-hint: "[write|audit] [target]"
 ---
 
 # Writing for agents
 
 The reader has no memory of the conversation that produced the document, no shared context with its author, and may load any single section in isolation while every other section stays unread. A document that reads correctly top to bottom can still fail that reader, because the sentence that made section four safe was in section two.
 
-`--mode write` drafts; `--mode audit` applies the same rules to a document already in the repository. Absent, infer from the target: an empty or missing file is `write`, an existing one with content is `audit`.
+`write` drafts; `audit` applies the same rules to a document already in the repository. Absent, infer from the target: an empty or missing file is `write`, an existing one with content is `audit`.
 
 The repository's own convention outranks the structural rules here — its frontmatter fields, its heading sets, its file naming. Where the repository has settled a question, follow it and do not propose a migration. The literal, self-containment, verification, and redaction rules are not structural preferences and hold regardless.
 
@@ -116,7 +116,7 @@ Before finalising, scan the draft and remove or flag any content that:
 6. Uses a leading word that is shorter than its plain-language equivalent but no clearer to the reading agent.
 7. Could be deleted without losing information.
 
-In `--mode audit`, report each hit with the original line, the numbered check it fails, and the replacement text.
+In `audit` mode, report each hit with the original line, the numbered check it fails, and the replacement text.
 
 ## Edge cases
 
@@ -129,4 +129,4 @@ Sibling skills: use `writing-for-humans` where the reader is an engineer reading
 
 ## Done
 
-Every section in the target is correct when read alone: its scope is stated, its references name their targets, and no pronoun reaches outside it. Every claim about current state is either verified against a named mechanism or marked unverified. Every figurative term is a glossary entry. No secret survives in the text. The verification scan runs clean, and in `--mode audit` every finding carries its replacement text.
+Every section in the target is correct when read alone: its scope is stated, its references name their targets, and no pronoun reaches outside it. Every claim about current state is either verified against a named mechanism or marked unverified. Every figurative term is a glossary entry. No secret survives in the text. The verification scan runs clean, and in `audit` mode every finding carries its replacement text.

@@ -1,7 +1,7 @@
 ---
 name: prefer-direct-statements
 description: Installs a standing rule against mannered prose — in your agent instructions files, or as a prompt-submission hook where the harness has one — so the agent states things directly instead of reaching for metaphor, and takes the rule back out again. Use when replies and documents keep arriving full of metaphor and flourish.
-argument-hint: "[--mode install|remove] [--via instructions|hook] [--scope user|project]"
+argument-hint: "[install|remove] [--via instructions|hook] [--scope user|project]"
 disable-model-invocation: true
 ---
 
@@ -11,7 +11,7 @@ It installs a rule; it does not edit prose. Rewriting a document that is already
 
 ## Route
 
-Mode: **install**, unless the request is to take the rule out, drop it, or undo it — that is **remove**. An explicit `--mode` wins outright.
+Mode: **install**, unless the request is to take the rule out, drop it, or undo it — that is **remove**. An explicit subcommand wins outright.
 
 Channel: **instructions** by default — the rule lives in the instructions file. `--via hook` registers a hook that contributes the same rule as context each time a prompt is submitted, so the rule arrives with the prompt rather than relying on what was loaded at session start.
 

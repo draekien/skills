@@ -1,6 +1,6 @@
 {
   "name": "quality-skills",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Skills for making work hold up: stress-testing a change before it ships, and testing it so the tests would actually fail.",
   "author": {
     "name": "William Pei",

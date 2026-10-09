@@ -1,14 +1,14 @@
 ---
 name: writing-for-humans
 description: Writes developer-facing documentation in literal style — every sentence states a fact, mechanism, or instruction, with no metaphor, analogy, or restatement. Use when drafting or revising a README, guide, API reference, runbook, or release note for engineers, or when the user says "write the docs", "write this guide", "make this literal", "strip the metaphors", "tighten this documentation".
-argument-hint: "[--mode write|audit] [target]"
+argument-hint: "[write|audit] [target]"
 ---
 
 # Writing for humans
 
 The reader is an engineer looking for a specific fact under time pressure. They are not reading for comprehension of a narrative; they are scanning for the parameter, the constraint, or the step, and every sentence that does not carry one is a sentence they had to reject before reaching the one that did.
 
-`--mode write` drafts; `--mode audit` applies the same rules to prose already on the page. Absent, infer from the target: an empty or missing file is `write`, an existing one with content is `audit`.
+`write` drafts; `audit` applies the same rules to prose already on the page. Absent, infer from the target: an empty or missing file is `write`, an existing one with content is `audit`.
 
 House convention outranks the wording and formatting rules here — a project style guide, an existing docs set with a settled voice, a vendor template. It does not override the source contract or the verification scan.
 
@@ -71,7 +71,7 @@ Before finalising, scan the draft and remove or flag any sentence that:
 3. Could be deleted without losing information.
 4. Was invented to fill a gap in the source material — flag the gap instead.
 
-In `--mode audit`, report each hit with the original line, the rule it breaks, and the replacement text. An audit that names a problem without supplying the replacement leaves the work undone.
+In `audit` mode, report each hit with the original line, the rule it breaks, and the replacement text. An audit that names a problem without supplying the replacement leaves the work undone.
 
 ## Out of scope
 
@@ -81,4 +81,4 @@ Sibling skills: use `writing-for-agents` where the reader is another agent loadi
 
 ## Done
 
-Every sentence in the target states a fact, mechanism, or instruction. Every identifier matches the source exactly. Every gap in the source material is named in the output rather than filled. The verification scan runs clean, and in `--mode audit` every finding carries its replacement text.
+Every sentence in the target states a fact, mechanism, or instruction. Every identifier matches the source exactly. Every gap in the source material is named in the output rather than filled. The verification scan runs clean, and in `audit` mode every finding carries its replacement text.

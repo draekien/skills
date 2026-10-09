@@ -1,7 +1,7 @@
 ---
 name: module-design
 description: Applies software design principles to modules — from a single method to an entire architectural layer — over rounds of critique and refinement. Use when designing new code, refining an existing design spec, or auditing existing code for design problems, or when the user says "design this", "refine this design", "audit this", "what's wrong with this", "plan this component".
-argument-hint: "[--mode design|refine|review] [--effort low|medium|high] [--runner inline|subagent] [module-or-file]"
+argument-hint: "[design|refine|review] [--effort low|medium|high] [--runner inline|subagent] [module-or-file]"
 ---
 
 # Module Design
@@ -17,7 +17,7 @@ Apply software design principles to whatever the user brings. A first pass is ra
 Run once on first invocation in this order:
 
 1. **Load config** — read the `module-design` block of `.draekien/.skillsrc` as JSON: `specsDir` (default `docs/designs`) and `subagentModel` (default empty). If the file, block, or key is absent, use the defaults.
-2. **Settle the run** — take mode, effort, and runner from the flags. Unflagged, infer the mode: an existing spec to improve is `refine`, existing code to assess is `review`, anything else is `design`. Unflagged effort comes from a project rule that sets one, otherwise `medium`; runner defaults to `subagent`.
+2. **Settle the run** — take the mode from the subcommand, and effort and runner from the flags. With no subcommand, infer the mode: an existing spec to improve is `refine`, existing code to assess is `review`, anything else is `design`. Unflagged effort comes from a project rule that sets one, otherwise `medium`; runner defaults to `subagent`.
 3. **Open question** — if the module, spec, or code in scope isn't already clear from the conversation, ask what to look at before proceeding.
 
 ## Modes
@@ -95,4 +95,4 @@ Spec output path:
 
 If the user provides a custom path that differs from the default, confirm with the user, then run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill module-design set specsDir <path>` to persist it. The script merges only the `module-design` block and preserves all other skills' config.
 
-Once a spec exists at the resolved path, offer `--mode refine` to put it through further rounds.
+Once a spec exists at the resolved path, offer `refine` to put it through further rounds.

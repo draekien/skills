@@ -1,6 +1,6 @@
 {
   "name": "prompting-skills",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Skills for prompting Claude models: drafting and revising prompts against the guidance for the model that runs them.",
   "author": {
     "name": "William Pei",
