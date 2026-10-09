@@ -63,9 +63,9 @@ Done when every file the user approved carries the rule exactly once, and the us
 ### Hook
 
 1. **Establish the hook point from the harness itself.** Read the harness's own hook documentation and its existing configuration to find the event that fires when the user submits a prompt and whose output is added to that prompt's context. Never assume a config shape, a file location, or an event name. Where the harness offers no such event, say so plainly and offer the instructions channel instead — a hook bolted onto a different event fires at the wrong time and is worse than none.
-2. **Make the payload a literal print of the rule.** Nothing generated, nothing conditional. The rule runs to several lines, so put the text in a file beside the hook configuration and have the hook print that file rather than quoting it inside a command; an unescaped quotation mark in the examples will otherwise break the hook, and a hook that errors is noise on every prompt.
+2. **Make the hook script print the rule from its own body.** Nothing generated, nothing conditional. Write a hook script beside the hook configuration that holds the rule text inline and prints it — a quoted heredoc in a shell script, or a literal string in whatever language the script uses — so the text needs no escaping. The examples contain quotation marks, which break a hook that quotes the rule inside a command. Never have the hook script read the rule from a companion file: the rule then lives in two files, and a moved or deleted text file leaves a hook that errors on every prompt.
 3. **Register at the resolved scope**, in the configuration the harness reads for hooks at that scope — not the instructions file.
-4. **Propose, then wait.** Show the configuration path, the exact addition, and the command the hook will run. Apply nothing until the user approves.
+4. **Propose, then wait.** Show the configuration path, the exact addition, and the full hook script. Apply nothing until the user approves.
 5. **Prove it fires.** Have the user submit one prompt, then confirm the rule text actually reached the context through whatever the harness exposes — hook output, a debug view, or asking the agent in that session to quote the rule. A misregistered hook fails silently, so a clean write is not evidence.
 
 Done when the hook is registered at the resolved scope and the rule text has been observed arriving with a real prompt.
@@ -75,7 +75,7 @@ Done when the hook is registered at the resolved scope and the rule text has bee
 Locate the rule first, then propose. What to read differs by channel:
 
 - **Instructions** — run the script with the same `--grep` over the resolved scope. The `matches` array is a first pass, not the answer: a rule the user has since reworded no longer matches the pattern, so read each file the script reports before concluding the rule is absent. Take the surrounding heading with the rule only where the rule was its whole content.
-- **Hook** — the script does not reach this channel, because the payload sits beside the hook configuration under a name it does not glob for. A clean run of the script is not evidence the rule is gone. Read the harness's hook configuration for the registered entry and the file it prints; deregister the entry, and delete that payload file if it has no other reader.
+- **Hook** — the script does not reach this channel, because the hook script sits beside the hook configuration under a name it does not glob for. A clean run of the script is not evidence the rule is gone. Read the harness's hook configuration for the registered entry and the hook script it runs; deregister the entry, and delete that hook script if it has no other reader.
 
 Show each file path with the exact lines to be deleted, and get an explicit yes before touching anything. Report a scope that genuinely carries no such rule plainly, rather than removing the nearest line that happens to mention writing style. Delete only within the scope and channel asked for — a removal at project scope leaves a user-scope copy standing, and the reverse; a removal `--via hook` leaves the instructions copy standing.
 
