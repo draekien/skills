@@ -1,7 +1,7 @@
 ---
 name: ddd-modular-monolith
 description: Applies domain-driven design to a modular monolith — carving bounded contexts into modules, modelling a module's aggregates, wiring cross-module contracts, enforcing boundaries in the build, auditing an existing codebase, and judging extraction readiness. Use when deciding what the modules are, designing inside one, reviewing whether boundaries hold, or when the user says "modular monolith", "module boundaries", "bounded contexts", "how should this module call that one", "enforce module boundaries", "should we split this into a service".
-argument-hint: "[--mode shape|model|integrate|enforce|critique|extract] [--effort low|medium|high] [--runner inline|subagent] [module]"
+argument-hint: "[shape|model|integrate|enforce|critique|extract] [--effort low|medium|high] [--runner inline|subagent] [module]"
 ---
 
 # DDD Modular Monolith
@@ -20,7 +20,7 @@ Run once on first invocation, in this order:
 
 1. **Load config** — run `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill ddd-modular-monolith get architectureDir --default docs/architecture` to read the architecture directory, then `uv run scripts/skillsrc.py --config .draekien/.skillsrc --skill ddd-modular-monolith get subagentModel` to read the default model for subagent rounds. If the script is unavailable, parse `.draekien/.skillsrc` as JSON directly and read `ddd-modular-monolith.architectureDir` and `ddd-modular-monolith.subagentModel`; default to `docs/architecture` and no model if absent.
 2. **Load the module map** — read `<architectureDir>/module-map.md` if it exists. It is the shared state every mode reads: the module list, dependency rules, data ownership and contracts. Where it is absent and the mode needs it, derive what is needed from the codebase and offer to write it.
-3. **Settle the run** — take mode, effort and runner from the flags. Effort defaults to `medium`, runner to `subagent`. Unflagged, infer the mode from the request against the table below.
+3. **Settle the run** — take the mode from the subcommand, and effort and runner from the flags. Effort defaults to `medium`, runner to `subagent`. With no subcommand, infer the mode from the request against the table below.
 4. **Open question** — if the module, domain or code in scope is not already clear from the conversation, ask before proceeding.
 
 ## Modes
@@ -34,7 +34,7 @@ Run once on first invocation, in this order:
 | `critique` | Existing code | Every reference above | A violations report |
 | `extract` | One module, to be split out | [references/extraction.md](references/extraction.md) | A readiness verdict and the work it names |
 
-Inferring the mode when unflagged: no modules yet is `shape`; a named module to design inside is `model`; existing code to assess is `critique`; a question about splitting something out is `extract`. A request to "review the architecture" is `critique`, not `shape` — do not redesign what was only meant to be assessed.
+Inferring the mode with no subcommand: no modules yet is `shape`; a named module to design inside is `model`; existing code to assess is `critique`; a question about splitting something out is `extract`. A request to "review the architecture" is `critique`, not `shape` — do not redesign what was only meant to be assessed.
 
 Read the reference a mode names before drafting. These files carry the rules the mode is applying, and working from memory instead produces generic advice the user could have written themselves.
 

@@ -1,7 +1,7 @@
 ---
 name: prompting
 description: Drafts or revises a prompt for the specific Claude model that will run it — a system prompt, subagent brief, project instruction, single CLAUDE.md rule, or chat message — with model-specific tuning. Use when writing a prompt for a named model, when a prompt behaves worse after a model change, or when the user says "write a system prompt for", "tune this for opus", "why does this prompt behave worse on sonnet". Not for model-agnostic prompt scoring, authoring a skill's SKILL.md, or documenting a repository for agents.
-argument-hint: "[--mode draft|revise] [--model <model-id>] [request-or-file]"
+argument-hint: "[draft|revise] [--model <model-id>] [request-or-file]"
 ---
 
 # Prompting
@@ -24,7 +24,7 @@ When no file system is available, there is no output directory: the deliverable 
 
 ## Choose the mode
 
-`--mode` wins when given. Otherwise the mode is **revise** when the request supplies an existing prompt — a saved prompt in the output directory, a file path, pasted text, or a prompt named in the codebase — or complains about how one behaves; it is **draft** when it asks for a new one. The positional is the request in draft and the prompt in revise. When the prompt text is not supplied, or a named file cannot be read or is empty, say so and ask for the prompt; never draft in its place. Fallback: stop and report that there is nothing to revise.
+An explicit subcommand wins. Otherwise the mode is **revise** when the request supplies an existing prompt — a saved prompt in the output directory, a file path, pasted text, or a prompt named in the codebase — or complains about how one behaves; it is **draft** when it asks for a new one. The positional is the request in draft and the prompt in revise. When the prompt text is not supplied, or a named file cannot be read or is empty, say so and ask for the prompt; never draft in its place. Fallback: stop and report that there is nothing to revise.
 
 ## Resolve the target model
 

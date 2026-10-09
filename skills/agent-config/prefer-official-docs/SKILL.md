@@ -1,7 +1,7 @@
 ---
 name: prefer-official-docs
 description: Installs a standing rule — in your agent instructions file, or as a prompt-submission hook where the harness has one — so the agent dispatches a subagent to read the official documentation before work that depends on a library, CLI, API or service, instead of working from training data, and takes either back out. Use when answers keep citing flags, options or APIs that are outdated or do not exist.
-argument-hint: "[--mode install|remove] [--via instructions|hook] [--scope user|project]"
+argument-hint: "[install|remove] [--via instructions|hook] [--scope user|project]"
 disable-model-invocation: true
 ---
 
@@ -9,7 +9,7 @@ An agent writes the API it remembers, and what it remembers is a blend of versio
 
 ## Route
 
-Mode: **install**, unless the request is to take the rule out, drop it, or undo it — that is **remove**. An explicit `--mode` wins outright.
+Mode: **install**, unless the request is to take the rule out, drop it, or undo it — that is **remove**. An explicit subcommand wins outright.
 
 Channel: **instructions** by default — the rule lives in the instructions file. `--via hook` registers a hook that contributes the same rule as context each time a prompt is submitted, so the rule arrives with the prompt rather than relying on what was loaded at session start.
 

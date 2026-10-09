@@ -1,7 +1,7 @@
 ---
 name: writing-skills
 description: Creates, revises, and reviews agent skills — the tenets, design axes, and craft of a SKILL.md, plus a worthiness gate and a spec validator. Use it to author a new skill, change an existing one, or audit one.
-argument-hint: "[--mode create|update|review] [--gate on|off] [--fix] [prompt]"
+argument-hint: "[create|update|review] [--gate on|off] [--fix] [prompt]"
 disable-model-invocation: true
 ---
 
@@ -11,7 +11,7 @@ Everything here governs the whole skill, not just its body: a reference is body 
 
 ## Route
 
-Settle the mode before anything else. An explicit `--mode` wins outright — honour it even when the surrounding prose reads like another branch. With no flag, infer from the request: an idea with no skill behind it yet is **create**; a named skill plus a change to make is **update**; a request to check, audit, or grade an existing skill is **review**.
+Settle the mode before anything else. An explicit subcommand wins outright — honour it even when the surrounding prose reads like another branch. With no subcommand, infer from the request: an idea with no skill behind it yet is **create**; a named skill plus a change to make is **update**; a request to check, audit, or grade an existing skill is **review**.
 
 `--gate on|off` controls the **worthiness gate** — whether the work belongs in a skill at all, or in a deterministic mechanism that never deviates. It defaults on for create and review, off for update. With the gate on, apply [references/worthiness-gates.md](references/worthiness-gates.md) before anything else, and stop outright when its verdict routes the work elsewhere.
 
@@ -97,9 +97,10 @@ Whenever a model-triggered description is being written or revised, work it agai
 A quoted, free-text usage cue in frontmatter — the only place that signals which capabilities a skill exposes and what to supply. A progressive enhancement: harnesses that don't recognise the field ignore it, so it costs nothing to include.
 
 - **Single input** — the thing the skill acts on stays positional: `"[issue-number]"`, `"[skill-name-or-path]"`.
-- **Modes and named parameters are flags** — `"[--mode write|audit] [target]"`, never a second bare positional or a descriptive phrase. Pipe-separate the values, even for two, and name the flag after what it chooses: `--mode`, `--effort`, `--scope`, `--target`, `--output`.
-- **Fixed flag order** — behaviour selectors first (`--mode`, `--effort`, `--scope`), then bounding flags (`--target`, `--base`), then output and side-effect flags (`--output`, `--fix`), then the free-text positional last, where a multi-word value cannot swallow a following flag.
-- **Brackets mean optional** — drop them from a flag the skill cannot run without: `"--mode record|review|remove|setup [skill-name]"`.
+- **The mode is a subcommand** — the first word, pipe-separated even for two values: `"[write|audit] [target]"`. A first word that exactly matches a subcommand is the subcommand; anything else is free text.
+- **Every other option is a flag** — never a second bare positional or a descriptive phrase. Name the flag after what it chooses: `--effort`, `--scope`, `--runner`, `--target`, `--output`.
+- **Fixed order** — the subcommand first, then behaviour flags (`--effort`, `--scope`), then bounding flags (`--target`, `--base`), then output and side-effect flags (`--output`, `--fix`), then the free-text positional last, where a multi-word value cannot swallow a following flag.
+- **Brackets mean optional** — drop them from a subcommand or flag the skill cannot run without: `"record|review|remove|setup [skill-name]"`.
 - **Always quote** — an unquoted `[issue-number]` parses as a YAML list, not the string every harness expects.
 
 Don't push it toward a structured, typed argument schema — that isn't broadly supported or worth designing around.

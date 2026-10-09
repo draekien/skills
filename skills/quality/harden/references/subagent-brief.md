@@ -10,7 +10,7 @@ Give each subagent:
 
 - **The target** — paste the diff, file paths, spec text, or description in full. A subagent that has to hunt for the target wastes its context and returns vaguer reports.
 - **The surrounding context** — callers, adjacent modules, conventions, and anything learned during Brief. State the project, team size, and release cadence if known.
-- **Its lens and only its lens** — the lens name and its forcing question. Independence is the point of this mode; a subagent given all seven lenses converges on the same three obvious failures every other one found.
+- **Its lens and only its lens** — the lens name and its forcing question. Independence is the point of the subagent runner; a subagent given all seven lenses converges on the same three obvious failures every other one found.
 - **The horizon** — today's date plus six months, stated as an absolute month.
 - **The output contract** — below.
 

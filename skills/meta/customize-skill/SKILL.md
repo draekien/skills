@@ -1,14 +1,14 @@
 ---
 name: customize-skill
 description: Records standing customizations for an installed skill, injected automatically every time that skill runs, and reviews or removes them. Use when a skill needs to behave differently without editing the skill itself, or when the user says "customise the X skill so that", "remember this for next time I use X", "what customisations do I have", "remove my customisations for X".
-argument-hint: "--mode record|review|remove|setup [skill-name]"
+argument-hint: "record|review|remove|setup [skill-name]"
 ---
 
 Turns a one-off correction into a standing instruction. A customization is a markdown file the user owns; a hook that fires when a skill is invoked reads the files for that skill and injects them, so the customization applies without anyone remembering it exists. Installed skills stay untouched — an upgrade or reinstall never clobbers a customization.
 
 ## Route
 
-Settle the mode from the invocation before anything else. An explicit `--mode <name>` wins outright — honour it even when the surrounding prose reads like another branch. With no flag, infer from the request: an instruction about how a skill should behave is **record**; a question about what is on file is **review**; a request to forget, drop, or undo is **remove**; a report that customizations never take effect is **setup**. Any remaining argument names the target skill.
+Settle the mode from the invocation before anything else. An explicit subcommand wins outright — honour it even when the surrounding prose reads like another branch. With no subcommand, infer from the request: an instruction about how a skill should behave is **record**; a question about what is on file is **review**; a request to forget, drop, or undo is **remove**; a report that customizations never take effect is **setup**. Any remaining argument names the target skill.
 
 Where two readings are genuinely live — "change my customisation for X" could revise one file or replace the set — ask which, because an unwanted file and a deleted wanted one cost the same to undo.
 

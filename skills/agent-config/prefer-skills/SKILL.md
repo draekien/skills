@@ -1,7 +1,7 @@
 ---
 name: prefer-skills
 description: Installs a short standing rule — in your agent instructions file, or as a prompt-submission hook where the harness has one — so the agent checks for a relevant skill and invokes it before working from training, and takes either back out. Use when skill invocations keep getting skipped in favour of guesswork and rework.
-argument-hint: "[--mode install|remove] [--via instructions|hook] [--scope user|project]"
+argument-hint: "[install|remove] [--via instructions|hook] [--scope user|project]"
 disable-model-invocation: true
 ---
 
@@ -9,7 +9,7 @@ A skill only helps when it is invoked, and an agent left alone reaches for what 
 
 ## Route
 
-Mode: **install**, unless the request is to take the rule out, drop it, or undo it — that is **remove**. An explicit `--mode` wins outright.
+Mode: **install**, unless the request is to take the rule out, drop it, or undo it — that is **remove**. An explicit subcommand wins outright.
 
 Channel: **instructions** by default — the rule lives in the instructions file. `--via hook` registers a hook that contributes the same rule as context each time a prompt is submitted, so the rule arrives with the prompt rather than relying on what was loaded at session start.
 
