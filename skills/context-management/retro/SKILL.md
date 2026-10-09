@@ -7,71 +7,49 @@ disable-model-invocation: true
 
 # Retro
 
-A retro changes the **environment** the next agent works in, never the code this session produced. A mistake fixed in the code is fixed once; the same mistake fixed in the environment — a check that fails on it, a pointer to the file the agent could not find — is fixed for every later session.
+A retro **mistake-proofs the environment** the next agent works in, never the code this session produced. A fix in the code holds once; a fix in the environment holds for every later session.
 
-Every finding is **evidence-led**: it cites the moment in the transcript that shows the problem — a failed call, a retry, a long search, a correction the user had to make. A recommendation with no evidence in the session is a general repo audit, which is a different job. Three **absence findings** are exempt, because their evidence is something missing rather than a moment: a repo with no **guardrail**, a repo with no review stage, and a root steering file missing the `REVIEW.md` pointer.
-
-## Available scripts
-
-- **`scripts/condense-session.py`** — condenses a JSONL transcript in the `~/.claude/projects` format into a summary (tool-call counts, errors, token usage, largest results, repeated calls, subagent rollups) and a timeline. `--list` prints recent sessions for the current directory from that location. Exits `3` on a transcript in any other format.
+Every finding is **evidence-led**: it cites the transcript moment that shows the problem — a failed call, a retry, a long search, a user correction. Three **absence findings** need no moment: no **guardrail** (no pre-commit hook or CI job running lint, type check, or tests), no review stage (no `/code-review` use, reviewer agent, or CI review step), and a root steering file missing the `REVIEW.md` pointer.
 
 ## Read the session
 
-The session is the current one unless the user names another. While its early turns are still in context, read it from context and skip the transcript. Once the context has been summarised, those turns are gone: find the session's transcript where your harness stores it, and condense it:
+The session is the current one unless the user names another. Read the current session from context while its turns are still there; otherwise find its transcript where your harness stores it, and condense it:
 
 ```bash
 uv run scripts/condense-session.py <session-id-or-path> --output <tmp-file>
 ```
 
-Always pass `--output`; a long timeline overflows a tool result. Read the `summary` object first, then the `timeline` in ranges of at most 200 lines, never the whole file at once.
+Always pass `--output`; a long timeline overflows a tool result. `--list` prints recent sessions. Read `summary` first, then `timeline` in ranges of at most 200 lines. If the script exits non-zero (`3` means the transcript is not `~/.claude/projects` JSONL) or finds no session, read the raw transcript in the same ranges and say no summary was computed. The script records result sizes, not content; re-run a call only when its size cannot settle whether it was wasted.
 
-When the script cannot be used — `--list` finds no sessions, the script exits non-zero, or no script runner is available — fall back to reading the transcript directly, in ranges of at most 200 lines, and say in the report that no summary was computed. The fallback is normal for any harness whose transcripts are not in the format the script parses.
+Done when every error, repeated call, user correction, and largest result is tied to a finding or judged harmless.
 
-The script records each result's size, not its content. Judge a large result from its call and its size; re-run the call only when the size alone cannot settle whether it was wasted.
+## Inventory existing checks
 
-Done when every error, every repeated call, every user correction, and the call behind each of the largest results is either tied to a finding or judged harmless.
+Before proposing a check, inventory what the repo already runs: manifest scripts, pre-commit config, `REVIEW.md`, and CI — any CI system's pipeline config, not only `.github/workflows/`, plus the scripts and templates each pipeline calls. A pipeline can live only on the CI server, so a missing config file does not prove a missing pipeline: ask the user before reporting a missing guardrail or review stage, and mark the finding unverified if they cannot say.
 
-## Check what exists first
-
-Before proposing any check, read what the repo already runs: its package or build manifest's `lint`/`check`/`test` scripts, its CI workflows, its pre-commit configuration, its `REVIEW.md`. A check that exists but is unwired, or wired and silently passing on the session's mistake, is the finding — wiring it is cheaper and safer than building a second one. Run the existing check against the session's mistake to see whether it fails; the transcript shows what the agent did, not why a check did not catch it. Where the mistake has since been fixed, reproduce it in a scratch copy; where it cannot be reproduced, mark the finding unverified and say why.
+An existing check that is unwired, or passes on the session's mistake, is the finding — wire it rather than build a second. **Reproduce** before concluding: run the check against the mistake, in a scratch copy if it has since been fixed; if it cannot be reproduced, mark the finding unverified and say why.
 
 ## Categories
 
-Read each category against the evidence; skip a category the session gave no evidence for.
+Skip any category the session gave no evidence for; absence findings are checked on every run.
 
-- **Navigation** — the agent took many calls to find a file, read the wrong file first, or missed a dependency between files. The fix is a **navigation pointer**: one line in the root steering file naming the file and when to read it. The root steering file is the `CLAUDE.md` or `AGENTS.md` that holds the repo's guidance; where one only imports the other, it is the imported one. Pointers are the only content that file should gain, because every agent in the repo loads it on every turn.
-- **Automated checks** — the agent made a mistake a linter, type checker, test, or filesystem check could have caught. A repo with no guardrail — no pre-commit hook and no CI job running its lint, type check, or tests — is a finding on its own, whether or not the session hit it.
-- **Coding standards** — the agent broke a convention and nothing caught it. Classify the violation before choosing the fix:
-  - **Mechanical** — a fixed syntactic pattern, a banned API, an import shape, a file-location rule. It gets a deterministic check: a custom rule in the repo's own linter, a pre-commit hook, or a CI job, whichever the repo's existing guardrail makes cheapest. Never a prose rule.
-  - **Judgement call** — consistency across files, matching the surrounding style, anything no program can decide. It gets a rule in `REVIEW.md`, for the reviewer.
-- **Tool economy** — a call returned far more than the agent used, the same call ran repeatedly, or a custom CLI or MCP server is token-heavy. Propose the narrower call or the tooling change.
-- **Information access** — a fact the agent needed was not reachable: dev server logs, a third-party service's state, a schema. Propose the access, read-only by default.
+- **Navigation** — slow or wrong file lookups, a missed dependency → a **navigation pointer**: one line in the root steering file naming the file and when to read it. The root steering file is the `CLAUDE.md` or `AGENTS.md` that holds the guidance; if one imports the other, it is the imported one. Pointers are the only content it gains — every agent loads it every turn.
+- **Automated checks** — a mistake a linter, type checker, test, or filesystem check would catch.
+- **Coding standards** — a broken convention nothing caught:
+  - **Mechanical** (a syntactic pattern, banned API, import shape, file location) → a deterministic check in the cheapest existing guardrail. Never a prose rule.
+  - **Judgement call** (cross-file consistency, matching surrounding style) → a rule in `REVIEW.md`.
+- **Tool economy** — oversized results, repeated calls, a token-heavy CLI or MCP server → the narrower call or tooling change.
+- **Information access** — an unreachable fact (dev server logs, service state, a schema) → read-only access.
 
-Steering-file problems — a rule in `CLAUDE.md`/`AGENTS.md` the agent ignored, a rule that changes nothing, a file too large for what it teaches — are not audited here, and `maintain-agent-docs` is not invoked from here either. Report the evidence with the command for the user to run: `/maintain-agent-docs --scope prune` for lines that should come out, `/maintain-agent-docs --scope contexts` for rules in the wrong file. It ships in this plugin; if it is missing, install it with `/plugin install context-management-skills@draekien-skills`, or `npx skills add draekien/skills --skill "maintain-agent-docs"`.
+Judgement rules go to `REVIEW.md` because the reviewer reads them only at review, while the root steering file costs context on every implementer turn. The root steering file gets the pointer `When reviewing a change, read REVIEW.md and apply its rules.` only when a reviewer the repo uses reads the root steering file but not `REVIEW.md` — check `https://code.claude.com/docs/en/code-review.md`, section "What the review reads and edits".
 
-### Why rules go to the reviewer
-
-Work passes through two stages. The implementing agent carries the most context: it explores, writes, and debugs. The reviewing agent receives a diff and needs no exploration. A rule placed where the implementer reads it costs context on every task; placed where only the reviewer reads it, it costs context only at review. So judgement-call rules go to `REVIEW.md`, and the root steering file gains one pointer line so a local reviewer reaches them:
-
-```markdown
-When reviewing a change, read `REVIEW.md` and apply its rules.
-```
-
-Before writing the pointer, check which files each reviewer reads, on `https://code.claude.com/docs/en/code-review.md`, section "What the review reads and edits". The pointer exists for a reviewer that reads the root steering file but not `REVIEW.md`; if every reviewer the repo uses reads `REVIEW.md` directly, skip it. A root steering file that needs the pointer and lacks it is an absence finding. A repo with no review stage at all — no `/code-review` use, no reviewer agent, no review workflow in CI — gets a finding of its own, because a judgement-call rule then has no reader.
+**Hand off** steering-file problems — an ignored rule, a rule that changes nothing, a bloated file — rather than auditing them or running `maintain-agent-docs` yourself: report the evidence with the command for the user to run, `/maintain-agent-docs --scope prune` for lines to remove or `--scope contexts` for rules in the wrong file. If it is missing, install it with `/plugin install context-management-skills@draekien-skills`, or `npx skills add draekien/skills --skill "maintain-agent-docs"`.
 
 ## Rank and report
 
-Rank by what the problem costs if it recurs:
+Rank by cost if it recurs: a mistake that reached a commit or only the user caught, then one the agent caught after rework, then wasted calls or tokens alone. Repeats rank higher within a tier; absence findings rank last.
 
-1. A mistake that reached a commit, or that only the user caught.
-2. A mistake the agent caught itself, after rework.
-3. Wasted calls or tokens with no mistake.
-
-Within a tier, a problem seen more than once in the session ranks higher. Absence findings rank after all three tiers.
-
-Load `writing-for-agents` before writing any line an agent will read — a pointer, a `REVIEW.md` rule, a check's error message. It ships in the `technical-writing-skills` plugin: `/plugin install technical-writing-skills@draekien-skills`, or `npx skills add draekien/skills --skill "writing-for-agents"`.
-
-Report each finding in rank order:
+Load `writing-for-agents` before writing any line an agent will read — pointer, rule, check error message. Install it with `/plugin install technical-writing-skills@draekien-skills`, or `npx skills add draekien/skills --skill "writing-for-agents"`.
 
 ```markdown
 ### 1. <category>: <one-line problem>
@@ -81,7 +59,7 @@ Report each finding in rank order:
 - **Action:** <this finding's cell in the --fix table for the flag this run used>
 ```
 
-A run with no findings says so and names the categories it checked.
+With no findings, say so and name the categories checked.
 
 ## Apply with --fix
 
@@ -95,6 +73,6 @@ A run with no findings says so and names the categories it checked.
 | Information access | report | proposal | proposal |
 | Steering-file problem | hand-off | hand-off | hand-off |
 
-**Prove** a check before keeping it: run it against the session's mistake and confirm it fails, then against the corrected code and confirm it passes. A check that passes on the mistake matches nothing, and is removed rather than committed. Information access is never applied, in any mode, because it touches credentials and external services. Applied fixes are left uncommitted for the user to review.
+**Prove** each check red-green: it fails on the session's mistake and passes on the corrected code. A check that never goes red is removed, not committed. Never apply information access — it touches credentials and external services. Leave applied fixes uncommitted.
 
-Done when every finding is reported, every applied fix is listed with the file it changed, and every built check has both proof runs shown.
+Done when every finding is reported, every applied fix names the file it changed, and every built check shows both proof runs.
