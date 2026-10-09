@@ -47,7 +47,7 @@ Skills for designing code and the vocabulary it is built on, from a single metho
 
 Skills for making work hold up: stress-testing a change before it ships, and testing it so the tests would actually fail.
 
-**2 skills →** [browse the quality bucket](skills/quality/README.md)
+**3 skills →** [browse the quality bucket](skills/quality/README.md)
 
 ## Technical Writing
 
