@@ -11,7 +11,7 @@ Dispatch takes an alias, not a version. These four are the candidate set:
 | `fable` | 2 | 10 | 10 | 2 |
 | `opus` | 5 | 9 | 9 | 5 |
 | `sonnet` | 5 | 7 | 7 | 7 |
-| `haiku` | 10 | 2 | 2 | 10 |
+| `haiku` | 10 | 3 | 4 | 10 |
 
 An alias resolves to whichever generation the harness currently ships. Score the alias, pass the alias.
 
@@ -47,7 +47,8 @@ Some places take a full model ID instead of an alias: agent-definition frontmatt
 | Opus 4.8 | 4 | 9 | 8 | 5 |
 | Sonnet 5 | 5 | 7 | 7 | 7 |
 | Sonnet 4.6 | 6 | 6 | 6 | 7 |
-| Haiku 4.5 | 10 | 2 | 2 | 10 |
+| Haiku 5.5 | 10 | 3 | 4 | 10 |
+| Haiku 4.5 | 10 | 2 | 2 | 8 |
 
 Confirm the exact ID string before using one — IDs are versioned and change per release.
 

@@ -63,13 +63,13 @@ The skill supports the latest model of each tier. Match the target by tier and v
 | Fable | Fable 5.1 (`claude-fable-5-1`), and Mythos 5.1, which shares its guidance | [fable.md](references/fable.md), [fable-api.md](references/fable-api.md) |
 | Opus | Opus 5.5 (`claude-opus-5-5`) | [opus.md](references/opus.md), [opus-api.md](references/opus-api.md), [opus-product.md](references/opus-product.md) |
 | Sonnet | Sonnet 5.5 (`claude-sonnet-5-5`) | [sonnet.md](references/sonnet.md), [sonnet-api.md](references/sonnet-api.md), [sonnet-product.md](references/sonnet-product.md) |
-| Haiku | Haiku 4.5 (`claude-haiku-4-5-20251001`) | [haiku.md](references/haiku.md), [haiku-api.md](references/haiku-api.md) |
+| Haiku | Haiku 5.5 (`claude-haiku-5-5`) | [haiku.md](references/haiku.md), [haiku-api.md](references/haiku-api.md) |
 
 Each set of references is split by prompt kind: `<name>.md` holds the entries for both kinds, `<name>-api.md` the entries for API prompts only, and `<name>-product.md` the entries for product prompts only. The **guidance set** is the both-kinds file and the prompt kind's file, from the general references — [general.md](references/general.md), [general-api.md](references/general-api.md), [general-product.md](references/general-product.md) — always, and from the tier references when the target is a supported model. Never load the other kind's files. Read every file in the guidance set in full before drafting or revising.
 
 - **The tier references win.** When a tier entry contradicts a general entry, or supplies its own block for the same behaviour — scope, subagents, verification, thinking — use the tier entry only.
 - **Measured entries are scoped.** A general entry marked `Measured on <model>` applies to another target only when the prompt shows the behaviour it corrects; cite it with that label.
-- **Context engineering is 5-generation only.** The general references' "Context engineering" sections apply to Fable, Opus, and Sonnet targets, not to Haiku 4.5.
+- **Context engineering is 5-generation only.** The general references' "Context engineering" sections apply to Fable, Opus, and Sonnet targets and to Haiku 5.5.
 
 When the target is any other model — an earlier version in a tier, a version newer than this table, or unresolved — the guidance set is the general references alone. Say so in the record's header, naming the supported model of the target's tier. Never apply a tier reference to a model it was not written for: neighbouring versions often need opposite instructions.
 
