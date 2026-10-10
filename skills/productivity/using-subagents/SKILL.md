@@ -1,6 +1,6 @@
 ---
 name: using-subagents
-description: Orchestrates subagents so their work actually comes back — cutting the task at real seams, briefing each agent with an explicit delivery instruction, rescuing agents that go idle holding finished work, and isolating concurrent writers in worktrees. Use when fanning work out to parallel subagents, when a dispatched agent never returns its findings, or when the user says "using subagents", "using agent teams", "act as a team lead", "run these in parallel", "my agents aren't reporting back".
+description: Orchestrates subagents so their work actually comes back — cutting the task at real seams, briefing each agent with an explicit delivery instruction, rescuing agents that go idle holding finished work, choosing between resuming an agent and starting a fresh one, and deciding when a writer needs its own worktree. Use when fanning work out to parallel subagents, when following up on a finished agent, when a dispatched agent never returns its findings, or when the user says "using subagents", "using agent teams", "act as a team lead", "run these in parallel", "my agents aren't reporting back", "resume that agent", "use a worktree".
 argument-hint: "[task to delegate]"
 ---
 
@@ -108,17 +108,50 @@ Then respond to what comes back:
 - **An agent that no longer holds the text** — ask it to reconstruct from its own transcript, never to redo the investigation.
 - **A second sharpened attempt that also returns nothing** — stop. Record the agent as unresolved and name the slice that has no result. Do not keep rewording, and do not hand the slice to a fresh agent until you have fixed the brief that caused the silence.
 
+## Resume or fresh agent
+
+A resumed agent keeps its whole transcript, its tool set and its model. Decide by what the follow-up needs from that history, not by cost: the cache saving of a resume lasts minutes, and a history full of the wrong things costs more than a fresh brief.
+
+Resume when:
+
+- **The follow-up continues the same slice** — "now cover the authorization paths too". A fresh agent re-derives everything the first one read.
+- **The agent stopped short** — a turn cap or an error. A fresh agent restarts the slice on top of edits already on disk.
+- **The work is finished but undelivered** — see Rescue.
+
+Start a fresh agent when:
+
+- **The next task judges the agent's work.** Never resume an author to review its own output, and never fork to review work your own context produced: both inherit the reasoning behind the change and grade it favourably. A reviewer gets the diff and the criteria, never the reasoning that produced the change.
+- **The agent has been corrected twice on the same point.** Its context now holds the failed approaches and it keeps returning to them. Brief a fresh agent with the corrected requirement stated once and the failed approaches as negative knowledge.
+- **The task is unrelated to the agent's slice.** Its history becomes distractor content.
+- **The task needs something fixed at spawn** — a different model, tool set, permission mode or worktree. An escalation under `picking-models` is always a fresh agent.
+- **The transcript is long or compacted.** Hand off with a brief carrying the state and next steps.
+- **The agent cannot be resumed** — the harness made it one-shot, or the user stopped it.
+
+When a resume trigger and a fresh-agent trigger both apply, start a fresh agent.
+
+### Review rounds
+
+Resume the writer unless a fresh-agent trigger above applies to it; give each round a fresh reviewer. The writer holds the intent the fixes need. A resumed reviewer re-checks its own earlier findings instead of reading the new diff. Each round's brief carries the original criteria, the previous findings, the diff answering each, and the objections still open — that is how a fresh reviewer verifies earlier findings it never made. Done when a round returns no finding that affects correctness or the stated requirements.
+
 ## Isolation
 
 Worktrees exist to stop concurrent **writes** from colliding. Give an agent its own worktree when:
 
 - **Two or more agents write concurrently** and their file ownership cannot be made provably disjoint — shared config, lockfiles, generated files, or builds writing to shared output directories.
-- **An agent runs state-mutating verification** — builds, installs, codegen, migrations: anything that dirties the tree beyond its own edits.
+- **An agent runs verification that writes to the tree** — builds, installs, codegen: anything that dirties the tree beyond its own edits.
 - **An agent needs to switch branches, stash, or commit.**
 - **The work is speculative** — "try this approach, I may throw it away". A worktree makes discarding free: you delete it instead of unpicking edits.
 - **You want each agent's diff reviewable on its own.**
 
-Worktrees are overkill for read-only investigation (nothing to isolate), for a single writer making ordinary edits (the tree is already its worktree), and for genuinely disjoint text edits. The triggers above win over this list, even for a lone agent. A worktree costs a merge step at the end — do not pay it for nothing.
+Worktrees are overkill for read-only investigation (nothing to isolate), for a single writer making ordinary edits (the tree is already its worktree), and for genuinely disjoint text edits. The same holds when the user needs to run the result in their own environment as it lands. The triggers above win over this list, even for a lone agent. A worktree costs a merge step at the end — do not pay it for nothing.
+
+**A worktree isolates files, the index and HEAD — nothing else.** Stash, refs, git config and hooks are shared, and a branch can be checked out in only one worktree. Ports, local databases, containers and build caches are shared too: two isolated agents that each start a dev server on the default port, or each run migrations against the same local database, still collide. Give each agent its own port and database in the brief, or run those steps one at a time.
+
+**An isolated agent starts from committed content.** It does not see your uncommitted or untracked edits, or gitignored files such as `.env` and installed dependencies. Some harnesses base the worktree on the remote default branch rather than your local HEAD; check which before relying on recent commits.
+
+- The agent must build on your in-progress work → commit it and base the worktree on HEAD. If you cannot commit it yet, keep the agent in the main checkout, whatever the triggers above say.
+- Brief every isolated agent with its setup: the install command and which ignored files to copy in.
+- An isolated agent searching for something that exists only in your uncommitted edits reports "not found" with confidence.
 
 One worktree per writer, never shared between two. Reconcile the branches yourself; a worktree's value is that its diff arrives intact.
 
@@ -139,7 +172,7 @@ You merge. Agents never merge each other's work.
 
 1. **Read each report against the tree, not on faith.** Re-run the verification command yourself for anything load-bearing, and spot-check one or two cited locations. A success report with no pasted output is not evidence — send it back asking for the command output. Cheap, and it catches fabrication before it compounds.
 2. **Audit the fence.** Compare the files actually changed against the scope fence in the brief. A five-second check that catches scope creep.
-3. **Merge in dependency order.** Disjoint-ownership results usually coexist untouched. Worktree results you diff and merge yourself, rebasing the smaller change onto the larger. Conflicts in shared files are yours to resolve, because only you hold both agents' intents.
+3. **Merge in dependency order.** Disjoint-ownership results usually coexist untouched. Worktree results you diff and merge yourself, rebasing the smaller change onto the larger. Conflicts in shared files are yours to resolve, because only you hold both agents' intents. Remove each worktree once its branch is merged or discarded; a worktree with changes is not removed automatically.
 4. **On contradictions, never average and never vote.** First re-read both briefs: two agents disagreeing usually answered slightly different questions. If the briefs match, check the primary source yourself, or send one targeted follow-up to whichever agent's claim is cheaper to verify — quote the other agent's finding and ask which wins, with the chain of reasoning. Do not dispatch a third agent to arbitrate; it has no better access to the truth than you do.
 5. **Re-verify the union.** Each agent verified its own slice; nobody verified the combination. Integration bugs live exactly in the gaps between slices, and no subagent owns the gaps.
 6. **Carry the gaps forward.** An agent that returned nothing, or returned partial work, is an open question in what you reconcile — not an omission.
