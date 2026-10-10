@@ -68,6 +68,7 @@ The skill supports the latest model of each tier. Match the target by tier and v
 Each set of references is split by prompt kind: `<name>.md` holds the entries for both kinds, `<name>-api.md` the entries for API prompts only, and `<name>-product.md` the entries for product prompts only. The **guidance set** is the both-kinds file and the prompt kind's file, from the general references — [general.md](references/general.md), [general-api.md](references/general-api.md), [general-product.md](references/general-product.md) — always, and from the tier references when the target is a supported model. Never load the other kind's files. Read every file in the guidance set in full before drafting or revising.
 
 - **The tier references win.** When a tier entry contradicts a general entry, or supplies its own block for the same behaviour — scope, subagents, verification, thinking — use the tier entry only.
+- **House rules are not Anthropic guidance.** A reference's "House rules" entries are this repository's conventions. Apply them where their entry says, and cite them with the `HR` row of that reference's table in place of a URL.
 - **Measured entries are scoped.** A general entry marked `Measured on <model>` applies to another target only when the prompt shows the behaviour it corrects; cite it with that label.
 - **Context engineering is 5-generation only.** The general references' "Context engineering" sections apply to Fable, Opus, and Sonnet targets and to Haiku 5.5.
 

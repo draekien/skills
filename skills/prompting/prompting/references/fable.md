@@ -7,6 +7,7 @@ Snapshot: 2026-10-07. Model: Fable 5.1 (`claude-fable-5-1`); Mythos 5.1 shares t
 | F51 | `https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1` |
 | F5 | `https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5` |
 | BP | `https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices` |
+| HR | Repository convention, not Anthropic guidance |
 
 ## Defaults
 
@@ -18,6 +19,8 @@ Snapshot: 2026-10-07. Model: Fable 5.1 (`claude-fable-5-1`); Mythos 5.1 shares t
 - Formats less than earlier models: less bold, fewer headers, lists, and quotation marks. Its prose has few stock phrases but can run dense, with long sentences and few paragraph breaks. — F51 § Formatting in chat; F51 § Writing density
 - Instruction following is strong enough that one brief instruction steers a behaviour; there is no need to enumerate each case. (predecessor: Fable 5) — F5 § Strong instruction following
 - Performs better when told why: "I'm working on [the larger task] for [who it's for]. They need [what the output enables]. With that in mind: [request]." (predecessor: Fable 5) — F5 § Give the reason, not only the request
+- Dispatches parallel subagents more readily than prior models, and sustains them and long-running peer agents dependably. (predecessor: Fable 5) — F5 § Capability improvements; F5 § Parallel subagents
+- As a lead agent it often stops to wait for a subagent's result even when the harness lets it keep working. — F51 § Let the lead agent keep working while subagents run
 
 ## Remove from older prompts
 
@@ -66,9 +69,16 @@ Snapshot: 2026-10-07. Model: Fable 5.1 (`claude-fable-5-1`); Mythos 5.1 shares t
 - **Checkpoints**: "Pause for the user only when the work genuinely requires them: a destructive or irreversible action, a real scope change, or input that only they can provide. If you hit one of these, ask and end the turn, rather than ending on a promise." (predecessor: Fable 5) — F5 § Strong instruction following
 - **Grounded progress claims** on long runs: "Before reporting progress, audit each claim against a tool result from this session. Only report work you can point to evidence for; if something is not yet verified, say so explicitly. Report outcomes faithfully: if tests fail, say so with the output; if a step was skipped, say that; when something is done and verified, state it plainly without hedging." (predecessor: Fable 5) — F5 § Ground progress claims during long runs
 - **Readable final summaries** after long agentic work: tell it that working shorthand is fine between tool calls but the final message is a re-grounding for a reader who saw none of it — outcome first, complete sentences, terms spelled out, no arrow chains or invented labels, clear over short. (predecessor: Fable 5) — F5 § Readability when communicating with the user
-- **Subagents**: "Delegate independent subtasks to subagents and keep working while they run. Intervene if a subagent goes off track or is missing relevant context." (predecessor: Fable 5) — F5 § Parallel subagents
+- **Subagents**: use them frequently, say when delegation is appropriate, and prefer asynchronous communication over blocking until each subagent returns — "Delegate independent subtasks to subagents and keep working while they run. Intervene if a subagent goes off track or is missing relevant context." (predecessor: Fable 5) — F5 § Parallel subagents
 - **Verifier interval**, on long runs; fresh-context verifier subagents tend to outperform self-critique: "Establish a method for checking your own work at an interval of [X] as you build. Run this every [X interval], verifying your work with subagents against the specification." (predecessor: Fable 5) — F5 § Recommended scaffolding changes
 - **Memory**: give a place to write lessons — "Store one lesson per file with a one-line summary at the top. Record corrections and confirmed approaches alike, including why they mattered. Don't save what the repo or chat history already records; update an existing note rather than creating a duplicate; delete notes that turn out to be wrong." (predecessor: Fable 5) — F5 § Construct a memory system
+
+## House rules
+
+Entries here are this repository's conventions. No Anthropic page states them; cite them as `HR`, never as Anthropic guidance.
+
+- **Orchestrator first**, in every prompt where the model leads agentic work and can dispatch subagents. Put it with the **Subagents** entry, which supplies the delegation mechanics: "You are the orchestrator. Split the task into subtasks and delegate their execution to subagents. Keep for yourself the work only the lead can do: planning, briefing each subagent with the context it needs, integrating results, and checking each result's evidence before accepting it. Do a step directly only when it takes a handful of tool calls, or when briefing a subagent would cost more than doing it." — HR § Orchestrator first
+- **No scripted subagent briefs**, in every prompt with the **Orchestrator first** line. The orchestrator writes the subagents' briefs, so leave out how to split the task, which subagents to dispatch, and what to tell each one: their prompts, wording, roles, and step lists. Give the orchestrator what only the prompt's author knows — the goal, inputs, constraints, and what done looks like — and state a constraint every subagent must follow once, as a constraint on the task. In revise mode, remove lines that script a subagent's brief. Prescriptive step lists can degrade Fable's output, and it carries out long tasks without guidance on method. — HR § No scripted subagent briefs; F5 § Recommended scaffolding changes (predecessor: Fable 5); F51 § Finish the whole task
 
 ## Refusals
 
