@@ -76,7 +76,7 @@ The trigger is two failures of the same task — wrong, incomplete, or looping. 
 
 A classifier refusal is not a failure. Any alias can run safety classifiers that decline a task partway through, and re-sending the task usually returns another refusal. A refusal does not count toward the trigger: do not retry or escalate it, and surface it to the human.
 
-On the second failure, re-run on the next model up the **Intelligence** ladder, whatever the leading dimension was. Repeat failure means the task exceeded the model's reasoning, not its taste or speed.
+On the second failure, split the task first if it can still be cut, and re-run each piece on the same model — sizing a delegated task is covered by the `using-subagents` skill, shipped in this plugin (`/plugin install productivity-skills@draekien-skills`, or `npx skills add draekien/skills --skill "using-subagents"`). A task that cannot be cut further re-runs on the next model up the **Intelligence** ladder, whatever the leading dimension was. Repeat failure means the task exceeded the model's reasoning, not its taste or speed.
 
 Escalation is sticky within the session: once a class of task has escalated, start similar tasks on the escalated model rather than paying the two failures again.
 
