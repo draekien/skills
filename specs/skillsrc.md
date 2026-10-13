@@ -94,6 +94,7 @@ Skills that use `.skillsrc` must register their keys here.
 | `todo` | `linearTeamId` | string | none | Linear team the captured issues belong to |
 | `todo` | `linearProjectId` | string | empty | Optional Linear project to file captured issues under |
 | `prompting` | `outputDir` | string | `.draekien/prompting` | Directory (relative to repo root) where prompts are saved, one `<prompt-slug>/` directory per prompt holding `prompt.md` and `record.md` |
+| `using-subagents` | `maxConcurrentAgents` | string | `4` | Positive integer: the most agents running at once on leaves whose reports are judged one by one; mechanical fan-out is not capped by it |
 | `plain-language` | `overridesPath` | string | `.draekien/plain-language.json` | Path (relative to repo root) to a JSON file of extra dictionary entries merged over the linter's built-in dictionary |
 
 ## Deprecated Keys

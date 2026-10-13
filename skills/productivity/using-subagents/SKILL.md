@@ -1,6 +1,6 @@
 ---
 name: using-subagents
-description: Orchestrates subagents so their work actually comes back — cutting the task at real seams, briefing each agent with an explicit delivery instruction, rescuing agents that go idle holding finished work, choosing between resuming an agent and starting a fresh one, and deciding when a writer needs its own worktree. Use when fanning work out to parallel subagents, when following up on a finished agent, when a dispatched agent never returns its findings, or when the user says "using subagents", "using agent teams", "act as a team lead", "run these in parallel", "my agents aren't reporting back", "resume that agent", "use a worktree".
+description: Orchestrates subagents so their work actually comes back — cutting the task at real seams, sizing each piece to the model that runs it, briefing each agent with an explicit delivery instruction, rescuing agents that go idle holding finished work, choosing between resuming an agent and starting a fresh one, and deciding when a writer needs its own worktree. Use when fanning work out to parallel subagents, when following up on a finished agent, when a dispatched agent never returns its findings or keeps failing a task too big for it, or when the user says "using subagents", "using agent teams", "act as a team lead", "run these in parallel", "my agents aren't reporting back", "resume that agent", "use a worktree".
 argument-hint: "[task to delegate]"
 ---
 
@@ -10,9 +10,13 @@ The message half is where fan-outs die. Agents do the work, write the findings i
 
 Choose each agent's model with the `picking-models` skill. Never leave the model unset. If that skill is not installed, ask the user to add it — `/plugin install productivity-skills@draekien-skills` in a harness with plugin support, or `npx skills add draekien/skills --skill "picking-models"` anywhere else.
 
+## Available scripts
+
+- **`scripts/skillsrc.py`** — Reads and writes `using-subagents` config from `.draekien/.skillsrc`. Keys are in [references/skillsrc-format.md](references/skillsrc-format.md).
+
 ## Seams
 
-One test decides where to cut: **can each piece be verified without the other's output?** If B cannot start until A lands, that is not a seam — it is a phase.
+One test decides where to cut: **can each piece be verified without the other's output?** If B cannot start until A lands, that is not a seam — it is a phase, unless a command checks A's output before B starts (a gated chain, below).
 
 **Good seams:**
 
@@ -22,15 +26,17 @@ One test decides where to cut: **can each piece be verified without the other's 
 
 **Bad seams:**
 
-- **Split by phase** — one agent designs, another implements. The implementer inherits none of the designer's context; you pay the context transfer twice and get drift.
+- **Split by phase** — one agent designs, another implements. The implementer inherits none of the designer's context; you pay the context transfer twice and get drift. A **gated chain** — sequential leaves, each ending on a state a command checks — is not a phase split, because what passes between leaves is checked state, not reasoning.
 - **Split one feature by layer** — one agent does the endpoint, another the caller. The interface between them churns mid-task and both rework. If two pieces must agree on an interface, fix the interface yourself first, put the exact signature in both briefs, then split.
 - **Split for speed alone** — work that runs twenty minutes serially takes longer as two agents plus integration.
 
-Run **two to four agents concurrently** for real work. Your review attention is the bottleneck, not agent capacity: every running agent is a report you must read critically and claims you must spot-check. Past four you start skimming, and a skimmed report is where wrong results get through.
+**Size every leaf before dispatch.** Pick its model with `picking-models`, then check the leaf against that model's band in [references/sizing.md](references/sizing.md): reach for a leaf that changes files, search space for a leaf that only reads. Split a leaf that is over its band; do not move it to a stronger model. Only a leaf that cannot be cut further moves up. Read that reference before dispatching any leaf; it also defines how to split a leaf whose only cuts are sequential.
 
-Mechanical fan-out is the one exception, because its review is mechanical too: when the briefs are identical but for the target and one command verifies the union, go as wide as there are targets and verify by re-running that command rather than by reading every report. If each report needs judging on its own merits, you are back to four.
+Run at most **`maxConcurrentAgents`** agents concurrently for real work — read it from `.skillsrc` per [references/skillsrc-format.md](references/skillsrc-format.md); the default is 4. Your review attention is the bottleneck, not agent capacity: every running agent is a report you must read critically and claims you must spot-check. Past the limit you start skimming, and a skimmed report is where wrong results get through. When a split produces more leaves than the limit, queue the rest and dispatch the next as each report is reviewed.
 
-Do not manufacture parallelism. Keep the serial spine yourself — the decisions, the interface, the risky migration step — and fan out the leaves. Depth does not divide, and if waiting on a dispatched agent feels intolerable, the task was too small to delegate.
+Mechanical fan-out is the one exception, because its review is mechanical too: when the briefs are identical but for the target and one command verifies the union, go as wide as there are targets and verify by re-running that command rather than by reading every report. If each report needs judging on its own merits, you are back to the limit.
+
+Do not manufacture parallelism. Keep the serial spine yourself — the decisions, the interface, the risky migration step — and fan out the leaves. Depth does not divide except as a gated chain, and if waiting on a dispatched agent feels intolerable, the task was too small to delegate. A leaf smaller than the brief it would need is yours to do.
 
 ## The brief
 
