@@ -18,7 +18,9 @@ The first word `new` selects **Define**. Anything else is **Run**. `--team <name
 
 ### Check teams are available
 
-Before anything else, confirm `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` is `1` in your environment and that your tools let you spawn named members, message them, and share a task list with them — check without spawning anyone. If either fails, stop and tell the user which one failed. An unset variable is fixed by setting `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in their shell or in the `env` block of their settings and starting a new session. Missing tools with the variable set mean the session cannot host a team — non-interactive and SDK-hosted sessions never spawn members — so the request has to be run from an interactive terminal session. Do not fall back to subagents — members who cannot message each other are not a team.
+Before anything else, confirm `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` is `1` in your environment and that your tools let you spawn named members and message them — check without spawning anyone. If either fails, stop and tell the user which one failed. An unset variable is fixed by setting `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in their shell or in the `env` block of their settings and starting a new session. Missing tools with the variable set mean the session cannot host a team — non-interactive and SDK-hosted sessions never spawn members — so the request has to be run from an interactive terminal session. Do not fall back to subagents — members who cannot message each other are not a team.
+
+Then note whether you can create and update shared tasks, searching your deferred tools too. The answer decides how the task graph runs in Staff the team; it is not a reason to stop.
 
 ### Resolve the team
 
@@ -47,9 +49,12 @@ Members do not inherit your conversation; the spawn prompt is the only context a
 
 Settle every decision that more than one member depends on — interfaces, file ownership, the review target, the hypothesis list — and write it into each affected spawn prompt. Members deciding a shared question in parallel produce work that does not fit together.
 
-Then show the user the team name, the path it was loaded from, and each member you intend to spawn with its owned slice. Spawn only after the user confirms. Create the task graph as shared tasks with their dependencies as members spawn, so members claim unblocked tasks instead of waiting to be told.
+Then show the user the team name, the path it was loaded from, and each member you intend to spawn with its owned slice. Spawn only after the user confirms. Run the task graph one of two ways:
 
-Staffing is done when every spawn prompt carries the brief, the roster, its messaging lines, its slice and access, and the done signal; every shared decision is written into each affected spawn prompt; and the task graph exists with its dependencies.
+- **With shared tasks** — create the graph as shared tasks with their dependencies as members spawn, so members claim unblocked tasks instead of waiting to be told.
+- **Without shared tasks** — write each member's tasks and their blockers into its spawn prompt, and tell the member to message you when each task completes. You track the graph; when every blocker of a task is complete, message its member that the task is unblocked.
+
+Staffing is done when every spawn prompt carries the brief, the roster, its messaging lines, its slice and access, and the done signal; every shared decision is written into each affected spawn prompt; and the task graph exists with its dependencies, as shared tasks or in the spawn prompts.
 
 ### Lead
 
@@ -82,6 +87,6 @@ Done when the file has every section of the template, every non-leader role owns
 ## Gotchas
 
 - **Plan approval is not a review gate.** Members spawned while you are in plan mode can have their plans approved without you reading them. If a plan needs review, ask the member to send it to you and wait for your reply.
-- **Task status lags.** A task can show in progress after its member has finished. Ask the member before reassigning its task.
+- **Task status lags.** With shared tasks, a task can show in progress after its member has finished. Ask the member before reassigning its task.
 - **No nested teams.** A member cannot run a team of its own, and a session runs one team at a time; split work the team cannot hold into a later team, not a sub-team.
 - **Members inherit your permission mode.** A member cannot be granted permissions you do not have; a member blocked on a permission is a decision for the user, not a task to route elsewhere.

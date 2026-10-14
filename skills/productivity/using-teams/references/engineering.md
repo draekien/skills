@@ -32,7 +32,7 @@ Reviews each slice as it lands, against the interfaces and the project's convent
 3. Write tests against the interfaces — tester — blocked by: 1
 4. Review slice N — reviewer — blocked by: 2 for that slice
 5. Fix blocking findings for slice N, and re-request review until none is open — implementer — blocked by: 4 for that slice
-6. Run the full suite, create a fix task for the owning implementer per failure, and re-run until it passes — tester — blocked by: 2, 3
+6. Run the full suite, send each failure to its owning implementer, and re-run until it passes — tester — blocked by: 2, 3
 7. Verify the combined tree — leader — blocked by: 5, 6
 
 ## Messaging
