@@ -18,6 +18,10 @@
       "source": "./skills/context-management"
     },
     {
+      "name": "frameworks-skills",
+      "source": "./skills/frameworks"
+    },
+    {
       "name": "meta-skills",
       "source": "./skills/meta"
     },

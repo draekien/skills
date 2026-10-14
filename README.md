@@ -49,6 +49,12 @@ Skills for making work hold up: stress-testing a change before it ships, and tes
 
 **3 skills →** [browse the quality bucket](skills/quality/README.md)
 
+## Frameworks
+
+Skills for building on one framework or library: the patterns its docs recommend and the pitfalls they leave out.
+
+**1 skill →** [browse the frameworks bucket](skills/frameworks/README.md)
+
 ## Technical Writing
 
 Skills for developer-facing writing: the documentation that ships alongside the code.
