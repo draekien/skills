@@ -70,7 +70,7 @@ Rules were checked against `@tanstack/react-query` 5.104.2, `@tanstack/react-rou
 | Rule uses | Needs | Below the minimum |
 | --- | --- | --- |
 | `queryClient.query`, `queryClient.infiniteQuery` | `@tanstack/react-query` 5.102.0 | `fetchQuery`, `prefetchQuery`, `ensureQueryData` and their infinite variants, which are not deprecated there |
-| `staleTime: "static"` | `@tanstack/react-query` 5.79.0 | `staleTime: Infinity` |
+| `staleTime: "static"` | `@tanstack/react-query` 5.79.0 | `ensureQueryData(options)`, which behaves the same in a loader |
 | `import { noop } from "@tanstack/react-query"` | `@tanstack/react-query` 5.76.0 | `.catch(() => {})` |
 | mutation `scope: { id }` | `@tanstack/react-query` 5.32.0 | disable the trigger while `isPending` |
 | `createServerFn().validator(...)` | `@tanstack/react-start` 1.168.25 | `.inputValidator(...)`; versions from 1.169.0 accept only `.validator(...)` |
@@ -115,7 +115,7 @@ A read is **critical** when the route must not render without it or must render 
   | --- | --- |
   | `fetchQuery(options)` | `query(options)` |
   | `prefetchQuery(options)` | `void query(options).catch(noop)` |
-  | `ensureQueryData(options)` | `query({ ...options, staleTime: "static" })`; if a mutation invalidates the key, `staleTime: Infinity` instead, because `invalidateQueries` never refetches a `"static"` query |
+  | `ensureQueryData(options)` | `query({ ...options, staleTime: "static" })`, which behaves the same. If a mutation invalidates the key, use `staleTime: Infinity` instead: a later loader run with `"static"` returns the invalidated cached data, so the route decides its branch, redirect or gate from old data, while `Infinity` refetches first. A `staleTime` passed to one `query()` call does not stay on the query: whether invalidation refetches a mounted page depends on the component's `useSuspenseQuery` `staleTime` |
   | `fetchInfiniteQuery(options)` | `infiniteQuery(options)` |
   | `prefetchInfiniteQuery(options)` | `void infiniteQuery(options).catch(noop)` |
   | `ensureInfiniteQueryData(options)` | `infiniteQuery(...)` with the same `staleTime` choice as `ensureQueryData` |
