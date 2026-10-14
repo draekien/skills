@@ -20,7 +20,7 @@ The first word `new` selects **Define**. Anything else is **Run**. `--team <name
 
 Before anything else, confirm `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` is `1` in your environment and that your tools let you spawn named members and message them — check without spawning anyone. If either fails, stop and tell the user which one failed. An unset variable is fixed by setting `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in their shell or in the `env` block of their settings and starting a new session. Missing tools with the variable set mean the session cannot host a team — non-interactive and SDK-hosted sessions never spawn members — so the request has to be run from an interactive terminal session. Do not fall back to subagents — members who cannot message each other are not a team.
 
-Then note whether you can create and update shared tasks, searching your deferred tools too. The answer decides how the task graph runs in Staff the team; it is not a reason to stop.
+Then note whether you can create and update shared tasks, searching your deferred tools too. The answer decides where you track the task graph; it is not a reason to stop.
 
 ### Resolve the team
 
@@ -45,16 +45,14 @@ Members do not inherit your conversation; the spawn prompt is the only context a
 - **The roster** — every member's name and what each owns, so a member knows whom to message about what.
 - **Its messaging lines** — every Messaging entry whose sender or recipient is its role, `every member`, or `every <its role>`, copied verbatim.
 - **Its owned slice and access** — what it may write, and that everything else is read-only to it.
+- **Its tasks** — each task-graph entry it owns, with its blockers, and that it starts a blocked task only when you message that the task is unblocked.
 - **The done signal** — a message to the leader, sent only after it has replied to every message it received that asked for a reply.
 
 Settle every decision that more than one member depends on — interfaces, file ownership, the review target, the hypothesis list — and write it into each affected spawn prompt. Members deciding a shared question in parallel produce work that does not fit together.
 
-Then show the user the team name, the path it was loaded from, and each member you intend to spawn with its owned slice. Spawn only after the user confirms. Run the task graph one of two ways:
+Then show the user the team name, the path it was loaded from, and each member you intend to spawn with its owned slice. Spawn only after the user confirms. You are the only one who tracks the task graph — as shared tasks if you can create them, otherwise in your own notes. Members never create, claim or update tasks; each member messages you when one of its tasks completes, and you message a member when every blocker of its next task is complete. One writer keeps the graph's state equal to what members have reported.
 
-- **With shared tasks** — create the graph as shared tasks with their dependencies as members spawn, so members claim unblocked tasks instead of waiting to be told.
-- **Without shared tasks** — write each member's tasks and their blockers into its spawn prompt, and tell the member to message you when each task completes. You track the graph; when every blocker of a task is complete, message its member that the task is unblocked.
-
-Staffing is done when every spawn prompt carries the brief, the roster, its messaging lines, its slice and access, and the done signal; every shared decision is written into each affected spawn prompt; and the task graph exists with its dependencies, as shared tasks or in the spawn prompts.
+Staffing is done when every spawn prompt carries the brief, the roster, its messaging lines, its slice and access, its tasks with their blockers, and the done signal; every shared decision is written into each affected spawn prompt; and you are tracking the task graph with its dependencies.
 
 ### Lead
 
@@ -87,6 +85,5 @@ Done when the file has every section of the template, every non-leader role owns
 ## Gotchas
 
 - **Plan approval is not a review gate.** Members spawned while you are in plan mode can have their plans approved without you reading them. If a plan needs review, ask the member to send it to you and wait for your reply.
-- **Task status lags.** With shared tasks, a task can show in progress after its member has finished. Ask the member before reassigning its task.
 - **No nested teams.** A member cannot run a team of its own, and a session runs one team at a time; split work the team cannot hold into a later team, not a sub-team.
 - **Members inherit your permission mode.** A member cannot be granted permissions you do not have; a member blocked on a permission is a decision for the user, not a task to route elsewhere.
