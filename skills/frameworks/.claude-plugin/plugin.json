@@ -1,0 +1,12 @@
+{
+  "name": "frameworks-skills",
+  "version": "0.1.0",
+  "description": "Skills for building on one framework or library: the patterns its docs recommend and the pitfalls they leave out.",
+  "author": {
+    "name": "William Pei",
+    "email": "draekien@users.noreply.github.com"
+  },
+  "skills": [
+    "./"
+  ]
+}

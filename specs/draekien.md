@@ -31,6 +31,7 @@ Once created in a session, treat it as present for the remainder — do not re-c
 | `.skillsrc` | Per-skill configuration keyed by skill name | [specs/skillsrc.md](skillsrc.md) |
 | `ubiquitous-language.yaml` | DDD ubiquitous language dictionary (bounded contexts + terms) | managed by `ubiquitous-language` skill |
 | `prompting/` | Saved prompts, one `<prompt-slug>/` directory per prompt: `prompt.md` holds the raw prompt, `record.md` its target model, assumptions, and sources | managed by `prompting` skill; location set by its `outputDir` key |
+| `tanstack-data-loading/discovery.json` | Discovery cache keyed by app root: backend shape, pending UI choice, verify commands, version notes, installed `@tanstack` versions. Stale after 1 day or a version change; gitignored on the user's confirmation, an explicit exception to [Version Control](#version-control) | managed by `tanstack-data-loading` skill via its `scripts/discovery.py` |
 | `skill-customizations/` | Per-skill customization files, one directory per customized skill | managed by the `customize-skill` skill — see [skills/meta/customize-skill/SKILL.md](../skills/meta/customize-skill/SKILL.md) |
 
 Future files added by new skills must be documented here and in their own spec.

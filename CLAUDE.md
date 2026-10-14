@@ -8,6 +8,7 @@ Repo stores agent skills in buckets under `skills/`. Each bucket groups skills b
 - **planning** — Turning an idea into a spec, and a spec into pickup-ready work.
 - **software-design** — Designing code and the vocabulary it is built on, from a method to an architectural layer.
 - **quality** — Making work hold up: stress-testing a change, and testing it so the tests can fail.
+- **frameworks** — Building on one framework or library: the patterns its docs recommend and the pitfalls they leave out.
 - **technical-writing** — Developer-facing writing: the documentation that ships with the code.
 - **version-control** — Git hygiene and repository workflow.
 - **context-management** — Building and managing agent context: the docs and reference indexes an agent reads before touching code.
@@ -40,7 +41,7 @@ skills/
 
 Each bucket is a plugin, and the bucket directory is its plugin root. See [Plugin manifest](#plugin-manifest).
 
-- The top-level `README.md` has one section per public bucket (`agent-config/`, `drafting/`, `planning/`, `software-design/`, `quality/`, `technical-writing/`, `version-control/`, `context-management/`, `prompting/`, `productivity/`, `problem-solving/`, `teaching/`, `roles/`, `ui-ux/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
+- The top-level `README.md` has one section per public bucket (`agent-config/`, `drafting/`, `planning/`, `software-design/`, `quality/`, `frameworks/`, `technical-writing/`, `version-control/`, `context-management/`, `prompting/`, `productivity/`, `problem-solving/`, `teaching/`, `roles/`, `ui-ux/`, `output-styles/`): bucket blurb + a link to that bucket's `README.md`. It does NOT list individual skills.
 - Each bucket `README.md` lists all its skills with one-line descriptions, skill names linked to `SKILL.md`. The bucket `README.md` is the single source of truth for a skill's one-liner — it is the only place that one-liner lives.
 - Skills in `personal/` must not appear in any public README.
 
