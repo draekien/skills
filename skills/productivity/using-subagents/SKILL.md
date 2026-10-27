@@ -1,6 +1,6 @@
 ---
 name: using-subagents
-description: Orchestrates subagents so their work actually comes back — cutting the task at real seams, sizing each piece to the model that runs it, briefing each agent with an explicit delivery instruction, rescuing agents that go idle holding finished work, choosing between resuming an agent and starting a fresh one, and deciding when a writer needs its own worktree. Use when fanning work out to parallel subagents, when following up on a finished agent, when a dispatched agent never returns its findings or keeps failing a task too big for it, or when the user says "using subagents", "using agent teams", "act as a team lead", "run these in parallel", "my agents aren't reporting back", "resume that agent", "use a worktree".
+description: Orchestrates subagents so their work actually comes back — deciding whether a task needs one at all, cutting the task at real seams, sizing each piece to the model that runs it, briefing each agent with an explicit delivery instruction, rescuing agents that go idle holding finished work, choosing between resuming an agent and starting a fresh one, and deciding when a writer needs its own worktree. Use when fanning work out to parallel subagents, when following up on a finished agent, when a dispatched agent never returns its findings or keeps failing a task too big for it, or when the user says "should I use a subagent", "using subagents", "using agent teams", "act as a team lead", "run these in parallel", "my agents aren't reporting back", "resume that agent", "use a worktree".
 argument-hint: "[task to delegate]"
 ---
 
@@ -14,6 +14,19 @@ Choose each agent's model with the `picking-models` skill. Never leave the model
 
 - **`scripts/skillsrc.py`** — Reads and writes `using-subagents` config from `.draekien/.skillsrc`. Keys are in [references/skillsrc-format.md](references/skillsrc-format.md).
 
+## Whether to delegate
+
+Default to doing the work in your own context. Every handoff loses information: a subagent sees only its brief, and you see only its final message, so an answer reasoned over shared context beats one assembled from returned summaries. Handoffs also add latency — folding a multi-agent system into a single agent loop has been measured running about twice as fast.
+
+Delegate a piece only when one of these holds:
+
+- **Context bloat** — the piece needs reading that would fill your context with material you never use again, and its result fits in a report.
+- **Parallel independent work** — pieces that each need wide reading or a long run of their own, can run concurrently, and never need each other's output; Seams below decides where to cut. Concurrency alone is not a reason: see Split for speed alone.
+- **A conflicting setup** — the piece needs a model, tool set, permission mode or instructions that clash with yours.
+- **An independent check** — the piece judges work you or another agent produced and must not inherit the reasoning behind it; see Resume or fresh agent.
+
+Independent lookups that are each one search or one file read are none of these: issue them as parallel tool calls in one turn of your own, and their results land in your context unsummarised.
+
 ## Seams
 
 One test decides where to cut: **can each piece be verified without the other's output?** If B cannot start until A lands, that is not a seam — it is a phase, unless a command checks A's output before B starts (a gated chain, below).
@@ -21,13 +34,14 @@ One test decides where to cut: **can each piece be verified without the other's 
 **Good seams:**
 
 - **Disjoint file ownership** — the strongest predictor of a clean merge. Write the ownership into the brief: "You own `src/parser/`. Do not edit anything outside it."
-- **Independent questions** — investigations parallelise almost for free. "Where are retries configured" and "why does the CI cache miss" never collide.
+- **Independent investigations** — questions that never collide and each need wide reading: "where are retries configured" and "why does the CI cache miss".
 - **Mechanical fan-out** — the same transform over many targets, where briefs are identical but for the target list. Integration is trivial.
 
 **Bad seams:**
 
 - **Split by phase** — one agent designs, another implements. The implementer inherits none of the designer's context; you pay the context transfer twice and get drift. A **gated chain** — sequential leaves, each ending on a state a command checks — is not a phase split, because what passes between leaves is checked state, not reasoning.
 - **Split one feature by layer** — one agent does the endpoint, another the caller. The interface between them churns mid-task and both rework. If two pieces must agree on an interface, fix the interface yourself first, put the exact signature in both briefs, then split.
+- **Split by role** — a security agent, a testing agent and a docs agent each re-read the same files, and no agent holds the whole change. Cut by the files or questions each piece reads, not by the kind of problem. A role is a valid piece only as an independent check or a conflicting setup (see Whether to delegate).
 - **Split for speed alone** — work that runs twenty minutes serially takes longer as two agents plus integration.
 
 **Size every leaf before dispatch.** Pick its model with `picking-models`, then check the leaf against that model's band in [references/sizing.md](references/sizing.md): reach for a leaf that changes files, search space for a leaf that only reads. Split a leaf that is over its band; do not move it to a stronger model. Only a leaf that cannot be cut further moves up. Read that reference before dispatching any leaf; it also defines how to split a leaf whose only cuts are sequential.
