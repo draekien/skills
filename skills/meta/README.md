@@ -5,4 +5,5 @@ Meta-skills: skills about authoring, vetting, and evaluating skills themselves.
 | Skill | Description |
 | --- | --- |
 | [customize-skill](customize-skill/SKILL.md) | Records standing customizations for an installed skill, injected automatically every time that skill runs. |
+| [setup-ship](setup-ship/SKILL.md) | Generates or updates a repository's user-triggered `ship` workflow skill, fitted to its installed skills and AGENTS.md and CLAUDE.md files. |
 | [writing-skills](writing-skills/SKILL.md) | Creates, revises, and reviews agent skills — tenets, design axes, and craft, plus a worthiness gate and a spec validator. |
