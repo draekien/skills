@@ -32,7 +32,7 @@ A skill MUST:
 - **Target the agent, not the user** — if the information is not necessary for the agent to perform its task, cut it.
 - **Carry activation entirely in the description** — the body is never read until after activation, so the description is the sole activation signal. Never write a "when to use this skill" section in the body.
 - **Encode timeless principles** — moderated by the Knowledge ↔ Procedure axis: principles are the default payload; a procedure skill may encode steps instead.
-- **Never encode the current state of the world** — corpus contents, file counts, "all existing X do Y". Such facts rot as the skill is used, most sharply when the skill exists to change that very state. Where current state is required, instruct the agent to explore.
+- **Never encode the current state of the world** — corpus contents, file counts, "all existing X do Y", and the surface of a third-party library, framework or CLI: its API names, options, defaults, flags, config keys and version numbers. Such facts rot as the skill is used, most sharply when the skill exists to change that very state, and a tool's surface changes with every release. Where current state is required, instruct the agent to explore. For a tool's surface, keep the principle in the skill and add a **docs index**: the official page for each topic, read at the moment of use. A ✗/✓ example may still use the tool's long-stable core API to illustrate a principle.
 
 A skill SHOULD:
 
@@ -140,7 +140,7 @@ Which steps belong to a script rather than prose is the part gate in [references
 
 Reusable shapes for body content — use the ones that fit the task:
 
-- **Gotchas section** — often the highest-value content: concrete corrections to mistakes the agent will otherwise make ("the health endpoint returns 200 even when the database is down — check the readiness endpoint instead"), not general advice. Keep gotchas in the body, where the agent reads them before encountering the situation — behind a pointer, it may not recognise the trigger. Every correction the user makes during real runs is a gotcha candidate.
+- **Gotchas section** — often the highest-value content: concrete corrections to mistakes the agent will otherwise make ("the health endpoint returns 200 even when the database is down — check the readiness endpoint instead"), not general advice. Keep gotchas in the body, where the agent reads them before encountering the situation — behind a pointer, it may not recognise the trigger. Every correction the user makes during real runs is a gotcha candidate. When the correct answer is a third-party tool's default or behaviour, state the trap and the docs index page that answers it, not the answer.
 - **Output template** — when output must follow a format, provide a template to copy: agents pattern-match against concrete structure more reliably than against prose descriptions. Short templates inline; long or branch-specific ones in `assets/`. Templates are for artefacts the skill produces, never for the agent's own replies — describe conversational behaviour, don't script its words.
 - **Checklist** — for multi-step workflows with dependencies or validation gates; an explicit checklist lets the agent track progress and not skip steps.
 - **Validation loop** — do the work, run a validator (a script, a reference checklist, or a self-check), fix what it reports, and repeat until it passes. Only proceed on a pass.

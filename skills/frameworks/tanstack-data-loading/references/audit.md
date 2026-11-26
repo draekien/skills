@@ -8,18 +8,21 @@ Search with ripgrep regular expressions. Rows marked multi-line need multi-line 
 
 | Search | Rule |
 | --- | --- |
-| `ensureQueryData\|prefetchQuery\|fetchQuery\|prefetchInfiniteQuery\|ensureInfiniteQueryData\|fetchInfiniteQuery` | Deprecated `QueryClient` method, when the installed version has `query` |
-| multi-line: `void [^;]*\.(query\|infiniteQuery)\(` whose chain has no `.catch(` | Unhandled rejection |
+| the method names `versionNotes` records under deprecated reads, joined with `\|` | Deprecated `QueryClient` read |
+| multi-line: each background prefetch call `versionNotes` records, with no rejection handler on its chain | Unhandled rejection |
 | multi-line: `loader:` followed by two `await` lines | Waterfall between independent critical reads |
 | multi-line: two `useSuspenseQuery\(` in one function | Waterfall between suspense queries |
 | `useQuery\(` in a route component | Not run on the server |
 | `(await\|return) [^;]*invalidateQueries` inside `onSuccess` or `onSettled` | Pending until refetch |
 | `setQueryData\(` and `invalidateQueries\(` on the same key | Refetch of written data |
 | `useSuspenseQuery\(` in a component rendered inside `.map(` | One request per row |
-| `createServerFn` in a file not named `*.functions.ts` | File naming |
+| `import` of a server-only file from a client-reachable file, only when the server-only files entry records no import protection | Server-only code in the client bundle |
+| `createServerFn` in a file whose name breaks the server function export convention recorded under server-only files in `versionNotes` | File naming |
 | `backend: database` only: read each writing server function for a count or existence check followed by an insert | Check-then-write race |
 
-The `\|` in the table is markdown escaping: the pattern is `|`, for example `ensureQueryData|prefetchQuery|fetchQuery`.
+Skip a row whose `versionNotes` entry records nothing to search for, or marks the lookup `unverified`, and say in the report that it was skipped.
+
+The `\|` in the table is markdown escaping: the pattern is `|`, for example `useQuery|useSuspenseQuery`.
 
 Then read every loader, every component that renders a query read, every `useMutation` and every `createServerFn` under the scope against the SKILL.md rules and the backend reference. The table finds the patterns a search can find; it does not decide which reads are critical, whether Suspense sections exist, or whether server functions are sized to the backend.
 
