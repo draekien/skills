@@ -1,6 +1,6 @@
-# Reading guidance for the installed versions
+# Resolving API lookups for the installed versions
 
-Read the installed version's own guidance, record each rule it changes as one string in the discovery entry's `versionNotes` (or `checked: no changes`), and apply the changed rule in place of the SKILL.md one. Where you can dispatch work to a fresh context, give the reading to a subagent with the rule list and the installed versions.
+Resolve every API lookup in SKILL.md from the installed version's own documentation, never from memory, and record each as one `versionNotes` string: `<lookup>: <installed API and behaviour>`. Where the installed version has nothing for a lookup, record that (`mutation scope: none in 5.20.0`) so the rule's fallback applies. Where you can dispatch work to a fresh context, give the reading to a subagent with the lookup table and the installed versions.
 
 ## Router and Start
 
@@ -13,10 +13,27 @@ npx @tanstack/intent@0.5.5 load @tanstack/router-core#router-core/data-loading
 
 Run both from the app root. From `list`, load every skill covering data loading, SSR, server functions, the execution model and middleware. `list` and `load` write nothing. Never run `intent install`: it edits `package.json` and `AGENTS.md`.
 
-If `list` returns no skills for these packages, the installed versions predate them; if `npx` fails (offline, no registry access), the CLI is unavailable. Read the docs instead, as for Query below, from `docs/router/` and `docs/start/` in `TanStack/router`.
+If `list` returns no skills for these packages, or a lookup is not answered by them, read the docs index pages below. If `npx` fails (offline, no registry access), the CLI is unavailable; read the docs index pages instead.
 
-## Query
+## Docs at the installed version
 
-Query ships no Intent skills. Read `docs/framework/react/guides/` in `TanStack/query` at the installed version's git tag: `@tanstack/react-query@<version>` for recent releases, `v<version>` for older ones. Use whichever tag exists. If neither exists or the docs cannot be read, record the affected rules as `unverified for <version>` in `versionNotes` and tell the user.
+Read docs from the repository at the git tag for the installed version: `@tanstack/<package>@<version>` (`@tanstack/react-query@<version>` in `TanStack/query`; `@tanstack/react-router@<version>` or `@tanstack/react-start@<version>` in `TanStack/router`). Older releases are tagged `v<version>`; use whichever tag exists. If neither exists or the docs cannot be read, record the lookup as `unverified for <version>` and tell the user.
 
-Done when every rule in SKILL.md that uses a changed API has a `versionNotes` entry or is confirmed unchanged.
+## Docs index
+
+| Lookup | Repository | Path |
+| --- | --- | --- |
+| awaited fetch, background prefetch, deprecated reads | `TanStack/query` | `docs/framework/react/guides/prefetching.md`, `docs/framework/react/reference/classes/QueryClient.md`, `docs/framework/react/guides/caching.md` |
+| awaited fetch, background prefetch (router side) | `TanStack/router` | `docs/router/guide/external-data-loading.md`, `docs/router/integrations/query.md` |
+| SSR query integration | `TanStack/router` | `docs/router/integrations/query.md`, `docs/start/framework/react/guide/tanstack-query.md` |
+| data-only SSR | `TanStack/router` | `docs/start/framework/react/guide/selective-ssr.md` |
+| section boundary | `TanStack/router` | `docs/start/framework/react/guide/error-boundaries.md`, `docs/router/guide/data-loading.md` |
+| section boundary (Query side), suspense batch | `TanStack/query` | `docs/framework/react/guides/suspense.md`, `docs/framework/react/reference/functions/useSuspenseQueries.md` |
+| pending options | `TanStack/router` | `docs/router/guide/data-loading.md`, `docs/router/api/router/RouterOptionsType.md` |
+| mutation scope | `TanStack/query` | `docs/framework/react/guides/mutations.md`, `docs/framework/react/reference/type-aliases/MutationScope.md` |
+| input validator | `TanStack/router` | `docs/start/framework/react/guide/server-functions.md` |
+| server-only files | `TanStack/router` | `docs/start/framework/react/guide/server-functions.md`, `docs/start/framework/react/guide/import-protection.md`, `docs/start/framework/react/guide/execution-model.md` |
+
+Where a path no longer exists at the installed tag, list the `docs/` tree at that tag and read the page whose title covers the lookup.
+
+Done when every API lookup in SKILL.md has a `versionNotes` entry naming the installed API, stating the installed version has none, or marked `unverified for <version>`.
